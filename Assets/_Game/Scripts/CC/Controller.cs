@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Controller :  MonoBehaviour,IGravityActor,IMoverActor
 {
-
     [SerializeField] private ControllerStat m_stat;
     
     private ICamera _camera;
@@ -14,8 +13,14 @@ public class Controller :  MonoBehaviour,IGravityActor,IMoverActor
     
     private Vector2 _moveInput;
     private Vector3 _velocity;
-    private const float StopEpsilon = 0.02f; 
-    
+    private const float StopEpsilon = 0.02f;
+
+    #region StateMachineField
+    [Space(15)]
+    [Header("<size=18><b>StateMachine Debug</b></size>")]
+    [Header("Movement StateMachine")]
+    [SerializeField,Tooltip("Transition Chain Debug")] private bool m_transitionChainDebug;
+    #endregion
     private void Awake()
     {
         _moveEngine =  GetComponent<MoveEngine>();
@@ -26,20 +31,17 @@ public class Controller :  MonoBehaviour,IGravityActor,IMoverActor
     
     private void Start()
     {
-        BuildStateMachine();
-        
+        BuildMovementStateMachine();
     }
 
     private void Update()
     {
-        _movementStateMachine.Update();  // lo que son transitiones se hacen en update
+        _movementStateMachine.Update(); 
+        // la fisica no lo hice por fixed porque internamente estoy controlando el transicion de estado, como leer input por update, para que
+        // no haya problema de tick entre camera y movimiento lo hice todos por udpate. pero esta ya esta asegurado el orden de ejecucion , asi que no creo que haya problema.
+        _moveEngine.MovePlayer(Time.deltaTime,_velocity * Time.deltaTime ); 
     }
-
-    private void FixedUpdate()
-    {
-        _movementStateMachine.FixedUpdate(); // fisica se hace en fixed, todos lo de air y ground
-        _moveEngine.MovePlayer(Time.fixedDeltaTime,_velocity * Time.fixedDeltaTime );
-    }
+    
 
     private void OnEnable()
     {
@@ -60,7 +62,7 @@ public class Controller :  MonoBehaviour,IGravityActor,IMoverActor
         _moveInput = moveInput;
     }
     
-    private void BuildStateMachine()
+    private void BuildMovementStateMachine()
     {
         var root = new EmptyState();
         var ground = new GroundState(this);
@@ -69,7 +71,7 @@ public class Controller :  MonoBehaviour,IGravityActor,IMoverActor
         var groundMove = new Move(this,m_stat);
         var airIdle = new IdleState(this,m_stat); // por ahora comparte stat, pero puede ser que stat sea SO or class, si llega cambiar algo de movement
         var airMove = new Move(this,m_stat);
-        _movementStateMachine = new HSMStateMachine.Builder(root,true)
+        _movementStateMachine = new HSMStateMachine.Builder(root,m_transitionChainDebug)
             .State(ground,root,true)
             .State(air,root)
             
@@ -189,7 +191,7 @@ public class IdleState : IState
         _actor = actor;
         _stat = stat;
     }
-    public void FixedUpdate()
+    public void Update()
     {
         _actor.Stop(_stat.timeToStop);
     }
@@ -207,6 +209,8 @@ public class GroundState : IState
     {
         _actor.ResetGravity();
     }
+
+   
 }
 
 public class Air : IState
@@ -216,8 +220,10 @@ public class Air : IState
     {
         _actor = gravityAffecter;
     }
+    
+    
 
-    public void FixedUpdate()
+    public void Update()
     {
         _actor.ApplyGravity(Physics.gravity,Time.fixedDeltaTime);
     }
@@ -238,7 +244,7 @@ public class Move : IState
    }
 
 
-   public void FixedUpdate()
+   public void Update()
    {
        _actor.Move(_stat.speed,_stat.moveTimeToMaxSpeed);
    }
