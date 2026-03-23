@@ -1,0 +1,43 @@
+using System;
+using UnityEngine;
+using UnityEngine.InputSystem;
+[CreateAssetMenu(fileName = "CCInputReader", menuName = "Game/InputReader/Player")]
+public class CCInputReader : InputReader,InputActions.IPlayerActions
+{
+    
+    public event Action<Vector2> Move = delegate { };
+    public event Action<Vector2> Look = delegate { };
+    
+    public event Action InteractPressed = delegate { };
+    public event Action InteractReleased = delegate { };
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        if (context.started) return;
+        Move?.Invoke(context.ReadValue<Vector2>());
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+             
+        if (context.started) return;
+        Look?.Invoke(context.ReadValue<Vector2>());
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.started) InteractPressed?.Invoke();
+
+        if (context.canceled) InteractReleased?.Invoke();
+    }
+
+    public override void SetCallback(InputActions inputAction)
+    {
+        inputAction?.Player.SetCallbacks(this);
+    }
+
+    public override void SetEnable(InputActions inputAction, bool enable = true)
+    {
+       if(enable) inputAction?.Player.Enable();
+       else inputAction?.Player.Disable();
+    }
+}
