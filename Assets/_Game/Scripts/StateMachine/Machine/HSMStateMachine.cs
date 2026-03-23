@@ -20,10 +20,9 @@ public class HSMStateMachine {
     private void Start(IState initialState) 
     {
         if (!_nodes.TryGetValue(initialState, out var node)) return;
-        // 下钻
+        
         var targetNode = node;
         while (targetNode.DefaultSubState != null && _nodes.TryGetValue(targetNode.DefaultSubState, out var sub)) targetNode = sub;
-        // 溯源
         int count = 0;
         for (var s = targetNode; s != null; s = s.Parent) _enterStack[count++] = s;
         for (int i = count - 1; i >= 0; i--) _enterStack[i].State.OnEnter();
@@ -33,7 +32,7 @@ public class HSMStateMachine {
     {
         if (!_nodes.TryGetValue(to, out var target) || _currentNode == target) return;
 
-        // 如果进入的是父状态，递归寻找其定义的默认子状态
+        
         while (target.DefaultSubState != null && _nodes.TryGetValue(target.DefaultSubState, out var sub)) target = sub;
         
 
@@ -42,7 +41,7 @@ public class HSMStateMachine {
         int exitCount = 0;
         int enterCount = 0;
 
-        // 1. LCA 寻路算法 (基于 Level 深度对齐)
+        //  LCA 
         while (nodeA.Level > nodeB.Level) 
         {
             _exitStack[exitCount++] = nodeA;
@@ -87,8 +86,7 @@ public class HSMStateMachine {
 #endif
         }
 
-
-        // 2. 状态切换回调
+        
         for (int i = 0; i < exitCount; i++) _exitStack[i].State.OnExit();
         _currentNode = target;
         for (int i = enterCount - 1; i >= 0; i--) _enterStack[i].State.OnEnter();
@@ -134,12 +132,12 @@ public class HSMStateMachine {
 
     private Transition GetTransition(StateNode node) 
     {
-        // 父节点递归检查转换，实现抢占
+      
         if (node.Parent != null) {
             var pt = GetTransition(node.Parent);
             if (pt != null) return pt;
         }
-        // 当前节点检查转换
+       
         foreach (var t in node.Transitions) if (t.Evaluate()) return t;
         return null;
     }
@@ -175,6 +173,7 @@ public class HSMStateMachine {
             _sm.AddNode(state, parent, isDefault);
             return this;
         }
+        
 
         public Builder At<TValue>(IState from, IState to, TValue condition) {
             _sm.AddTransition(from, to, condition);
@@ -211,16 +210,6 @@ public class HSMStateMachine {
     
     }
 
-}
-
-public class Alive : IState
-{
-    
-}
-
-public class Death : IState
-{
-    
 }
 
 

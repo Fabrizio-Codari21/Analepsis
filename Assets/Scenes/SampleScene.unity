@@ -702,7 +702,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 0.5
   height: 2
-  center: {x: 0, y: 1, z: 0}
+  center: {x: 0, y: 0, z: 0}
   capsuleDirection: 1
   capsuleCollider: {fileID: 0}
 --- !u!114 &986766037
@@ -746,7 +746,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1075,6 +1075,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1986598787}
+  - component: {fileID: 1986598788}
   m_Layer: 0
   m_Name: CameraRoot
   m_TagString: Untagged
@@ -1098,6 +1099,20 @@ Transform:
   - {fileID: 1646001275}
   m_Father: {fileID: 986766034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1986598788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986598786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0321d16d8f41419d3dbf854d59369a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_target: {fileID: 1646001274}
+  m_camera: {fileID: 1646001276}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
