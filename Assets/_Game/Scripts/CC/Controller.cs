@@ -1,9 +1,20 @@
 using System;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class Controller :  MonoBehaviour,IGravityActor,IMoverActor
 {
+    [FoldoutGroup("Controller Setting")]
+    [LabelText("Stats")] 
     [SerializeField] private ControllerStat m_stat;
+    
+    #region StateMachineField
+        [Space(15)]
+        [FoldoutGroup("StateMachine Debug")]
+        [LabelText("Movement StateMachine")] 
+        [SerializeField, Tooltip("Transition Chain Debug")] 
+         private bool m_transitionChainDebug;
+    #endregion
     
     private ICamera _camera;
     private CCInputHandler  _inputHandler; 
@@ -15,12 +26,7 @@ public class Controller :  MonoBehaviour,IGravityActor,IMoverActor
     private Vector3 _velocity;
     private const float StopEpsilon = 0.02f;
 
-    #region StateMachineField
-    [Space(15)]
-    [Header("<size=18><b>StateMachine Debug</b></size>")]
-    [Header("Movement StateMachine")]
-    [SerializeField,Tooltip("Transition Chain Debug")] private bool m_transitionChainDebug;
-    #endregion
+   
     private void Awake()
     {
         _moveEngine =  GetComponent<MoveEngine>();

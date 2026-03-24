@@ -86,6 +86,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3577235690912360069
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 232458078367404180}
+  m_Layer: 0
+  m_Name: CC Canva Root
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &232458078367404180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3577235690912360069}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7572200149386330440}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4974819183535106899
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,6 +349,7 @@ GameObject:
   - component: {fileID: 5429149505413041380}
   - component: {fileID: 103530878340983139}
   - component: {fileID: 48161982334181644}
+  - component: {fileID: 3966508789681733990}
   m_Layer: 0
   m_Name: FPS
   m_TagString: Untagged
@@ -340,6 +372,7 @@ Transform:
   m_Children:
   - {fileID: 1614048874776407655}
   - {fileID: 5431254610214741837}
+  - {fileID: 232458078367404180}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &758814247182120996
@@ -421,7 +454,7 @@ MonoBehaviour:
   skinWidth: 0.01
   layerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
   maxWalkAngle: 60
 --- !u!114 &103530878340983139
 MonoBehaviour:
@@ -453,6 +486,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_stat:
-    speed: 10
+    speed: 5
     moveTimeToMaxSpeed: 0.2
     timeToStop: 0.5
+  m_transitionChainDebug: 0
+--- !u!114 &3966508789681733990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6818324450473006046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 468551b6dcd526e428209e46d022deb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_range: 2
+  m_interactableLayer:
+    serializedVersion: 2
+    m_Bits: 55
+  m_hoverDelay: 0.05
+  m_canvaRoot: {fileID: 232458078367404180}
+  m_interactCanva: {fileID: 4924345600923915927, guid: 0309f40249a96cb4cb3c9c1f744e689c, type: 3}

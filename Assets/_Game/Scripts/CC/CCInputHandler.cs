@@ -13,7 +13,6 @@ public class CCInputHandler : MonoBehaviour
    private void Start()
    {
       
-    
       InitReaderAction();
    }
 

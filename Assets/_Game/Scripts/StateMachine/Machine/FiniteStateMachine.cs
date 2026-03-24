@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class FiniteStateMachine 
+public class FiniteStateMachine<Tkey>
 {
     StateNode currentNode;
-    readonly Dictionary<Type, StateNode> nodes = new();
+    readonly Dictionary<IState, StateNode> nodes = new();
     readonly HashSet<Transition> anyTransitions = new();
     public IState CurrentState => currentNode.State;
 
@@ -43,6 +43,8 @@ public class FiniteStateMachine
 
         var previousState = currentNode.State;
         var nextNode = GetOrAddNode(state);
+        
+        Debug.Log($"[FSM] {GetType().Name} | {previousState?.GetType().Name ?? "NULL"} -> {nextNode.State.GetType().Name}");
         previousState?.OnExit();
         nextNode.State.OnEnter();
         currentNode = nextNode;
@@ -68,11 +70,17 @@ public class FiniteStateMachine
     }
     StateNode GetOrAddNode(IState state)
     {
-        var node = nodes.GetValueOrDefault(state.GetType());
+        var node = nodes.GetValueOrDefault(state);
         if (node != null) return node;
         node = new StateNode(state);
-        nodes[state.GetType()] = node;
+        nodes[state] = node;
         return node;
+    }
+
+
+    public void TransitionTo(IState state)
+    {
+       if(nodes.TryGetValue(state, out var node)) ChangeState(node.State);
     }
     private class StateNode 
     {
@@ -94,28 +102,26 @@ public class FiniteStateMachine
     /// </summary>
     public class Builder
     {
-        private readonly FiniteStateMachine _machine = new FiniteStateMachine();
-        private readonly Dictionary<Type, IState> _states = new();
-        
+        private readonly FiniteStateMachine<Tkey> _machine = new FiniteStateMachine<Tkey>();
+        private readonly Dictionary<Tkey, IState> _states = new();
+
         /// <summary>
-        /// Registers a new state instance of type <typeparamref name="T"/>.
+        /// Registers a new state instance of type <typeparamref />.
         /// If the state type is already registered, it will not be replaced.
         /// </summary>
-        /// <typeparam name="T">
-        /// The concrete state type, must implement <see cref="IState"/>.
-        /// </typeparam>
+        /// <typeparam name="TState"></typeparam>
+        /// <param name="key"></param>
         /// <param name="instance">
         /// The state instance to register.
         /// </param>
         /// <returns>
         /// The current <see cref="Builder"/> instance for fluent chaining.
         /// </returns>
-        public Builder State<T>(T instance) where T : IState
+        public Builder State<TState>(Tkey key, TState instance) where TState : IState
         {
-            _states.TryAdd(typeof(T), instance);
+            _states.TryAdd(key, instance);
             return this;
         }
-        
         
         /// <summary>
         /// Gets a previously registered state of type <typeparamref name="T"/>.
@@ -129,46 +135,40 @@ public class FiniteStateMachine
         /// <exception cref="InvalidOperationException">
         /// Thrown if the state has not been registered.
         /// </exception>
-        private IState Get<T>() where T : IState => !_states.TryGetValue(typeof(T), out var s) 
-            ? throw new InvalidOperationException($"State<{typeof(T).Name}> not registered. Call .State(new {typeof(T).Name}()) first.")
-            : s;
-        
-        
+        private IState Get(Tkey key)
+        {
+            return !_states.TryGetValue(key, out var s) ? throw new InvalidOperationException($"State with key {key} not registered.") : s;
+        }
+
+
         /// <summary>
-        /// Adds a transition from <typeparamref name="TFrom"/> to <typeparamref name="TTo"/>
+        /// Adds a transition
         /// that will be evaluated using the given condition.
         /// </summary>
-        /// <typeparam name="TFrom">
-        /// The source state type.
-        /// </typeparam>
-        /// <typeparam name="TTo">
-        /// The target state type.
-        /// </typeparam>
+        /// <param name="to"></param>
         /// <param name="condition">
         /// A function that returns true when the transition should occur.
         /// </param>
+        /// <param name="from"></param>
         /// <returns>
         /// The current <see cref="Builder"/> instance for fluent chaining.
         /// </returns>
-        public Builder At<TFrom, TTo>(Func<bool> condition)
-            where TFrom : IState
-            where TTo : IState
+        public Builder At(Tkey from, Tkey to, Func<bool> condition)
         {
-            _machine.AddTransition(Get<TFrom>(), Get<TTo>(), condition);
+            _machine.AddTransition(Get(from), Get(to), condition);
             return this;
         }
 
 
-        public Builder Bidirectional<T0, T1>(Func<bool> forward, Func<bool> backward)   where T0 : IState
-            where T1 : IState
+        public Builder Bidirectional(Tkey a, Tkey b, Func<bool> forward, Func<bool> backward)
         {
-            if (typeof(T0) == typeof(T1)) throw new ArgumentException("T0 and T1 cannot be the same state.");
-            
-            _machine.AddTransition(Get<T0>(), Get<T1>(), forward);
-            _machine.AddTransition(Get<T1>(), Get<T0>(), backward);
+            if (EqualityComparer<Tkey>.Default.Equals(a, b))
+                throw new ArgumentException("Keys cannot be the same.");
+
+            _machine.AddTransition(Get(a), Get(b), forward);
+            _machine.AddTransition(Get(b), Get(a), backward);
             return this;
         }
-        
         /// <summary>
         /// Adds a global transition to <typeparamref name="TTo"/> that can be triggered
         /// from any state when the condition is met.
@@ -181,13 +181,11 @@ public class FiniteStateMachine
         /// </param>
         /// <returns>
         /// The current <see cref="Builder"/> instance for fluent chaining.
-        /// </returns>
-        public Builder Any<TTo>(Func<bool> condition) where TTo : IState
+        public Builder Any(Tkey to, Func<bool> condition)
         {
-            _machine.AddAnyTransition(Get<TTo>(), condition);
+            _machine.AddAnyTransition(Get(to), condition);
             return this;
         }
-        
         
         /// <summary>
         /// Builds the state machine and sets the initial state.
@@ -203,15 +201,17 @@ public class FiniteStateMachine
         /// <exception cref="InvalidOperationException">
         /// Thrown if the initial state has not been registered.
         /// </exception>
-        public FiniteStateMachine Build<TInitial>() where TInitial : IState
+        public FiniteStateMachine<Tkey> Build(Tkey initialKey)
         {
-            foreach (var s in _states.Values) _machine.AddState(s);
-            if (!_states.TryGetValue(typeof(TInitial), out var initial)) throw new InvalidOperationException($"Initial state <{typeof(TInitial).Name}> not registered.");
-            
-            Debug.Log("Set State " +  typeof(TInitial).Name);
+            foreach (var s in _states.Values)
+                _machine.AddState(s);
+
+            if (!_states.TryGetValue(initialKey, out var initial))
+                throw new InvalidOperationException($"Initial state {initialKey} not registered.");
+
+            Debug.Log("Set State " + initialKey);
             _machine.SetState(initial);
-            
-            
+
             Debug.Log("Machine Build");
             return _machine;
         }
