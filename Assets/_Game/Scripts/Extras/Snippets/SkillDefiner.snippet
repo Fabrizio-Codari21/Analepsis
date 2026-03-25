@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>SkillDefiner</Title>
+      <Author>Tau Phika</Author>
+      <Description>The basic things a creature with a defined skillset should include in its "skills" script.</Description>
+      <Shortcut>SkillDefiner</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSHARP">
+        <![CDATA[    
+        public CharacterSkillSet mySkills;
+    
+        public void DefineSkills(CharacterSkillSet mySkills)
+        {
+            mySkills.primaryExecute = (manager) =>
+            {
+                $PrimaryExec$
+            };
+
+            mySkills.secondaryExecute = (manager) =>
+            {
+                $SecondaryExec$
+            };
+        }
+
+        void Awake()
+        {
+            DefineSkills(mySkills);
+        }]]>
+      </Code>
+      <Declarations>
+        <Literal>
+          <ID>PrimaryExec</ID>
+          <ToolTip>The creature's primary action (attack-related, on left click).</ToolTip>
+          <Default></Default>
+        </Literal>
+        <Literal>
+          <ID>SecondaryExec</ID>
+          <ToolTip>The creature's secondary action (movement-related, on right click).</ToolTip>
+          <Default></Default>
+        </Literal>
+      </Declarations>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

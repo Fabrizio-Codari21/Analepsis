@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>ExecuteLooping</Title>
+      <Author>Tau Phika</Author>
+      <Description>Executes an action every X seconds unless it's canceled.</Description>
+      <Shortcut>ExecuteLooping</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSHARP">
+        <![CDATA[this.ExecuteLooping($TimeToWait$,$Exec$$CancelCondition$);]]>
+      </Code>
+      <Declarations>
+        <Object>
+          <ID>TimeToWait</ID>
+          <ToolTip>The amount of time you should wait before execution in seconds.</ToolTip>
+          <Default>timeUntilLoop : 1f</Default>
+        </Object>
+        <Literal>
+          <ID>Exec</ID>
+          <ToolTip>What should it execute after the time has passed?</ToolTip>
+          <Default>
+            () =>
+            {
+
+            }
+          </Default>
+        </Literal>
+        <Literal>
+          <ID>CancelCondition</ID>
+          <ToolTip>If this happens while waiting, the action will not execute</ToolTip>
+          <Default>, 
+            cancelCondition : () => false
+          </Default>
+        </Literal>
+      </Declarations>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

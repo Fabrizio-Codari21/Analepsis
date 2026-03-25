@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>QuickTimeEvent</Title>
+      <Author>Tau Phika</Author>
+      <Description>If X becomes true within a Y period of time, it executes an action.</Description>
+      <Shortcut>QuickTimeEvent</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSHARP">
+        <![CDATA[this.QuickTimeEvent($TimeLimit$,$Condition$,$Exec$);]]>
+      </Code>
+      <Declarations>
+        <Object>
+          <ID>TimeLimit</ID>
+          <ToolTip>The amount of time in which the condition needs to become true.</ToolTip>
+          <Default>timeLimit : 1f</Default>
+        </Object>
+        <Object>
+          <ID>Condition</ID>
+          <ToolTip>The condition that should become true in order for the action to execute.</ToolTip>
+          <Default> () => false</Default>
+        </Object>
+        <Literal>
+          <ID>Exec</ID>
+          <ToolTip>What should it execute if X happens?</ToolTip>
+          <Default>
+            () =>
+            {
+
+            }
+          </Default>
+        </Literal>
+      </Declarations>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

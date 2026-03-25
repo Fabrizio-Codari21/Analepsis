@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>ExecuteAfterTrue</Title>
+      <Author>Tau Phika</Author>
+      <Description>Executes an action once X becomes true.</Description>
+      <Shortcut>ExecuteAfterTrue</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSHARP">
+        <![CDATA[this.ExecuteAfterTrue($Condition$,$Exec$);]]>
+      </Code>
+      <Declarations>
+        <Object>
+          <ID>Condition</ID>
+          <ToolTip>The condition that should become true in order for the action to execute.</ToolTip>
+          <Default>() => false</Default>
+        </Object>
+        <Literal>
+          <ID>Exec</ID>
+          <ToolTip>What should it execute after X happens?</ToolTip>
+          <Default>
+            () =>
+            {
+
+            }
+          </Default>
+        </Literal>
+      </Declarations>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

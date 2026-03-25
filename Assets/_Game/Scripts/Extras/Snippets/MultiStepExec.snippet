@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>MultiSteppedExecution</Title>
+      <Author>Tau Phika</Author>
+      <Description>Executes a series of actions over X time separated by an interval of Y time.</Description>
+      <Shortcut>MultiStepExecution</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSHARP">
+        <![CDATA[this.MultiSteppedExecution($Duration$,$StepLength$,$ExecList$);]]>
+      </Code>
+      <Declarations>
+        <Object>
+          <ID>Duration</ID>
+          <ToolTip>The total amount of time it will take to execute all steps.</ToolTip>
+          <Default>duration : 1f</Default>
+        </Object>
+        <Object>
+          <ID>StepLength</ID>
+          <ToolTip>The interval of time between each step.</ToolTip>
+          <Default> stepLength : 0.1f</Default>
+        </Object>
+        <Literal>
+          <ID>ExecList</ID>
+          <ToolTip>What should it execute on each step?</ToolTip>
+          <Default>
+            new Action[]
+            (            
+              
+              () =>
+              {
+
+              },
+
+              () =>
+              {
+
+              }
+              
+            )
+          </Default>
+        </Literal>
+      </Declarations>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

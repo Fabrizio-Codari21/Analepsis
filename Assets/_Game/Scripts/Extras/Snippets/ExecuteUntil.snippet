@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>ExecuteUntil</Title>
+      <Author>Tau Phika</Author>
+      <Description>Executes an action every tick until X time passes.</Description>
+      <Shortcut>ExecuteUntil</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSHARP">
+        <![CDATA[this.ExecuteUntil($TimeLimit$,$Exec$);]]>
+      </Code>
+      <Declarations>
+        <Object>
+          <ID>TimeLimit</ID>
+          <ToolTip>The amount of time before it ceases to execute.</ToolTip>
+          <Default>timeLimit : 1f</Default>
+        </Object>
+        <Literal>
+          <ID>Exec</ID>
+          <ToolTip>What should it execute until then?</ToolTip>
+          <Default>
+            () =>
+            {
+                
+            }
+          </Default>
+        </Literal>
+      </Declarations>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

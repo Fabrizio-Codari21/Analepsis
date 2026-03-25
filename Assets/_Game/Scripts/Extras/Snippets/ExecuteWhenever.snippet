@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>ExecuteWhenever</Title>
+      <Author>Tau Phika</Author>
+      <Description>Executes an action after X seconds.</Description>
+      <Shortcut>ExecuteWhenever</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSHARP">
+        <![CDATA[this.ExecuteWhenever($Condition$,$Exec$$CancelCondition$);]]>
+      </Code>
+      <Declarations>
+        <Object>
+          <ID>Condition</ID>
+          <ToolTip>The condition that should become true in order for the action to execute.</ToolTip>
+          <Default>() => false</Default>
+        </Object>
+        <Literal>
+          <ID>Exec</ID>
+          <ToolTip>What should it execute whenever X happens?</ToolTip>
+          <Default>
+            () =>
+            {
+
+            }
+          </Default>
+        </Literal>
+        <Literal>
+          <ID>CancelCondition</ID>
+          <ToolTip>If this happens while waiting, the action will not execute</ToolTip>
+          <Default>, 
+            cancelCondition : () => false
+          </Default>
+        </Literal>
+      </Declarations>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
