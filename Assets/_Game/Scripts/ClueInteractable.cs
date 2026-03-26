@@ -26,6 +26,8 @@ public class ClueInteractable : Interactable
         var color = materials[0].material.color;
         foreach (MeshRenderer renderer in materials) renderer.material.color = Color.green;
 
+        ActionTimer.instance.ConsumeActions(actionCost);
+
         this.WaitAndThen(timeToWait: 0.2f, () =>
         {
             foreach (MeshRenderer renderer in materials) renderer.material.color = color;

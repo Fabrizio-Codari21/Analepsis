@@ -57,5 +57,7 @@ public class DialogueInteractable : Interactable
 
         DialogueManager.instance.SetCurrentDialogue(dialogue);
         DialogueManager.instance.StartDialogue(characterName, dialogue.dialogueNodes[0]);
+
+        ActionTimer.instance.ConsumeActions(actionCost);
     }
 }

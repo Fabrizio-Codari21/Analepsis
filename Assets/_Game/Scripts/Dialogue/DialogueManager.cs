@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
 using System.Linq;
+using System.ComponentModel;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -87,7 +88,7 @@ public class DialogueManager : MonoBehaviour
             }
 
             var answer = Instantiate(dialogueText, dialogueContainer);
-            answer.text = "- '"; BuildText(answer, $"'{response.responseText}'");
+            answer.text = "- "; BuildText(answer, $"'{response.responseText}'");
             answer.color = playerTextColor;
         }
         else
