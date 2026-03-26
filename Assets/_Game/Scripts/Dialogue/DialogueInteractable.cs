@@ -51,6 +51,9 @@ public class DialogueInteractable : Interactable
     public void SpeakTo()
     {
         InputsManager.instance.EnableInputReader((InputsManager.instance.m_inputReader[0], false));
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        interactText.gameObject.SetActive(false);
 
         DialogueManager.instance.SetCurrentDialogue(dialogue);
         DialogueManager.instance.StartDialogue(characterName, dialogue.dialogueNodes[0]);

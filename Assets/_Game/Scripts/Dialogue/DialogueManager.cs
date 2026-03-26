@@ -59,13 +59,15 @@ public class DialogueManager : MonoBehaviour
         // Si hay nodo...
         if (nextNode != null && !nextNode.IsLastNode())
         {
-            UpdateDialogue(nextNode.dialogueText, nextNode); // ...arranca el proximo dialogo
+            UpdateDialogue(characterName.text, nextNode); // ...arranca el proximo dialogo
         }
         else
         {
             // Si no, apagamos la UI.
             InputsManager.instance.EnableInputReader((InputsManager.instance.m_inputReader[0], true));
             HideDialogue();
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 
