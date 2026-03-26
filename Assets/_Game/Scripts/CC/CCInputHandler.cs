@@ -3,7 +3,8 @@ using System;
 public class CCInputHandler : MonoBehaviour
 {
    [SerializeField] private CCInputReader m_reader;
-   
+
+   [SerializeField] private InputReaderEvent m_readerEvent;
    
    public event Action<Vector2> Move = delegate { };
    public event Action<Vector2> Look = delegate { };
@@ -12,7 +13,6 @@ public class CCInputHandler : MonoBehaviour
 
    private void Start()
    {
-      
       InitReaderAction();
    }
 
@@ -28,12 +28,14 @@ public class CCInputHandler : MonoBehaviour
       m_reader.Look += dir => Look?.Invoke(dir);
       m_reader.InteractPressed +=  () => InteractPressed?.Invoke();
       m_reader.InteractReleased += () => InteractReleased?.Invoke();
+      
+      EnableReader(true);
    }
+   
+   private void EnableReader(bool enable) => m_readerEvent.Raise((m_reader,enable));
 
 
+   public InputReader InputReader => m_reader;
+   
   
-   
-   
-   
-   
 }
