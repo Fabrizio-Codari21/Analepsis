@@ -128,8 +128,8 @@ public static class CustomExtensions
         
 
     // Ejecuta despues de que una condicion se haya cumplido.
-    public static void ExecuteAfterTrue(this MonoBehaviour starter, Func<bool> condition, Action Exec)
-        => starter.StartCoroutine(ExecuteByCondition(starter, condition, Exec, true));
+    public static void ExecuteAfterTrue(this MonoBehaviour starter, Func<bool> condition, Action Exec, Func<bool> cancelCondition = default)
+        => starter.StartCoroutine(ExecuteByCondition(starter, condition, Exec, true,999,false,cancelCondition));
 
     // Si la condicion se cumple dentro del tiempo estipulado, se realiza la accion.
     public static void QuickTimeEvent(this MonoBehaviour starter, float timeLimit, Func<bool> doneWithinTime, Action Exec)

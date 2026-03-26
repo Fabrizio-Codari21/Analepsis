@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
   m_Name: New Dialogue
   m_EditorClassIdentifier: 
+  characterTextColor: {r: 0.5754717, g: 0.38817194, b: 0.38817194, a: 1}
+  characterTalkingSpeed: 3
   dialogueNodes:
   - id: Mr. Deprueba
     dialogueText: This is dialog 1. Choose A, B or C
@@ -31,7 +33,9 @@ MonoBehaviour:
       nextNodeId: A-A
   - id: A-A
     dialogueText: :(
-    responses: []
+    responses:
+    - responseText: '[Maybe you should leave now]'
+      nextNodeId: 
   - id: B
     dialogueText: You picked B. I hate you.
     responses:
@@ -41,7 +45,9 @@ MonoBehaviour:
       nextNodeId: B-A
   - id: B-A
     dialogueText: B is objectively a terrible answer. Now LEAVE!
-    responses: []
+    responses:
+    - responseText: '[Fair enough.]'
+      nextNodeId: 
   - id: C
     dialogueText: You picked C. I... don't know how to feel about you.
     responses:
@@ -51,7 +57,11 @@ MonoBehaviour:
       nextNodeId: C-B
   - id: C-A
     dialogueText: :0
-    responses: []
+    responses:
+    - responseText: '[Leave in shame]'
+      nextNodeId: 
   - id: C-B
     dialogueText: '>:('
-    responses: []
+    responses:
+    - responseText: '[Flee like a coward]'
+      nextNodeId: 

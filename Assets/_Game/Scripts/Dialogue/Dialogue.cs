@@ -6,5 +6,12 @@ using UnityEngine;
 public class Dialogue : ScriptableObject
 {
     //public DialogueNode startingNode;
+    [Space(10)]
+    [Header("CHARACTER SPEECH")]
+    public Color characterTextColor;
+    public float characterTalkingSpeed = 2;
+    
+    [Space(20)]
+    [Header("DIALOGUE")]
     public List<DialogueNode> dialogueNodes;
 }
