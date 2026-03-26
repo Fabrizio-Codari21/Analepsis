@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
+  m_Name: New Dialogue
+  m_EditorClassIdentifier: 
+  dialogueNodes:
+  - id: Mr. Deprueba
+    dialogueText: This is dialog 1. Choose A, B or C
+    responses:
+    - responseText: '[Pick option A]'
+      nextNodeId: A
+    - responseText: '[Pick option B]'
+      nextNodeId: B
+    - responseText: '[Pick option C]'
+      nextNodeId: C
+  - id: A
+    dialogueText: You picked A. I like you.
+    responses:
+    - responseText: Thank you!
+      nextNodeId: 
+    - responseText: Well, I don't like YOU.
+      nextNodeId: A-A
+  - id: A-A
+    dialogueText: :(
+    responses: []
+  - id: B
+    dialogueText: You picked B. I hate you.
+    responses:
+    - responseText: 'Cool, nice to meet you too. [leave]'
+      nextNodeId: 
+    - responseText: Why tho?
+      nextNodeId: B-A
+  - id: B-A
+    dialogueText: B is objectively a terrible answer. Now LEAVE!
+    responses: []
+  - id: C
+    dialogueText: You picked C. I... don't know how to feel about you.
+    responses:
+    - responseText: '[Kiss them]'
+      nextNodeId: C-A
+    - responseText: '[Punch them]'
+      nextNodeId: C-B
+  - id: C-A
+    dialogueText: :0
+    responses: []
+  - id: C-B
+    dialogueText: '>:('
+    responses: []

@@ -2,8 +2,8 @@
 
 // Lo que decimos en respuesta a un NPC y que dialogo le sigue a esa respuesta.
 [System.Serializable]
-public class DialogueResponse
+public class AltResponse
 {
     public string responseText;
-    public string nextNodeId; // referencia al identificador del proximo nodo;
+    public AltNode nextNode; // referencia al identificador del proximo nodo;
 }

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public interface IInteractable : IFocus
@@ -21,7 +22,11 @@ public interface IFocus
 public abstract class Interactable : MonoBehaviour, IInteractable
 {
     public GameObject InteractableObject => gameObject;
-    
+
+    public TextMeshProUGUI interactText;
+    public int actionCost = 0;
+
+
     public virtual void InteractStart()
     {
         Debug.Log("InteractStart");

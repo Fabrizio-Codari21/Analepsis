@@ -2,11 +2,10 @@ using System.Collections.Generic;
 
 // Lo que pueden decir los NPC y como podemos responder a eso.
 [System.Serializable]
-public class DialogueNode
+public class AltNode
 {
-    public string id; // identificador para cada nodo
     public string dialogueText;
-    public List<DialogueResponse> responses;
+    public List<AltResponse> responses;
 
     internal bool IsLastNode()
     {

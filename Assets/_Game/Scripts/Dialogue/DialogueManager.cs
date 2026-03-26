@@ -1,6 +1,7 @@
 using TMPro;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using UnityEngine;
+using System.Linq;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -11,19 +12,26 @@ public class DialogueManager : MonoBehaviour
     public GameObject responseButtonPrefab; // Prefab para generar botones de respuestas
     public Transform responseButtonContainer; // Contenedor de botones de respuestas
 
+    public Dialogue currentDialogue;
+
     private void Awake()
     {
         // Solo tendria que haber una instancia de esto.
         if(!instance) instance = this; else Destroy(gameObject);
+        HideDialogue();
     }
 
-    // Empieza el dialogo con un cierto nombre y nodo
-    public void StartDialogue(string title, DialogueNode node)
+    // Empieza el dialogo con un cierto nombre de personaje y nodo
+    public void StartDialogue(string name, DialogueNode node)
     {
         ShowDialogue();
+        UpdateDialogue($"{name}:", node);
+    }
 
-        characterName.text = title;
-        dialogText.text = node.dialogueText;
+    public void UpdateDialogue(string name, DialogueNode node)
+    {
+        characterName.text = name;
+        dialogText.text = "- " + node.dialogueText;
 
         // Si hay botones de respuesta los borramos
         foreach (Transform child in responseButtonContainer)
@@ -38,22 +46,25 @@ public class DialogueManager : MonoBehaviour
             buttonObj.GetComponentInChildren<TextMeshProUGUI>().text = response.responseText;
 
             // Hacemos que cada boton llame a SelectResponse para que se encargue de continuar.
-            //buttonObj.GetComponent<Button>().onClick.AddListener(() => SelectResponse(response, title));
-            buttonObj.GetComponent<Button>().clicked += () => SelectResponse(response, title);
+            buttonObj.GetComponent<Button>().onClick.AddListener(() => SelectResponse(response, name));
+            //buttonObj.GetComponent<Button>().clicked += () => SelectResponse(response, name);
         }
     }
 
     // Elige una respuesta y activa el proximo nodo
     public void SelectResponse(DialogueResponse response, string title)
     {
+        DialogueNode nextNode = GetNodeById(response.nextNodeId);
+
         // Si hay nodo...
-        if (!response.nextNode.IsLastNode())
+        if (nextNode != null && !nextNode.IsLastNode())
         {
-            StartDialogue(title, response.nextNode); // ...arranca el proximo dialogo
+            UpdateDialogue(nextNode.dialogueText, nextNode); // ...arranca el proximo dialogo
         }
         else
         {
             // Si no, apagamos la UI.
+            InputsManager.instance.EnableInputReader((InputsManager.instance.m_inputReader[0], true));
             HideDialogue();
         }
     }
@@ -62,5 +73,10 @@ public class DialogueManager : MonoBehaviour
     public void HideDialogue() => dialogueBox.SetActive(false);
     private void ShowDialogue() => dialogueBox.SetActive(true);
     public bool IsDialogueActive() => dialogueBox.activeSelf;
+
+    // Si todos los nodos estan guardados en el dialogo actual, buscamos el que tenga el id correcto.
+    DialogueNode GetNodeById(string id) => currentDialogue.dialogueNodes.FirstOrDefault(node => node.id == id);
+
+    public void SetCurrentDialogue(Dialogue dialogue) => currentDialogue = dialogue;
 
 }

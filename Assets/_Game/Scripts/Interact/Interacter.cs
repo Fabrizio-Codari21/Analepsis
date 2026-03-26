@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class Interacter : MonoBehaviour
@@ -17,6 +18,8 @@ public class Interacter : MonoBehaviour
     
     private IInteractable _lastInteractable;
     private float  _hoverTimer;
+
+    public TextMeshProUGUI interactText;
     
     private void OnEnable()
     {
@@ -40,6 +43,7 @@ public class Interacter : MonoBehaviour
     private void Start()
     {
         Instantiate(m_interactCanva, m_canvaRoot);
+        interactText.gameObject.SetActive(false);
     }
     private void Update()
     {
