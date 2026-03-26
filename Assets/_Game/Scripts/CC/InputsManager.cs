@@ -1,4 +1,6 @@
+using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputsManager : MonoBehaviour
 {
@@ -7,6 +9,7 @@ public class InputsManager : MonoBehaviour
     private InputActions _inputActions;
 
     public static InputsManager instance;
+    //public CinemachineInputAxisController cameraController;
 
     private void Awake()
     {
@@ -23,6 +26,7 @@ public class InputsManager : MonoBehaviour
     public void EnableInputReader((InputReader reader, bool enable) provider)
     {
         provider.reader.SetEnable(_inputActions,provider.enable);
+        //cameraController.enabled = provider.enable;
     }
 
  
