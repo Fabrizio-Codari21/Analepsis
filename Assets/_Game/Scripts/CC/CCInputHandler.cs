@@ -1,10 +1,13 @@
 using UnityEngine;
 using System;
+using Unity.Cinemachine;
+using UnityEngine.InputSystem;
+
 public class CCInputHandler : MonoBehaviour
 {
    [SerializeField] private CCInputReader m_reader;
-
    [SerializeField] private InputReaderEvent m_readerEvent;
+   [SerializeField] private CinemachineInputAxisController m_cameraAxisController;
    
    public event Action<Vector2> Move = delegate { };
    public event Action<Vector2> Look = delegate { };
@@ -14,6 +17,11 @@ public class CCInputHandler : MonoBehaviour
    private void Start()
    {
       InitReaderAction();
+
+      foreach (var controller in m_cameraAxisController.Controllers)
+      {
+         controller.Input.InputAction = InputActionReference.Create(m_reader.InputAction.Player.Look);
+      }
    }
 
 

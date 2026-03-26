@@ -1,6 +1,7 @@
-using Unity.Cinemachine;
+
+using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
+
 
 public class InputsManager : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class InputsManager : MonoBehaviour
     private InputActions _inputActions;
 
     public static InputsManager instance;
-    //public CinemachineInputAxisController cameraController;
+    
 
     private void Awake()
     {
@@ -22,11 +23,17 @@ public class InputsManager : MonoBehaviour
         }
         m_inputReaderEvent.OnEventRaised += EnableInputReader;
     }
-    
+
+
+    // private void Update()
+    // {
+    //     if(Input.GetKeyDown(KeyCode.Space)) EnableInputReader((m_inputReader[0],false));
+    // }
+
+
     public void EnableInputReader((InputReader reader, bool enable) provider)
     {
         provider.reader.SetEnable(_inputActions,provider.enable);
-        //cameraController.enabled = provider.enable;
     }
 
  

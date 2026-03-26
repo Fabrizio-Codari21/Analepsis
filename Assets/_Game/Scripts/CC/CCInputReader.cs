@@ -32,6 +32,7 @@ public class CCInputReader : InputReader,InputActions.IPlayerActions
 
     public override void SetCallback(InputActions inputAction)
     {
+        base.SetCallback(inputAction);
         inputAction?.Player.SetCallbacks(this);
     }
 
