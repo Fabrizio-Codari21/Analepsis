@@ -20,6 +20,7 @@ public class CCInputReader : InputReader,InputActions.IPlayerActions
     {
              
         if (context.started) return;
+        Debug.Log(context.ReadValue<Vector2>());
         Look?.Invoke(context.ReadValue<Vector2>());
     }
 
@@ -32,6 +33,7 @@ public class CCInputReader : InputReader,InputActions.IPlayerActions
 
     public override void SetCallback(InputActions inputAction)
     {
+        base.SetCallback(inputAction);
         inputAction?.Player.SetCallbacks(this);
     }
 

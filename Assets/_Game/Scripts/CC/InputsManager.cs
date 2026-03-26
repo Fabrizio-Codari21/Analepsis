@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class InputsManager : MonoBehaviour
@@ -6,6 +7,8 @@ public class InputsManager : MonoBehaviour
     [SerializeField] private InputReaderEvent m_inputReaderEvent;
     private InputActions _inputActions;
 
+    
+    
     private void Awake()
     {
         _inputActions = new InputActions();
@@ -15,7 +18,13 @@ public class InputsManager : MonoBehaviour
         }
         m_inputReaderEvent.OnEventRaised += EnableInputReader;
     }
-    
+
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space)) EnableInputReader((m_inputReader[0],false));
+    }
+
     private void EnableInputReader((InputReader reader, bool enable) provider)
     {
         provider.reader.SetEnable(_inputActions,provider.enable);

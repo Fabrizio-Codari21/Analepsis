@@ -9,39 +9,10 @@ public interface IInteractable : IFocus
     public void InteractStart();  // cuando apenas tocas el botton
     public void InteractEnd(); // cuando soltar el botton
     
-    
 }
 
 public interface IFocus
 {
     public void Focus();
     public void Unfocus();
-}
-
-public abstract class Interactable : MonoBehaviour, IInteractable
-{
-    public GameObject InteractableObject => gameObject;
-    
-    public virtual void InteractStart()
-    {
-        Debug.Log("InteractStart");
-    }
-
-    public virtual void InteractEnd()
-    {
-       Debug.Log("InteractEnd");
-    }
-    
-
-    public virtual void Focus()
-    { 
-       Debug.Log("Focus");
-    }
-
-    public virtual void Unfocus()
-    {
-        Debug.Log("Unfocus");
-    }
-    
-    
 }
