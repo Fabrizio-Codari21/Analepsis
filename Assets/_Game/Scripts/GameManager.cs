@@ -46,13 +46,6 @@ public abstract class AbstractEventChannel<T> : ScriptableObject
     public void Raise(T value) => OnEventRaised?.Invoke(value);
 }
 
-public interface IScreen
-{
-    void Show();
-    void Hide();
-    void Free();
-}
-
 
 public class ScreenHolder
 {
