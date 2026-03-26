@@ -20,7 +20,6 @@ public class InputsManager : MonoBehaviour
     {
         provider.reader.SetEnable(_inputActions,provider.enable);
     }
-
  
 }
 
