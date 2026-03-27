@@ -21,7 +21,7 @@ public class CcInputHandler : MonoBehaviour,IActivity
       {
          controller.Input.InputAction = InputActionReference.Create(m_reader.InputAction.Player.Look); // agrego camera input action reference
       }
-      m_readerEvent.Raise(this);
+      m_readerEvent.Raise(this); // BASE ACTIVITY EN TEORIA
    }
    
 

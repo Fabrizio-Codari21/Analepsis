@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "_Game/Event/Input",fileName = "InputReaderEvent")]
+[CreateAssetMenu(menuName = "Game/Event/Activity",fileName = "ActivityEvent")]
 public class IActivityEvent : AbstractEventChannel<IActivity>
 {
 }

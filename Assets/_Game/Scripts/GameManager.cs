@@ -30,18 +30,11 @@ public class GameManager : PersistentSingleton<GameManager>
     
 }
 
-public class EventChannel : ScriptableObject
-{
-    private event Action OnEventRaised;
-    
-    public void RegisterListener(Action listener) => OnEventRaised += listener;
-    public void UnregisterListener(Action listener) => OnEventRaised -= listener;
-    public void Raise() => OnEventRaised?.Invoke();
-}
-
 
 public abstract class AbstractEventChannel<T> : ScriptableObject
 {
+    
+    [TextArea] private string _description;
     public event Action<T> OnEventRaised;
     public void Raise(T value) => OnEventRaised?.Invoke(value);
 }

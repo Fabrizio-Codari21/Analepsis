@@ -1,6 +1,8 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
+
 // most new
-public class RegulatorSingleton<T> : MonoBehaviour where T : Component {
+public class RegulatorSingleton<T> : SerializedMonoBehaviour where T : Component {
     protected static T instance;
 
     public static bool HasInstance => instance != null;

@@ -1,8 +1,12 @@
+using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 
+
+[Serializable]
 public class StackManager<T> where T : IActivity 
 {
-    private readonly Stack<T> _stack = new Stack<T>();
+    [ShowInInspector,ReadOnly]private readonly Stack<T> _stack = new Stack<T>();
 
     public void Push(T item)
     {
