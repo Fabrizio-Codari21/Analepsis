@@ -24,6 +24,10 @@ public class DialogueManager : MonoBehaviour
 
     Dialogue _currentDialogue;
 
+    [SerializeField] private IActivityEvent m_pushEvent;
+    [SerializeField] private EventChannel m_popInputEvent;
+    IActivity activity;
+
     private void Awake()
     {
         // Solo tendria que haber una instancia de esto.
@@ -31,6 +35,7 @@ public class DialogueManager : MonoBehaviour
         HideDialogue();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        activity = GetComponent<IActivity>();
     }
 
     // Empieza el dialogo con un cierto nombre de personaje y nodo
@@ -38,8 +43,10 @@ public class DialogueManager : MonoBehaviour
     {
         ShowDialogue();
         foreach (Transform child in dialogueContainer) Destroy(child.gameObject); 
-
+        m_pushEvent?.Raise(activity);
         UpdateDialogue($"{name}:", node);
+        
+ 
     }
 
     public void UpdateDialogue(string name, DialogueNode node)
@@ -149,7 +156,7 @@ public class DialogueManager : MonoBehaviour
     
     public void EndDialogue()
     {
-        InputsManager.Instance.PopInput();
+        m_popInputEvent?.Raise();
         HideDialogue();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
