@@ -30,9 +30,8 @@ public class CCInputReader : InputReader,InputActions.IPlayerActions
         if (context.canceled) InteractReleased?.Invoke();
     }
 
-    public override void SetCallback(InputActions inputAction)
+    protected override void SetCallback(InputActions inputAction)
     {
-        base.SetCallback(inputAction);
         inputAction?.Player.SetCallbacks(this);
     }
 

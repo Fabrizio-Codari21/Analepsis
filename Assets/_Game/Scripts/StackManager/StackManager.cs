@@ -6,7 +6,7 @@ using Sirenix.OdinInspector;
 [Serializable]
 public class StackManager<T> where T : IActivity 
 {
-    [ShowInInspector,ReadOnly]private readonly Stack<T> _stack = new Stack<T>();
+    [ShowInInspector,ReadOnly] private readonly Stack<T> _stack = new Stack<T>();
 
     public void Push(T item)
     {
@@ -16,6 +16,8 @@ public class StackManager<T> where T : IActivity
         _stack.Push(item);
         item.Resume();
     }
+    
+    public bool IsOnlyRoot() => _stack.Count <= 1;
 
     public void Pop() => InternalPop(0);
 

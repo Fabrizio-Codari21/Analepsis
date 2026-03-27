@@ -887,46 +887,44 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""id"": ""a6ae073c-5c81-4e1e-9567-9eb0914f0c64"",
             ""actions"": [
                 {
-                    ""name"": ""Point"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""65e5575d-3824-4da7-a5bc-eb7d8e1c965a"",
+                    ""name"": ""Delta"",
+                    ""type"": ""Value"",
+                    ""id"": ""1a057f8f-9ef1-46d8-a679-b69ac6848fb8"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Drag"",
+                    ""type"": ""Button"",
+                    ""id"": ""308fb6e6-c2d0-406f-984b-8663554f17bb"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""38b03e4d-dc0e-4ddf-88cb-e8416665970a"",
-                    ""path"": ""<Mouse>/position"",
+                    ""id"": ""b2b6a919-7585-47fa-a282-57f80cdccfc7"",
+                    ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Point"",
+                    ""groups"": """",
+                    ""action"": ""Delta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9ea56235-0ed9-4d46-9b3d-53661d9249f9"",
-                    ""path"": ""<Pen>/position"",
+                    ""id"": ""1e85b0a5-a9d0-443e-9abd-37e1448ff171"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Point"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3c168c5a-d381-4c66-9819-70b4de913cea"",
-                    ""path"": ""<Touchscreen>/touch*/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touch"",
-                    ""action"": ""Point"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Drag"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1021,7 +1019,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Dialogue_Skip = m_Dialogue.FindAction("Skip", throwIfNotFound: true);
         // Inspection
         m_Inspection = asset.FindActionMap("Inspection", throwIfNotFound: true);
-        m_Inspection_Point = m_Inspection.FindAction("Point", throwIfNotFound: true);
+        m_Inspection_Delta = m_Inspection.FindAction("Delta", throwIfNotFound: true);
+        m_Inspection_Drag = m_Inspection.FindAction("Drag", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -1611,7 +1610,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     // Inspection
     private readonly InputActionMap m_Inspection;
     private List<IInspectionActions> m_InspectionActionsCallbackInterfaces = new List<IInspectionActions>();
-    private readonly InputAction m_Inspection_Point;
+    private readonly InputAction m_Inspection_Delta;
+    private readonly InputAction m_Inspection_Drag;
     /// <summary>
     /// Provides access to input actions defined in input action map "Inspection".
     /// </summary>
@@ -1624,9 +1624,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InspectionActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "Inspection/Point".
+        /// Provides access to the underlying input action "Inspection/Delta".
         /// </summary>
-        public InputAction @Point => m_Wrapper.m_Inspection_Point;
+        public InputAction @Delta => m_Wrapper.m_Inspection_Delta;
+        /// <summary>
+        /// Provides access to the underlying input action "Inspection/Drag".
+        /// </summary>
+        public InputAction @Drag => m_Wrapper.m_Inspection_Drag;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1653,9 +1657,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_InspectionActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_InspectionActionsCallbackInterfaces.Add(instance);
-            @Point.started += instance.OnPoint;
-            @Point.performed += instance.OnPoint;
-            @Point.canceled += instance.OnPoint;
+            @Delta.started += instance.OnDelta;
+            @Delta.performed += instance.OnDelta;
+            @Delta.canceled += instance.OnDelta;
+            @Drag.started += instance.OnDrag;
+            @Drag.performed += instance.OnDrag;
+            @Drag.canceled += instance.OnDrag;
         }
 
         /// <summary>
@@ -1667,9 +1674,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="InspectionActions" />
         private void UnregisterCallbacks(IInspectionActions instance)
         {
-            @Point.started -= instance.OnPoint;
-            @Point.performed -= instance.OnPoint;
-            @Point.canceled -= instance.OnPoint;
+            @Delta.started -= instance.OnDelta;
+            @Delta.performed -= instance.OnDelta;
+            @Delta.canceled -= instance.OnDelta;
+            @Drag.started -= instance.OnDrag;
+            @Drag.performed -= instance.OnDrag;
+            @Drag.canceled -= instance.OnDrag;
         }
 
         /// <summary>
@@ -1913,11 +1923,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     public interface IInspectionActions
     {
         /// <summary>
-        /// Method invoked when associated input action "Point" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Delta" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPoint(InputAction.CallbackContext context);
+        void OnDelta(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Drag" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDrag(InputAction.CallbackContext context);
     }
 }

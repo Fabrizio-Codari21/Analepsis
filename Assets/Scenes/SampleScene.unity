@@ -361,7 +361,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00052057416}
+  m_AnchoredPosition: {x: 0, y: 5.3555684}
   m_SizeDelta: {x: 150, y: 300}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &123305951
@@ -1861,8 +1861,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 283d8a91f2e9d7a479d16379ce99c858, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   m_pushEvent: {fileID: 11400000, guid: 3027f54723217b445909fe93945c6bd2, type: 2}
   m_popInputEvent: {fileID: 11400000, guid: 76cb339f73e2d5646ac0696838117b5e, type: 2}
+  m_globalReader: {fileID: 11400000, guid: fc1427b56b72ca14ebc343f6eb043b37, type: 2}
+  m_menu: {fileID: 4460766131942122672, guid: 5367dd6caa662f246b580a8d65819bd6, type: 3}
 --- !u!4 &1120038006
 Transform:
   m_ObjectHideFlags: 0
@@ -2405,7 +2416,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 489334128}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999726
+  m_Size: 0.9551953
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

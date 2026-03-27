@@ -801,46 +801,44 @@
             "id": "a6ae073c-5c81-4e1e-9567-9eb0914f0c64",
             "actions": [
                 {
-                    "name": "Point",
-                    "type": "PassThrough",
-                    "id": "65e5575d-3824-4da7-a5bc-eb7d8e1c965a",
+                    "name": "Delta",
+                    "type": "Value",
+                    "id": "1a057f8f-9ef1-46d8-a679-b69ac6848fb8",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Drag",
+                    "type": "Button",
+                    "id": "308fb6e6-c2d0-406f-984b-8663554f17bb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
-                    "id": "38b03e4d-dc0e-4ddf-88cb-e8416665970a",
-                    "path": "<Mouse>/position",
+                    "id": "b2b6a919-7585-47fa-a282-57f80cdccfc7",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Point",
+                    "groups": "",
+                    "action": "Delta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "9ea56235-0ed9-4d46-9b3d-53661d9249f9",
-                    "path": "<Pen>/position",
+                    "id": "1e85b0a5-a9d0-443e-9abd-37e1448ff171",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Point",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3c168c5a-d381-4c66-9819-70b4de913cea",
-                    "path": "<Touchscreen>/touch*/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Touch",
-                    "action": "Point",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Drag",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -7,11 +7,10 @@ public class Interacter : MonoBehaviour
     [SerializeField] private float m_range;
     [SerializeField] private LayerMask m_interactableLayer;
     [SerializeField] private float m_hoverDelay = 0.05f;
-
-
-
     [SerializeField] private Transform m_canvaRoot;
     [SerializeField] private GameObject m_interactCanva;
+
+
     private Camera _camera;
     private CcInputHandler _inputHandler;
     
@@ -21,20 +20,24 @@ public class Interacter : MonoBehaviour
 
     public TextMeshProUGUI interactText;
 
-    GameObject canva;
+    private GameObject _ui;
 
 
-    IActivity activity;
+    private IActivity _activity;
     
     private void OnEnable()
     {
         _inputHandler.InteractPressed += StartInteract;
         _inputHandler.InteractReleased += EndInteract;
+        
+        
     }
     private void OnDisable()
     {
         _inputHandler.InteractPressed -= StartInteract;
         _inputHandler.InteractReleased -= EndInteract; 
+        
+
     }
 
 
@@ -42,17 +45,19 @@ public class Interacter : MonoBehaviour
     {
        _camera = Camera.main;
        _inputHandler = GetComponent<CcInputHandler>();
-        activity = GetComponent<IActivity>();
-        activity.OnResume += Resume;
-        activity.OnPause += Pause;
-        activity.OnStop += Stop;
+        _activity = GetComponent<IActivity>();
+
        
     }
 
     private void Start()
     {
-        canva = Instantiate(m_interactCanva, m_canvaRoot);
+        _ui = Instantiate(m_interactCanva, m_canvaRoot);
         interactText.gameObject.SetActive(false);
+        
+        _activity.OnResume += Resume;
+        _activity.OnPause += Pause;
+        _activity.OnStop += Stop;
     }
     private void Update()
     {
@@ -114,12 +119,12 @@ public class Interacter : MonoBehaviour
 
     private void Resume()
     {
-        canva.gameObject.SetActive(true);
+        _ui.gameObject.SetActive(true);
     }
 
     private void Pause()
     {
-        canva.gameObject.SetActive(false);
+        _ui.gameObject?.SetActive(false);
     }
 
     private void Stop()
@@ -127,4 +132,10 @@ public class Interacter : MonoBehaviour
         Pause();
     }
 
+    private void OnDestroy()
+    {
+        _activity.OnResume -= Resume;
+        _activity.OnPause -= Pause;
+        _activity.OnStop -= Stop;
+    }
 }

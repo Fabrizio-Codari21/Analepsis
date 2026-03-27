@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
-using Sirenix.Serialization;
-using UnityEngine;
+
 /// <summary>
 /// Aca estoy planteando depende estado de juego activar diferente input
 /// </summary>
@@ -28,15 +26,6 @@ public class GameManager : PersistentSingleton<GameManager>
 
     private void ChangeState(GameState newState) => _fsm.TransitionTo(_gameStates[newState]); // aca podria suscribirse por un event channel 
     
-}
-
-
-public abstract class AbstractEventChannel<T> : ScriptableObject
-{
-    
-    [TextArea] private string _description;
-    public event Action<T> OnEventRaised;
-    public void Raise(T value) => OnEventRaised?.Invoke(value);
 }
 
 

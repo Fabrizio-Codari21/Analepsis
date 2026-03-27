@@ -1,4 +1,3 @@
-
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,27 +5,35 @@ using UnityEngine.UI;
 public class Menu : MonoBehaviour,IActivity
 {
     
-    [SerializeField] private Button _button;
-    [SerializeField] private EventChannel m_inputPop;
-    [SerializeField] private IActivityEvent m_inputActivity;
-    [SerializeField] private IActivityEvent m_uiActivity;
-
+    [SerializeField] private Button m_button;
+    [SerializeField] private EventChannel m_popEvent;
+    
     public event Action OnResume;
     public event Action OnPause;
     public event Action OnStop;
 
-    public void Resume()
+    private void Start()
     {
-       gameObject.SetActive(true);
+        gameObject.SetActive(false);
+    }
+
+    public void Resume()
+    { 
+        gameObject.SetActive(true);
+       m_button.onClick.AddListener(m_popEvent.Raise);
+       OnResume?.Invoke();
     }
 
     public void Pause()
     {
         gameObject.SetActive(false);
+        m_button.onClick.RemoveAllListeners();
+        OnPause?.Invoke();
     }
 
     public void Stop()
     {
-        gameObject.SetActive(false);
+        Pause();  
+        OnStop?.Invoke();
     }
 }
