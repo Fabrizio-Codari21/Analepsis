@@ -302,6 +302,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb909f4574c13c14c94ddea5359bbb4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  AutoUnparentOnAwake: 1
 --- !u!4 &74120336
 Transform:
   m_ObjectHideFlags: 0
@@ -351,7 +361,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0003232245}
+  m_AnchoredPosition: {x: 0, y: 0.00003000338}
   m_SizeDelta: {x: 150, y: 300}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &123305951
@@ -1215,9 +1225,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 452c9f44ad924615b8c0ac94331356e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  AutoUnparentOnAwake: 1
   m_inputReader:
   - {fileID: 11400000, guid: d09f16c3490ce7f4db44b9a8c03c6202, type: 2}
-  m_inputReaderEvent: {fileID: 11400000, guid: 3027f54723217b445909fe93945c6bd2, type: 2}
+  m_inputStackEvent: {fileID: 11400000, guid: 3027f54723217b445909fe93945c6bd2, type: 2}
 --- !u!1 &568834845
 GameObject:
   m_ObjectHideFlags: 0
@@ -2338,7 +2358,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 489334128}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999928
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

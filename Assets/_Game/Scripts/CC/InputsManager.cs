@@ -1,7 +1,4 @@
-using System;
 using UnityEngine;
-
-
 public class InputsManager : PersistentSingleton<InputsManager>
 {
     [SerializeField] public InputReader[] m_inputReader;
