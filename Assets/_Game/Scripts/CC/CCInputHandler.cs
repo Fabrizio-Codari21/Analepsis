@@ -3,7 +3,7 @@ using System;
 using Unity.Cinemachine;
 using UnityEngine.InputSystem;
 
-public class CcInputHandler : MonoBehaviour,IActivity
+public class CcInputHandler : MonoBehaviour
 {
    [SerializeField] private CCInputReader m_reader;
    [SerializeField] private IActivityEvent m_readerEvent;
@@ -13,15 +13,28 @@ public class CcInputHandler : MonoBehaviour,IActivity
    public event Action InteractPressed = delegate { };
    public event Action InteractReleased = delegate { };
 
-   private void Start()
-   {
-      InitReaderAction();
+   private IActivity activity;
 
-      foreach (var controller in m_cameraAxisController.Controllers)
-      {
-         controller.Input.InputAction = InputActionReference.Create(m_reader.InputAction.Player.Look); // agrego camera input action reference
-      }
-      m_readerEvent.Raise(this); // BASE ACTIVITY EN TEORIA
+
+    private void Awake()
+    {
+       
+    }
+    private void Start()
+   {
+
+        InitReaderAction();
+
+        foreach (var controller in m_cameraAxisController.Controllers)
+        {
+            controller.Input.InputAction = InputActionReference.Create(m_reader.InputAction.Player.Look); // agrego camera input action reference
+        }
+        activity = GetComponent<IActivity>();
+        activity.OnResume += Resume;
+        activity.OnPause += Pause;
+        activity.OnStop += Stop;
+
+        m_readerEvent.Raise(activity); // BASE ACTIVITY EN TEORIA
    }
    
 

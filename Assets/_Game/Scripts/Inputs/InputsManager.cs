@@ -4,9 +4,7 @@ public class InputsManager : PersistentSingleton<InputsManager>
     [SerializeField] public InputReader[] m_inputReader;
 
     private InputActions _inputActions;
-    [SerializeField] private IActivityEvent m_inputStackEvent;   
-    [SerializeField] private EventChannel m_popInputEvent;
-   private readonly StackManager<IActivity> _inputStackActivity = new StackManager<IActivity>();
+  
 
     protected override void Awake()
     {
@@ -18,23 +16,11 @@ public class InputsManager : PersistentSingleton<InputsManager>
             inputReader.SetCallback(_inputActions);
             inputReader.SetEnable(inputReader.isAutoEnable);
         }
-        m_inputStackEvent.OnEventRaised += Push;
-        m_popInputEvent.RegisterListener(Pop);
+       
         
     }
 
 
-  
-
-    private void Push(IActivity activity)
-    {
-        _inputStackActivity.Push(activity);
-    }
-
-    private void Pop()
-    {
-        _inputStackActivity.PopSaveRoot();
-    }
     
 
     public void PushInput(InputReader inputReader)

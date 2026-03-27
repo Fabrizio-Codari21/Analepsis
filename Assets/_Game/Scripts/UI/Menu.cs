@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,10 @@ public class Menu : MonoBehaviour,IActivity
     [SerializeField] private EventChannel m_inputPop;
     [SerializeField] private IActivityEvent m_inputActivity;
     [SerializeField] private IActivityEvent m_uiActivity;
-    
+
+    public event Action OnResume;
+    public event Action OnPause;
+    public event Action OnStop;
 
     public void Resume()
     {

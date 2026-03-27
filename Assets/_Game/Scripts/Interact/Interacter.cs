@@ -20,6 +20,11 @@ public class Interacter : MonoBehaviour
     private float  _hoverTimer;
 
     public TextMeshProUGUI interactText;
+
+    GameObject canva;
+
+
+    IActivity activity;
     
     private void OnEnable()
     {
@@ -37,12 +42,16 @@ public class Interacter : MonoBehaviour
     {
        _camera = Camera.main;
        _inputHandler = GetComponent<CcInputHandler>();
+        activity = GetComponent<IActivity>();
+        activity.OnResume += Resume;
+        activity.OnPause += Pause;
+        activity.OnStop += Stop;
        
     }
 
     private void Start()
     {
-        Instantiate(m_interactCanva, m_canvaRoot);
+        canva = Instantiate(m_interactCanva, m_canvaRoot);
         interactText.gameObject.SetActive(false);
     }
     private void Update()
@@ -99,6 +108,22 @@ public class Interacter : MonoBehaviour
         _lastInteractable.Unfocus();
         _lastInteractable = null;
 
+    }
+
+
+    private void Resume()
+    {
+        canva.gameObject.SetActive(true);
+    }
+
+    private void Pause()
+    {
+        canva.gameObject.SetActive(false);
+    }
+
+    private void Stop()
+    {
+        Pause();
     }
 
 }
