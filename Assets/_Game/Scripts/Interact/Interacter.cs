@@ -75,8 +75,6 @@ public class Interacter : MonoBehaviour
             ResetInteract();
             return;
         }
-        if(interactable == _lastInteractable) return;
-        
         float distanceToHit = Vector3.Distance(transform.position, hit.collider.ClosestPoint(transform.position));
 
         if (distanceToHit > m_range)
@@ -84,6 +82,9 @@ public class Interacter : MonoBehaviour
             ResetInteract();
             return;
         }
+        if (interactable == _lastInteractable) return;
+        
+        
        
         ResetInteract();
         _lastInteractable = interactable;
