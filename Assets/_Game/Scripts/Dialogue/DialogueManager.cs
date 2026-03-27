@@ -149,7 +149,7 @@ public class DialogueManager : MonoBehaviour
     
     public void EndDialogue()
     {
-        InputsManager.instance.EnableInputReader((InputsManager.instance.m_inputReader[0], true));
+        InputsManager.Instance.PopInput();
         HideDialogue();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

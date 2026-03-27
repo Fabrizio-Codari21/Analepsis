@@ -10,7 +10,7 @@ public class CursorManager : MonoBehaviour
 
     private void Update()
     { 
-        if(Input.GetKeyDown(KeyCode.F12))EnableCursor();// solamente para debug  acutalmente
+        if(Input.GetKeyDown(KeyCode.F12))EnableCursor();// solamente para debug acutalmente
     }
 
     private bool _enable = true;

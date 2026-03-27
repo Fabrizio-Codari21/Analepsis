@@ -50,7 +50,7 @@ public class DialogueInteractable : Interactable
 
     public void SpeakTo()
     {
-        InputsManager.instance.EnableInputReader((InputsManager.instance.m_inputReader[0], false));
+        InputsManager.Instance.PushInput(null);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         interactText.gameObject.SetActive(false);

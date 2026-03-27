@@ -13,7 +13,7 @@ public class Interacter : MonoBehaviour
     [SerializeField] private Transform m_canvaRoot;
     [SerializeField] private GameObject m_interactCanva;
     private Camera _camera;
-    private CCInputHandler _inputHandler;
+    private CcInputHandler _inputHandler;
     
     
     private IInteractable _lastInteractable;
@@ -36,7 +36,7 @@ public class Interacter : MonoBehaviour
     private void Awake()
     {
        _camera = Camera.main;
-       _inputHandler = GetComponent<CCInputHandler>();
+       _inputHandler = GetComponent<CcInputHandler>();
        
     }
 

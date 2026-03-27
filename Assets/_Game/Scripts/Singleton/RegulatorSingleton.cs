@@ -38,7 +38,6 @@ public class RegulatorSingleton<T> : MonoBehaviour where T : Component {
                 Destroy(old.gameObject);
             }
         }
-
         if (instance == null) {
             instance = this as T;
         }

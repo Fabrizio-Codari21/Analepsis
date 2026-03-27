@@ -1,17 +1,14 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public abstract class InputReader : ScriptableObject
 {
     
-    
-    public InputActions InputAction;
-
+    [SerializeField] public bool isAutoEnable = true;
+    [HideInInspector] public InputActions InputAction;
     public virtual void SetCallback(InputActions inputAction)
     {
         InputAction = inputAction;
     }
-
-    public abstract void SetEnable(InputActions inputAction, bool enable = true);
+    public abstract void SetEnable(bool enable = true);
     
 }

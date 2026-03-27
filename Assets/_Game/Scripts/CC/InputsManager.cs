@@ -1,42 +1,54 @@
-
 using System;
 using UnityEngine;
 
 
-public class InputsManager : MonoBehaviour
+public class InputsManager : PersistentSingleton<InputsManager>
 {
     [SerializeField] public InputReader[] m_inputReader;
-    [SerializeField] private InputReaderEvent m_inputReaderEvent;
+
     private InputActions _inputActions;
 
-    public static InputsManager instance;
-    
 
-    private void Awake()
+    [SerializeField] private IActivityEvent m_inputStackEvent;
+   private readonly StackManager<IActivity> _inputStackActivity = new StackManager<IActivity>();
+
+    protected override void Awake()
     {
-        if (!instance) instance = this; else Destroy(gameObject);
         
+        base.Awake();
         _inputActions = new InputActions();
         foreach (var inputReader in m_inputReader)
         {
             inputReader.SetCallback(_inputActions);
+            inputReader.SetEnable(inputReader.isAutoEnable);
         }
-        m_inputReaderEvent.OnEventRaised += EnableInputReader;
+        m_inputStackEvent.OnEventRaised += Push;
+        
     }
 
 
-    // private void Update()
-    // {
-    //     if(Input.GetKeyDown(KeyCode.Space)) EnableInputReader((m_inputReader[0],false));
-    // }
+  
 
-
-    public void EnableInputReader((InputReader reader, bool enable) provider)
+    private void Push(IActivity activity)
     {
-        provider.reader.SetEnable(_inputActions,provider.enable);
+        _inputStackActivity.Push(activity);
     }
 
- 
+    private void Pop()
+    {
+        _inputStackActivity.PopSaveRoot();
+    }
+    
+
+    public void PushInput(InputReader inputReader)
+    {
+       
+    }
+
+    public void PopInput()
+    {
+     
+    }
+    
+    
 }
-
-

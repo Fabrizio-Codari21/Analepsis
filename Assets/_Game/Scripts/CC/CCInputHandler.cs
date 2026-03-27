@@ -3,14 +3,13 @@ using System;
 using Unity.Cinemachine;
 using UnityEngine.InputSystem;
 
-public class CCInputHandler : MonoBehaviour
+public class CcInputHandler : MonoBehaviour,IActivity
 {
    [SerializeField] private CCInputReader m_reader;
-   [SerializeField] private InputReaderEvent m_readerEvent;
+   [SerializeField] private IActivityEvent m_readerEvent;
    [SerializeField] private CinemachineInputAxisController m_cameraAxisController;
    
    public event Action<Vector2> Move = delegate { };
-   public event Action<Vector2> Look = delegate { };
    public event Action InteractPressed = delegate { };
    public event Action InteractReleased = delegate { };
 
@@ -20,10 +19,11 @@ public class CCInputHandler : MonoBehaviour
 
       foreach (var controller in m_cameraAxisController.Controllers)
       {
-         controller.Input.InputAction = InputActionReference.Create(m_reader.InputAction.Player.Look);
+         controller.Input.InputAction = InputActionReference.Create(m_reader.InputAction.Player.Look); // agrego camera input action reference
       }
+      m_readerEvent.Raise(this);
    }
-
+   
 
    /// <summary>
    /// Este metodos es para que input reader susbcribirse a actiones de este clase y para invokarlom
@@ -33,17 +33,24 @@ public class CCInputHandler : MonoBehaviour
    private void InitReaderAction()
    {
       m_reader.Move += dir => Move?.Invoke(dir);
-      m_reader.Look += dir => Look?.Invoke(dir);
       m_reader.InteractPressed +=  () => InteractPressed?.Invoke();
       m_reader.InteractReleased += () => InteractReleased?.Invoke();
-      
-      EnableReader(true);
+    
    }
-   
-   private void EnableReader(bool enable) => m_readerEvent.Raise((m_reader,enable));
 
 
-   public InputReader InputReader => m_reader;
-   
-  
+   public void Resume()
+   {
+      m_reader.SetEnable();
+   }
+
+   public void Pause()
+   {
+      m_reader.SetEnable(false);
+   }
+
+   public void Stop()
+   {
+      Pause();
+   }
 }

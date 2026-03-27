@@ -17,7 +17,7 @@ public class Controller :  MonoBehaviour,IGravityActor,IMoverActor
     #endregion
     
     private ICamera _camera;
-    private CCInputHandler  _inputHandler; 
+    private CcInputHandler  _inputHandler; 
     private HSMStateMachine _movementStateMachine;
     private MoveEngine  _moveEngine;
     
@@ -30,7 +30,7 @@ public class Controller :  MonoBehaviour,IGravityActor,IMoverActor
     private void Awake()
     {
         _moveEngine =  GetComponent<MoveEngine>();
-        _inputHandler =  GetComponent<CCInputHandler>();
+        _inputHandler =  GetComponent<CcInputHandler>();
 
         _camera = GetComponentInChildren<ICamera>();
     }
