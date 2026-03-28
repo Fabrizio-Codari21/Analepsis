@@ -10,8 +10,9 @@ public class Dialogue : ScriptableObject
     [Header("CHARACTER SPEECH")]
     public Color characterTextColor;
     public float characterTalkingSpeed = 2;
-    
+
     [Space(20)]
     [Header("DIALOGUE")]
-    public List<DialogueNode> dialogueNodes;
+    public DialogueNode startingNode;
+    //public List<DialogueNode> dialogueNodes;
 }

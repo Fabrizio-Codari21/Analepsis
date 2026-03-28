@@ -40,11 +40,12 @@ public class DialogueInteractable : Interactable
     {
         print($"You got too far away from {InteractableObject.name} and can no longer interact with it.");
         foreach (MeshRenderer renderer in materials) renderer.material.color = _color;
+        interactText.gameObject.SetActive(false);
     }
 
     void Start()
     {
-        materials = GetComponents<MeshRenderer>();
+        materials = GetComponentsInChildren<MeshRenderer>();
         _color = materials[0].material.color;
     }
 
@@ -56,7 +57,7 @@ public class DialogueInteractable : Interactable
         interactText.gameObject.SetActive(false);
 
         DialogueManager.instance.SetCurrentDialogue(dialogue);
-        DialogueManager.instance.StartDialogue(characterName, dialogue.dialogueNodes[0]);
+        DialogueManager.instance.StartDialogue(characterName, dialogue.startingNode);
 
         ActionTimer.instance.ConsumeActions(actionCost);
     }

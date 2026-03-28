@@ -14,54 +14,137 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterTextColor: {r: 0.5754717, g: 0.38817194, b: 0.38817194, a: 1}
   characterTalkingSpeed: 3
-  dialogueNodes:
-  - id: Mr. Deprueba
-    dialogueText: This is dialog 1. Choose A, B or C
+  startingNode:
+    dialogueText: This is dialog 1. Choose A, B or C.
     responses:
-    - responseText: '[Pick option A]'
-      nextNodeId: A
-    - responseText: '[Pick option B]'
-      nextNodeId: B
-    - responseText: '[Pick option C]'
-      nextNodeId: C
-  - id: A
-    dialogueText: You picked A. I like you.
-    responses:
-    - responseText: 'Thank you! [leave happily]'
-      nextNodeId: 
-    - responseText: Well, I don't like YOU.
-      nextNodeId: A-A
-  - id: A-A
-    dialogueText: :(
-    responses:
-    - responseText: '[Maybe you should leave now]'
-      nextNodeId: 
-  - id: B
-    dialogueText: You picked B. I hate you.
-    responses:
-    - responseText: 'Cool, nice to meet you too. [leave]'
-      nextNodeId: 
-    - responseText: Why tho?
-      nextNodeId: B-A
-  - id: B-A
-    dialogueText: B is objectively a terrible answer. Now LEAVE!
-    responses:
-    - responseText: '[Fair enough.]'
-      nextNodeId: 
-  - id: C
-    dialogueText: You picked C. I... don't know how to feel about you.
-    responses:
-    - responseText: '[Kiss them]'
-      nextNodeId: C-A
-    - responseText: '[Punch them]'
-      nextNodeId: C-B
-  - id: C-A
-    dialogueText: :0
-    responses:
-    - responseText: '[Leave in shame]'
-      nextNodeId: 
-  - id: C-B
-    dialogueText: '>:('
-    responses:
-    - responseText: '[Flee like a coward]'
-      nextNodeId: 
+    - rid: 5638511764854276176
+    - rid: 5638511764854276177
+    - rid: 5638511764854276178
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 5638511764854276176
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Pick option A]'
+        nextNode:
+          rid: 5638511764854276179
+    - rid: 5638511764854276177
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Pick option B]'
+        nextNode:
+          rid: 5638511764854276186
+    - rid: 5638511764854276178
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Pick option C]'
+        nextNode:
+          rid: 5638511764854276191
+    - rid: 5638511764854276179
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: You picked A. I like you.
+        responses:
+        - rid: 5638511764854276180
+        - rid: 5638511764854276182
+    - rid: 5638511764854276180
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: 'Thank you! [leave happily]'
+        nextNode:
+          rid: -2
+    - rid: 5638511764854276182
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Well, I don't like YOU.
+        nextNode:
+          rid: 5638511764854276183
+    - rid: 5638511764854276183
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: :(
+        responses:
+        - rid: 5638511764854276184
+    - rid: 5638511764854276184
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Maybe you should leave...]'
+        nextNode:
+          rid: -2
+    - rid: 5638511764854276186
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: You picked B. I hate you.
+        responses:
+        - rid: 5638511764854276187
+        - rid: 5638511764854276188
+    - rid: 5638511764854276187
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: 'Cool, nice to meet you too [leave]'
+        nextNode:
+          rid: -2
+    - rid: 5638511764854276188
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Why tho?
+        nextNode:
+          rid: 5638511764854276189
+    - rid: 5638511764854276189
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: B sucks. Now LEAVE!
+        responses:
+        - rid: 5638511764854276190
+    - rid: 5638511764854276190
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Fair enough...]'
+        nextNode:
+          rid: -2
+    - rid: 5638511764854276191
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: You picked C. I... don't know how to feel about you.
+        responses:
+        - rid: 5638511764854276192
+        - rid: 5638511764854276194
+    - rid: 5638511764854276192
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Kiss them]'
+        nextNode:
+          rid: 5638511764854276193
+    - rid: 5638511764854276193
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: :0
+        responses:
+        - rid: 5638511764854276195
+    - rid: 5638511764854276194
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Punch them]'
+        nextNode:
+          rid: 5638511764854276196
+    - rid: 5638511764854276195
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Leave in shame]'
+        nextNode:
+          rid: -2
+    - rid: 5638511764854276196
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '>:('
+        responses:
+        - rid: 5638511764854276197
+    - rid: 5638511764854276197
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Flee like a coward]'
+        nextNode:
+          rid: -2

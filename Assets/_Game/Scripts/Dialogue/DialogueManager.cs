@@ -86,7 +86,7 @@ public class DialogueManager : MonoBehaviour
     public void SelectResponse(DialogueResponse response)
     {
         // Si hay un nodo siguiente, sumamos nuestra respuesta a la UI; si no, cortamos.
-        if (response.nextNodeId != "")
+        if (response.nextNode != null)
         {
             // Si hay botones de respuesta los borramos
             foreach (Transform child in responseButtonContainer)
@@ -106,12 +106,12 @@ public class DialogueManager : MonoBehaviour
 
         this.WaitAndThen(timeToWait: (1/(playerTalkingSpeed*10)) * (response.responseText.Length) + responseDelay, () =>
         {
-            DialogueNode nextNode = GetNodeById(response.nextNodeId);
+            //DialogueNode nextNode = GetNodeById(response.nextNodeId);
 
             // Si hay nodo...
-            if (nextNode != null && !nextNode.IsLastNode())
+            if (!response.nextNode.IsLastNode())
             {
-                UpdateDialogue(characterName.text, nextNode); // ...arranca el proximo dialogo
+                UpdateDialogue(characterName.text, response.nextNode); // ...arranca el proximo dialogo
             }
             else
             {
@@ -129,7 +129,7 @@ public class DialogueManager : MonoBehaviour
     public bool IsDialogueActive() => dialogueBox.activeSelf;
 
     // Si todos los nodos estan guardados en el dialogo actual, buscamos el que tenga el id correcto.
-    DialogueNode GetNodeById(string id) => _currentDialogue.dialogueNodes.FirstOrDefault(node => node.id == id);
+    //DialogueNode GetNodeById(string id) => _currentDialogue.dialogueNodes.FirstOrDefault(node => node.id == id);
 
     public void SetCurrentDialogue(Dialogue dialogue) => _currentDialogue = dialogue;
 

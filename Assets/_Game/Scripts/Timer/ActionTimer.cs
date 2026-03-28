@@ -26,4 +26,9 @@ public class ActionTimer : MonoBehaviour
     }
 
     public void ConsumeActions(int change) => actionsLeft -= change;
+
+    public void EndOfTimer()
+    {
+        print("You consumed all your actions.");
+    }
 }
