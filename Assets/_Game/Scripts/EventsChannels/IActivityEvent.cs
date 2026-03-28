@@ -5,4 +5,3 @@ using UnityEngine;
 public class IActivityEvent : AbstractEventChannel<IActivity>
 {
 }
-
