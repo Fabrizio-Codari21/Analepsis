@@ -22,10 +22,13 @@ public class ActionTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(actionsLeft <= 0) EndOfTimer();
     }
 
-    public void ConsumeActions(int change) => actionsLeft -= change;
+    public void ConsumeActions(int change)
+    { 
+        if (actionsLeft > 0) actionsLeft -= change;
+    }
 
     public void EndOfTimer()
     {
