@@ -7,6 +7,8 @@ public class InspectionInputReader : InputReader, InputActions.IInspectionAction
     
     public event Action<Vector2> Rotate =  delegate { };
     public event Action<bool> DragPressed = delegate { };
+    
+    public event Action<Vector2>  Scroll =  delegate { };
     protected override void SetCallback(InputActions inputAction)
     {
         inputAction?.Inspection.SetCallbacks(this);
@@ -27,5 +29,10 @@ public class InspectionInputReader : InputReader, InputActions.IInspectionAction
     {
        if(context.started)DragPressed?.Invoke(true);
        if (context.canceled)DragPressed?.Invoke(false);
+    }
+
+    public void OnScrollWheel(InputAction.CallbackContext context)
+    {
+        if(context.performed) Scroll?.Invoke(context.ReadValue<Vector2>());
     }
 }

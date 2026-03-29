@@ -1,11 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 using PrimeTween;
+using Sirenix.OdinInspector.Editor;
+using Sirenix.Serialization;
+
 public class CursorManager : PersistentSingleton<CursorManager>
 {
-    
     [SerializeField] private BoolEventChannel m_cursorEnableChannel;
     [SerializeField] private CursorAnimationEvent m_cursorAnimationChannel;
     [SerializeField] private CursorAnimation m_defaultCursorAnimation;
+    
     private bool _cursorEnabled;
     
     private Sequence _sequence = default;
