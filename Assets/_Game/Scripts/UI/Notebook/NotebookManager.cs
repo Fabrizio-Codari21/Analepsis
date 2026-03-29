@@ -2,10 +2,15 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
+using System;
+using Sirenix.OdinInspector;
 
-public class NotebookManager : MonoBehaviour
+public class NotebookManager : SerializedMonoBehaviour, IActivity
 {
     public static NotebookManager instance;
+
+    public CCInputReader inputReader;
+    public BoolEventChannel enableCursor;
 
     public enum NotebookPage
     {
@@ -22,16 +27,17 @@ public class NotebookManager : MonoBehaviour
     #region Notebook Controls
     [Header("NOTEBOOK")]
     public GameObject notebookUI;
-    public List<NotebookMenu> notebookMenues;
-    Dictionary<NotebookPage, NotebookMenu> _notebookPages = new();
+    [SerializeField] Dictionary<NotebookPage, NotebookMenu> _notebookPages = new();
     NotebookPage _lastPageOpen;
 
     public void OpenPage(NotebookPage page = NotebookPage.Default)
     {
         if (page == NotebookPage.Default && _lastPageOpen != default) page = _lastPageOpen;
         if (!notebookUI.activeInHierarchy) notebookUI.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        inputReader.SetEnable(false);
+        enableCursor.Raise(true);
+        //Cursor.lockState = CursorLockMode.None;
+        //Cursor.visible = true;
 
         foreach (KeyValuePair<NotebookPage, NotebookMenu> item in _notebookPages)
         {
@@ -52,8 +58,10 @@ public class NotebookManager : MonoBehaviour
     public void CloseNotebook() 
     {
         notebookUI.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        inputReader.SetEnable(true);
+        enableCursor.Raise(false);
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
     }
 
     #endregion
@@ -67,7 +75,7 @@ public class NotebookManager : MonoBehaviour
     public Color logColor;
     public float logTextSpeed;
 
-    Dictionary<string, string> _dialogueLogs = new();
+    [ReadOnly] Dictionary<string, string> _dialogueLogs = new();
 
     public void SaveLogToNotebook(string dialogueID, string log) 
     {
@@ -79,7 +87,7 @@ public class NotebookManager : MonoBehaviour
 
     public void PlayLog(string dialogueID, float speed = 10)
     {
-        CloseLog();
+        CloseLog(logTextContainer);
         TextMeshProUGUI log = Instantiate(logText, logTextContainer);
         //print(_dialogueLogs[dialogueID]);
         log.text = "";
@@ -92,24 +100,52 @@ public class NotebookManager : MonoBehaviour
             print(log.text);
             Button closeButton = Instantiate(logButton, logTextContainer);
             closeButton.GetComponentInChildren<TextMeshProUGUI>().text = "[Close Log]";
-            closeButton.onClick.AddListener(() => CloseLog());
+            closeButton.onClick.AddListener(() => CloseLog(logTextContainer));
         },
         cancelCondition: () => false);
     }
 
-    public void CloseLog()
+    public void CloseLog(Transform container)
     {
-        foreach (Transform child in logTextContainer) Destroy(child.gameObject);
+        foreach (Transform child in container) Destroy(child.gameObject);
+    }
+
+    #endregion
+
+    #region Clue Menu
+
+    [Header("OBJECTS")]
+    public Transform clueListContainer;
+    public Transform clueInfoContainer;
+    public Button clueButton;
+    public TextMeshProUGUI clueText;
+
+    Dictionary<string, Clue> _clueRegistry = new();
+
+    public void SaveClueToNotebook(string clueID, Clue clue)
+    {
+        _clueRegistry.Add(clueID, clue);
+        Button button = Instantiate(clueButton, clueListContainer);
+        button.GetComponent<TextMeshProUGUI>().text = clueID;
+    }
+
+    public void ShowClues(string clueID)
+    {
+        CloseLog(clueInfoContainer);
+        var clueInfo = _clueRegistry[clueID];
+        foreach (var clue in clueInfo.clues)
+        {
+            TextMeshProUGUI text = Instantiate(clueText, clueInfoContainer);
+            text.text = $"- {clue}";
+            text.color = logColor;
+        }
+        // instanciar render texture/imagen del objeto
     }
 
     #endregion
 
     void Start()
     {
-        foreach (NotebookMenu page in notebookMenues)
-        {
-            _notebookPages.Add(page.pageType, page);
-        }
         CloseNotebook();
     }
 
@@ -120,4 +156,26 @@ public class NotebookManager : MonoBehaviour
             if (!notebookUI.activeInHierarchy) OpenPage(NotebookPage.Log); else CloseNotebook();
         }
     }
+
+
+    #region Interface
+    public event Action OnResume;
+    public event Action OnPause;
+    public event Action OnStop;
+
+    public void Resume()
+    {
+        OnResume?.Invoke();
+    }
+
+    public void Pause()
+    {
+        OnPause?.Invoke();
+    }
+
+    public void Stop()
+    {
+        OnStop?.Invoke();
+    }
+    #endregion
 }

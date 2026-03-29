@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 public class ClueInteractable : Interactable
 {
     [HideInInspector] public MeshRenderer[] materials;
+    public string clueID;
     InspectableObject _inspectable;
     Color _color;
 

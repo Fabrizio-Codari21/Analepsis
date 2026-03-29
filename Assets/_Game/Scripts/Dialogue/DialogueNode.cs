@@ -6,7 +6,7 @@ using UnityEngine;
 public class DialogueNode
 {
     //public string id; // identificador para cada nodo
-    [TextArea] public string dialogueText;
+    [TextArea(0,20)] public string dialogueText;
     [SerializeReference] public List<DialogueResponse> responses;
 
     internal bool IsLastNode()
