@@ -4,7 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class DialogueResponse
 {
-    public string responseText;
+    [TextArea] public string responseText;
     [SerializeReference] public DialogueNode nextNode;
     //public string nextNodeId; // referencia al identificador del proximo nodo;
 }

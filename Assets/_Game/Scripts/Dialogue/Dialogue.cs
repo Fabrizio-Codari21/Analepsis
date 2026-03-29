@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 // Objeto base que contiene toda la logica de un dialogo.
@@ -14,5 +15,14 @@ public class Dialogue : ScriptableObject
     [Space(20)]
     [Header("DIALOGUE")]
     public DialogueNode startingNode;
+    [ReadOnly] string _dialogueLog;
     //public List<DialogueNode> dialogueNodes;
+
+    public void AddToLog(string speakerName, string newLine) => 
+        _dialogueLog += (_dialogueLog != "" ? "\n" : "")  + $"{speakerName}: - {newLine}";
+
+    public void DeleteLog() => _dialogueLog = "";
+    public string GetLog() => _dialogueLog;
+
+
 }

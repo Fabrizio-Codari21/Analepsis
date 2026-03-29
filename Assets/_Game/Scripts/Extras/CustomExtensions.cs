@@ -207,6 +207,17 @@ public static class CustomExtensions
         return () => op.isDone;
     }
 
+    // Simplifica la creacion de instancias estaticas de MonoBehaviours.
+    public static void ToSingleton(this MonoBehaviour x, MonoBehaviour instance)
+    {
+        if (!instance) instance = x; 
+        else 
+        {
+            if(x.gameObject) GameObject.Destroy(x.gameObject); 
+            else x.enabled = false;        
+        }
+    }
+
     #endregion
 
 }

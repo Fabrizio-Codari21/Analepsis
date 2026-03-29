@@ -10,7 +10,7 @@ public class ActionTimer : MonoBehaviour
 
     private void Awake()
     {
-        if(!instance) instance = this; else Destroy(gameObject);
+        if (!instance) instance = this; else Destroy(gameObject);
         actionsLeft = maxActions;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created

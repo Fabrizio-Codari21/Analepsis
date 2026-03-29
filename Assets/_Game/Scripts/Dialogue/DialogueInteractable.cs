@@ -56,6 +56,7 @@ public class DialogueInteractable : Interactable
         Cursor.visible = true;
         interactText.gameObject.SetActive(false);
 
+        dialogue.DeleteLog();
         DialogueManager.instance.SetCurrentDialogue(dialogue);
         DialogueManager.instance.StartDialogue(characterName, dialogue.startingNode);
 

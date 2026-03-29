@@ -31,7 +31,7 @@ public class DialogueManager : MonoBehaviour
     private void Awake()
     {
         // Solo tendria que haber una instancia de esto.
-        if(!instance) instance = this; else Destroy(gameObject);
+        if (!instance) instance = this; else Destroy(gameObject);
         HideDialogue();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -44,7 +44,7 @@ public class DialogueManager : MonoBehaviour
         ShowDialogue();
         foreach (Transform child in dialogueContainer) Destroy(child.gameObject); 
         m_pushEvent?.Raise(activity);
-        UpdateDialogue($"{name}:", node);
+        UpdateDialogue(name, node);
         
  
     }
@@ -58,6 +58,8 @@ public class DialogueManager : MonoBehaviour
         dialogue.text = "- "; BuildText(dialogue, node.dialogueText, _currentDialogue.characterTalkingSpeed);
         dialogue.color = _currentDialogue.characterTextColor;
 
+        _currentDialogue.AddToLog(name, node.dialogueText);
+
         // Si hay botones de respuesta los borramos
         foreach (Transform child in responseButtonContainer)
         {
@@ -66,7 +68,7 @@ public class DialogueManager : MonoBehaviour
 
 
         this.WaitAndThen(timeToWait: (1 / (_currentDialogue.characterTalkingSpeed * 10)) * (node.dialogueText.Length) + responseDelay, () =>
-        {            
+        {                        
             // Creamos botones de respuesta en base al nodo activo
             foreach (DialogueResponse response in node.responses)
             {
@@ -85,6 +87,7 @@ public class DialogueManager : MonoBehaviour
     // Elige una respuesta y activa el proximo nodo
     public void SelectResponse(DialogueResponse response)
     {
+        float answerTime;
         // Si hay un nodo siguiente, sumamos nuestra respuesta a la UI; si no, cortamos.
         if (response.nextNode != null)
         {
@@ -95,8 +98,10 @@ public class DialogueManager : MonoBehaviour
             }
 
             var answer = Instantiate(dialogueText, dialogueContainer);
-            answer.text = "- "; BuildText(answer, $"'{response.responseText}'");
+            answer.text = "- "; answerTime = BuildText(answer, $"'{response.responseText}'");
             answer.color = playerTextColor;
+
+            _currentDialogue.AddToLog("You", response.responseText);
         }
         else
         {
@@ -104,7 +109,7 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        this.WaitAndThen(timeToWait: (1/(playerTalkingSpeed*10)) * (response.responseText.Length) + responseDelay, () =>
+        this.WaitAndThen(timeToWait: answerTime + responseDelay, () =>
         {
             //DialogueNode nextNode = GetNodeById(response.nextNodeId);
 
@@ -133,7 +138,7 @@ public class DialogueManager : MonoBehaviour
 
     public void SetCurrentDialogue(Dialogue dialogue) => _currentDialogue = dialogue;
 
-    public void BuildText(TextMeshProUGUI dialogue, string text, float speed = 4)
+    public float BuildText(TextMeshProUGUI dialogue, string text, float speed = 4)
     {
         var charAmount = text.Length;
         int newCharAmount = 0;
@@ -152,11 +157,18 @@ public class DialogueManager : MonoBehaviour
         },
         cancelCondition: () => newCharAmount >= charAmount);
 
+        return charSpeed * charAmount;
     }
     
     public void EndDialogue()
     {
         m_popInputEvent?.Raise();
+        NotebookManager.instance.SaveLogToNotebook
+            ($"Conversation with {characterName.text} \n - Action {ActionTimer.instance.maxActions - ActionTimer.instance.actionsLeft}", 
+            _currentDialogue.GetLog());
+
+        print(_currentDialogue.GetLog());
+
         HideDialogue();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
