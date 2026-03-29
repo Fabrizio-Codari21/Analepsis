@@ -5,13 +5,14 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
     public GameObject gameObject;
-    [SerializeReference] public Clue clueInfo;
-
     [MinValue(1)] public float size;
+
+    [SerializeReference] public Clue clueInfo;
 }
 
 public class Clue
 {
-    [TextArea(0,20)] public List<string> clues;
+    public string clueId;
     public GameObject clueDisplay;
+    [TextArea(0,20)] public List<string> clues;
 }

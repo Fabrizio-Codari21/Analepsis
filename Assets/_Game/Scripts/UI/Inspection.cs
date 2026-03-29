@@ -46,7 +46,8 @@ public class Inspection : MonoBehaviour,IActivity
             Destroy(child.gameObject);
         }
 
-        Instantiate(inspectable.GetInspectItem().gameObject, m_inspectRoot);
+        var item = Instantiate(inspectable.GetInspectItem(), m_inspectRoot);
+        OnPause += NotebookManager.instance.SaveClueToNotebook(item.clueInfo.clueId, item.clueInfo);
         
         m_camera.orthographicSize = inspectable.GetInspectItem().size;
      

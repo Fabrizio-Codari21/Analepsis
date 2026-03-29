@@ -27,6 +27,9 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
     #region Notebook Controls
     [Header("NOTEBOOK")]
     public GameObject notebookUI;
+    public Button previousPageButton;
+    public Button nextPageButton;
+    public TextMeshProUGUI menuName;
     [SerializeField] Dictionary<NotebookPage, NotebookMenu> _notebookPages = new();
     NotebookPage _lastPageOpen;
 
@@ -45,6 +48,7 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
         }
 
         _notebookPages[page].gameObject.SetActive(true);
+        _lastPageOpen = page;
 
         foreach (Transform child in logTextContainer) Destroy(child.gameObject);
     }
@@ -53,6 +57,8 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
     {
         if (nextOrPrevious && _lastPageOpen != NotebookPage.Objects) OpenPage(_lastPageOpen + 1);
         else if(!nextOrPrevious && _lastPageOpen != NotebookPage.Log) OpenPage(_lastPageOpen - 1);
+        menuName.text = _lastPageOpen.ToString();
+
     }
 
     public void CloseNotebook() 
@@ -122,11 +128,15 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
 
     Dictionary<string, Clue> _clueRegistry = new();
 
-    public void SaveClueToNotebook(string clueID, Clue clue)
+    public Action SaveClueToNotebook(string clueID, Clue clue)
     {
-        _clueRegistry.Add(clueID, clue);
-        Button button = Instantiate(clueButton, clueListContainer);
-        button.GetComponent<TextMeshProUGUI>().text = clueID;
+        return () =>
+        {
+            _clueRegistry.Add(clueID, clue);
+            Button button = Instantiate(clueButton, clueListContainer);
+            button.GetComponent<TextMeshProUGUI>().text = clueID;
+            button.onClick.AddListener(() => ShowClues(clueID));
+        };
     }
 
     public void ShowClues(string clueID)
@@ -139,7 +149,7 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
             text.text = $"- {clue}";
             text.color = logColor;
         }
-        // instanciar render texture/imagen del objeto
+        // instanciar render texture/imagen del objeto, a definir
     }
 
     #endregion
@@ -147,11 +157,13 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
     void Start()
     {
         CloseNotebook();
+        previousPageButton.onClick.AddListener(() => NextPage(false));
+        nextPageButton.onClick.AddListener(() => NextPage(true));
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab)) 
+        if (Input.GetKeyDown(KeyCode.Alpha1)) 
         {
             if (!notebookUI.activeInHierarchy) OpenPage(NotebookPage.Log); else CloseNotebook();
         }
