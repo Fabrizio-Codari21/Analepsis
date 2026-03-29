@@ -903,6 +903,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ScrollWheel"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""804511af-d3c7-4235-9ae7-d3c396592ca5"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -925,6 +934,45 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Drag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""315efa02-f32b-4b2c-a17a-751d5c545361"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ScrollWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""NoteBook"",
+            ""id"": ""db46bc7b-8593-426b-9054-b7ecb43758f7"",
+            ""actions"": [
+                {
+                    ""name"": ""Open"",
+                    ""type"": ""Button"",
+                    ""id"": ""c470ab13-7f17-4b10-b34a-1cecf3e0d926"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""dbcdae11-efa2-4dd6-92f0-331b11acaaf5"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Open"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1021,6 +1069,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Inspection = asset.FindActionMap("Inspection", throwIfNotFound: true);
         m_Inspection_Delta = m_Inspection.FindAction("Delta", throwIfNotFound: true);
         m_Inspection_Drag = m_Inspection.FindAction("Drag", throwIfNotFound: true);
+        m_Inspection_ScrollWheel = m_Inspection.FindAction("ScrollWheel", throwIfNotFound: true);
+        // NoteBook
+        m_NoteBook = asset.FindActionMap("NoteBook", throwIfNotFound: true);
+        m_NoteBook_Open = m_NoteBook.FindAction("Open", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -1030,6 +1082,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputActions.UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Dialogue.enabled, "This will cause a leak and performance issues, InputActions.Dialogue.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Inspection.enabled, "This will cause a leak and performance issues, InputActions.Inspection.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_NoteBook.enabled, "This will cause a leak and performance issues, InputActions.NoteBook.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1612,6 +1665,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IInspectionActions> m_InspectionActionsCallbackInterfaces = new List<IInspectionActions>();
     private readonly InputAction m_Inspection_Delta;
     private readonly InputAction m_Inspection_Drag;
+    private readonly InputAction m_Inspection_ScrollWheel;
     /// <summary>
     /// Provides access to input actions defined in input action map "Inspection".
     /// </summary>
@@ -1631,6 +1685,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Inspection/Drag".
         /// </summary>
         public InputAction @Drag => m_Wrapper.m_Inspection_Drag;
+        /// <summary>
+        /// Provides access to the underlying input action "Inspection/ScrollWheel".
+        /// </summary>
+        public InputAction @ScrollWheel => m_Wrapper.m_Inspection_ScrollWheel;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1663,6 +1721,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Drag.started += instance.OnDrag;
             @Drag.performed += instance.OnDrag;
             @Drag.canceled += instance.OnDrag;
+            @ScrollWheel.started += instance.OnScrollWheel;
+            @ScrollWheel.performed += instance.OnScrollWheel;
+            @ScrollWheel.canceled += instance.OnScrollWheel;
         }
 
         /// <summary>
@@ -1680,6 +1741,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Drag.started -= instance.OnDrag;
             @Drag.performed -= instance.OnDrag;
             @Drag.canceled -= instance.OnDrag;
+            @ScrollWheel.started -= instance.OnScrollWheel;
+            @ScrollWheel.performed -= instance.OnScrollWheel;
+            @ScrollWheel.canceled -= instance.OnScrollWheel;
         }
 
         /// <summary>
@@ -1713,6 +1777,102 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="InspectionActions" /> instance referencing this action map.
     /// </summary>
     public InspectionActions @Inspection => new InspectionActions(this);
+
+    // NoteBook
+    private readonly InputActionMap m_NoteBook;
+    private List<INoteBookActions> m_NoteBookActionsCallbackInterfaces = new List<INoteBookActions>();
+    private readonly InputAction m_NoteBook_Open;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "NoteBook".
+    /// </summary>
+    public struct NoteBookActions
+    {
+        private @InputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public NoteBookActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "NoteBook/Open".
+        /// </summary>
+        public InputAction @Open => m_Wrapper.m_NoteBook_Open;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_NoteBook; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="NoteBookActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(NoteBookActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="NoteBookActions" />
+        public void AddCallbacks(INoteBookActions instance)
+        {
+            if (instance == null || m_Wrapper.m_NoteBookActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_NoteBookActionsCallbackInterfaces.Add(instance);
+            @Open.started += instance.OnOpen;
+            @Open.performed += instance.OnOpen;
+            @Open.canceled += instance.OnOpen;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="NoteBookActions" />
+        private void UnregisterCallbacks(INoteBookActions instance)
+        {
+            @Open.started -= instance.OnOpen;
+            @Open.performed -= instance.OnOpen;
+            @Open.canceled -= instance.OnOpen;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="NoteBookActions.UnregisterCallbacks(INoteBookActions)" />.
+        /// </summary>
+        /// <seealso cref="NoteBookActions.UnregisterCallbacks(INoteBookActions)" />
+        public void RemoveCallbacks(INoteBookActions instance)
+        {
+            if (m_Wrapper.m_NoteBookActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="NoteBookActions.AddCallbacks(INoteBookActions)" />
+        /// <seealso cref="NoteBookActions.RemoveCallbacks(INoteBookActions)" />
+        /// <seealso cref="NoteBookActions.UnregisterCallbacks(INoteBookActions)" />
+        public void SetCallbacks(INoteBookActions instance)
+        {
+            foreach (var item in m_Wrapper.m_NoteBookActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_NoteBookActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="NoteBookActions" /> instance referencing this action map.
+    /// </summary>
+    public NoteBookActions @NoteBook => new NoteBookActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -1936,5 +2096,27 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDrag(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ScrollWheel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnScrollWheel(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "NoteBook" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="NoteBookActions.AddCallbacks(INoteBookActions)" />
+    /// <seealso cref="NoteBookActions.RemoveCallbacks(INoteBookActions)" />
+    public interface INoteBookActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Open" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpen(InputAction.CallbackContext context);
     }
 }

@@ -817,6 +817,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ScrollWheel",
+                    "type": "PassThrough",
+                    "id": "804511af-d3c7-4235-9ae7-d3c396592ca5",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -839,6 +848,45 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Drag",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "315efa02-f32b-4b2c-a17a-751d5c545361",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ScrollWheel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "NoteBook",
+            "id": "db46bc7b-8593-426b-9054-b7ecb43758f7",
+            "actions": [
+                {
+                    "name": "Open",
+                    "type": "Button",
+                    "id": "c470ab13-7f17-4b10-b34a-1cecf3e0d926",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "dbcdae11-efa2-4dd6-92f0-331b11acaaf5",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Open",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

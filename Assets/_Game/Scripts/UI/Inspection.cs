@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
+
 public class Inspection : MonoBehaviour,IActivity
 {
     [SerializeField] private InspectionInputReader m_inputReader;
@@ -8,17 +10,24 @@ public class Inspection : MonoBehaviour,IActivity
     [SerializeField] private InspectableEvent m_onInspect;
     [SerializeField] private IActivityEvent m_onActivity;
     [SerializeField] private BoolEventChannel m_cursorEnable;
+    
+    [Header("Zoom")]
+    [SerializeField] private RawImage m_objectRawImage;
+
+    [SerializeField,Range(0f,1f)] private float m_zoomScaleSensitive;
+    [SerializeField] private float m_zoomScaleFactor = 100f;
+    [SerializeField] private float m_maxScale;
+    [SerializeField] private float m_minScale;
     private void Start()
     {
          m_onInspect.OnEventRaised += Inspect;
+      
          gameObject.SetActive(false);
     }
-
     private void OnDestroy()
     {
         m_onInspect.OnEventRaised -= Inspect;
     }
-
     private void RotateStart(bool enable)
     {
         m_camera.enabled = enable;
@@ -28,9 +37,8 @@ public class Inspection : MonoBehaviour,IActivity
         m_inspectRoot.Rotate(Vector3.up, -rotation.x , Space.World);
         m_inspectRoot.Rotate(Vector3.right, rotation.y, Space.World);
     }
-
-
-    public void Inspect(IInspectable inspectable)
+    
+    private void Inspect(IInspectable inspectable)
     {
         foreach (Transform child in m_inspectRoot)
         {
@@ -38,11 +46,31 @@ public class Inspection : MonoBehaviour,IActivity
             Destroy(child.gameObject);
         }
 
-
         Instantiate(inspectable.GetInspectItem().gameObject, m_inspectRoot);
+        
+        m_camera.orthographicSize = inspectable.GetInspectItem().size;
      
         m_onActivity.Raise(this);
     }
+
+
+    private void Zoom(Vector2 zoom)
+    {
+       
+        RectTransform rectTrans = m_objectRawImage.rectTransform;
+
+      
+        float delta = zoom.y * m_zoomScaleSensitive * m_zoomScaleFactor;
+        
+        float newWidth = rectTrans.sizeDelta.x + delta;
+        float newHeight = rectTrans.sizeDelta.y + delta;
+        
+        newWidth = Mathf.Clamp(newWidth, m_minScale, m_maxScale);
+        newHeight = Mathf.Clamp(newHeight, m_minScale, m_maxScale);
+        
+        rectTrans.sizeDelta = new Vector2(newWidth, newHeight);
+    }
+    
 
     public event Action OnResume;
     public event Action OnPause;
@@ -52,6 +80,7 @@ public class Inspection : MonoBehaviour,IActivity
       OnResume?.Invoke();
       m_inputReader.Rotate += Rotate;
       m_inputReader.DragPressed += RotateStart;
+      m_inputReader.Scroll += Zoom;
       gameObject.SetActive(true);
       m_cursorEnable.Raise(true);
     }
@@ -61,6 +90,7 @@ public class Inspection : MonoBehaviour,IActivity
         OnPause?.Invoke();
         m_inputReader.Rotate -= Rotate;
         m_inputReader.DragPressed -= RotateStart;
+        m_inputReader.Scroll -= Zoom;
         gameObject.SetActive(false);
         m_cursorEnable.Raise(false);
     }
