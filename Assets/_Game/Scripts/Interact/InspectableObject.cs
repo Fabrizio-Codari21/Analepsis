@@ -1,10 +1,9 @@
 using System;
 using UnityEngine;
 
-public class InspectObject : MonoBehaviour,IInspectable
+public class InspectableObject : MonoBehaviour,IInspectable
 {
-    
-    private Interactable _interactable;
+        private Interactable _interactable;
     
     [SerializeField] private Item m_itemReference;
     [SerializeField] private InspectableEvent m_event;
@@ -12,10 +11,10 @@ public class InspectObject : MonoBehaviour,IInspectable
     {
         _interactable = GetComponent<Interactable>();
 
-        _interactable.OnEnd += Inspect;
+        _interactable.OnStart += Inspect;
     }
     
-    private void Inspect()
+    public void Inspect()
     {
         m_event.Raise(this);
     }

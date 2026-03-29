@@ -4,7 +4,8 @@ using UnityEngine.UIElements;
 
 public class ClueInteractable : Interactable
 {
-    public MeshRenderer[] materials;
+    [HideInInspector] public MeshRenderer[] materials;
+    InspectableObject _inspectable;
     Color _color;
 
     public override void Focus()
@@ -25,8 +26,10 @@ public class ClueInteractable : Interactable
         print($"You interacted with {InteractableObject.name}");
         var color = materials[0].material.color;
         foreach (MeshRenderer renderer in materials) renderer.material.color = Color.green;
+        interactText.gameObject.SetActive(false);
 
         ActionTimer.instance.ConsumeActions(actionCost);
+        _inspectable.Inspect();
 
         this.WaitAndThen(timeToWait: 0.2f, () =>
         {
@@ -45,6 +48,7 @@ public class ClueInteractable : Interactable
     void Start()
     {
         materials = GetComponentsInChildren<MeshRenderer>();
+        _inspectable = GetComponent<InspectableObject>();
         _color = materials[0].material.color;
     }
 

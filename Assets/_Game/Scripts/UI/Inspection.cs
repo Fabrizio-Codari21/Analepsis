@@ -30,7 +30,7 @@ public class Inspection : MonoBehaviour,IActivity
     }
 
 
-    private void Inspect(IInspectable inspectable)
+    public void Inspect(IInspectable inspectable)
     {
         foreach (Transform child in m_inspectRoot)
         {
