@@ -347,6 +347,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""0dc13f22-85e7-47e5-8596-237519c7b2ad"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""5538e7da-3cdb-4b1a-b25d-972a855a72c1"",
                     ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
@@ -932,6 +943,33 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""Button"",
+                    ""id"": ""43523a75-1267-48cc-9b43-9fa81b3f0c7a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PlaneRotationDelta"",
+                    ""type"": ""Value"",
+                    ""id"": ""7d5fddd0-36e0-4826-bb8f-f2c4af0adf56"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PlaneRotation"",
+                    ""type"": ""Button"",
+                    ""id"": ""449f5552-8135-4c93-a9ee-5132ceb2a75f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -943,6 +981,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Delta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd20356c-3ac7-45f4-849c-d00f5bd88aa0"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaneRotationDelta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -965,6 +1014,28 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""ScrollWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""873472a5-8710-49fa-b325-813f362846b6"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29d5d89c-d8fb-48f5-b1a4-2cf2a17a9626"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""PlaneRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1091,6 +1162,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Inspection_Delta = m_Inspection.FindAction("Delta", throwIfNotFound: true);
         m_Inspection_Drag = m_Inspection.FindAction("Drag", throwIfNotFound: true);
         m_Inspection_ScrollWheel = m_Inspection.FindAction("ScrollWheel", throwIfNotFound: true);
+        m_Inspection_Exit = m_Inspection.FindAction("Exit", throwIfNotFound: true);
+        m_Inspection_PlaneRotationDelta = m_Inspection.FindAction("PlaneRotationDelta", throwIfNotFound: true);
+        m_Inspection_PlaneRotation = m_Inspection.FindAction("PlaneRotation", throwIfNotFound: true);
         // NoteBook
         m_NoteBook = asset.FindActionMap("NoteBook", throwIfNotFound: true);
         m_NoteBook_Close = m_NoteBook.FindAction("Close", throwIfNotFound: true);
@@ -1698,6 +1772,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Inspection_Delta;
     private readonly InputAction m_Inspection_Drag;
     private readonly InputAction m_Inspection_ScrollWheel;
+    private readonly InputAction m_Inspection_Exit;
+    private readonly InputAction m_Inspection_PlaneRotationDelta;
+    private readonly InputAction m_Inspection_PlaneRotation;
     /// <summary>
     /// Provides access to input actions defined in input action map "Inspection".
     /// </summary>
@@ -1721,6 +1798,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Inspection/ScrollWheel".
         /// </summary>
         public InputAction @ScrollWheel => m_Wrapper.m_Inspection_ScrollWheel;
+        /// <summary>
+        /// Provides access to the underlying input action "Inspection/Exit".
+        /// </summary>
+        public InputAction @Exit => m_Wrapper.m_Inspection_Exit;
+        /// <summary>
+        /// Provides access to the underlying input action "Inspection/PlaneRotationDelta".
+        /// </summary>
+        public InputAction @PlaneRotationDelta => m_Wrapper.m_Inspection_PlaneRotationDelta;
+        /// <summary>
+        /// Provides access to the underlying input action "Inspection/PlaneRotation".
+        /// </summary>
+        public InputAction @PlaneRotation => m_Wrapper.m_Inspection_PlaneRotation;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1756,6 +1845,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @ScrollWheel.started += instance.OnScrollWheel;
             @ScrollWheel.performed += instance.OnScrollWheel;
             @ScrollWheel.canceled += instance.OnScrollWheel;
+            @Exit.started += instance.OnExit;
+            @Exit.performed += instance.OnExit;
+            @Exit.canceled += instance.OnExit;
+            @PlaneRotationDelta.started += instance.OnPlaneRotationDelta;
+            @PlaneRotationDelta.performed += instance.OnPlaneRotationDelta;
+            @PlaneRotationDelta.canceled += instance.OnPlaneRotationDelta;
+            @PlaneRotation.started += instance.OnPlaneRotation;
+            @PlaneRotation.performed += instance.OnPlaneRotation;
+            @PlaneRotation.canceled += instance.OnPlaneRotation;
         }
 
         /// <summary>
@@ -1776,6 +1874,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @ScrollWheel.started -= instance.OnScrollWheel;
             @ScrollWheel.performed -= instance.OnScrollWheel;
             @ScrollWheel.canceled -= instance.OnScrollWheel;
+            @Exit.started -= instance.OnExit;
+            @Exit.performed -= instance.OnExit;
+            @Exit.canceled -= instance.OnExit;
+            @PlaneRotationDelta.started -= instance.OnPlaneRotationDelta;
+            @PlaneRotationDelta.performed -= instance.OnPlaneRotationDelta;
+            @PlaneRotationDelta.canceled -= instance.OnPlaneRotationDelta;
+            @PlaneRotation.started -= instance.OnPlaneRotation;
+            @PlaneRotation.performed -= instance.OnPlaneRotation;
+            @PlaneRotation.canceled -= instance.OnPlaneRotation;
         }
 
         /// <summary>
@@ -2142,6 +2249,27 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnScrollWheel(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Exit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnExit(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PlaneRotationDelta" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPlaneRotationDelta(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PlaneRotation" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPlaneRotation(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "NoteBook" which allows adding and removing callbacks.

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Inspection : MonoBehaviour,IActivity
@@ -9,6 +10,7 @@ public class Inspection : MonoBehaviour,IActivity
     [SerializeField] private Camera m_camera;
     [SerializeField] private InspectableEvent m_onInspect;
     [SerializeField] private IActivityEvent m_onActivity;
+    [SerializeField] private EventChannel m_popEvent;
     [SerializeField] private BoolEventChannel m_cursorEnable;
     
     [Header("Zoom")]
@@ -18,6 +20,7 @@ public class Inspection : MonoBehaviour,IActivity
     [SerializeField] private float m_zoomScaleFactor = 100f;
     [SerializeField] private float m_maxScale;
     [SerializeField] private float m_minScale;
+   [SerializeField] private float m_planeRotationSpeed = 0.2f;
     private void Start()
     {
          m_onInspect.OnEventRaised += Inspect;
@@ -31,13 +34,32 @@ public class Inspection : MonoBehaviour,IActivity
     private void RotateStart(bool enable)
     {
         m_camera.enabled = enable;
+        
     }
     private void Rotate(Vector2 rotation)
     {
         m_inspectRoot.Rotate(Vector3.up, -rotation.x , Space.World);
         m_inspectRoot.Rotate(Vector3.right, rotation.y, Space.World);
     }
-    
+
+
+    private void PlaneRotation(Vector2 delta)
+    {
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        RectTransform rect = m_objectRawImage.rectTransform;
+        Vector2 center = RectTransformUtility.WorldToScreenPoint(null, rect.position);
+        Vector2 fromCenter = (mousePos - center).normalized;
+        float rotationDirection = fromCenter.y * delta.x - fromCenter.x * delta.y;
+        float dragAmount = delta.magnitude;
+        
+        float rotationAmount = -Mathf.Sign(rotationDirection) * dragAmount;
+
+        m_inspectRoot.Rotate(
+            m_camera.transform.forward,
+            rotationAmount *m_planeRotationSpeed,
+            Space.World
+        );
+    }
     private void Inspect(IInspectable inspectable)
     {
         foreach (Transform child in m_inspectRoot)
@@ -57,8 +79,8 @@ public class Inspection : MonoBehaviour,IActivity
         m_onActivity.Raise(this);
     }
     
-
-
+    private void Exit()=> m_popEvent?.Raise();
+    
     private void Zoom(Vector2 zoom)
     {
        
@@ -83,9 +105,12 @@ public class Inspection : MonoBehaviour,IActivity
     public void Resume()
     {
       OnResume?.Invoke();
+      m_inputReader.SetEnable();
       m_inputReader.Rotate += Rotate;
       m_inputReader.DragPressed += RotateStart;
       m_inputReader.Scroll += Zoom;
+      m_inputReader.Exit  += Exit;
+      m_inputReader.PlaneRotate += PlaneRotation;
       gameObject.SetActive(true);
       m_cursorEnable.Raise(true);
     }
@@ -93,9 +118,12 @@ public class Inspection : MonoBehaviour,IActivity
     public void Pause()
     {
         OnPause?.Invoke();
+        m_inputReader.SetEnable(false);
         m_inputReader.Rotate -= Rotate;
         m_inputReader.DragPressed -= RotateStart;
         m_inputReader.Scroll -= Zoom;
+        m_inputReader.Exit  -= Exit;
+        m_inputReader.PlaneRotate -= PlaneRotation;
         gameObject.SetActive(false);
         m_cursorEnable.Raise(false);
     }

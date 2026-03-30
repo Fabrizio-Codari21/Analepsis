@@ -261,6 +261,17 @@
                 },
                 {
                     "name": "",
+                    "id": "0dc13f22-85e7-47e5-8596-237519c7b2ad",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "5538e7da-3cdb-4b1a-b25d-972a855a72c1",
                     "path": "<Keyboard>/tab",
                     "interactions": "",
@@ -846,6 +857,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Exit",
+                    "type": "Button",
+                    "id": "43523a75-1267-48cc-9b43-9fa81b3f0c7a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PlaneRotationDelta",
+                    "type": "Value",
+                    "id": "7d5fddd0-36e0-4826-bb8f-f2c4af0adf56",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "PlaneRotation",
+                    "type": "Button",
+                    "id": "449f5552-8135-4c93-a9ee-5132ceb2a75f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -857,6 +895,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Delta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dd20356c-3ac7-45f4-849c-d00f5bd88aa0",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaneRotationDelta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -879,6 +928,28 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "ScrollWheel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "873472a5-8710-49fa-b325-813f362846b6",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Exit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "29d5d89c-d8fb-48f5-b1a4-2cf2a17a9626",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "PlaneRotation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

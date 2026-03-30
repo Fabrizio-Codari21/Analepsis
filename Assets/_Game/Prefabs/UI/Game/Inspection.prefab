@@ -50,12 +50,14 @@ MonoBehaviour:
   m_camera: {fileID: 7368675787103122820}
   m_onInspect: {fileID: 11400000, guid: 8a44bc8ffce508649842fa4e9bd1f677, type: 2}
   m_onActivity: {fileID: 11400000, guid: 3027f54723217b445909fe93945c6bd2, type: 2}
+  m_popEvent: {fileID: 11400000, guid: 76cb339f73e2d5646ac0696838117b5e, type: 2}
   m_cursorEnable: {fileID: 11400000, guid: e691ca0bdc44b8f4cbd61759a64638cf, type: 2}
   m_objectRawImage: {fileID: 4553551401521413682}
-  m_zoomScaleSensitive: 1
+  m_zoomScaleSensitive: 0.5
   m_zoomScaleFactor: 100
   m_maxScale: 1024
   m_minScale: 512
+  m_planeRotationSpeed: 0.4
 --- !u!1 &201804513920383026
 GameObject:
   m_ObjectHideFlags: 0
@@ -976,7 +978,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.3882353}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.7176471}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -1284,7 +1286,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 900, y: 900}
+  m_SizeDelta: {x: 512, y: 512}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3153209781043799966
 CanvasRenderer:
