@@ -22,17 +22,15 @@ public class DialogueManager : MonoBehaviour,IActivity
     public Color playerTextColor;
     public float playerTalkingSpeed;
     public float responseDelay;
-
     Dialogue _currentDialogue;
 
+
+    #region Screen Event
+    [Header("Event Channel")]
     [SerializeField] private IActivityEvent m_pushEvent;
     [SerializeField] private EventChannel m_popInputEvent;
     [SerializeField] private BoolEventChannel cursorEnable;
-
-    public event Action OnResume;
-    public event Action OnPause;
-    public event Action OnStop;
-
+    #endregion
     private void Awake()
     {
         // Solo tendria que haber una instancia de esto.
@@ -49,8 +47,6 @@ public class DialogueManager : MonoBehaviour,IActivity
         foreach (Transform child in dialogueContainer) Destroy(child.gameObject); 
         m_pushEvent?.Raise(this);
         UpdateDialogue(name, node);
-        
- 
     }
 
     public void UpdateDialogue(string name, DialogueNode node)
@@ -129,9 +125,7 @@ public class DialogueManager : MonoBehaviour,IActivity
             }
         },
         cancelCondition: () => !IsDialogueActive());
-
     }
-
     // Para desactivar y activar la UI de dialogo.
     public void HideDialogue() => dialogueBox.SetActive(false);
     private void ShowDialogue() => dialogueBox.SetActive(true);
@@ -167,9 +161,7 @@ public class DialogueManager : MonoBehaviour,IActivity
     public void EndDialogue()
     {
         m_popInputEvent?.Raise();
-        NotebookManager.instance.SaveLogToNotebook
-            ($"Conversation with {characterName.text} \n - Action {ActionTimer.instance.maxActions - ActionTimer.instance.actionsLeft}", 
-            _currentDialogue.GetLog());
+        NotebookManager.instance.SaveLogToNotebook($"Conversation with {characterName.text} \n - Action {ActionTimer.instance.maxActions - ActionTimer.instance.actionsLeft}", _currentDialogue.GetLog());
 
         print(_currentDialogue.GetLog());
 
@@ -177,23 +169,40 @@ public class DialogueManager : MonoBehaviour,IActivity
 
     }
 
+    #region IActivitye
+
+    
+
+
+    public event Action OnResume;
+    public event Action OnPause;
+    public event Action OnStop;
     public void Resume()
     {
+        OnResume?.Invoke();
         cursorEnable.Raise(true);
     }
 
     public void Pause()
     {
+        OnPause?.Invoke();
         cursorEnable?.Raise(false);
     }
 
     public void Stop()
     {
-       Pause();
+        OnStop?.Invoke();
+        Pause();
     }
 
     public bool CanPopWithKey()
     {
         return false;
     }
+    #endregion
+}
+
+public interface IDialogable
+{
+    
 }

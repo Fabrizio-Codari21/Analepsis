@@ -17,7 +17,7 @@ MonoBehaviour:
   startingNode:
     dialogueText: This is dialog 1. Choose A, B or C.
     responses:
-    - rid: 5638511764854276176
+    - rid: 6279970211429351488
     - rid: 5638511764854276177
     - rid: 5638511764854276178
   references:
@@ -25,12 +25,6 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 5638511764854276176
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: '[Pick option A]'
-        nextNode:
-          rid: 5638511764854276179
     - rid: 5638511764854276177
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -43,37 +37,6 @@ MonoBehaviour:
         responseText: '[Pick option C]'
         nextNode:
           rid: 5638511764854276191
-    - rid: 5638511764854276179
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: You picked A. I like you.
-        responses:
-        - rid: 5638511764854276180
-        - rid: 5638511764854276182
-    - rid: 5638511764854276180
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: 'Thank you! [leave happily]'
-        nextNode:
-          rid: -2
-    - rid: 5638511764854276182
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: Well, I don't like YOU.
-        nextNode:
-          rid: 5638511764854276183
-    - rid: 5638511764854276183
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: :(
-        responses:
-        - rid: 5638511764854276184
-    - rid: 5638511764854276184
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: '[Maybe you should leave...]'
-        nextNode:
-          rid: -2
     - rid: 5638511764854276186
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -146,5 +109,11 @@ MonoBehaviour:
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
         responseText: '[Flee like a coward]'
+        nextNode:
+          rid: -2
+    - rid: 6279970211429351488
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Pick option A]'
         nextNode:
           rid: -2

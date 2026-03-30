@@ -15,7 +15,7 @@ public class ScreenManager : RegulatorSingleton<ScreenManager>
     {
         base.Awake();
         m_pushEvent.OnEventRaised += Push;
-        m_popInputEvent.RegisterListener(Pop);
+        m_popInputEvent.OnEventRaised += Pop;
         m_globalReader.EscapePressed += Escape;
     }
 

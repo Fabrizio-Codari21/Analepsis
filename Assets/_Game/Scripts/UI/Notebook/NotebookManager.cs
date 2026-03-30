@@ -26,6 +26,17 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
     {
         if (!instance) instance = this; else Destroy(gameObject); 
     }
+    
+    private void Start()
+    {
+        CloseNotebook();
+        previousPageButton.onClick.AddListener(() => NextPage(false));
+        nextPageButton.onClick.AddListener(() => NextPage(true));
+
+        inputReader.OpenNotebook += () => activityEvent.Raise(this);
+        inputReaderNoteBook.Close += () => popEvent.Raise();
+    }
+
 
     #region Notebook Controls
     [Header("NOTEBOOK")]
@@ -45,14 +56,12 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
         {
             if (item.Value.gameObject.activeInHierarchy) item.Value.gameObject.SetActive(false);
         }
-
         _notebookPages[page].gameObject.SetActive(true);
         _lastPageOpen = page;
         menuName.text = page.ToString();
 
         foreach (Transform child in logTextContainer) Destroy(child.gameObject);
     }
-
     public void NextPage(bool nextOrPrevious = true)
     {
         if (nextOrPrevious && _lastPageOpen != NotebookPage.Objects) OpenPage(_lastPageOpen + 1);
@@ -60,13 +69,10 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
 
         menuName.text = _lastPageOpen.ToString();
     }
-
     public void CloseNotebook() 
     {
         notebookUI.SetActive(false);
-    
     }
-
     #endregion
 
     #region Log Menu
@@ -151,16 +157,6 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
 
     #endregion
 
-    void Start()
-    {
-        CloseNotebook();
-        previousPageButton.onClick.AddListener(() => NextPage(false));
-        nextPageButton.onClick.AddListener(() => NextPage(true));
-
-        inputReader.OpenNotebook += () => activityEvent.Raise(this);
-
-        inputReaderNoteBook.Close += () => popEvent.Raise();
-    }
 
 
     private void RequestOpen(bool enable)
@@ -170,8 +166,6 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
         if(enable) OpenPage(NotebookPage.Log);
         else CloseNotebook();
         isEnable = enable;
-
-
     }
 
 
