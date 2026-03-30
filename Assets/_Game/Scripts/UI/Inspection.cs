@@ -21,6 +21,8 @@ public class Inspection : MonoBehaviour,IActivity
     [SerializeField] private float m_maxScale;
     [SerializeField] private float m_minScale;
    [SerializeField] private float m_planeRotationSpeed = 0.2f;
+   
+   private Vector2 _lastDirectionFromCenter;
     private void Start()
     {
          m_onInspect.OnEventRaised += Inspect;
@@ -34,6 +36,7 @@ public class Inspection : MonoBehaviour,IActivity
     private void RotateStart(bool enable)
     {
         m_camera.enabled = enable;
+        if (enable) { BeginPlaneRotation(); }
         
     }
     private void Rotate(Vector2 rotation)
@@ -48,17 +51,20 @@ public class Inspection : MonoBehaviour,IActivity
         Vector2 mousePos = Mouse.current.position.ReadValue();
         RectTransform rect = m_objectRawImage.rectTransform;
         Vector2 center = RectTransformUtility.WorldToScreenPoint(null, rect.position);
-        Vector2 fromCenter = (mousePos - center).normalized;
-        float rotationDirection = fromCenter.y * delta.x - fromCenter.x * delta.y;
-        float dragAmount = delta.magnitude;
+        Vector2 currentDirectionFromCenter = (mousePos - center).normalized;
         
-        float rotationAmount = -Mathf.Sign(rotationDirection) * dragAmount;
+        float signedAngle = Vector2.SignedAngle(
+            _lastDirectionFromCenter,
+            currentDirectionFromCenter
+        );
 
         m_inspectRoot.Rotate(
             m_camera.transform.forward,
-            rotationAmount *m_planeRotationSpeed,
+            signedAngle,
             Space.World
         );
+        
+        _lastDirectionFromCenter = currentDirectionFromCenter;
     }
     private void Inspect(IInspectable inspectable)
     {
@@ -98,6 +104,14 @@ public class Inspection : MonoBehaviour,IActivity
         rectTrans.sizeDelta = new Vector2(newWidth, newHeight);
     }
     
+    
+    private void BeginPlaneRotation()
+    {
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        RectTransform rect = m_objectRawImage.rectTransform;
+        Vector2 center = RectTransformUtility.WorldToScreenPoint(null, rect.position);
+        _lastDirectionFromCenter = (mousePos - center).normalized;
+    }
 
     public event Action OnResume;
     public event Action OnPause;

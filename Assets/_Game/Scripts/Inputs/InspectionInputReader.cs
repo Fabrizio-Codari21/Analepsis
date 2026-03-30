@@ -6,12 +6,15 @@ public class InspectionInputReader : InputReader, InputActions.IInspectionAction
 {
     
     public event Action<Vector2> Rotate =  delegate { };
-    public event Action<Vector2> PlaneRotate =  delegate { };
+    public event Action<Vector2> PlaneRotate = delegate { };
+
+   
     public event Action<bool> DragPressed = delegate { };
     
     public event Action<Vector2>  Scroll =  delegate { };
     
     public event Action Exit = delegate { };
+    
     protected override void SetCallback(InputActions inputAction)
     {
         inputAction?.Inspection.SetCallbacks(this);
@@ -47,16 +50,23 @@ public class InspectionInputReader : InputReader, InputActions.IInspectionAction
 
     public void OnPlaneRotationDelta(InputAction.CallbackContext context)
     {
-        
         if (!InputAction.Inspection.PlaneRotation.IsPressed()) return;
         if (!context.performed) return;
+
         Vector2 delta = context.ReadValue<Vector2>();
         PlaneRotate?.Invoke(delta);
     }
 
     public void OnPlaneRotation(InputAction.CallbackContext context)
     {
-        if(context.started)DragPressed?.Invoke(true);
-        if (context.canceled)DragPressed?.Invoke(false);
+        if (context.started)
+        {
+            DragPressed?.Invoke(true);
+        }
+
+        if (context.canceled)
+        {
+            DragPressed?.Invoke(false);
+        }
     }
 }
