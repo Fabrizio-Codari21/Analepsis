@@ -49,6 +49,7 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
 
         _notebookPages[page].gameObject.SetActive(true);
         _lastPageOpen = page;
+        menuName.text = page.ToString();
 
         foreach (Transform child in logTextContainer) Destroy(child.gameObject);
     }
@@ -57,8 +58,8 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
     {
         if (nextOrPrevious && _lastPageOpen != NotebookPage.Objects) OpenPage(_lastPageOpen + 1);
         else if(!nextOrPrevious && _lastPageOpen != NotebookPage.Log) OpenPage(_lastPageOpen - 1);
-        menuName.text = _lastPageOpen.ToString();
 
+        menuName.text = _lastPageOpen.ToString();
     }
 
     public void CloseNotebook() 
@@ -163,7 +164,7 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) 
+        if (Input.GetKeyDown(KeyCode.Tab)) 
         {
             if (!notebookUI.activeInHierarchy) OpenPage(NotebookPage.Log); else CloseNotebook();
         }
