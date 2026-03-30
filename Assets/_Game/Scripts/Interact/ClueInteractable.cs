@@ -27,13 +27,12 @@ public class ClueInteractable : Interactable
     
     public override void InteractStart()
     {
+        ActionTimer.instance.ConsumeActions(actionCost);
         base.InteractStart();
         print($"You interacted with {InteractableObject.name}");
         var color = materials[0].material.color;
         foreach (MeshRenderer renderer in materials) renderer.material.color = Color.green;
         interactText.gameObject.SetActive(false);
-
-        ActionTimer.instance.ConsumeActions(actionCost);
 
         this.WaitAndThen(timeToWait: 0.2f, () =>
         {

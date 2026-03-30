@@ -361,7 +361,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000006345122}
+  m_AnchoredPosition: {x: 0, y: 0.0009335967}
   m_SizeDelta: {x: 150, y: 300}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &123305951
@@ -659,7 +659,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 697996402}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9936362
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -839,7 +839,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000042107866}
+  m_AnchoredPosition: {x: 0, y: 0.0009430184}
   m_SizeDelta: {x: 150, y: 300}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &257820418
@@ -901,7 +901,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000042107866}
+  m_AnchoredPosition: {x: 0, y: 0.0009430184}
   m_SizeDelta: {x: 150, y: 300}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &316268905
@@ -1662,7 +1662,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1634188446}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9936362
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2086,13 +2086,33 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: _clueRegistry
+    - Name: _dialogueLogs
       Entry: 7
-      Data: 2|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Clue,
-        Assembly-CSharp]], mscorlib
+      Data: 2|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
       Data: 3|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _clueRegistry
+      Entry: 7
+      Data: 4|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Clue,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 5|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -2121,7 +2141,7 @@ MonoBehaviour:
   clueListContainer: {fileID: 1424255785}
   clueInfoContainer: {fileID: 257820417}
   clueButton: {fileID: 3077669701394538097, guid: dad220a75f2ee124892549e7131fb4c2, type: 3}
-  clueText: {fileID: 5437677229821435208, guid: 6845b426a437fe94db7382b7201a8c28, type: 3}
+  clueText: {fileID: 5437677229821435208, guid: 5ac84761c4473544799be4e3c44c3879, type: 3}
 --- !u!4 &703983305
 Transform:
   m_ObjectHideFlags: 0
@@ -3701,7 +3721,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1939870387}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9936362
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3915,7 +3935,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000042107866}
+  m_AnchoredPosition: {x: 0, y: 0.0009430184}
   m_SizeDelta: {x: 100, y: 300}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1424255786
@@ -3977,7 +3997,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000042107866}
+  m_AnchoredPosition: {x: 0, y: 0.0009430184}
   m_SizeDelta: {x: 100, y: 300}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1435804512
@@ -4379,7 +4399,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 645937418}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9936362
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4816,7 +4836,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 489334128}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99010086
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

@@ -83,7 +83,7 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
     public Color logColor;
     public float logTextSpeed;
 
-    [ReadOnly] Dictionary<string, string> _dialogueLogs = new();
+    [OdinSerialize] Dictionary<string, string> _dialogueLogs = new();
 
     public void SaveLogToNotebook(string dialogueID, string log) 
     {
@@ -149,6 +149,9 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
             text.color = logColor;
         }
         // instanciar render texture/imagen del objeto, a definir
+        Button closeButton = Instantiate(logButton, clueInfoContainer);
+        closeButton.GetComponentInChildren<TextMeshProUGUI>().text = "[Close Clues]";
+        closeButton.onClick.AddListener(() => CloseLog(clueInfoContainer));
     }
 
     #endregion

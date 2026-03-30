@@ -47,8 +47,12 @@ public class Inspection : MonoBehaviour,IActivity
         }
         var item = inspectable.GetInspectItem();
         Instantiate(item.gameObject,m_inspectRoot);
-        Debug.Log("3");
-        NotebookManager.instance.SaveClueToNotebook(item.clueInfo.clueId, item.clueInfo);
+        //Debug.Log("3");
+       
+        NotebookManager.instance.SaveClueToNotebook
+            ($"{item.clueInfo.clueId} \n - Action {ActionTimer.instance.maxActions - ActionTimer.instance.actionsLeft}",
+            item.clueInfo);
+
         m_camera.orthographicSize = item.size;
         m_onActivity.Raise(this);
     }
