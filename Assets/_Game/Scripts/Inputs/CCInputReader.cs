@@ -10,6 +10,8 @@ public class CCInputReader : InputReader,InputActions.IPlayerActions
     
     public event Action InteractPressed = delegate { };
     public event Action InteractReleased = delegate { };
+
+    public event Action OpenNotebook = delegate { };
     public void OnMove(InputAction.CallbackContext context)
     {
         if (context.started) return;
@@ -39,5 +41,14 @@ public class CCInputReader : InputReader,InputActions.IPlayerActions
     {
        if(enable) InputAction?.Player.Enable();
        else InputAction?.Player.Disable();
+    }
+
+    public void OnOpenNotebook(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+       
+            OpenNotebook?.Invoke();
+        }
     }
 }

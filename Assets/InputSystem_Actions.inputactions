@@ -60,6 +60,15 @@
                     "processors": "",
                     "interactions": "Hold",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenNotebook",
+                    "type": "Button",
+                    "id": "83ad6ad9-3d62-4f46-ba31-329a97b267c7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -247,6 +256,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5538e7da-3cdb-4b1a-b25d-972a855a72c1",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenNotebook",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -869,7 +889,7 @@
             "id": "db46bc7b-8593-426b-9054-b7ecb43758f7",
             "actions": [
                 {
-                    "name": "Open",
+                    "name": "Close",
                     "type": "Button",
                     "id": "c470ab13-7f17-4b10-b34a-1cecf3e0d926",
                     "expectedControlType": "",
@@ -882,11 +902,11 @@
                 {
                     "name": "",
                     "id": "dbcdae11-efa2-4dd6-92f0-331b11acaaf5",
-                    "path": "",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Open",
+                    "action": "Close",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

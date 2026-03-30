@@ -9,10 +9,12 @@ using Sirenix.Serialization;
 public class NotebookManager : SerializedMonoBehaviour, IActivity
 {
     public static NotebookManager instance;
-
     public CCInputReader inputReader;
     public BoolEventChannel enableCursor;
-
+    [SerializeField] private NoteBookInputReader inputReaderNoteBook;
+    [SerializeField] private IActivityEvent activityEvent;
+    [SerializeField] private EventChannel popEvent;
+    private bool isEnable;
     public enum NotebookPage
     {
         Default,
@@ -38,11 +40,7 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
     {
         if (page == NotebookPage.Default && _lastPageOpen != default) page = _lastPageOpen;
         if (!notebookUI.activeInHierarchy) notebookUI.SetActive(true);
-        inputReader.SetEnable(false);
-        enableCursor.Raise(true);
-        //Cursor.lockState = CursorLockMode.None;
-        //Cursor.visible = true;
-
+      
         foreach (KeyValuePair<NotebookPage, NotebookMenu> item in _notebookPages)
         {
             if (item.Value.gameObject.activeInHierarchy) item.Value.gameObject.SetActive(false);
@@ -66,10 +64,7 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
     public void CloseNotebook() 
     {
         notebookUI.SetActive(false);
-        inputReader.SetEnable(true);
-        enableCursor.Raise(false);
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
+    
     }
 
     #endregion
@@ -161,14 +156,22 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
         CloseNotebook();
         previousPageButton.onClick.AddListener(() => NextPage(false));
         nextPageButton.onClick.AddListener(() => NextPage(true));
+
+        inputReader.OpenNotebook += () => activityEvent.Raise(this);
+
+        inputReaderNoteBook.Close += () => popEvent.Raise();
     }
 
-    void Update()
+
+    private void RequestOpen(bool enable)
     {
-        if (Input.GetKeyDown(KeyCode.Tab)) 
-        {
-            if (!notebookUI.activeInHierarchy) OpenPage(NotebookPage.Log); else CloseNotebook();
-        }
+        if(enable == isEnable) return;
+
+        if(enable) OpenPage(NotebookPage.Log);
+        else CloseNotebook();
+        isEnable = enable;
+
+
     }
 
 
@@ -180,16 +183,25 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
     public void Resume()
     {
         OnResume?.Invoke();
+
+        RequestOpen(true);
+        enableCursor.Raise(true);
+
+        inputReaderNoteBook.SetEnable();
     }
 
     public void Pause()
     {
         OnPause?.Invoke();
+        RequestOpen(false);
+        enableCursor.Raise(false);
+        inputReaderNoteBook.SetEnable(false);
     }
 
     public void Stop()
     {
         OnStop?.Invoke();
+        Pause();
     }
     #endregion
 }

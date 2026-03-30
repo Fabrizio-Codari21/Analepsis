@@ -146,6 +146,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Hold"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenNotebook"",
+                    ""type"": ""Button"",
+                    ""id"": ""83ad6ad9-3d62-4f46-ba31-329a97b267c7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -333,6 +342,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5538e7da-3cdb-4b1a-b25d-972a855a72c1"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenNotebook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -955,7 +975,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""id"": ""db46bc7b-8593-426b-9054-b7ecb43758f7"",
             ""actions"": [
                 {
-                    ""name"": ""Open"",
+                    ""name"": ""Close"",
                     ""type"": ""Button"",
                     ""id"": ""c470ab13-7f17-4b10-b34a-1cecf3e0d926"",
                     ""expectedControlType"": """",
@@ -968,11 +988,11 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""dbcdae11-efa2-4dd6-92f0-331b11acaaf5"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Open"",
+                    ""action"": ""Close"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1050,6 +1070,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_OpenNotebook = m_Player.FindAction("OpenNotebook", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1072,7 +1093,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Inspection_ScrollWheel = m_Inspection.FindAction("ScrollWheel", throwIfNotFound: true);
         // NoteBook
         m_NoteBook = asset.FindActionMap("NoteBook", throwIfNotFound: true);
-        m_NoteBook_Open = m_NoteBook.FindAction("Open", throwIfNotFound: true);
+        m_NoteBook_Close = m_NoteBook.FindAction("Close", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -1257,6 +1278,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_OpenNotebook;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1280,6 +1302,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Interact".
         /// </summary>
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/OpenNotebook".
+        /// </summary>
+        public InputAction @OpenNotebook => m_Wrapper.m_Player_OpenNotebook;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1315,6 +1341,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @OpenNotebook.started += instance.OnOpenNotebook;
+            @OpenNotebook.performed += instance.OnOpenNotebook;
+            @OpenNotebook.canceled += instance.OnOpenNotebook;
         }
 
         /// <summary>
@@ -1335,6 +1364,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @OpenNotebook.started -= instance.OnOpenNotebook;
+            @OpenNotebook.performed -= instance.OnOpenNotebook;
+            @OpenNotebook.canceled -= instance.OnOpenNotebook;
         }
 
         /// <summary>
@@ -1781,7 +1813,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     // NoteBook
     private readonly InputActionMap m_NoteBook;
     private List<INoteBookActions> m_NoteBookActionsCallbackInterfaces = new List<INoteBookActions>();
-    private readonly InputAction m_NoteBook_Open;
+    private readonly InputAction m_NoteBook_Close;
     /// <summary>
     /// Provides access to input actions defined in input action map "NoteBook".
     /// </summary>
@@ -1794,9 +1826,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public NoteBookActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "NoteBook/Open".
+        /// Provides access to the underlying input action "NoteBook/Close".
         /// </summary>
-        public InputAction @Open => m_Wrapper.m_NoteBook_Open;
+        public InputAction @Close => m_Wrapper.m_NoteBook_Close;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1823,9 +1855,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_NoteBookActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_NoteBookActionsCallbackInterfaces.Add(instance);
-            @Open.started += instance.OnOpen;
-            @Open.performed += instance.OnOpen;
-            @Open.canceled += instance.OnOpen;
+            @Close.started += instance.OnClose;
+            @Close.performed += instance.OnClose;
+            @Close.canceled += instance.OnClose;
         }
 
         /// <summary>
@@ -1837,9 +1869,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="NoteBookActions" />
         private void UnregisterCallbacks(INoteBookActions instance)
         {
-            @Open.started -= instance.OnOpen;
-            @Open.performed -= instance.OnOpen;
-            @Open.canceled -= instance.OnOpen;
+            @Close.started -= instance.OnClose;
+            @Close.performed -= instance.OnClose;
+            @Close.canceled -= instance.OnClose;
         }
 
         /// <summary>
@@ -1981,6 +2013,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInteract(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OpenNotebook" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenNotebook(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
@@ -2112,11 +2151,11 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     public interface INoteBookActions
     {
         /// <summary>
-        /// Method invoked when associated input action "Open" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Close" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnOpen(InputAction.CallbackContext context);
+        void OnClose(InputAction.CallbackContext context);
     }
 }
