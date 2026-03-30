@@ -13,6 +13,7 @@ public class Interacter : MonoBehaviour
 
     private Camera _camera;
     private CcInputHandler _inputHandler;
+
     
     
     private IInteractable _lastInteractable;
@@ -36,7 +37,7 @@ public class Interacter : MonoBehaviour
     {
         _inputHandler.InteractPressed -= StartInteract;
         _inputHandler.InteractReleased -= EndInteract; 
-        
+   
 
     }
 
@@ -120,11 +121,13 @@ public class Interacter : MonoBehaviour
     private void Resume()
     {
         _ui.gameObject.SetActive(true);
+        enabled = true;
     }
 
     private void Pause()
     {
         _ui.gameObject?.SetActive(false);
+        enabled = false;
     }
 
     private void Stop()
