@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 
 public class NotebookManager : SerializedMonoBehaviour, IActivity
 {
@@ -127,17 +128,14 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
     public Button clueButton;
     public TextMeshProUGUI clueText;
 
-    Dictionary<string, Clue> _clueRegistry = new();
+    [OdinSerialize] private Dictionary<string, Clue> _clueRegistry = new();
 
-    public Action SaveClueToNotebook(string clueID, Clue clue)
+    public void SaveClueToNotebook(string clueID, Clue clue)
     {
-        return () =>
-        {
-            _clueRegistry.Add(clueID, clue);
-            Button button = Instantiate(clueButton, clueListContainer);
-            button.GetComponent<TextMeshProUGUI>().text = clueID;
-            button.onClick.AddListener(() => ShowClues(clueID));
-        };
+        _clueRegistry.TryAdd(clueID, clue);
+        Button button = Instantiate(clueButton, clueListContainer);
+        button.GetComponentInChildren<TextMeshProUGUI>().text = clueID;
+        button.onClick.AddListener(() => ShowClues(clueID));
     }
 
     public void ShowClues(string clueID)

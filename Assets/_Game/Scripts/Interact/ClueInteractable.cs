@@ -6,7 +6,6 @@ public class ClueInteractable : Interactable
 {
     [HideInInspector] public MeshRenderer[] materials;
     public string clueID;
-    InspectableObject _inspectable;
     Color _color;
 
     public override void Focus()
@@ -19,18 +18,22 @@ public class ClueInteractable : Interactable
         interactText.text = $"Inspect {InteractableObject.name}? \n (Costs {actionCost} action{plural})";
         interactText.gameObject.SetActive(true);
     }
-
-    public override void InteractEnd() {/*por ahora no se usa*/}
-
+    
+    private void Start()
+    {
+        materials = GetComponentsInChildren<MeshRenderer>();
+        _color = materials[0].material.color;
+    }
+    
     public override void InteractStart()
     {
+        base.InteractStart();
         print($"You interacted with {InteractableObject.name}");
         var color = materials[0].material.color;
         foreach (MeshRenderer renderer in materials) renderer.material.color = Color.green;
         interactText.gameObject.SetActive(false);
 
         ActionTimer.instance.ConsumeActions(actionCost);
-        _inspectable.Inspect();
 
         this.WaitAndThen(timeToWait: 0.2f, () =>
         {
@@ -46,12 +49,7 @@ public class ClueInteractable : Interactable
         interactText.gameObject.SetActive(false);
     }
 
-    void Start()
-    {
-        materials = GetComponentsInChildren<MeshRenderer>();
-        _inspectable = GetComponent<InspectableObject>();
-        _color = materials[0].material.color;
-    }
+ 
 
     void FixedUpdate()
     {

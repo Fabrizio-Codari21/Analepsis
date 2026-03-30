@@ -45,14 +45,14 @@ public class Inspection : MonoBehaviour,IActivity
             child.SetParent(null); 
             Destroy(child.gameObject);
         }
-
-        var item = Instantiate(inspectable.GetInspectItem(), m_inspectRoot);
-        if(NotebookManager.instance) OnPause += NotebookManager.instance.SaveClueToNotebook(item.clueInfo.clueId, item.clueInfo);
-        
-        m_camera.orthographicSize = inspectable.GetInspectItem().size;
-     
+        var item = inspectable.GetInspectItem();
+        Instantiate(item.gameObject,m_inspectRoot);
+        Debug.Log("3");
+        NotebookManager.instance.SaveClueToNotebook(item.clueInfo.clueId, item.clueInfo);
+        m_camera.orthographicSize = item.size;
         m_onActivity.Raise(this);
     }
+    
 
 
     private void Zoom(Vector2 zoom)
