@@ -105,8 +105,11 @@ public class Inspection : MonoBehaviour,IActivity
         OnStop?.Invoke();
         Pause();
     }
-    
-    
+
+    public bool CanPopWithKey()
+    {
+       return true;
+    }
 }
 
 

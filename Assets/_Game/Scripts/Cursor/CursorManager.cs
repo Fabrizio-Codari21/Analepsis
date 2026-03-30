@@ -1,8 +1,6 @@
-using System.Collections.Generic;
+
 using UnityEngine;
 using PrimeTween;
-using Sirenix.OdinInspector.Editor;
-using Sirenix.Serialization;
 
 public class CursorManager : PersistentSingleton<CursorManager>
 {
@@ -17,6 +15,8 @@ public class CursorManager : PersistentSingleton<CursorManager>
     {
         m_cursorEnableChannel.OnEventRaised += CursorEnable;
         m_cursorAnimationChannel.OnEventRaised += PlayCursor;
+
+        CursorEnable(false);
     }
     private void CursorEnable(bool enable)
     {

@@ -3,8 +3,9 @@ using UnityEngine.UI;
 using UnityEngine;
 using System.Linq;
 using System.ComponentModel;
+using System;
 
-public class DialogueManager : MonoBehaviour
+public class DialogueManager : MonoBehaviour,IActivity
 {
     public static DialogueManager instance {  get; private set; }
 
@@ -26,16 +27,19 @@ public class DialogueManager : MonoBehaviour
 
     [SerializeField] private IActivityEvent m_pushEvent;
     [SerializeField] private EventChannel m_popInputEvent;
-    IActivity activity;
+    [SerializeField] private BoolEventChannel cursorEnable;
+
+    public event Action OnResume;
+    public event Action OnPause;
+    public event Action OnStop;
 
     private void Awake()
     {
         // Solo tendria que haber una instancia de esto.
         if (!instance) instance = this; else Destroy(gameObject);
         HideDialogue();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        activity = GetComponent<IActivity>();
+
+      
     }
 
     // Empieza el dialogo con un cierto nombre de personaje y nodo
@@ -43,7 +47,7 @@ public class DialogueManager : MonoBehaviour
     {
         ShowDialogue();
         foreach (Transform child in dialogueContainer) Destroy(child.gameObject); 
-        m_pushEvent?.Raise(activity);
+        m_pushEvent?.Raise(this);
         UpdateDialogue(name, node);
         
  
@@ -170,8 +174,26 @@ public class DialogueManager : MonoBehaviour
         print(_currentDialogue.GetLog());
 
         HideDialogue();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+
     }
 
+    public void Resume()
+    {
+        cursorEnable.Raise(true);
+    }
+
+    public void Pause()
+    {
+        cursorEnable?.Raise(false);
+    }
+
+    public void Stop()
+    {
+       Pause();
+    }
+
+    public bool CanPopWithKey()
+    {
+        return false;
+    }
 }

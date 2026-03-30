@@ -203,5 +203,10 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
         OnStop?.Invoke();
         Pause();
     }
+
+    public bool CanPopWithKey()
+    {
+      return true;
+    }
     #endregion
 }

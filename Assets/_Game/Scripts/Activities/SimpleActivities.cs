@@ -7,6 +7,11 @@ public class SimpleActivities : MonoBehaviour, IActivity
     public event Action OnPause;
     public event Action OnStop;
 
+    public bool CanPopWithKey()
+    {
+        return true;
+    }
+
     void IActivity.Pause()
     {
        OnPause?.Invoke();

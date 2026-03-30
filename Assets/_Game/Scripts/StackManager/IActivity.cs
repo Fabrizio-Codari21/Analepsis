@@ -11,4 +11,6 @@ public interface IActivity
 
     public void Stop();
 
+    public bool CanPopWithKey();
+
 }

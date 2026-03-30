@@ -8,6 +8,8 @@ public class StackManager<T> where T : IActivity
 {
     [ShowInInspector,ReadOnly] private readonly Stack<T> _stack = new Stack<T>();
 
+    public T Current => _stack.Peek();
+
     public void Push(T item)
     {
      

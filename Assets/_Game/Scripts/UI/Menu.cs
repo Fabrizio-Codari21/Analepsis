@@ -8,7 +8,11 @@ public class Menu : MonoBehaviour,IActivity
     [SerializeField] private Button m_button;
     [SerializeField] private EventChannel m_popEvent;
     [SerializeField] private BoolEventChannel m_cursorEnableChannel;
-    
+
+    public bool CanPopWithKey() => m_canPop;
+
+    [SerializeField] private bool m_canPop;
+
     public event Action OnResume;
     public event Action OnPause;
     public event Action OnStop;
