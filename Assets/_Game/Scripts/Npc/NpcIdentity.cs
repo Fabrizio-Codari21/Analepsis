@@ -7,5 +7,7 @@ public class NpcIdentity : ScriptableObject
     
     public SerializableGuid  npcGuid = SerializableGuid.NewGuid();
     
-    
 }
+
+
+

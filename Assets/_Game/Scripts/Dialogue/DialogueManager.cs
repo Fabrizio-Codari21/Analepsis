@@ -23,8 +23,7 @@ public class DialogueManager : MonoBehaviour,IActivity
     public float playerTalkingSpeed;
     public float responseDelay;
     Dialogue _currentDialogue;
-
-
+    
     #region Screen Event
     [Header("Event Channel")]
     [SerializeField] private IActivityEvent m_pushEvent;
@@ -37,7 +36,6 @@ public class DialogueManager : MonoBehaviour,IActivity
         if (!instance) instance = this; else Destroy(gameObject);
         HideDialogue();
 
-      
     }
 
     // Empieza el dialogo con un cierto nombre de personaje y nodo
@@ -55,7 +53,8 @@ public class DialogueManager : MonoBehaviour,IActivity
 
         // Sumamos un texto a la UI.
         var dialogue = Instantiate(dialogueText, dialogueContainer);
-        dialogue.text = "- "; BuildText(dialogue, node.dialogueText, _currentDialogue.characterTalkingSpeed);
+        dialogue.text = "-"; 
+        BuildText(dialogue, node.dialogueText, _currentDialogue.characterTalkingSpeed);
         dialogue.color = _currentDialogue.characterTextColor;
 
         _currentDialogue.AddToLog(name, node.dialogueText);
@@ -200,9 +199,4 @@ public class DialogueManager : MonoBehaviour,IActivity
         return false;
     }
     #endregion
-}
-
-public interface IDialogable
-{
-    
 }

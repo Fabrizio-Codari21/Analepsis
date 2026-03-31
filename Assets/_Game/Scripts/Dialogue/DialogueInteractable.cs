@@ -44,7 +44,6 @@ public class DialogueInteractable : Interactable
         materials = GetComponentsInChildren<MeshRenderer>();
         _color = materials[0].material.color;
     }
-    
     public void SpeakTo()
     {
        
@@ -58,7 +57,6 @@ public class DialogueInteractable : Interactable
     
         ActionTimer.instance.ConsumeActions(actionCost);
     }
-
 }
 
 

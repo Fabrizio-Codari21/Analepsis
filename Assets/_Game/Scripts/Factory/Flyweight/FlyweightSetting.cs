@@ -3,6 +3,8 @@ using UnityEngine;
 public abstract class FlyweightSetting : ScriptableObject
 {
     public GameObject prefab;
+    public int defaultCapacity = 10;
+    public int maxPoolSize = 100;
     public virtual IFlyweight Create()
     {
         if (prefab == null)
@@ -18,16 +20,15 @@ public abstract class FlyweightSetting : ScriptableObject
         var go = Instantiate(prefab);
         go.SetActive(false);
         var fw = go.GetComponent<IFlyweight>();
-        fw.Setting = this;
         return fw;
     }
-
     public virtual void OnGet(IFlyweight f)
     {
-        f.GO.SetActive(true);
-    } 
-    
-    public virtual void OnRelease(IFlyweight  f) => f.GO.SetActive(false);
-    
-    public virtual void OnDestroyPoolObject(IFlyweight f) => Destroy(f.GO);
+        f.OnSpawn();
+    }
+
+    public virtual void OnRelease(IFlyweight f)
+    {
+      f.OnDespawn();  
+    }
 }
