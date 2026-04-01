@@ -59,6 +59,14 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: Finish A
-        responses: []
+        responses:
+        - rid: 8982846198710272105
         isRootNode: 0
         editorPosition: {x: 894.4002, y: -15.15004}
+    - rid: 8982846198710272105
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: New Response
+        nextNode:
+          rid: -2
+        editorPosition: {x: 1201.7501, y: -39.5}
