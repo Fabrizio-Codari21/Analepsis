@@ -11,16 +11,12 @@ public class Dialogue : ScriptableObject
     [Header("CHARACTER SPEECH")]
     public Color characterTextColor;
     public float characterTalkingSpeed = 2;
-
     [Space(20)]
     [Header("DIALOGUE")]
     public DialogueNode startingNode;
     [ReadOnly] string _dialogueLog;
     //public List<DialogueNode> dialogueNodes;
-
-    public void AddToLog(string speakerName, string newLine) => 
-        _dialogueLog += (_dialogueLog != "" ? "\n" : "")  + $"{speakerName}: - {newLine}";
-
+    public void AddToLog(string speakerName, string newLine) => _dialogueLog += (_dialogueLog != "" ? "\n" : "")  + $"{speakerName}: - {newLine}";
     public void DeleteLog() => _dialogueLog = "";
     public string GetLog() => _dialogueLog;
 

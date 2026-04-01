@@ -5,7 +5,11 @@ public abstract class FactoryObject : MonoBehaviour, IFlyweight
 {
     
     public event Action<IFlyweight> OnReleaseRequested;
-    public abstract void OnSpawn();
+
+    public virtual void OnSpawn()
+    {
+        gameObject.SetActive(true);   
+    }
     public void OnDespawn()
     {
         OnReleaseRequested?.Invoke(this);

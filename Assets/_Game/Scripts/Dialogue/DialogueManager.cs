@@ -50,7 +50,6 @@ public class DialogueManager : MonoBehaviour,IActivity
     public void UpdateDialogue(string name, DialogueNode node)
     {
         if(characterName.text != name) characterName.text = name;
-
         // Sumamos un texto a la UI.
         var dialogue = Instantiate(dialogueText, dialogueContainer);
         dialogue.text = "-"; 

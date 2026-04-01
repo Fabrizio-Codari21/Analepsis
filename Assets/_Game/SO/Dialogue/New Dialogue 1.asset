@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
+  m_Name: New Dialogue 1
+  m_EditorClassIdentifier: 
+  characterTextColor: {r: 0, g: 0, b: 0, a: 0}
+  characterTalkingSpeed: 2
+  startingNode:
+    dialogueText: fsadfsd
+    responses:
+    - rid: 8982846198710272093
+    isRootNode: 1
+    editorPosition: {x: -249, y: 178}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8982846198710272093
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: New Response
+        nextNode:
+          rid: 8982846198710272094
+        editorPosition: {x: 114, y: 111}
+    - rid: 8982846198710272094
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 
+        responses: []
+        isRootNode: 0
+        editorPosition: {x: 518, y: 81}

@@ -33,7 +33,6 @@ public class Npc : MonoBehaviour,INpc
    }
    public Dialogue Dialogue { get; private set; }
    public Dialogue NewDialogue(Dialogue dialogue) => Dialogue = dialogue;
-
    public NpcIdentity ID  {
       get => m_npcIdentity;
       set => m_npcIdentity = value;
