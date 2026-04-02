@@ -19,23 +19,34 @@ public class DynamicText : FactoryUIObject
         m_text.text = text;
         m_text.maxVisibleCharacters = 0;
     }
-    public async UniTask PlayTypeWriterEffect(string text = null)
+    public async UniTask PlayTypeWriterEffect(string text = null,CancellationToken externalToken = default)
     {
         Cancel();
-        m_text.text = text ?? string.Empty;
+
+        if (text != null)
+            m_text.text = text;
+
+        await UniTask.Yield();
+        m_text.maxVisibleCharacters = 0;
         _cts = new CancellationTokenSource();
-        int totalChars = m_text.text.Length;
+        var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, externalToken);
+        var token = linkedCts.Token;
+        int totalChars = m_text.textInfo.characterCount;
         try
         {
             for (int i = 1; i <= totalChars; i++)
             {
+                token.ThrowIfCancellationRequested();
+
                 m_text.maxVisibleCharacters = i;
-                int delay = Mathf.RoundToInt(1000f / m_charsPerSecond);
-                await UniTask.Delay(delay, cancellationToken: _cts.Token);
+
+                await UniTask.Delay(
+                    TimeSpan.FromSeconds(1f / m_charsPerSecond),
+                    cancellationToken: token);
             }
         }
         catch (OperationCanceledException)
-        { 
+        {
             m_text.maxVisibleCharacters = totalChars;
         }
     }

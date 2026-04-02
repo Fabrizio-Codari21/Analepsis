@@ -29,6 +29,6 @@ public abstract class FlyweightSetting : ScriptableObject
 
     public virtual void OnRelease(IFlyweight f)
     {
-      f.OnDespawn();  
+      f.Despawn();  
     }
 }

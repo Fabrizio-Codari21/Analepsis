@@ -11,20 +11,18 @@ public class FlyweightFactory : Singleton<FlyweightFactory>
     {
         if (_pools.TryGetValue(setting, out var pool)) return pool;
         pool = new ObjectPool<IFlyweight>(
-            () =>
+            createFunc: () =>
             {
-                var fw = setting.Create();
-                fw.OnReleaseRequested += Return;
+                var fw = setting.Create(); 
                 return fw;
             },
-            (f) =>
+            actionOnGet:(f) =>
             {
                 _registry[f] = GetPoolFor(setting);
                 setting.OnGet(f);
             } ,
-            setting.OnRelease,
-            f=> {
-                f.OnReleaseRequested -= Return; 
+            actionOnRelease: setting.OnRelease,
+            actionOnDestroy:f=> {
                 _registry.Remove(f);
                 f.Free();
             },
@@ -44,7 +42,8 @@ public class FlyweightFactory : Singleton<FlyweightFactory>
         flyweight.SetPositionAndRotation(position, rotation,parent);
         return (T)flyweight;
     }
-    private void Return(IFlyweight f)
+    
+    public void Return(IFlyweight f)
     {
         if (f == null) return;
         if (_registry.TryGetValue(f, out var pool)) pool.Release(f);

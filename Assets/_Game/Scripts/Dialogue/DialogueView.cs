@@ -17,7 +17,13 @@ public class DialogueView : MonoBehaviour, IActivity
     [SerializeField] private ButtonSetting m_responseButton;
     [SerializeField] private Transform m_responseButtonRoot;
 
-    
+    [SerializeField] private DialoguerEvent m_dialogueEvent;
+    private CancellationTokenSource _dialogueCts;
+    private void Start()
+    {
+        m_dialogueEvent.OnEventRaised += dialogue => _ = Speck(dialogue);
+    }
+
     #region  IActivity
 
     public event Action OnResume;
@@ -50,19 +56,90 @@ public class DialogueView : MonoBehaviour, IActivity
     }
     
     #endregion
-    
-    
 
-    private async UniTaskVoid AddDialogueAsync(IDialogable dialogable)
+
+    private async UniTaskVoid Speck(IDialogable dialogable)
+    {
+        await AddDialogueAsync(dialogable);
+    }
+
+    private async UniTask AddDialogueAsync(IDialogable dialogable)
     {
         m_dialoguerName.text = dialogable.Name;
-        var t = FlyweightFactory.Instance.Spawn<DynamicText>( m_dialogueTextSetting, Vector3.zero, Quaternion.identity, m_conversationRoot);
-        t.SetText(dialogable.Dialogue.startingNode.dialogueText);
-        await UniTask.Yield();
-        m_scrollRect.verticalNormalizedPosition = 0;
-        await t.PlayTypeWriterEffect();
-     
+        await PlayDialogueNode(dialogable.Dialogue.startingNode);
     }
+
+
+    private async UniTask PlayDialogueNode(DialogueNode node)
+    {
+        if(node == null) return;
+        _dialogueCts?.Cancel();
+        _dialogueCts?.Dispose();
+        _dialogueCts = new CancellationTokenSource();
+
+        var token = _dialogueCts.Token;
+        try
+        {
+            Despawn(m_responseButtonRoot);
+
+            await PlayDialogueText(node, token);
+
+            if (token.IsCancellationRequested) return;
+
+            AddDialogueResponseButton(node);
+        }
+        catch (OperationCanceledException)
+        {
+        }
+    }
+
+    private async UniTask PlayDialogueText(DialogueNode dialogueNode, CancellationToken token)
+    {
+        token.ThrowIfCancellationRequested();
+
+        var t = FlyweightFactory.Instance.Spawn<DynamicText>(
+            m_dialogueTextSetting,
+            Vector3.zero,
+            Quaternion.identity,
+            m_conversationRoot
+        );
+
+        string content = dialogueNode.dialogueText;
+        t.SetText("- " + content);
+        await UniTask.NextFrame();
+        token.ThrowIfCancellationRequested();
+        m_scrollRect.verticalNormalizedPosition = 0;
+        await t.PlayTypeWriterEffect(externalToken: token);
+    }
+
+    private void AddDialogueResponseButton(DialogueNode node)
+    {
+        foreach (var response in node.responses)
+        {
+            var next = response.nextNode;
+            var b = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>( m_responseButton, Vector3.zero, Quaternion.identity, m_responseButtonRoot);
+            b.SetInteractable(true);
+            b.SetText(response.responseText);
+            if (next != null)
+            {
+                b.AddListener(() =>
+                {
+                    b.SetInteractable(false);
+                    Despawn(m_responseButtonRoot);
+                    _ = PlayDialogueNode(next);
+                });
+            }
+        }
+    }
+
+    private void Despawn(Transform root)
+    {
+        foreach (var f in root.GetComponentsInChildren<IFlyweight>())
+        {
+            FlyweightFactory.Instance.Return(f);
+        }
+    }
+    
    
 }
 

@@ -3,10 +3,9 @@ using UnityEngine;
 
 public interface IFlyweight: ITransformable
 {
-
-    public event Action<IFlyweight> OnReleaseRequested; 
+    
     void OnSpawn();  
-    void OnDespawn();
+    void Despawn();
     void Free();
 }
 

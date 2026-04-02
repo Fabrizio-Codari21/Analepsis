@@ -1,12 +1,18 @@
+using System;
 using UnityEngine;
 
 public class Npc : MonoBehaviour,INpc
 {
    [SerializeField] private NpcIdentity m_npcIdentity;
 
-   
-   
-   #region Interface
+   [SerializeField] private Dialogue m_defaultDialogue;
+   [SerializeField] private DialoguerEvent m_dialogueEvent;
+   private void Start()
+   {
+       NewDialogue(m_defaultDialogue);
+   }
+
+   #region IInteract
    public void Focus()
    {
      
@@ -24,7 +30,14 @@ public class Npc : MonoBehaviour,INpc
 
    public void InteractEnd()
    {
-    
+      Debug.Log("InteractEnd");
+      Speck();
+   }
+   #endregion
+
+   private void Speck()
+   {
+      m_dialogueEvent.Raise(this);
    }
    public string Name
    {
@@ -37,5 +50,7 @@ public class Npc : MonoBehaviour,INpc
       get => m_npcIdentity;
       set => m_npcIdentity = value;
    }
-   #endregion
+
 }
+
+

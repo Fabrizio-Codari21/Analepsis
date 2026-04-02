@@ -39,13 +39,7 @@ public class DialogueManager : MonoBehaviour,IActivity
     }
 
     // Empieza el dialogo con un cierto nombre de personaje y nodo
-    public void StartDialogue(string name, DialogueNode node)
-    {
-        ShowDialogue();
-        foreach (Transform child in dialogueContainer) Destroy(child.gameObject); 
-        m_pushEvent?.Raise(this);
-        UpdateDialogue(name, node);
-    }
+
 
     public void UpdateDialogue(string name, DialogueNode node)
     {
@@ -79,7 +73,6 @@ public class DialogueManager : MonoBehaviour,IActivity
             }
         },
         cancelCondition: () => !IsDialogueActive());
-
     }
 
     // Elige una respuesta y activa el proximo nodo
@@ -131,9 +124,14 @@ public class DialogueManager : MonoBehaviour,IActivity
 
     // Si todos los nodos estan guardados en el dialogo actual, buscamos el que tenga el id correcto.
     //DialogueNode GetNodeById(string id) => _currentDialogue.dialogueNodes.FirstOrDefault(node => node.id == id);
-
     public void SetCurrentDialogue(Dialogue dialogue) => _currentDialogue = dialogue;
-
+    public void StartDialogue(string name, DialogueNode node)
+    {
+        ShowDialogue();
+        foreach (Transform child in dialogueContainer) Destroy(child.gameObject); 
+        m_pushEvent?.Raise(this);
+        UpdateDialogue(name, node);
+    }
     public float BuildText(TextMeshProUGUI dialogue, string text, float speed = 4)
     {
         var charAmount = text.Length;

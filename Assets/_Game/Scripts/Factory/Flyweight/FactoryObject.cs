@@ -4,20 +4,18 @@ using UnityEngine;
 public abstract class FactoryObject : MonoBehaviour, IFlyweight
 {
     
-    public event Action<IFlyweight> OnReleaseRequested;
-
     public virtual void OnSpawn()
     {
-        gameObject.SetActive(true);   
+        gameObject.SetActive(true);  
+        Debug.Log("OnSpawn");
     }
-    public void OnDespawn()
+    public virtual void Despawn()
     {
-        OnReleaseRequested?.Invoke(this);
         gameObject.SetActive(false);
     }
-    public void Free()
+    public virtual void Free()
     {
-        OnDespawn();
+        Destroy(gameObject);
     }
     public virtual void SetPositionAndRotation(Vector3 pos, Quaternion rot, Transform parent = null)
     {
