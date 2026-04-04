@@ -4,33 +4,35 @@ using UnityEngine;
 public class Npc : MonoBehaviour,INpc
 {
    [SerializeField] private NpcIdentity m_npcIdentity;
-
    [SerializeField] private Dialogue m_defaultDialogue;
    [SerializeField] private DialoguerEvent m_dialogueEvent;
    private void Start()
    {
        NewDialogue(m_defaultDialogue);
    }
-
    #region IInteract
+   public event Action OnFocus;
+   public event Action OnUnfocus;
+
    public void Focus()
    {
-     
+     OnFocus?.Invoke();
    }
 
    public void Unfocus()
    {
-     
+     OnUnfocus?.Invoke();
    }
-
+   public event Action OnStart;
+   public event Action OnEnd;
    public void InteractStart()
    {
-      
+      OnStart?.Invoke();
    }
 
    public void InteractEnd()
    {
-      Debug.Log("InteractEnd");
+       OnEnd?.Invoke();
       Speck();
    }
    #endregion
@@ -39,7 +41,7 @@ public class Npc : MonoBehaviour,INpc
    {
       m_dialogueEvent.Raise(this);
    }
-   public string Name
+   public string NpcName
    {
       get => m_npcIdentity.npcName;
       set => m_npcIdentity.npcName = value;
@@ -51,6 +53,8 @@ public class Npc : MonoBehaviour,INpc
       set => m_npcIdentity = value;
    }
 
+   public string GetTip()
+   {
+      return "Talk";
+   }
 }
-
-

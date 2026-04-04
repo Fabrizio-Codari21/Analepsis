@@ -14,9 +14,11 @@ public class DynamicText : FactoryUIObject
        base.OnSpawn();
        Cancel();
     }
-    public void SetText(string text)
+    public void SetText(string text,float size, Color color)
     {
         m_text.text = text;
+        m_text.color = color;
+        m_text.fontSize = size;
         m_text.maxVisibleCharacters = 0;
     }
     public async UniTask PlayTypeWriterEffect(string text = null,CancellationToken externalToken = default)

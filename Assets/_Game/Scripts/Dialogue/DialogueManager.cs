@@ -1,174 +1,23 @@
-using TMPro;
-using UnityEngine.UI;
 using UnityEngine;
-using System.Linq;
-using System.ComponentModel;
 using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 public class DialogueManager : MonoBehaviour,IActivity
 {
-    public static DialogueManager instance {  get; private set; }
+    [SerializeField] private DialoguerEvent m_dialogueEvent;
+    [SerializeField] private DialogueInputReader m_inputReader;
+    [SerializeField] private DialogueView m_dialogueView;
+    private CancellationTokenSource  _dialogueCts;
 
-    [Space(10)]
-    [Header("UI ELEMENTS")]
-    public GameObject dialogueBox; // Contenedor del dialogo
-    public TextMeshProUGUI characterName, dialogueText; // Nombre del personaje y contenido del dialogo
-    public Transform dialogueContainer;
-    public GameObject responseButtonPrefab; // Prefab para generar botones de respuestas
-    public Transform responseButtonContainer; // Contenedor de botones de respuestas
-
-    [Space(20)]
-    [Header("PLAYER SPEECH")]
-    public Color playerTextColor;
-    public float playerTalkingSpeed;
-    public float responseDelay;
-    Dialogue _currentDialogue;
-    
-    #region Screen Event
-    [Header("Event Channel")]
-    [SerializeField] private IActivityEvent m_pushEvent;
-    [SerializeField] private EventChannel m_popInputEvent;
-    [SerializeField] private BoolEventChannel cursorEnable;
-    #endregion
-    private void Awake()
-    {
-        // Solo tendria que haber una instancia de esto.
-        if (!instance) instance = this; else Destroy(gameObject);
-        HideDialogue();
-
-    }
-
-    // Empieza el dialogo con un cierto nombre de personaje y nodo
-
-
-    public void UpdateDialogue(string name, DialogueNode node)
-    {
-        if(characterName.text != name) characterName.text = name;
-        // Sumamos un texto a la UI.
-        var dialogue = Instantiate(dialogueText, dialogueContainer);
-        dialogue.text = "-"; 
-        BuildText(dialogue, node.dialogueText, _currentDialogue.characterTalkingSpeed);
-        dialogue.color = _currentDialogue.characterTextColor;
-
-        _currentDialogue.AddToLog(name, node.dialogueText);
-
-        // Si hay botones de respuesta los borramos
-        foreach (Transform child in responseButtonContainer)
-        {
-            Destroy(child.gameObject);
-        }
-
-
-        this.WaitAndThen(timeToWait: (1 / (_currentDialogue.characterTalkingSpeed * 10)) * (node.dialogueText.Length) + responseDelay, () =>
-        {                        
-            // Creamos botones de respuesta en base al nodo activo
-            foreach (DialogueResponse response in node.responses)
-            {
-                GameObject buttonObj = Instantiate(responseButtonPrefab, responseButtonContainer);
-                buttonObj.GetComponentInChildren<TextMeshProUGUI>().text = response.responseText;
-
-                // Hacemos que cada boton llame a SelectResponse para que se encargue de continuar.
-                buttonObj.GetComponent<Button>().onClick.AddListener(() => SelectResponse(response));
-                //buttonObj.GetComponent<Button>().clicked += () => SelectResponse(response, name);
-            }
-        },
-        cancelCondition: () => !IsDialogueActive());
-    }
-
-    // Elige una respuesta y activa el proximo nodo
-    public void SelectResponse(DialogueResponse response)
-    {
-        float answerTime;
-        // Si hay un nodo siguiente, sumamos nuestra respuesta a la UI; si no, cortamos.
-        if (response.nextNode != null)
-        {
-            // Si hay botones de respuesta los borramos
-            foreach (Transform child in responseButtonContainer)
-            {
-                Destroy(child.gameObject);
-            }
-
-            var answer = Instantiate(dialogueText, dialogueContainer);
-            answer.text = "- "; answerTime = BuildText(answer, $"'{response.responseText}'");
-            answer.color = playerTextColor;
-
-            _currentDialogue.AddToLog("You", response.responseText);
-        }
-        else
-        {
-            EndDialogue();
-            return;
-        }
-
-        this.WaitAndThen(timeToWait: answerTime + responseDelay, () =>
-        {
-            //DialogueNode nextNode = GetNodeById(response.nextNodeId);
-
-            // Si hay nodo...
-            if (!response.nextNode.IsLastNode())
-            {
-                UpdateDialogue(characterName.text, response.nextNode); // ...arranca el proximo dialogo
-            }
-            else
-            {
-                // Si no, se termina el dialogo.
-                EndDialogue();
-            }
-        },
-        cancelCondition: () => !IsDialogueActive());
-    }
-    // Para desactivar y activar la UI de dialogo.
-    public void HideDialogue() => dialogueBox.SetActive(false);
-    private void ShowDialogue() => dialogueBox.SetActive(true);
-    public bool IsDialogueActive() => dialogueBox.activeSelf;
-
-    // Si todos los nodos estan guardados en el dialogo actual, buscamos el que tenga el id correcto.
-    //DialogueNode GetNodeById(string id) => _currentDialogue.dialogueNodes.FirstOrDefault(node => node.id == id);
-    public void SetCurrentDialogue(Dialogue dialogue) => _currentDialogue = dialogue;
-    public void StartDialogue(string name, DialogueNode node)
-    {
-        ShowDialogue();
-        foreach (Transform child in dialogueContainer) Destroy(child.gameObject); 
-        m_pushEvent?.Raise(this);
-        UpdateDialogue(name, node);
-    }
-    public float BuildText(TextMeshProUGUI dialogue, string text, float speed = 4)
-    {
-        var charAmount = text.Length;
-        int newCharAmount = 0;
-        float charSpeed = 1 / (speed * 10);
-
-        //print("Char amount: " + charAmount);
-        this.SteppedExecution(duration: charSpeed * charAmount, stepLength: charSpeed, () =>
-        {
-            if (newCharAmount < charAmount)
-            {
-                dialogue.text += text[newCharAmount];
-                newCharAmount++;
-                //print("New Char Amount: " + newCharAmount);
-            }
-            else return;
-        },
-        cancelCondition: () => newCharAmount >= charAmount);
-
-        return charSpeed * charAmount;
-    }
-    
-    public void EndDialogue()
-    {
-        m_popInputEvent?.Raise();
-        NotebookManager.instance.SaveLogToNotebook($"Conversation with {characterName.text} \n - Action {ActionTimer.instance.maxActions - ActionTimer.instance.actionsLeft}", _currentDialogue.GetLog());
-
-        print(_currentDialogue.GetLog());
-
-        HideDialogue();
-
-    }
-
-    #region IActivitye
-
-    
-
+    [SerializeField] private IActivityEvent m_pushActivity;
+    [SerializeField] private EventChannel m_popActivity;
+    [SerializeField] private BoolEventChannel m_cursorEnable;
+    [SerializeField] private float timeToOutDialogue; // se usa cuando la última palabra se la da el npc
+    [SerializeField] private RecordNoteEvent m_recordNoteEvent;
+    private IDialogable _currentDialoguer;
+    private string _recordText = string.Empty;
+    #region  IActivity
 
     public event Action OnResume;
     public event Action OnPause;
@@ -176,19 +25,23 @@ public class DialogueManager : MonoBehaviour,IActivity
     public void Resume()
     {
         OnResume?.Invoke();
-        cursorEnable.Raise(true);
+        m_inputReader?.SetEnable();
+        m_dialogueView?.gameObject.SetActive(true);
+        m_cursorEnable.Raise(true);
     }
 
     public void Pause()
     {
         OnPause?.Invoke();
-        cursorEnable?.Raise(false);
+        m_inputReader?.SetEnable(false);
+        m_dialogueView?.gameObject.SetActive(false);
+        m_cursorEnable.Raise(false);
     }
 
     public void Stop()
     {
-        OnStop?.Invoke();
-        Pause();
+       OnStop?.Invoke();
+       Pause();
     }
 
     public bool CanPopWithKey()
@@ -196,4 +49,64 @@ public class DialogueManager : MonoBehaviour,IActivity
         return false;
     }
     #endregion
+    private void Start()
+    {
+        m_dialogueView = Instantiate(m_dialogueView,transform);
+        m_dialogueEvent.OnEventRaised += dialogable => _ = Speck(dialogable);
+    }
+    private async UniTaskVoid Speck(IDialogable dialogable)   
+    {
+        m_pushActivity.Raise(this);
+        _currentDialoguer = dialogable;
+        m_dialogueView.ClearDialogues();
+        m_dialogueView.SetSpeakerName(dialogable.NpcName);
+        await PlayDialogueNode(dialogable.Dialogue.startingNode);
+    }
+    
+    private async UniTask PlayDialogueNode(DialogueNode node) 
+    {
+        if(node == null) return;
+        _dialogueCts?.Cancel();
+        _dialogueCts?.Dispose();
+        _dialogueCts = new CancellationTokenSource();
+        var token = _dialogueCts.Token;
+        m_dialogueView.ClearResponses();
+        await m_dialogueView.PlayDialogueText(node, token);
+        if(_recordText != string.Empty) _recordText += "\n\n";
+        _recordText += "- " + $"{node.dialogueText}";
+        if(token.IsCancellationRequested) return;
+        if (node.responses == null || node.responses.Count == 0)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(timeToOutDialogue), cancellationToken: token);
+            if (token.IsCancellationRequested) return;
+            EndDialogue(); return;
+        }
+        foreach (var response in node.responses)
+        {
+            var nextNode = response.nextNode;
+            var button = m_dialogueView.CreateResponseButton(response.responseText);
+            button.AddListener(() =>
+            {
+                button.SetInteractable(false);
+                m_dialogueView.ClearResponses();
+                if (nextNode != null)
+                {
+                    _ = PlayDialogueNode(nextNode);
+                }
+                else
+                {
+                    EndDialogue();
+                }
+            });
+            
+        }
+    }
+    private void EndDialogue()
+    {
+        m_recordNoteEvent.Raise(new LogNote(_currentDialoguer.NpcName,_recordText));
+        _currentDialoguer = null;
+        _recordText = String.Empty;
+        m_popActivity.Raise();
+        
+    }
 }

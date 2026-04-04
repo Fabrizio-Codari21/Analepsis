@@ -1053,6 +1053,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Flip"",
+                    ""type"": ""Value"",
+                    ""id"": ""fe080465-8fbb-4173-bff0-128b4832c61f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -1066,6 +1075,61 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Close"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""AD"",
+                    ""id"": ""d6d7bb0f-c4e9-473a-bcad-5b51063df900"",
+                    ""path"": ""Dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Flip"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""2c12af67-0f79-49c3-942c-f7cc86829783"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Flip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""7228ccf8-f90c-43d2-ae0e-5bb39195e59d"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Flip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ab94d1ac-0b7f-43ab-9696-8cdfd925ea64"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Flip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ca0ecbcb-c91c-46e7-82c2-d3b9f336816e"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Flip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -1168,6 +1232,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         // NoteBook
         m_NoteBook = asset.FindActionMap("NoteBook", throwIfNotFound: true);
         m_NoteBook_Close = m_NoteBook.FindAction("Close", throwIfNotFound: true);
+        m_NoteBook_Flip = m_NoteBook.FindAction("Flip", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -1921,6 +1986,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_NoteBook;
     private List<INoteBookActions> m_NoteBookActionsCallbackInterfaces = new List<INoteBookActions>();
     private readonly InputAction m_NoteBook_Close;
+    private readonly InputAction m_NoteBook_Flip;
     /// <summary>
     /// Provides access to input actions defined in input action map "NoteBook".
     /// </summary>
@@ -1936,6 +2002,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "NoteBook/Close".
         /// </summary>
         public InputAction @Close => m_Wrapper.m_NoteBook_Close;
+        /// <summary>
+        /// Provides access to the underlying input action "NoteBook/Flip".
+        /// </summary>
+        public InputAction @Flip => m_Wrapper.m_NoteBook_Flip;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1965,6 +2035,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Close.started += instance.OnClose;
             @Close.performed += instance.OnClose;
             @Close.canceled += instance.OnClose;
+            @Flip.started += instance.OnFlip;
+            @Flip.performed += instance.OnFlip;
+            @Flip.canceled += instance.OnFlip;
         }
 
         /// <summary>
@@ -1979,6 +2052,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Close.started -= instance.OnClose;
             @Close.performed -= instance.OnClose;
             @Close.canceled -= instance.OnClose;
+            @Flip.started -= instance.OnFlip;
+            @Flip.performed -= instance.OnFlip;
+            @Flip.canceled -= instance.OnFlip;
         }
 
         /// <summary>
@@ -2285,5 +2361,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnClose(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Flip" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFlip(InputAction.CallbackContext context);
     }
 }

@@ -7,7 +7,6 @@ public abstract class FactoryObject : MonoBehaviour, IFlyweight
     public virtual void OnSpawn()
     {
         gameObject.SetActive(true);  
-        Debug.Log("OnSpawn");
     }
     public virtual void Despawn()
     {

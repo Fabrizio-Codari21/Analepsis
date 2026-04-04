@@ -1,5 +1,3 @@
-using System;
-using TMPro;
 using UnityEngine;
 
 public class Interacter : MonoBehaviour
@@ -8,54 +6,43 @@ public class Interacter : MonoBehaviour
     [SerializeField] private LayerMask m_interactableLayer;
     [SerializeField] private float m_hoverDelay = 0.05f;
     [SerializeField] private Transform m_canvaRoot;
-    [SerializeField] private GameObject m_interactCanva;
-
+    [SerializeField] private InteractView m_interactCanva;
 
     private Camera _camera;
     private CcInputHandler _inputHandler;
 
-    
-    
     private IInteractable _lastInteractable;
     private float  _hoverTimer;
-
-    public TextMeshProUGUI interactText;
-
-    private GameObject _ui;
-
+   
 
     private IActivity _activity;
+    
+    [SerializeField] private InteractableFocusEventChannel m_focusEvent;
+    [SerializeField] private InteractableFocusEventChannel m_unfocusEvent;
     
     private void OnEnable()
     {
         _inputHandler.InteractPressed += StartInteract;
         _inputHandler.InteractReleased += EndInteract;
         
-        
     }
     private void OnDisable()
     {
         _inputHandler.InteractPressed -= StartInteract;
         _inputHandler.InteractReleased -= EndInteract; 
-   
-
+        
     }
-
 
     private void Awake()
     {
        _camera = Camera.main;
        _inputHandler = GetComponent<CcInputHandler>();
-        _activity = GetComponent<IActivity>();
-
-       
+       _activity = GetComponent<IActivity>();
     }
 
     private void Start()
     {
-        _ui = Instantiate(m_interactCanva, m_canvaRoot);
-        interactText.gameObject.SetActive(false);
-        
+        m_interactCanva = Instantiate(m_interactCanva, m_canvaRoot);
         _activity.OnResume += Resume;
         _activity.OnPause += Pause;
         _activity.OnStop += Stop;
@@ -64,12 +51,10 @@ public class Interacter : MonoBehaviour
     {
         _hoverTimer += Time.deltaTime;
         if (_hoverTimer < m_hoverDelay) return;
-
         _hoverTimer = 0f;
 
         HandleInteract();
     }
-
 
     private void HandleInteract()
     {
@@ -90,12 +75,10 @@ public class Interacter : MonoBehaviour
         }
         if (interactable == _lastInteractable) return;
         
-        
-       
         ResetInteract();
         _lastInteractable = interactable;
         interactable.Focus();
-        
+        m_focusEvent.Raise(interactable);
     }
     
      
@@ -113,6 +96,7 @@ public class Interacter : MonoBehaviour
     {
         if (_lastInteractable == null) return;
         _lastInteractable.Unfocus();
+        m_unfocusEvent.Raise(_lastInteractable);
         _lastInteractable = null;
 
     }
@@ -120,13 +104,13 @@ public class Interacter : MonoBehaviour
 
     private void Resume()
     {
-        _ui.gameObject.SetActive(true);
+        m_interactCanva.gameObject?.SetActive(true);
         enabled = true;
     }
 
     private void Pause()
     {
-        _ui.gameObject?.SetActive(false);
+        m_interactCanva.gameObject?.SetActive(false);
         enabled = false;
     }
 

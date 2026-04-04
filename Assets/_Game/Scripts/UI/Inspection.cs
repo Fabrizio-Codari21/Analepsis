@@ -20,7 +20,7 @@ public class Inspection : MonoBehaviour,IActivity
     [SerializeField] private float m_zoomScaleFactor = 100f;
     [SerializeField] private float m_maxScale;
     [SerializeField] private float m_minScale;
-   [SerializeField] private float m_planeRotationSpeed = 0.2f;
+    [SerializeField] private float m_planeRotationSpeed = 0.2f;
    
    private Vector2 _lastDirectionFromCenter;
     private void Start()
@@ -58,11 +58,8 @@ public class Inspection : MonoBehaviour,IActivity
             currentDirectionFromCenter
         );
 
-        m_inspectRoot.Rotate(
-            m_camera.transform.forward,
-            signedAngle,
-            Space.World
-        );
+        signedAngle *= m_planeRotationSpeed;
+        m_inspectRoot.Rotate(m_camera.transform.forward, signedAngle, Space.World);
         
         _lastDirectionFromCenter = currentDirectionFromCenter;
     }
@@ -75,12 +72,6 @@ public class Inspection : MonoBehaviour,IActivity
         }
         var item = inspectable.GetInspectItem();
         Instantiate(item.gameObject,m_inspectRoot);
-        //Debug.Log("3");
-       
-        NotebookManager.instance.SaveClueToNotebook
-            ($"{item.clueInfo.clueId} \n - Action {ActionTimer.instance.maxActions - ActionTimer.instance.actionsLeft}",
-            item.clueInfo);
-
         m_camera.orthographicSize = item.size;
         m_onActivity.Raise(this);
     }

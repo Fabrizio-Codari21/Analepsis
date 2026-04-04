@@ -25,48 +25,45 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 8982846198710272098
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
         responseText: A
         nextNode:
-          rid: 8982846198710272103
-        editorPosition: {x: 575.7002, y: 9.249996}
+          rid: 8982846240482918471
+        editorPosition: {x: 565, y: 70.00002}
     - rid: 8982846198710272099
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
         responseText: B
         nextNode:
-          rid: 8982846198710272101
-        editorPosition: {x: 565, y: 153.7}
+          rid: 8982846240482918470
+        editorPosition: {x: 565, y: 215.50005}
     - rid: 8982846198710272100
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
         responseText: C
         nextNode:
-          rid: -2
-        editorPosition: {x: 565.1501, y: 334.45004}
-    - rid: 8982846198710272101
+          rid: 8982846240482918469
+        editorPosition: {x: 565, y: 350}
+    - rid: 8982846240482918469
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: Finish B
+        dialogueText: C
         responses: []
         isRootNode: 0
-        editorPosition: {x: 856.99994, y: 144.18686}
-    - rid: 8982846198710272103
+        editorPosition: {x: 851, y: 377}
+    - rid: 8982846240482918470
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: Finish A
-        responses:
-        - rid: 8982846198710272105
+        dialogueText: B
+        responses: []
         isRootNode: 0
-        editorPosition: {x: 894.4002, y: -15.15004}
-    - rid: 8982846198710272105
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+        editorPosition: {x: 851, y: 215.5}
+    - rid: 8982846240482918471
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        responseText: New Response
-        nextNode:
-          rid: -2
-        editorPosition: {x: 1201.7501, y: -39.5}
+        dialogueText: A
+        responses: []
+        isRootNode: 0
+        editorPosition: {x: 831.5002, y: 31.610012}

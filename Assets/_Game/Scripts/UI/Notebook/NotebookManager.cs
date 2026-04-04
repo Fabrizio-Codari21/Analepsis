@@ -1,174 +1,109 @@
 using UnityEngine;
 using System.Collections.Generic;
-using TMPro;
-using UnityEngine.UI;
 using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 
-public class NotebookManager : SerializedMonoBehaviour, IActivity
+
+public class NotebookManager : MonoBehaviour, IActivity
 {
-    public static NotebookManager instance;
-    public CCInputReader inputReader;
-    public BoolEventChannel enableCursor;
-    [SerializeField] private NoteBookInputReader inputReaderNoteBook;
-    [SerializeField] private IActivityEvent activityEvent;
-    [SerializeField] private EventChannel popEvent;
-    private bool isEnable;
-    public enum NotebookPage
-    {
-        Default,
-        Log,
-        Objects,
-    }
-
-    private void Awake() 
-    {
-        if (!instance) instance = this; else Destroy(gameObject); 
-    }
     
+    #region  Inputs & Cursor
+
+    [SerializeField] private CCInputReader inputReader;
+    [SerializeField] private BoolEventChannel enableCursor;
+    [SerializeField] private NoteBookInputReader inputReaderNoteBook;
+    [SerializeField] private IActivityEvent pushEvent;
+    [SerializeField] private EventChannel popEvent;
+
+    #endregion
+    [SerializeField]private NotebookView m_view;
+    [SerializeField] private RecordNoteEvent m_recordNote;
+    private CancellationTokenSource _cts;
+    private readonly Dictionary<SerializableGuid,Note> _notebookPages = new();
+    [ReadOnly,ShowInInspector] private NoteType _currentNoteType;
     private void Start()
     {
-        CloseNotebook();
-        previousPageButton.onClick.AddListener(() => NextPage(false));
-        nextPageButton.onClick.AddListener(() => NextPage(true));
-
-        inputReader.OpenNotebook += () => activityEvent.Raise(this);
-        inputReaderNoteBook.Close += () => popEvent.Raise();
+        m_view = Instantiate(m_view,transform);
+        inputReader.OpenNotebook += Open;
+        inputReaderNoteBook.Close += Close;
+        m_recordNote.OnEventRaised += Record;
+    }
+    private void Record(Note note)
+    {
+        _notebookPages.TryAdd(note.guid, note);
     }
 
-
-    #region Notebook Controls
-    [Header("NOTEBOOK")]
-    public GameObject notebookUI;
-    public Button previousPageButton;
-    public Button nextPageButton;
-    public TextMeshProUGUI menuName;
-    [SerializeField] Dictionary<NotebookPage, NotebookMenu> _notebookPages = new();
-    NotebookPage _lastPageOpen;
-
-    public void OpenPage(NotebookPage page = NotebookPage.Default)
+    private void Open()
     {
-        if (page == NotebookPage.Default && _lastPageOpen != default) page = _lastPageOpen;
-        if (!notebookUI.activeInHierarchy) notebookUI.SetActive(true);
+        pushEvent.Raise(this);
       
-        foreach (KeyValuePair<NotebookPage, NotebookMenu> item in _notebookPages)
+    }
+
+    private void Close()
+    {
+        popEvent.Raise();
+    }
+
+    private void OpenNotebookByType(NoteType type)
+    {
+        _currentNoteType = type;
+        _cts?.Cancel();
+        _cts?.Dispose();
+        _cts = null;
+        
+        m_view.ClearDetail();
+        m_view.ClearButton();
+        m_view.SetTitle(type.ToString()); // si vamos a hacer localization ya deberia usar de esta forma , lo hago asi para ahorrarme tiempo
+        foreach (var note in _notebookPages.Values)
         {
-            if (item.Value.gameObject.activeInHierarchy) item.Value.gameObject.SetActive(false);
+            if(note.type != type) continue;
+            var cachedNote = note;
+            
+            var button = m_view.CreateButton(cachedNote.GetButtonText());
+            button.AddListener(() =>
+            {
+                _cts?.Cancel();
+                _cts?.Dispose();
+                _cts = new CancellationTokenSource();
+                m_view.ClearDetail();
+                _ = SelectNote(cachedNote,_cts.Token);
+            });
         }
-        _notebookPages[page].gameObject.SetActive(true);
-        _lastPageOpen = page;
-        menuName.text = page.ToString();
-
-        foreach (Transform child in logTextContainer) Destroy(child.gameObject);
     }
-    public void NextPage(bool nextOrPrevious = true)
+    private async UniTask SelectNote(Note note, CancellationToken token)
     {
-        if (nextOrPrevious && _lastPageOpen != NotebookPage.Objects) OpenPage(_lastPageOpen + 1);
-        else if(!nextOrPrevious && _lastPageOpen != NotebookPage.Log) OpenPage(_lastPageOpen - 1);
-
-        menuName.text = _lastPageOpen.ToString();
-    }
-    public void CloseNotebook() 
-    {
-        notebookUI.SetActive(false);
-    }
-    #endregion
-
-    #region Log Menu
-    [Header("LOG")]
-    public Transform logListContainer;
-    public Transform logTextContainer;
-    public Button logButton;
-    public TextMeshProUGUI logText;
-    public Color logColor;
-    public float logTextSpeed;
-
-    [OdinSerialize] Dictionary<string, string> _dialogueLogs = new();
-
-    public void SaveLogToNotebook(string dialogueID, string log) 
-    {
-        _dialogueLogs.Add(dialogueID, log);
-        Button button = Instantiate(logButton, logListContainer);
-        button.GetComponentInChildren<TextMeshProUGUI>().text = dialogueID;
-        button.onClick.AddListener(() => PlayLog(dialogueID, logTextSpeed));
-    }
-
-    public void PlayLog(string dialogueID, float speed = 10)
-    {
-        CloseLog(logTextContainer);
-        TextMeshProUGUI log = Instantiate(logText, logTextContainer);
-        //print(_dialogueLogs[dialogueID]);
-        log.text = "";
-        log.color = logColor;
-        var logTime = DialogueManager.instance.BuildText(log, _dialogueLogs[dialogueID], speed);
-        //log.text = _dialogueLogs[dialogueID];
-
-        this.WaitAndThen(timeToWait: logTime, () =>
+        try
         {
-            print(log.text);
-            Button closeButton = Instantiate(logButton, logTextContainer);
-            closeButton.GetComponentInChildren<TextMeshProUGUI>().text = "[Close Log]";
-            closeButton.onClick.AddListener(() => CloseLog(logTextContainer));
-        },
-        cancelCondition: () => false);
-    }
-
-    public void CloseLog(Transform container)
-    {
-        foreach (Transform child in container) Destroy(child.gameObject);
-    }
-
-    #endregion
-
-    #region Clue Menu
-
-    [Header("OBJECTS")]
-    public Transform clueListContainer;
-    public Transform clueInfoContainer;
-    public Button clueButton;
-    public TextMeshProUGUI clueText;
-
-    [OdinSerialize] private Dictionary<string, Clue> _clueRegistry = new();
-
-    public void SaveClueToNotebook(string clueID, Clue clue)
-    {
-        _clueRegistry.TryAdd(clueID, clue);
-        Button button = Instantiate(clueButton, clueListContainer);
-        button.GetComponentInChildren<TextMeshProUGUI>().text = clueID;
-        button.onClick.AddListener(() => ShowClues(clueID));
-    }
-
-    public void ShowClues(string clueID)
-    {
-        CloseLog(clueInfoContainer);
-        var clueInfo = _clueRegistry[clueID];
-        foreach (var clue in clueInfo.clues)
-        {
-            TextMeshProUGUI text = Instantiate(clueText, clueInfoContainer);
-            text.text = $"- {clue}";
-            text.color = logColor;
+            m_view.ClearDetail();
+            await note.Show(m_view, token);
+            token.ThrowIfCancellationRequested();
+            var button = m_view.CreateDetailButton("Clear");
+            button.AddListener(() =>
+            {
+               m_view.ClearDetail();
+            });
         }
-        // instanciar render texture/imagen del objeto, a definir
-        Button closeButton = Instantiate(logButton, clueInfoContainer);
-        closeButton.GetComponentInChildren<TextMeshProUGUI>().text = "[Close Clues]";
-        closeButton.onClick.AddListener(() => CloseLog(clueInfoContainer));
+        catch (OperationCanceledException)
+        {
+        }
     }
 
-    #endregion
-
-
-
-    private void RequestOpen(bool enable)
+    private void ChangeType(float direction)
     {
-        if(enable == isEnable) return;
-
-        if(enable) OpenPage(NotebookPage.Log);
-        else CloseNotebook();
-        isEnable = enable;
+        if(direction == 0 ) return;
+        var values = (NoteType[])Enum.GetValues(typeof(NoteType));
+        var currentIndex = (int)_currentNoteType;
+        
+        currentIndex += direction > 0 ? 1 : -1;
+        
+        if (currentIndex >= values.Length) currentIndex = 0;
+        else if (currentIndex < 0) currentIndex = values.Length - 1;
+        
+        OpenNotebookByType(values[currentIndex]);
     }
-
-
+    
     #region Interface
     public event Action OnResume;
     public event Action OnPause;
@@ -177,19 +112,26 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
     public void Resume()
     {
         OnResume?.Invoke();
-
-        RequestOpen(true);
         enableCursor.Raise(true);
-
         inputReaderNoteBook.SetEnable();
+        m_view.gameObject.SetActive(true);
+        m_view.NextButtonAdd(()=>ChangeType(1));
+        m_view.PreviousButtonAdd(()=>ChangeType(-1));
+        inputReaderNoteBook.Flip += ChangeType;
+        
+        OpenNotebookByType(_currentNoteType);
     }
 
     public void Pause()
     {
         OnPause?.Invoke();
-        RequestOpen(false);
         enableCursor.Raise(false);
         inputReaderNoteBook.SetEnable(false);
+        m_view.gameObject.SetActive(false);
+        m_view.RemoveNext();
+        m_view.RemovePrevious();
+       
+        inputReaderNoteBook.Flip -= ChangeType;
     }
 
     public void Stop()
@@ -203,4 +145,40 @@ public class NotebookManager : SerializedMonoBehaviour, IActivity
       return true;
     }
     #endregion
+}
+public enum NoteType
+{
+    Default,
+    Log,
+    Objects,
+}
+
+[Serializable]
+public abstract class Note
+{
+    public SerializableGuid guid = SerializableGuid.NewGuid();
+    public NoteType type;
+    public string displayName; 
+    protected Note(string displayName)
+    {
+        this.displayName = displayName;
+    }
+    public virtual string GetButtonText()
+    {
+        return displayName;
+    }
+    public abstract UniTask Show(NotebookView view, CancellationToken token);
+}
+public class LogNote : Note
+{
+    private readonly string _info;
+    public LogNote(string displayName, string info) : base( displayName)
+    {
+        _info = info;
+        type =  NoteType.Log;
+    }
+    public override async UniTask Show(NotebookView view, CancellationToken token)
+    { 
+       await view.PlayText(_info, token);
+    }
 }

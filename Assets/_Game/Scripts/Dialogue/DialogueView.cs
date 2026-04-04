@@ -1,99 +1,54 @@
-using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class DialogueView : MonoBehaviour, IActivity
+public class DialogueView : MonoBehaviour
 {
-    [SerializeField] private DialogueInputReader m_inputReader;
-    [SerializeField] private TMP_Text m_dialoguerName; // Nombre del personaje y contenido del dialogo
+    [Header("Name")]
+    [SerializeField] private TMP_Text m_dialoguerName; 
+    [Header("Dynamic Text")]
     [SerializeField] private DynamicTextSetting m_dialogueTextSetting;
     [SerializeField] private Transform m_conversationRoot;
-
-    [SerializeField] private ScrollRect m_scrollRect;
-
+    [Header("Response Button")]
     [SerializeField] private ButtonSetting m_responseButton;
     [SerializeField] private Transform m_responseButtonRoot;
+    
+    [Header("Scroll")]
+    [SerializeField] private ScrollRect m_scrollRect;
 
-    [SerializeField] private DialoguerEvent m_dialogueEvent;
-    private CancellationTokenSource _dialogueCts;
+
+ 
+
     private void Start()
     {
-        m_dialogueEvent.OnEventRaised += dialogue => _ = Speck(dialogue);
-    }
-
-    #region  IActivity
-
-    public event Action OnResume;
-    public event Action OnPause;
-    public event Action OnStop;
-
-    public void Resume()
-    {
-        OnResume?.Invoke();
-        m_inputReader.SetEnable();
-        gameObject.SetActive(true);
-    }
-
-    public void Pause()
-    {
-        OnPause?.Invoke();
-        m_inputReader.SetEnable(false);
         gameObject.SetActive(false);
     }
-
-    public void Stop()
+    
+    public void SetSpeakerName(string newName)
     {
-        OnStop?.Invoke();
-        Pause();
-    }
-
-    public bool CanPopWithKey()
-    {
-        return false;
+        m_dialoguerName.text = newName;
     }
     
-    #endregion
-
-
-    private async UniTaskVoid Speck(IDialogable dialogable)
+    public ButtonFactoryObject CreateResponseButton(string text)
     {
-        await AddDialogueAsync(dialogable);
+        var b = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(m_responseButton, Vector3.zero, Quaternion.identity, m_responseButtonRoot);
+        b.SetText(text);
+        b.SetInteractable(true);
+        return b;
+    }
+    public void ClearResponses()
+    {
+        Despawn(m_responseButtonRoot);
     }
 
-    private async UniTask AddDialogueAsync(IDialogable dialogable)
+    public void ClearDialogues()
     {
-        m_dialoguerName.text = dialogable.Name;
-        await PlayDialogueNode(dialogable.Dialogue.startingNode);
+        Despawn(m_conversationRoot);
     }
-
-
-    private async UniTask PlayDialogueNode(DialogueNode node)
-    {
-        if(node == null) return;
-        _dialogueCts?.Cancel();
-        _dialogueCts?.Dispose();
-        _dialogueCts = new CancellationTokenSource();
-
-        var token = _dialogueCts.Token;
-        try
-        {
-            Despawn(m_responseButtonRoot);
-
-            await PlayDialogueText(node, token);
-
-            if (token.IsCancellationRequested) return;
-
-            AddDialogueResponseButton(node);
-        }
-        catch (OperationCanceledException)
-        {
-        }
-    }
-
-    private async UniTask PlayDialogueText(DialogueNode dialogueNode, CancellationToken token)
+   
+    public async UniTask PlayDialogueText(DialogueNode dialogueNode, CancellationToken token) // view
     {
         token.ThrowIfCancellationRequested();
 
@@ -103,36 +58,17 @@ public class DialogueView : MonoBehaviour, IActivity
             Quaternion.identity,
             m_conversationRoot
         );
-
         string content = dialogueNode.dialogueText;
-        t.SetText("- " + content);
+        t.SetText("- " + content,m_dialogueTextSetting.size,m_dialogueTextSetting.color);
         await UniTask.NextFrame();
         token.ThrowIfCancellationRequested();
         m_scrollRect.verticalNormalizedPosition = 0;
         await t.PlayTypeWriterEffect(externalToken: token);
     }
 
-    private void AddDialogueResponseButton(DialogueNode node)
-    {
-        foreach (var response in node.responses)
-        {
-            var next = response.nextNode;
-            var b = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>( m_responseButton, Vector3.zero, Quaternion.identity, m_responseButtonRoot);
-            b.SetInteractable(true);
-            b.SetText(response.responseText);
-            if (next != null)
-            {
-                b.AddListener(() =>
-                {
-                    b.SetInteractable(false);
-                    Despawn(m_responseButtonRoot);
-                    _ = PlayDialogueNode(next);
-                });
-            }
-        }
-    }
+   
 
-    private void Despawn(Transform root)
+    private void Despawn(Transform root) 
     {
         foreach (var f in root.GetComponentsInChildren<IFlyweight>())
         {
@@ -140,18 +76,7 @@ public class DialogueView : MonoBehaviour, IActivity
         }
     }
     
+
+    
    
-}
-
-public interface IDialogable : IInteractable
-{
-    public string Name { get; set; }
-    public Dialogue Dialogue { get; }
-    public Dialogue NewDialogue(Dialogue dialogue);
-
-}
-
-public interface INpc : IDialogable
-{
-    public NpcIdentity ID { get; set; }
 }
