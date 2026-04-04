@@ -31,7 +31,6 @@ public sealed class DialogueGraphView : GraphView
         grid.StretchToParentSize();
         grid.SendToBack();
         
-        
         searchWindow = ScriptableObject.CreateInstance<DialogueSearchWindow>();
         searchWindow.Initialize(this, editorWindow);
         
@@ -87,10 +86,8 @@ public sealed class DialogueGraphView : GraphView
                 }
             }
         }
-
         DeleteElements(elementsToDelete);
     }
-
 
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
@@ -110,7 +107,6 @@ public sealed class DialogueGraphView : GraphView
         {
             position = nodeData.editorPosition;
         }
-
         DialogueGraphNode node = new DialogueGraphNode(nodeData, this);
 
         node.SetPosition(new Rect(position, new Vector2(250, 150)));
@@ -144,11 +140,9 @@ public sealed class DialogueGraphView : GraphView
         return dialogueNodeMap.GetValueOrDefault(nodeData);
     }
  
-    
     private void CreateDialogueTree(DialogueNode nodeData, Vector2 position, HashSet<DialogueNode> visited)
     {
-        if (nodeData == null || visited.Contains(nodeData))
-            return;
+        if (nodeData == null || visited.Contains(nodeData)) return;
 
         visited.Add(nodeData);
 
@@ -264,14 +258,12 @@ public sealed class DialogueGraphView : GraphView
                 break;
             }
         }
-
         responseNodeMap.Remove(responseData);
     }
     
     private void RemoveDialogueNodeData(DialogueGraphNode dialogueGraphNode)
     {
         DialogueNode nodeData = dialogueGraphNode.NodeData;
-
         foreach (var pair in responseNodeMap)
         {
             DialogueResponse response = pair.Key;
@@ -281,7 +273,6 @@ public sealed class DialogueGraphView : GraphView
                 response.nextNode = null;
             }
         }
-
         if (nodeData.responses != null)
         {
             List<DialogueResponse> responsesToRemove = new(nodeData.responses);
@@ -305,9 +296,7 @@ public sealed class DialogueGraphView : GraphView
     public void LoadDialogue(Dialogue dialogue)
     {
         isLoadingGraph = true;
-
         DeleteElements(graphElements.ToList());
-
         dialogueNodeMap.Clear();
         responseNodeMap.Clear();
 

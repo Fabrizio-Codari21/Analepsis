@@ -12,58 +12,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
   m_Name: New Dialogue
   m_EditorClassIdentifier: 
-  characterTextColor: {r: 0.5754717, g: 0.38817194, b: 0.38817194, a: 1}
-  characterTalkingSpeed: 3
   startingNode:
-    dialogueText: This is dialog 1. Choose A, B or C.
+    dialogueText: A B or  C
     responses:
-    - rid: 8982846198710272098
-    - rid: 8982846198710272099
-    - rid: 8982846198710272100
+    - rid: 8982846198710272093
+    - rid: 8982846281244737605
+    - rid: 8982846281244737606
     isRootNode: 1
-    editorPosition: {x: 64.00502, y: 167.00002}
+    editorPosition: {x: -254.36664, y: 284.0625}
+    guid:
+      Part1: 2607227662
+      Part2: 1194866468
+      Part3: 2769496979
+      Part4: 2641924250
+  allNode: []
   references:
     version: 2
     RefIds:
-    - rid: 8982846198710272098
+    - rid: 8982846198710272093
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
         responseText: A
         nextNode:
-          rid: 8982846240482918471
-        editorPosition: {x: 565, y: 70.00002}
-    - rid: 8982846198710272099
+          rid: 8982846198710272094
+        m_conditions: []
+        editorPosition: {x: 114, y: 111}
+    - rid: 8982846198710272094
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: OK, A
+        responses: []
+        isRootNode: 0
+        editorPosition: {x: 518, y: 81}
+        guid:
+          Part1: 557291394
+          Part2: 1333425665
+          Part3: 1948167557
+          Part4: 1955223703
+    - rid: 8982846281244737605
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
         responseText: B
         nextNode:
-          rid: 8982846240482918470
-        editorPosition: {x: 565, y: 215.50005}
-    - rid: 8982846198710272100
+          rid: 8982846281244737607
+        m_conditions: []
+        editorPosition: {x: 321, y: 262}
+    - rid: 8982846281244737606
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
         responseText: C
         nextNode:
-          rid: 8982846240482918469
-        editorPosition: {x: 565, y: 350}
-    - rid: 8982846240482918469
+          rid: 8982846281244737608
+        m_conditions: []
+        editorPosition: {x: 181, y: 488}
+    - rid: 8982846281244737607
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: C
+        dialogueText: OK,B
         responses: []
         isRootNode: 0
-        editorPosition: {x: 851, y: 377}
-    - rid: 8982846240482918470
+        editorPosition: {x: 577, y: 273.04}
+        guid:
+          Part1: 760976407
+          Part2: 1127653122
+          Part3: 3681977258
+          Part4: 1820761160
+    - rid: 8982846281244737608
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: B
+        dialogueText: OK, C
         responses: []
         isRootNode: 0
-        editorPosition: {x: 851, y: 215.5}
-    - rid: 8982846240482918471
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: A
-        responses: []
-        isRootNode: 0
-        editorPosition: {x: 831.5002, y: 31.610012}
+        editorPosition: {x: 518, y: 488}
+        guid:
+          Part1: 2329760659
+          Part2: 1245582175
+          Part3: 2798661514
+          Part4: 3732830588

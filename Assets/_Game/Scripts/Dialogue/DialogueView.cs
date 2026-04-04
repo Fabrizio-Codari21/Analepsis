@@ -14,12 +14,8 @@ public class DialogueView : MonoBehaviour
     [Header("Response Button")]
     [SerializeField] private ButtonSetting m_responseButton;
     [SerializeField] private Transform m_responseButtonRoot;
-    
     [Header("Scroll")]
     [SerializeField] private ScrollRect m_scrollRect;
-
-
- 
 
     private void Start()
     {

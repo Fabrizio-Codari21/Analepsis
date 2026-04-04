@@ -1,7 +1,9 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 
 public class DialogueManager : MonoBehaviour,IActivity
 {
@@ -17,8 +19,11 @@ public class DialogueManager : MonoBehaviour,IActivity
     [SerializeField] private RecordNoteEvent m_recordNoteEvent;
     private IDialogable _currentDialoguer;
     private string _recordText = string.Empty;
-    #region  IActivity
 
+    [SerializeField] private Check m_checkEvent;
+    
+    [ShowInInspector, ReadOnly] private HashSet<SerializableGuid> _dialogueNodesTalked = new HashSet<SerializableGuid>();
+    #region  IActivity
     public event Action OnResume;
     public event Action OnPause;
     public event Action OnStop;
@@ -52,9 +57,9 @@ public class DialogueManager : MonoBehaviour,IActivity
     private void Start()
     {
         m_dialogueView = Instantiate(m_dialogueView,transform);
-        m_dialogueEvent.OnEventRaised += dialogable => _ = Speck(dialogable);
+        m_dialogueEvent.OnEventRaised += dialogable => _ = Speak(dialogable);
     }
-    private async UniTaskVoid Speck(IDialogable dialogable)   
+    private async UniTaskVoid Speak(IDialogable dialogable)   
     {
         m_pushActivity.Raise(this);
         _currentDialoguer = dialogable;
@@ -109,4 +114,7 @@ public class DialogueManager : MonoBehaviour,IActivity
         m_popActivity.Raise();
         
     }
+    
+    
+    private bool CheckDialogue(SerializableGuid guid) => _dialogueNodesTalked.Contains(guid);
 }

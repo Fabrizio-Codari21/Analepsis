@@ -20,7 +20,6 @@ public sealed class DialogueGraphNode : Node
         NodeData = nodeData;
         _graphView = graphView;
         title = nodeData.isRootNode ? "Start Node" : "Dialogue Node";
-
         TextField textField = new TextField("Dialogue")
         {
             multiline = true,
@@ -58,10 +57,7 @@ public sealed class DialogueGraphNode : Node
         OutputPort.portName = "Responses";
         OutputPort.portColor = Color.yellow;
         outputContainer.Add(OutputPort);
-        
-        EdgeConnector<Edge> edgeConnector =
-            new EdgeConnector<Edge>(new DialogueEdgeConnectorListener(_graphView));
-
+        EdgeConnector<Edge> edgeConnector = new EdgeConnector<Edge>(new DialogueEdgeConnectorListener(_graphView));
         OutputPort.AddManipulator(edgeConnector);
         NodeData.responses ??= new List<DialogueResponse>();
 
@@ -71,12 +67,8 @@ public sealed class DialogueGraphNode : Node
             {
                 responseText = "New Response"
             };
-
             NodeData.responses.Add(response);
-
-            DialogueResponseGraphNode responseNode =
-                _graphView.CreateResponseNode(response, GetPosition().position + new Vector2(300, 0));
-
+            DialogueResponseGraphNode responseNode = _graphView.CreateResponseNode(response, GetPosition().position + new Vector2(300, 0));
             Edge edge = OutputPort.ConnectTo(responseNode.InputPort);
             _graphView.AddElement(edge);
         })
