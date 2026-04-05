@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,6 +13,8 @@ public sealed class DialogueResponseGraphNode : Node
     public Port InputPort;
     public Port OutputPort;
 
+    private VisualElement conditionContainer;
+    private ConditionSearchWindow _searchWindowProvider;
     public DialogueResponseGraphNode(DialogueResponse responseData, DialogueGraphView graphView)
     {
         _graphView = graphView;
@@ -18,7 +24,8 @@ public sealed class DialogueResponseGraphNode : Node
         capabilities |= Capabilities.Selectable;
         capabilities |= Capabilities.Movable;
         title = "Response";
-
+        titleContainer.style.backgroundColor = new Color(0.12f, 0.45f, 0.25f, 0.8f);
+        #region ResponseText
         TextField responseField = new TextField("Response")
         {
             multiline = true,
@@ -31,6 +38,34 @@ public sealed class DialogueResponseGraphNode : Node
         });
 
         extensionContainer.Add(responseField);
+        
+        #endregion
+        
+        #region Condition Area
+        Foldout conditionFoldout = new Foldout()
+        {
+            text = "Conditions",
+            value = false ,
+            
+        };
+        conditionContainer = new VisualElement
+        {
+            style =
+            {
+                flexDirection = FlexDirection.Column,
+                backgroundColor = new Color(.8f, 0f, 0.2f, 0.3f),
+                paddingLeft = 10,
+                paddingTop = 10,
+                paddingRight = 10,
+                paddingBottom = 10,
+            }
+        };
+        conditionFoldout.Add(conditionContainer);
+        Button addConditionButton = new Button (AddCondition) 
+            { text = "+ Add Condition" };
+        conditionFoldout.Add(addConditionButton);
+        extensionContainer.Add(conditionFoldout);
+        #endregion
 
         InputPort = InstantiatePort(
             Orientation.Horizontal,
@@ -52,12 +87,113 @@ public sealed class DialogueResponseGraphNode : Node
         OutputPort.portName = "To Dialogue";
         OutputPort.portColor = Color.cyan;
         outputContainer.Add(OutputPort);
-        EdgeConnector<Edge> edgeConnector =
-            new EdgeConnector<Edge>(new DialogueEdgeConnectorListener(_graphView));
-
+        EdgeConnector<Edge> edgeConnector = new EdgeConnector<Edge>(new DialogueEdgeConnectorListener(_graphView));
         OutputPort.AddManipulator(edgeConnector);
+        GenerateConditionUI();
         RefreshExpandedState();
         RefreshPorts();
+    }
+
+
+    public void GenerateConditionUI()
+    {
+        conditionContainer.Clear();
+        if (ResponseData.m_conditions == null) return;
+
+        foreach (var condition in ResponseData.m_conditions)
+        {
+            VisualElement row = new VisualElement { style = { flexDirection = FlexDirection.Row, marginBottom = 5 } };
+            
+            VisualElement header = new VisualElement
+            {
+                style =
+                {
+                    flexDirection = FlexDirection.Row,
+                    
+                }
+                
+            };
+
+            if (condition is DialogueNodeCondition nodeCond)
+            {
+                ObjectField dialogueAssetField = new ObjectField("Target Dialogue")
+                {
+                    objectType = typeof(Dialogue),
+                    value = nodeCond.targetDialogue,
+                };
+                
+                Func<DialogueNode, string> formatLabel = n => {
+                    if (n == null) return "Select a Node";
+                    string preview = string.IsNullOrEmpty(n.dialogueText) ? "Empty" : n.dialogueText;
+                    if (preview.Length > 15) preview = preview[..15] + "...";
+                    return $"[{n.tag}] {preview}";
+                };
+                var initialChoices = nodeCond.targetDialogue?.allNodes ?? new List<DialogueNode>();
+                PopupField<DialogueNode> nodeSelector = new PopupField<DialogueNode>(
+                    "Target Node",
+                    initialChoices,
+                    0,
+                    formatLabel, 
+                    formatLabel  
+                );
+
+                void UpdatePopupOptions()
+                {
+                    if (nodeCond.targetDialogue != null && nodeCond.targetDialogue.allNodes != null)
+                    {
+                        var nodes = nodeCond.targetDialogue.allNodes;
+
+                        nodeSelector.choices = nodes;
+
+                        if (nodeCond.targetNode != null && nodes.Contains(nodeCond.targetNode))
+                            nodeSelector.value = nodeCond.targetNode;
+                        else if (nodes.Count > 0) nodeSelector.index = 0;
+                    }
+                    else
+                    {
+                        nodeSelector.choices = new List<DialogueNode>();
+                        nodeSelector.value = null;
+                    }
+                }
+
+                dialogueAssetField.RegisterValueChangedCallback(evt => {
+                    nodeCond.targetDialogue = (Dialogue)evt.newValue;
+                    UpdatePopupOptions();
+                    EditorUtility.SetDirty(Selection.activeObject);
+                });
+
+                nodeSelector.RegisterValueChangedCallback(evt => {
+                    nodeCond.targetNode = evt.newValue;
+                    EditorUtility.SetDirty(Selection.activeObject);
+                });
+
+                UpdatePopupOptions();
+                row.Add(dialogueAssetField);
+                row.Add(nodeSelector);
+            }
+        
+            Button removeBtn = new Button(() => {
+                ResponseData.m_conditions.Remove(condition);
+                GenerateConditionUI();
+            }) { text = "X" };
+            
+            row.Add(header);
+            row.Add(removeBtn);
+            conditionContainer.Add(row); 
+        }
+        RefreshExpandedState();
+    }
+    
+    private string GetShortText(string fullText)
+    {
+        if (string.IsNullOrEmpty(fullText)) return "Empty...";
+        return fullText.Length > 15 ? fullText[..15] + "..." : fullText;
+    }
+
+    private void AddCondition()
+    {
+        Vector2 mousePos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);
+        _graphView.OpenConditionSearchWindow(this, mousePos);
     }
     public override void SetPosition(Rect newPos)
     {
@@ -70,5 +206,4 @@ public sealed class DialogueResponseGraphNode : Node
             UnityEditor.EditorUtility.SetDirty(UnityEditor.Selection.activeObject);
         }
     }
-   
 }

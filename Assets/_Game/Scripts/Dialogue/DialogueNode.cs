@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine;
 // Lo que pueden decir los NPC y como podemos responder a eso.
 [System.Serializable]
@@ -7,7 +6,7 @@ public class DialogueNode
 {
     [TextArea(0,20)] public string dialogueText;
     [SerializeReference] public List<DialogueResponse> responses;
-    public bool isRootNode = false;
+    public bool isRootNode = true;
     [HideInInspector] public Vector2 editorPosition;
 
     [Header("ID")]

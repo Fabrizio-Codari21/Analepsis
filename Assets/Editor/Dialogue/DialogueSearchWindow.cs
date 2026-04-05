@@ -72,7 +72,7 @@ public class DialogueSearchWindow : ScriptableObject, ISearchWindowProvider
                     dialogueText = "New Dialogue"
                 };
 
-                DialogueGraphNode dialogueNode = graphView.CreateNode(localPosition, dialogueData);
+                DialogueGraphNode dialogueNode = graphView.CreateNode(localPosition,nodeData: dialogueData);
 
                 if (draggedPort.node is DialogueResponseGraphNode responseNode)
                 {
@@ -107,6 +107,38 @@ public class DialogueSearchWindow : ScriptableObject, ISearchWindowProvider
             }
         }
 
+        return true;
+    }
+}
+
+public class ConditionSearchWindow : ScriptableObject, ISearchWindowProvider
+{
+    private DialogueResponseGraphNode _node;
+
+    public void Init(DialogueResponseGraphNode node)
+    {
+        _node = node;
+    }
+    public List<SearchTreeEntry> CreateSearchTree(SearchWindowContext context)
+    {
+        var tree = new List<SearchTreeEntry>
+        {
+            new SearchTreeGroupEntry(new GUIContent("Select Condition Type"), 0),
+            new SearchTreeEntry(new GUIContent("Dialogue Node Condition"))
+            {
+                level = 1,
+                userData = typeof(DialogueNodeCondition)
+            },
+        };
+        return tree;
+    }
+
+    public bool OnSelectEntry(SearchTreeEntry entry, SearchWindowContext context)
+    {
+        if (entry.userData is not System.Type type) return false;
+        var newCondition = (DialogueCondition)System.Activator.CreateInstance(type);
+        _node.ResponseData.m_conditions.Add(newCondition);
+        _node.GenerateConditionUI(); 
         return true;
     }
 }

@@ -29,10 +29,28 @@ public sealed class DialogueGraphNode : Node
         textField.RegisterValueChangedCallback(evt =>
         {
             NodeData.dialogueText = evt.newValue;
+            
         });
 
         extensionContainer.Add(textField);
 
+        
+        
+        TextField tagField = new TextField("Tag")
+        {
+            multiline = true,
+            value = nodeData.tag
+        };
+
+        tagField.RegisterValueChangedCallback(evt =>
+        {
+            NodeData.tag = evt.newValue;
+        });
+
+        extensionContainer.Add(tagField);
+
+
+        
         if (!nodeData.isRootNode)
         {
             InputPort = InstantiatePort(
@@ -41,19 +59,16 @@ public sealed class DialogueGraphNode : Node
                 Port.Capacity.Multi,
                 typeof(bool)
             );
-
             InputPort.portName = "Input";
             InputPort.portColor = Color.cyan;
             inputContainer.Add(InputPort);
         }
-
         OutputPort = InstantiatePort(
             Orientation.Horizontal,
             Direction.Output,
             Port.Capacity.Multi,
             typeof(bool)
         );
-
         OutputPort.portName = "Responses";
         OutputPort.portColor = Color.yellow;
         outputContainer.Add(OutputPort);

@@ -9,10 +9,13 @@ public sealed class DialogueGraphView : GraphView
 {
     private Dictionary<DialogueNode, DialogueGraphNode> dialogueNodeMap = new();
     private Dictionary<DialogueResponse, DialogueResponseGraphNode> responseNodeMap = new();
-    
     private DialogueSearchWindow searchWindow;
+    private ConditionSearchWindow _sharedConditionSearchWindow;
     private EditorWindow editorWindow;
     private bool isLoadingGraph;
+    
+    private Dialogue currentDialogue;
+    public Dialogue CurrentDialogue => currentDialogue;
     public DialogueGraphView(EditorWindow window)
     {
         editorWindow = window;
@@ -48,6 +51,14 @@ public sealed class DialogueGraphView : GraphView
     {
         searchWindow.SetContext(port, position);
         SearchWindow.Open(new SearchWindowContext(position), searchWindow);
+    }
+    public void OpenConditionSearchWindow(DialogueResponseGraphNode node, Vector2 mousePos)
+    {
+        if (_sharedConditionSearchWindow == null)
+            _sharedConditionSearchWindow = ScriptableObject.CreateInstance<ConditionSearchWindow>();
+
+        _sharedConditionSearchWindow.Init(node);
+        SearchWindow.Open(new SearchWindowContext(mousePos), _sharedConditionSearchWindow);
     }
     private void DeleteSelectionCallback(string operationName, AskUser askUser)
     {
@@ -99,10 +110,20 @@ public sealed class DialogueGraphView : GraphView
         });
     }
     
-    public DialogueGraphNode CreateNode(Vector2 position, DialogueNode nodeData = null)
+    public DialogueGraphNode CreateNode(Vector2 position, bool isRoot = false, DialogueNode nodeData = null)
     {
         nodeData ??= new DialogueNode();
-
+        nodeData.isRootNode = isRoot;
+        
+        if (currentDialogue != null)
+        {
+            bool exists = currentDialogue.allNodes.Any(n => n.guid == nodeData.guid);
+            if (!exists)
+            {
+                currentDialogue.allNodes.Add(nodeData);
+            }
+            EditorUtility.SetDirty(currentDialogue); 
+        }
         if (nodeData.editorPosition != Vector2.zero)
         {
             position = nodeData.editorPosition;
@@ -142,11 +163,10 @@ public sealed class DialogueGraphView : GraphView
  
     private void CreateDialogueTree(DialogueNode nodeData, Vector2 position, HashSet<DialogueNode> visited)
     {
-        if (nodeData == null || visited.Contains(nodeData)) return;
+        if (nodeData == null || !visited.Add(nodeData)) return;
 
-        visited.Add(nodeData);
-
-        DialogueGraphNode dialogueNode = CreateNode(position, nodeData);
+        bool isRoot = visited.Count == 1;
+        DialogueGraphNode dialogueNode = CreateNode(position, isRoot ,nodeData);
 
         float yOffset = 0f;
 
@@ -174,7 +194,6 @@ public sealed class DialogueGraphView : GraphView
                     AddElement(responseToDialogue);
                 }
             }
-
             yOffset += 250f;
         }
     }
@@ -264,6 +283,12 @@ public sealed class DialogueGraphView : GraphView
     private void RemoveDialogueNodeData(DialogueGraphNode dialogueGraphNode)
     {
         DialogueNode nodeData = dialogueGraphNode.NodeData;
+        
+        if (currentDialogue != null && currentDialogue.allNodes.Contains(nodeData))
+        {
+            currentDialogue.allNodes.Remove(nodeData);
+            EditorUtility.SetDirty(currentDialogue);
+        }
         foreach (var pair in responseNodeMap)
         {
             DialogueResponse response = pair.Key;
@@ -295,6 +320,7 @@ public sealed class DialogueGraphView : GraphView
     
     public void LoadDialogue(Dialogue dialogue)
     {
+        currentDialogue = dialogue;
         isLoadingGraph = true;
         DeleteElements(graphElements.ToList());
         dialogueNodeMap.Clear();

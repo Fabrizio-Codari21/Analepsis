@@ -19,16 +19,63 @@ MonoBehaviour:
     - rid: 8982846281244737605
     - rid: 8982846281244737606
     isRootNode: 1
-    editorPosition: {x: -254.36664, y: 284.0625}
+    editorPosition: {x: -267.30002, y: 273.00006}
     guid:
       Part1: 2607227662
       Part2: 1194866468
       Part3: 2769496979
       Part4: 2641924250
-  allNode: []
+    tag: 
+  allNodes:
+  - dialogueText: A B or  C
+    responses:
+    - rid: 8982846198710272093
+    - rid: 8982846281244737605
+    - rid: 8982846281244737606
+    isRootNode: 1
+    editorPosition: {x: -267.30002, y: 273.00006}
+    guid:
+      Part1: 2607227662
+      Part2: 1194866468
+      Part3: 2769496979
+      Part4: 2641924250
+    tag: 
+  - dialogueText: OK,A
+    responses:
+    - rid: 8982846301971677268
+    isRootNode: 0
+    editorPosition: {x: 476.99994, y: 103}
+    guid:
+      Part1: 557291394
+      Part2: 1333425665
+      Part3: 1948167557
+      Part4: 1955223703
+    tag: 
+  - dialogueText: OK,B
+    responses: []
+    isRootNode: 0
+    editorPosition: {x: 477, y: 258}
+    guid:
+      Part1: 760976407
+      Part2: 1127653122
+      Part3: 3681977258
+      Part4: 1820761160
+    tag: 
+  - dialogueText: OK, C
+    responses: []
+    isRootNode: 0
+    editorPosition: {x: 435.6001, y: 440.00012}
+    guid:
+      Part1: 2329760659
+      Part2: 1245582175
+      Part3: 2798661514
+      Part4: 3732830588
+    tag: 
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 8982846198710272093
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -36,19 +83,21 @@ MonoBehaviour:
         nextNode:
           rid: 8982846198710272094
         m_conditions: []
-        editorPosition: {x: 114, y: 111}
+        editorPosition: {x: 54.999992, y: 102.74251}
     - rid: 8982846198710272094
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: OK, A
-        responses: []
+        dialogueText: OK,A
+        responses:
+        - rid: 8982846301971677268
         isRootNode: 0
-        editorPosition: {x: 518, y: 81}
+        editorPosition: {x: 476.99994, y: 103}
         guid:
           Part1: 557291394
           Part2: 1333425665
           Part3: 1948167557
           Part4: 1955223703
+        tag: 
     - rid: 8982846281244737605
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -56,7 +105,7 @@ MonoBehaviour:
         nextNode:
           rid: 8982846281244737607
         m_conditions: []
-        editorPosition: {x: 321, y: 262}
+        editorPosition: {x: 54.999935, y: 273}
     - rid: 8982846281244737606
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -64,28 +113,38 @@ MonoBehaviour:
         nextNode:
           rid: 8982846281244737608
         m_conditions: []
-        editorPosition: {x: 181, y: 488}
+        editorPosition: {x: 54.999973, y: 439.9725}
     - rid: 8982846281244737607
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: OK,B
         responses: []
         isRootNode: 0
-        editorPosition: {x: 577, y: 273.04}
+        editorPosition: {x: 477, y: 258}
         guid:
           Part1: 760976407
           Part2: 1127653122
           Part3: 3681977258
           Part4: 1820761160
+        tag: 
     - rid: 8982846281244737608
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: OK, C
         responses: []
         isRootNode: 0
-        editorPosition: {x: 518, y: 488}
+        editorPosition: {x: 435.6001, y: 440.00012}
         guid:
           Part1: 2329760659
           Part2: 1245582175
           Part3: 2798661514
           Part4: 3732830588
+        tag: 
+    - rid: 8982846301971677268
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Final A
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 793.66406, y: 48.24851}

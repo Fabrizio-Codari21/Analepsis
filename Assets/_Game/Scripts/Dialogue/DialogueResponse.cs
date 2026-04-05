@@ -7,7 +7,7 @@ public class DialogueResponse
 {
     [TextArea] public string responseText;
     [SerializeReference] public DialogueNode nextNode;
-    [SerializeReference] private List<DialogueCondition> m_conditions;
+    [SerializeReference] public List<DialogueCondition> m_conditions= new List<DialogueCondition>();
     
     public bool IsAvailable()
     {
@@ -18,22 +18,22 @@ public class DialogueResponse
     #if UNITY_EDITOR
     [HideInInspector]public Vector2 editorPosition;
     #endif
-    
 }
 
 [Serializable]
-public abstract class DialogueCondition 
+public abstract class DialogueCondition
 {
+    [SerializeField] public string conditionName;
     public abstract bool Evaluate();
 }
 
-
 public class DialogueNodeCondition : DialogueCondition
 {
-    [SerializeField] private SerializableGuid guid;
-    [SerializeField] private Check m_check;
+    [SerializeField] public Dialogue targetDialogue;
+    [SerializeField] public DialogueNode targetNode;
     public override bool Evaluate()
     {
-        return m_check.Request(guid);
+        return targetDialogue != null && targetNode != null && 
+               DialogueManager.Instance.CheckDialogue(targetNode.guid);
     }
 }
