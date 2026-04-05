@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: New Dialogue
   m_EditorClassIdentifier: 
   startingNode:
-    dialogueText: A B or  C
+    dialogueText: Oh, hey, what's up?
     responses:
     - rid: 8982846198710272093
     - rid: 8982846281244737605
     - rid: 8982846281244737606
     isRootNode: 1
-    editorPosition: {x: -267.30002, y: 273.00006}
+    editorPosition: {x: -467.68, y: 273}
     guid:
       Part1: 2607227662
       Part2: 1194866468
@@ -76,51 +76,89 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 5324356605152329803
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Fair enough]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 968.0002, y: 260}
+    - rid: 5324356605152329805
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        targetDialogue: {fileID: 11400000}
+        targetNode:
+          dialogueText: OK,A
+          responses:
+          - rid: 8982846301971677268
+          isRootNode: 0
+          editorPosition: {x: 476.99994, y: 103}
+          guid:
+            Part1: 557291394
+            Part2: 1333425665
+            Part3: 1948167557
+            Part4: 1955223703
+          tag: 
+    - rid: 5324356605152329806
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Mission Accomplished]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 1216, y: 540}
     - rid: 8982846198710272093
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: A
+        responseText: '[Ask about him]'
         nextNode:
           rid: 8982846198710272094
         m_conditions: []
-        editorPosition: {x: 54.999992, y: 102.74251}
+        editorPosition: {x: 23.949982, y: 13.799999}
     - rid: 8982846198710272094
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: OK,A
+        dialogueText: Oh, I'm not important. Just a guy who likes <b>games</b>...
         responses:
         - rid: 8982846301971677268
         isRootNode: 0
-        editorPosition: {x: 476.99994, y: 103}
+        editorPosition: {x: 446, y: 30}
         guid:
           Part1: 557291394
           Part2: 1333425665
           Part3: 1948167557
           Part4: 1955223703
-        tag: 
+        tag: tag
     - rid: 8982846281244737605
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: B
+        responseText: '[Ask about other stuff] '
         nextNode:
           rid: 8982846281244737607
         m_conditions: []
-        editorPosition: {x: 54.999935, y: 273}
+        editorPosition: {x: 23.999992, y: 272.99997}
     - rid: 8982846281244737606
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: C
+        responseText: '[Talk about cool games]'
         nextNode:
           rid: 8982846281244737608
-        m_conditions: []
-        editorPosition: {x: 54.999973, y: 439.9725}
+        m_conditions:
+        - rid: 5324356605152329805
+        editorPosition: {x: -9.713184, y: 556}
     - rid: 8982846281244737607
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: OK,B
-        responses: []
+        dialogueText: 'Uh... I''m not good at this whole "dialogue" thing.
+
+          Please
+          leave.'
+        responses:
+        - rid: 5324356605152329803
         isRootNode: 0
-        editorPosition: {x: 477, y: 258}
+        editorPosition: {x: 455.0001, y: 259.5}
         guid:
           Part1: 760976407
           Part2: 1127653122
@@ -130,10 +168,11 @@ MonoBehaviour:
     - rid: 8982846281244737608
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: OK, C
-        responses: []
+        dialogueText: OMG I LOVE GAMES HOW DID U KNOW!!1!
+        responses:
+        - rid: 5324356605152329806
         isRootNode: 0
-        editorPosition: {x: 435.6001, y: 440.00012}
+        editorPosition: {x: 732.0002, y: 540.0501}
         guid:
           Part1: 2329760659
           Part2: 1245582175
@@ -143,8 +182,8 @@ MonoBehaviour:
     - rid: 8982846301971677268
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Final A
+        responseText: 'Games, huh? [Leave with new info]'
         nextNode:
           rid: -2
         m_conditions: []
-        editorPosition: {x: 793.66406, y: 48.24851}
+        editorPosition: {x: 1080.24, y: 30}
