@@ -22,5 +22,7 @@ public interface IFocus
 public interface ITipProvider
 {
     string GetTip();
+    
+    
 }
 
