@@ -14,6 +14,7 @@ public class NotebookView : MonoBehaviour
     
     [SerializeField] private ButtonSetting m_buttonSetting;
     [SerializeField] private DynamicTextSetting  m_dynamicTextSetting;
+    [SerializeField] private ImageSetting  m_imageSetting;
     [SerializeField] private ScrollRect m_scrollRect;
     [SerializeField] private Button m_next;
     [SerializeField] private Button m_previous;
@@ -88,6 +89,12 @@ public class NotebookView : MonoBehaviour
         token.ThrowIfCancellationRequested();
         m_scrollRect.verticalNormalizedPosition = 0;
         await t.PlayTypeWriterEffect(externalToken: token);
+    }
+    
+    public void CreateImage(Sprite sprite)
+    {
+        var image = FlyweightFactory.Instance.Spawn<UIImage>(m_imageSetting, Vector3.zero, Quaternion.identity, m_detailRoot);
+        image.SetImage(sprite);
     }
     
     private void Despawn(Transform root) 

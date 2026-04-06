@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public abstract class FlyweightSetting : ScriptableObject
+[CreateAssetMenu(menuName = "Game/GameObject",fileName = "GameObject")]
+public class FlyweightSetting : ScriptableObject
 {
     public GameObject prefab;
     public int defaultCapacity = 10;

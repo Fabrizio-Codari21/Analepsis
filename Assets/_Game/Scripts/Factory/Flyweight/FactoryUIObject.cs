@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class FactoryUIObject : FactoryObject
 {
-    [SerializeField] private RectTransform m_rectTransform;
+    [SerializeField] protected RectTransform m_rectTransform;
     public override void SetPositionAndRotation(Vector3 pos, Quaternion rot, Transform parent = null)
     {
         m_rectTransform.SetParent(parent ,false); 

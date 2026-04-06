@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 
@@ -9,6 +10,14 @@ public class DynamicText : FactoryUIObject
     [SerializeField] private TMP_Text m_text;
     [SerializeField] private float m_charsPerSecond = 30f;
     private CancellationTokenSource _cts;
+
+    [Button]
+    public void CalculateWidthAndHeight()
+    {
+        Vector2 prefSize = m_text.GetPreferredValues(m_text.text);
+        m_rectTransform.sizeDelta = new Vector2(prefSize.x, prefSize.y);
+        m_rectTransform.anchoredPosition = new Vector2(0, 0);
+    }
     public override void OnSpawn()
     {
        base.OnSpawn();
@@ -19,8 +28,14 @@ public class DynamicText : FactoryUIObject
         m_text.text = text;
         m_text.color = color;
         m_text.fontSize = size;
-        m_text.maxVisibleCharacters = 0;
+        m_text.maxVisibleCharacters = 0; 
+        
+        Vector2 prefSize = m_text.GetPreferredValues(m_text.text);
+        m_rectTransform.sizeDelta = new Vector2(prefSize.x, prefSize.y);
+        m_rectTransform.anchoredPosition = new Vector2(0, 0);
     }
+    
+  
     public async UniTask PlayTypeWriterEffect(string text = null,CancellationToken externalToken = default)
     {
         Cancel();

@@ -14,7 +14,6 @@ public class ButtonFactoryObject : FactoryUIObject
     }
 
     
-    
     public void SetText(string text)
     {
         m_text.text = text;

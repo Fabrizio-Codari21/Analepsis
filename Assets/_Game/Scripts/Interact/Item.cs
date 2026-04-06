@@ -5,6 +5,7 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
     public GameObject gameObject;
+    
     [MinValue(1)] public float size;
 
     [SerializeReference] public Clue clueInfo;
@@ -13,6 +14,7 @@ public class Item : ScriptableObject
 public class Clue
 {
     public string clueId;
+    public Sprite sprite;
     public GameObject clueDisplay;
     [TextArea(0,20)] public List<string> clues;
 }
