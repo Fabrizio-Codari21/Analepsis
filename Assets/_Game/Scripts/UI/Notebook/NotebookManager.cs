@@ -148,7 +148,6 @@ public class NotebookManager : MonoBehaviour, IActivity
 }
 public enum NoteType
 {
-    Default,
     Log,
     Objects,
 }
