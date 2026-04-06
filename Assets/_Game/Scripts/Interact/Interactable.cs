@@ -11,12 +11,12 @@ public class Interactable : MonoBehaviour, IInteractable,IAction
     public event Action OnUnfocus;
     public virtual void InteractStart()
     {
-        if(!m_checkInt.Request(Cost)) return; // este evente debe esta bindeado un check de amount de actiones
+        // if(!m_checkInt.Request(Cost)) return; // este evente debe esta bindeado un check de amount de actiones
         OnStart?.Invoke();
     }
     public virtual void InteractEnd()
     {
-        if(!m_checkInt.Request(Cost)) return;
+        // if(!m_checkInt.Request(Cost)) return;
         OnEnd?.Invoke();
     }
     public virtual void Focus()
