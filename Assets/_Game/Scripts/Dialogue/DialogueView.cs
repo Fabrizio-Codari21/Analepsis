@@ -48,7 +48,7 @@ public class DialogueView : MonoBehaviour
     {
         token.ThrowIfCancellationRequested();
 
-        var t = FlyweightFactory.Instance.Spawn<DynamicText>(
+        var t = FlyweightFactory.Instance.Spawn<DynamicUIText>(
             m_dialogueTextSetting,
             Vector3.zero,
             Quaternion.identity,

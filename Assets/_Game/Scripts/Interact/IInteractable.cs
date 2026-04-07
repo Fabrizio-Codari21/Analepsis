@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IInteractable : IFocus,ITipProvider
@@ -11,18 +12,3 @@ public interface IInteractable : IFocus,ITipProvider
     public void InteractEnd(); // cuando soltar el botton
     
 }
-public interface IFocus
-{
-    public event Action OnFocus;
-    public event Action OnUnfocus;
-    public void Focus();
-    public void Unfocus();
-}
-
-public interface ITipProvider
-{
-    string GetTip();
-    
-    
-}
-

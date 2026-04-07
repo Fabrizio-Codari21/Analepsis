@@ -1,14 +1,16 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Interactable : MonoBehaviour, IInteractable,IAction
+public class Interactable : MonoBehaviour, IInteractable
 {
-    [SerializeField] protected Item m_item;
     [SerializeField] protected CheckIntAmount m_checkInt;
     public event Action OnStart;
     public event Action OnEnd;
     public event Action OnFocus;
     public event Action OnUnfocus;
+    
+    private List<Tip> tips = new();
     public virtual void InteractStart()
     {
         // if(!m_checkInt.Request(Cost)) return; // este evente debe esta bindeado un check de amount de actiones
@@ -31,16 +33,34 @@ public class Interactable : MonoBehaviour, IInteractable,IAction
 
     public string GetTip()
     {
-        return "Interact";
+        if (tips.Count == 0) return string.Empty;
+
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        foreach (var t in tips) sb.Append(t.tip + " ");
+        
+
+        return sb.ToString();
     }
 
-    [SerializeField] private int cost;
-    public int Cost { get => cost ; set => cost = value; }
-    
-    public void RequiredConsume()
+    public void AddTip(Tip tip)
     {
-        throw new NotImplementedException();
+        int insertIndex = tips.Count;
+        for (int i = 0; i < tips.Count; i++)
+        {
+            if (tip.order >= tips[i].order) continue;
+            insertIndex = i;
+            break;
+        }
+
+        tips.Insert(insertIndex, tip);
     }
+
+    public void RemoveTip(Tip tip)
+    {
+        tips.Remove(tip);
+    }
+    
 }
 
 public interface IInspectable

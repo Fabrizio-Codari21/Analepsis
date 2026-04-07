@@ -11,4 +11,3 @@ public class UIImage : FactoryUIObject
         m_image.SetNativeSize();
     }
 }
-

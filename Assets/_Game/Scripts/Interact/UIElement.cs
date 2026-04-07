@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class UIElement
 {
-    public static async UniTask<DynamicText> PlayDynamicText(
+    public static async UniTask<DynamicUIText> PlayDynamicText(
         string text,
         DynamicTextSetting setting,
         Vector3 position,
@@ -17,7 +17,7 @@ public static class UIElement
         {
             token.ThrowIfCancellationRequested();
 
-            var t = FlyweightFactory.Instance.Spawn<DynamicText>(
+            var t = FlyweightFactory.Instance.Spawn<DynamicUIText>(
                 setting,
                 position,
                 rotation,

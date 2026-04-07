@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Npc : MonoBehaviour,INpc
@@ -6,9 +7,17 @@ public class Npc : MonoBehaviour,INpc
    [SerializeField] private NpcIdentity m_npcIdentity;
    [SerializeField] private Dialogue m_defaultDialogue;
    [SerializeField] private DialoguerEvent m_dialogueEvent;
+   
+   [SerializeField] private DynamicTextSetting m_nameTextSetting;
+   [SerializeField] private Vector3 m_textPositionOffset;
+   
+   private DynamicText _text;
+   private List<Tip> tips = new();
    private void Start()
    {
        NewDialogue(m_defaultDialogue);
+       OnFocus += SpawnName;
+       OnUnfocus += DespawnName;
    }
    #region IInteract
    public event Action OnFocus;
@@ -55,6 +64,46 @@ public class Npc : MonoBehaviour,INpc
 
    public string GetTip()
    {
-      return "Talk";
+      if (tips.Count == 0) return string.Empty;
+
+      System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+      foreach (var t in tips) sb.Append(t.tip);
+        
+
+      return sb.ToString();
    }
+
+   public void AddTip(Tip tip)
+   {
+      int insertIndex = tips.Count;
+      for (int i = 0; i < tips.Count; i++)
+      {
+         if (tip.order >= tips[i].order) continue;
+         insertIndex = i;
+         break;
+      }
+
+      tips.Insert(insertIndex, tip);
+   }
+
+   public void RemoveTip(Tip tip)
+   {
+      tips.Remove(tip);
+   }
+   
+   private void SpawnName()
+   {
+      _text = FlyweightFactory.Instance.Spawn<DynamicText>(m_nameTextSetting, m_textPositionOffset+transform.position,Quaternion.identity,transform);
+      _text.SetText(m_npcIdentity.npcName,1,Color.black);
+      _ = _text.PlayTypeWriterEffect();
+   }
+
+   private void DespawnName()
+   {
+      if(_text) FlyweightFactory.Instance.Return(_text);
+      _text =  null;
+   }
+
 }
+

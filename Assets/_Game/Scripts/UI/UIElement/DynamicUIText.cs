@@ -5,11 +5,10 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 
-public class DynamicText : FactoryObject
+public class DynamicUIText : FactoryUIObject
 {
     [SerializeField] private TMP_Text m_text;
     [SerializeField] private float m_charsPerSecond = 30f;
-    [SerializeField] private RectTransform m_rectTransform;
     private CancellationTokenSource _cts;
 
     [Button]
@@ -21,8 +20,8 @@ public class DynamicText : FactoryObject
     }
     public override void OnSpawn()
     {
-        base.OnSpawn();
-        Cancel();
+       base.OnSpawn();
+       Cancel();
     }
     public void SetText(string text,float size, Color color)
     {

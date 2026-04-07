@@ -78,7 +78,7 @@ public class NotebookView : MonoBehaviour
     public async UniTask PlayText(string text, CancellationToken token) 
     {
         token.ThrowIfCancellationRequested();
-        var t = FlyweightFactory.Instance.Spawn<DynamicText>(
+        var t = FlyweightFactory.Instance.Spawn<DynamicUIText>(
             m_dynamicTextSetting,
             Vector3.zero,
             Quaternion.identity,

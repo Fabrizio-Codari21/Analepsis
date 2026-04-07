@@ -9,6 +9,8 @@ public class Item : ScriptableObject
     [MinValue(1)] public float size;
 
     [SerializeReference] public Clue clueInfo;
+    
+    public string Name;
 }
 
 public class Clue
