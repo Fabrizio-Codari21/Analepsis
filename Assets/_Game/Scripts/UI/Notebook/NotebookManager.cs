@@ -18,6 +18,7 @@ public class NotebookManager : MonoBehaviour, IActivity
     [SerializeField] private EventChannel popEvent;
 
     #endregion
+
     [SerializeField]private NotebookView m_view;
     [SerializeField] private RecordNoteEvent m_recordNote;
     private CancellationTokenSource _cts;
@@ -39,7 +40,7 @@ public class NotebookManager : MonoBehaviour, IActivity
     private void Record(Note note)
     {
         _notebookPages.TryAdd(note.guid, note);
-        MarkClue(note);
+        MarkClue(note); //esto es temporal
     }
 
     private void MarkClue(Note note)
