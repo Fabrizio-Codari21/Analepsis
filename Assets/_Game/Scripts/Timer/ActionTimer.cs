@@ -21,12 +21,10 @@ public class ActionTimer : MonoBehaviour
     {
         m_consumeAction.OnRequest += TryCostAction;
         m_checkActionAmount.OnRequest += Check;
-        
          _actionLeft = m_maxActionsLevel;
          OnActionChanged?.Invoke(_actionLeft);
       
     }
-
 
     private bool Check(int cost)
     {

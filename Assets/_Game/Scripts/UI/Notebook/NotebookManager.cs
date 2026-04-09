@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 
 
+
 public class NotebookManager : MonoBehaviour, IActivity
 {
     
@@ -23,7 +24,6 @@ public class NotebookManager : MonoBehaviour, IActivity
     private CancellationTokenSource _cts;
     private readonly Dictionary<SerializableGuid,Note> _notebookPages = new();
     [ReadOnly,ShowInInspector] private NoteType _currentNoteType;
-
     [ReadOnly, ShowInInspector] public Dictionary<SerializableGuid, Note> markedClues = new();
     [SerializeField] MarkClueEvent markedClueEvent;
 
@@ -190,5 +190,22 @@ public class LogNote : Note
     public override async UniTask Show(NotebookView view, CancellationToken token)
     { 
        await view.PlayText(_info, token);
+    }
+}
+
+public class ItemNote : Note
+{
+    private readonly Item _item;
+    public ItemNote(string displayName,Item item) : base(displayName)
+    {
+        _item =  item;
+        type = NoteType.Objects;
+        guid = _item.guid;  // para usa el guid de item para que solamente anota el item y no se repite, pero el clue se puede ir desbloqueando de a poco
+    }
+
+    public override async UniTask Show(NotebookView view, CancellationToken token)
+    {
+        view.CreateImage(_item.sprite);
+        await view.PlayText(_item.Description, token);
     }
 }

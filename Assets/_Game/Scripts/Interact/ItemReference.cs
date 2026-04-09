@@ -6,17 +6,19 @@ public class ItemReference : MonoBehaviour
     
     [SerializeField] private DynamicTextSetting m_nameTextSetting;
     [SerializeField] private Vector3 m_textPositionOffset;
-    private IInteractable _focus;
+    private IInteractable _interact;
 
     private ITipProvider _tipProvider;
     private DynamicText _text;
+    [SerializeField] private RecordNoteEvent  m_recordNoteEvent;
 
     private void Start()
     {
-        _focus = GetComponent<IInteractable>();
-        _focus.OnFocus += SpawnName;
-        _focus.OnUnfocus  += DespawnName;
-        _focus.OnStart += DespawnName;
+        _interact = GetComponent<IInteractable>();
+        _interact.OnFocus += SpawnName;
+        _interact.OnUnfocus  += DespawnName;
+        _interact.OnStart += DespawnName;
+        _interact.OnStart += RecordItem;
         _tipProvider = GetComponent<ITipProvider>();
         _tipProvider.AddTip(new Tip("(INTERACTION)",TipOrder.InteractionType)); 
     }
@@ -32,11 +34,19 @@ public class ItemReference : MonoBehaviour
        if(_text) FlyweightFactory.Instance.Return(_text);
        _text =  null;
     }
+
+    private void RecordItem()
+    {
+        m_recordNoteEvent.Raise(new ItemNote(m_itemReference.Name,m_itemReference));
+    }
+    
     
     public Item GetInspectItem()
     {
         return m_itemReference;
     }
+    
+    
     
     
     

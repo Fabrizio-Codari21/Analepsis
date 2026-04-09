@@ -30,10 +30,19 @@ public abstract class DialogueCondition
 public class DialogueNodeCondition : DialogueCondition
 {
     [SerializeField] public Dialogue targetDialogue;
-    [SerializeField] public DialogueNode targetNode;
+    [SerializeField] public DialogueNode isTalkDialogueNode;
     public override bool Evaluate()
     {
-        return targetDialogue != null && targetNode != null && 
-               DialogueManager.Instance.CheckDialogue(targetNode.guid);
+        return targetDialogue && isTalkDialogueNode != null && 
+               DialogueManager.Instance.CheckDialogue(isTalkDialogueNode.guid);
+    }
+}
+
+public class ItemNodeCondition : DialogueCondition
+{
+    [SerializeField] public Item item;
+    public override bool Evaluate()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
 {
-    [SerializeField] protected CheckIntAmount m_checkInt;
     public List<ICondition> Conditions { get; } = new();
     public event Action OnStart;
     public event Action OnEnd;
@@ -63,8 +62,6 @@ public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
     {
         tips.Remove(tip);
     }
-
-
     public InteractionState GetCurrentState() // este para hacer un override de tip si no se puede interactuar
     {
         foreach (var condition in Conditions)
