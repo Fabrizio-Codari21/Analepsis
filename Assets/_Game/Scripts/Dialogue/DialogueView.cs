@@ -55,7 +55,7 @@ public class DialogueView : MonoBehaviour
             Quaternion.identity,
             m_conversationRoot
         );
-        t.SetText("- " + content + "\n\n",m_dialogueTextSetting.size,m_dialogueTextSetting.color);
+        t.SetText("- " + content,m_dialogueTextSetting.size,m_dialogueTextSetting.color);
         t.ToLast();
         await UniTask.NextFrame();
         token.ThrowIfCancellationRequested();

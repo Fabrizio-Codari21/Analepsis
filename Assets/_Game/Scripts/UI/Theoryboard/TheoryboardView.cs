@@ -7,6 +7,7 @@ public class TheoryboardView : MonoBehaviour
     [SerializeField] TheoryboardManager manager;
     public Transform markedLogsRoot;
     public Transform markedItemsRoot;
+    public Transform boardRoot;
     public ButtonSetting clueButtonSetting;
 
     public void LoadMarkedClues()
@@ -21,6 +22,10 @@ public class TheoryboardView : MonoBehaviour
         foreach (var log in markedLogs) 
         {
             var button = CreateClueButton(log.Value.displayName, markedLogsRoot);
+            button.AddListener(() =>
+            {
+
+            });
         }
         foreach (var item in markedItems)
         {
@@ -36,10 +41,11 @@ public class TheoryboardView : MonoBehaviour
             Vector3.zero,
             Quaternion.identity,
             parent
-        );
+        ) as DraggableButton;
 
         button.SetText(text);
         button.SetInteractable(true);
+        button.SetBoard(boardRoot);
 
         return button;
     }

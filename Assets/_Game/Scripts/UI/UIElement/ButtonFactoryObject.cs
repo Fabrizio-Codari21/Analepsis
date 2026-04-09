@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class ButtonFactoryObject : FactoryUIObject
 {
-    [SerializeField]  private Button m_button;
-    [SerializeField]  private TMP_Text m_text;
+    [SerializeField]  protected Button m_button;
+    [SerializeField]  protected TextMeshProUGUI m_text;
     public override void Despawn()
     {
        base.Despawn();

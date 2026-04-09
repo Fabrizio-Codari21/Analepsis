@@ -974,7 +974,8 @@ MonoBehaviour:
   manager: {fileID: 113457068}
   markedLogsRoot: {fileID: 1531892206}
   markedItemsRoot: {fileID: 1546279262}
-  clueButtonSetting: {fileID: 11400000, guid: 34b5f6d8c98c5244a8cdff53f9245a87, type: 2}
+  boardRoot: {fileID: 2059022635}
+  clueButtonSetting: {fileID: 11400000, guid: 174ee3c059403e14fa7cb8ef6fae3afe, type: 2}
 --- !u!1 &135311762
 GameObject:
   m_ObjectHideFlags: 0
@@ -8695,6 +8696,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1769885545}
     m_Modifications:
+    - target: {fileID: 1244335173647324296, guid: 139351e29e8887c44a8b45064df4a449, type: 3}
+      propertyPath: m_Name
+      value: Board
+      objectReference: {fileID: 0}
     - target: {fileID: 2259843437090381633, guid: 139351e29e8887c44a8b45064df4a449, type: 3}
       propertyPath: m_Name
       value: Theory Room
@@ -8856,6 +8861,11 @@ Canvas:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7e5ad93c8277c9146926bff330957fcd, type: 3}
   m_PrefabInstance: {fileID: 1239649299}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &2059022635 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6331490523339072693, guid: 139351e29e8887c44a8b45064df4a449, type: 3}
+  m_PrefabInstance: {fileID: 2030597050}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2093604884
 GameObject:
