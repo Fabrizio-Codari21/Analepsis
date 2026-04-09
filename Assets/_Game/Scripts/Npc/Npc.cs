@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Npc : MonoBehaviour,INpc
+public class Npc : MonoBehaviour,INpc, IConditionCheck
 {
    [SerializeField] private NpcIdentity m_npcIdentity;
    [SerializeField] private Dialogue m_defaultDialogue;
@@ -10,7 +10,10 @@ public class Npc : MonoBehaviour,INpc
    
    [SerializeField] private DynamicTextSetting m_nameTextSetting;
    [SerializeField] private Vector3 m_textPositionOffset;
+
+   [SerializeField] private Tip m_tip;
    
+   public List<ICondition> Conditions { get; } = new();
    private DynamicText _text;
    private List<Tip> tips = new();
    private void Start()
@@ -18,6 +21,8 @@ public class Npc : MonoBehaviour,INpc
        NewDialogue(m_defaultDialogue);
        OnFocus += SpawnName;
        OnUnfocus += DespawnName;
+       OnStart += DespawnName;
+       AddTip(m_tip);
    }
    #region IInteract
    public event Action OnFocus;
@@ -36,14 +41,39 @@ public class Npc : MonoBehaviour,INpc
    public event Action OnEnd;
    public void InteractStart()
    {
+      var state = GetCurrentState();
+      if(!state.canInteract) return;
       OnStart?.Invoke();
    }
 
    public void InteractEnd()
    {
+      var state = GetCurrentState();
+      if(!state.canInteract) return;
        OnEnd?.Invoke();
       Speck();
    }
+
+   public InteractionState GetCurrentState() // este para hacer un override de tip si no se puede interactuar
+   {
+      foreach (var condition in Conditions)
+      {
+         if (!condition.Check())
+            return new InteractionState
+            {
+               canInteract = false,
+               tipOverride = condition.GetFailureTip(),
+               tipColor = Color.red
+            };
+      }
+      return new InteractionState
+      {
+         canInteract = true,
+         tipOverride = GetTip(),
+         tipColor = Color.white
+      };
+   }
+
    #endregion
 
    private void Speck()
@@ -101,7 +131,8 @@ public class Npc : MonoBehaviour,INpc
 
    private void DespawnName()
    {
-      if(_text) FlyweightFactory.Instance.Return(_text);
+      if(!_text ) return;
+      FlyweightFactory.Instance.Return(_text);
       _text =  null;
    }
 

@@ -6,16 +6,17 @@ public class ItemReference : MonoBehaviour
     
     [SerializeField] private DynamicTextSetting m_nameTextSetting;
     [SerializeField] private Vector3 m_textPositionOffset;
-    private IFocus _focus;
+    private IInteractable _focus;
 
     private ITipProvider _tipProvider;
     private DynamicText _text;
 
     private void Start()
     {
-        _focus = GetComponent<IFocus>();
+        _focus = GetComponent<IInteractable>();
         _focus.OnFocus += SpawnName;
         _focus.OnUnfocus  += DespawnName;
+        _focus.OnStart += DespawnName;
         _tipProvider = GetComponent<ITipProvider>();
         _tipProvider.AddTip(new Tip("(INTERACTION)",TipOrder.InteractionType)); 
     }

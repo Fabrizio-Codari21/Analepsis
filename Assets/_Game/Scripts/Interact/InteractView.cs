@@ -28,18 +28,20 @@ public class InteractView : MonoBehaviour
     
     private  void Show(IInteractable interactable)
     {
-        
-            m_textCanvaRoot.gameObject.SetActive(true);
-            CancelCurrent();
-            _cts = new CancellationTokenSource();
-      
-            _ =  UIElement.PlayDynamicText(
-                interactable.GetTip(),
-                m_dynamicTextSetting,
-                Vector3.zero,
-                Quaternion.identity,
-                m_textRoot,
-                _cts.Token);
+
+        var state = interactable.GetCurrentState();
+        m_textCanvaRoot.gameObject.SetActive(true);
+        CancelCurrent();
+            
+        string displayPath = state.tipOverride;
+        _cts = new CancellationTokenSource();
+        _ =  UIElement.PlayDynamicText(
+            displayPath,
+            m_dynamicTextSetting,
+            Vector3.zero,
+            Quaternion.identity,
+            m_textRoot,
+            _cts.Token);
        
        
     }

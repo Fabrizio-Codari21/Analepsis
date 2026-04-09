@@ -2,27 +2,31 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interactable : MonoBehaviour, IInteractable
+public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
 {
     [SerializeField] protected CheckIntAmount m_checkInt;
+    public List<ICondition> Conditions { get; } = new();
     public event Action OnStart;
     public event Action OnEnd;
     public event Action OnFocus;
     public event Action OnUnfocus;
     
     private List<Tip> tips = new();
+    
     public virtual void InteractStart()
     {
-        // if(!m_checkInt.Request(Cost)) return; // este evente debe esta bindeado un check de amount de actiones
+        var state = GetCurrentState();
+        if(!state.canInteract) return;
         OnStart?.Invoke();
     }
     public virtual void InteractEnd()
     {
-        // if(!m_checkInt.Request(Cost)) return;
+        var state = GetCurrentState();
+        if(!state.canInteract) return;
         OnEnd?.Invoke();
     }
     public virtual void Focus()
-    { 
+    {   
         OnFocus?.Invoke();
     }
 
@@ -38,7 +42,6 @@ public class Interactable : MonoBehaviour, IInteractable
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
         foreach (var t in tips) sb.Append(t.tip + " ");
-        
 
         return sb.ToString();
     }
@@ -60,8 +63,49 @@ public class Interactable : MonoBehaviour, IInteractable
     {
         tips.Remove(tip);
     }
-    
+
+
+    public InteractionState GetCurrentState() // este para hacer un override de tip si no se puede interactuar
+    {
+        foreach (var condition in Conditions)
+        {
+            if (!condition.Check())
+                return new InteractionState
+                {
+                    canInteract = false,
+                    tipOverride = condition.GetFailureTip(),
+                    tipColor = Color.red
+                };
+        }
+        return new InteractionState
+        {
+            canInteract = true,
+            tipOverride = GetTip(),
+            tipColor = Color.white
+        };
+    }
 }
+
+public interface IFocusStrategy<in T>
+{
+    void Focus(T ctx);
+    void Unfocus(T ctx);
+}
+
+
+public struct InteractionState
+{
+    public bool canInteract;  
+    public string tipOverride; 
+    public Color tipColor;      
+}
+
+public interface IInteractableStrategy : IFocusStrategy<Interactable>
+{
+    void InteractStart(Interactable interactable);
+    void InteractEnd(Interactable interactable);
+}
+
 
 public interface IInspectable
 {

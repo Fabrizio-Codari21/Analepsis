@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 public static class UIElement
@@ -36,4 +37,11 @@ public static class UIElement
             return null;
         }
     }
+    
+     public static void CalculateWidthAndHeight(TMP_Text text,RectTransform rectTransform )
+     {
+            Vector2 prefSize = text.GetPreferredValues(text.text);
+            rectTransform.sizeDelta = new Vector2(prefSize.x, prefSize.y);
+           
+     }
 }
