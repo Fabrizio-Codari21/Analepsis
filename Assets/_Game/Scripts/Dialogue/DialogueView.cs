@@ -44,7 +44,7 @@ public class DialogueView : MonoBehaviour
         Despawn(m_conversationRoot);
     }
    
-    public async UniTask PlayDialogueText(DialogueNode dialogueNode, CancellationToken token) // view
+    public async UniTask PlayDialogueText(string content, CancellationToken token) // view
     {
         token.ThrowIfCancellationRequested();
 
@@ -54,13 +54,15 @@ public class DialogueView : MonoBehaviour
             Quaternion.identity,
             m_conversationRoot
         );
-        string content = dialogueNode.dialogueText;
         t.SetText("- " + content,m_dialogueTextSetting.size,m_dialogueTextSetting.color);
         await UniTask.NextFrame();
         token.ThrowIfCancellationRequested();
         m_scrollRect.verticalNormalizedPosition = 0;
         await t.PlayTypeWriterEffect(externalToken: token);
     }
+    
+    
+    
 
    
 

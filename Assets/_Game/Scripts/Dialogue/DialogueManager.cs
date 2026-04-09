@@ -70,43 +70,21 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     private async UniTask PlayDialogueNode(DialogueNode node) 
     {
         if(node == null) return;
-        // estos clear token
+
         _dialogueNodesTalked.Add(node.guid);
-        _dialogueCts?.Cancel();
-        _dialogueCts?.Dispose();
-        _dialogueCts = new CancellationTokenSource();
+        ResetCancellationToken();
         var token = _dialogueCts.Token;
         
-        // clear los botones de respose
         m_dialogueView.ClearResponses();
-        await m_dialogueView.PlayDialogueText(node, token);
         
-        // esto recuerada para anotar en notebook
-        if(_recordText != string.Empty) _recordText += "\n\n";
-        _recordText += "- " + $"{node.dialogueText}";
+        AppendToRecord(node.dialogueText);
+        await m_dialogueView.PlayDialogueText(node.dialogueText, token); // 假设方法重载支持直接传 string
         
         if(token.IsCancellationRequested) return;
+
+        // 2. 获取可用回复
+        List<DialogueResponse> availableResponses = node.responses?.FindAll(res => res.IsAvailable()) ?? new List<DialogueResponse>();
         
-        // si no hay respuesta disponible
-        if (node.responses == null || node.responses.Count == 0)
-        {
-            await UniTask.Delay(TimeSpan.FromSeconds(timeToOutDialogue), cancellationToken: token);
-            if (token.IsCancellationRequested) return;
-            EndDialogue(); return;
-        }
-        
-        // calculo cuales son la respuesta disponible acutar
-        List<DialogueResponse> availableResponses = new List<DialogueResponse>();
-        if (node.responses != null)
-        {
-            foreach (var res in node.responses)
-            {
-                if (res.IsAvailable()) availableResponses.Add(res);
-            }
-        }
-        
-        
-        // si no hay ninguna termina tmb
         if (availableResponses.Count == 0)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(timeToOutDialogue), cancellationToken: token);
@@ -115,28 +93,57 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
             return;
         }
         
-        // foreach de la respuesta y bla bla
+     
         foreach (var response in availableResponses)
         {
-            var nextNode = response.nextNode;
             var button = m_dialogueView.CreateResponseButton(response.responseText);
-            button.AddListener(
-                    () => {
-                    button.SetInteractable(false);
-                    m_dialogueView.ClearResponses();
-                    if (nextNode != null)
-                    {
-                        _ = PlayDialogueNode(nextNode);
-                    }
-                    else
-                    {
-                        EndDialogue();
-                    } 
-                    }
-                );
+            button.AddListener(() => {
+                _ = PlayResponseProcess(response);
+            });
         }
-    
     }
+
+    private async UniTaskVoid PlayResponseProcess(DialogueResponse response)
+    {
+        ResetCancellationToken();
+        var token = _dialogueCts.Token;
+
+        m_dialogueView.ClearResponses();
+        
+       
+        AppendToRecord($"[Player]: {response.responseText}");
+        
+        await m_dialogueView.PlayDialogueText(response.responseText, token);
+
+        if (token.IsCancellationRequested) return;
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5f), cancellationToken: token);
+
+        if (response.nextNode != null)
+        {
+            _ = PlayDialogueNode(response.nextNode);
+        }
+        else
+        {
+            EndDialogue();
+        }
+    }
+
+
+    private void AppendToRecord(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return;
+        if (_recordText != string.Empty) _recordText += "\n\n";
+        _recordText += "- " + text;
+    }
+    private void ResetCancellationToken()
+    {
+        _dialogueCts?.Cancel();
+        _dialogueCts?.Dispose();
+        _dialogueCts = new CancellationTokenSource();
+    }
+
+
     private void EndDialogue()
     {
         m_recordNoteEvent.Raise(new LogNote(_currentDialoguer.NpcName,_recordText));
