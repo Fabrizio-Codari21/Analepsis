@@ -1,5 +1,9 @@
+using System;
+using UnityEngine;
+
+[Serializable]
 public class Tip
-{
+{ 
     public string tip;
     public TipOrder order;
     public Tip(string tip, TipOrder order)

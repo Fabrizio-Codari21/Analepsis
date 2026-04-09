@@ -538,8 +538,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 722f199ad78107e4db437bac1cd57e4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_maxActionsLevel: 0
-  m_checkActionAmount: {fileID: 0}
+  m_maxActionsLevel: 30
+  m_consumeAction: {fileID: 11400000, guid: 4e2d7839a1002ac4d800e0f903bdf873, type: 2}
+  m_checkActionAmount: {fileID: 11400000, guid: c2b5e8257d2e8494ab3be22be583716b, type: 2}
+  m_view: {fileID: 6956173180444223564, guid: 15af83dcaf79fc04d9358f47647c7a5b, type: 3}
 --- !u!4 &73545677
 Transform:
   m_ObjectHideFlags: 0
@@ -1121,15 +1123,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bfef38a9106b4ff43add9c036fc183be, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.42
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bfef38a9106b4ff43add9c036fc183be, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.48
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bfef38a9106b4ff43add9c036fc183be, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.179
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bfef38a9106b4ff43add9c036fc183be, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5640,7 +5642,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14776952de794f27bb94acb6b2001fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_checkActionAmount: {fileID: 0}
+  m_consumeAction: {fileID: 11400000, guid: 4e2d7839a1002ac4d800e0f903bdf873, type: 2}
+  m_haveAction: {fileID: 11400000, guid: c2b5e8257d2e8494ab3be22be583716b, type: 2}
   cost: 1
 --- !u!1 &1120038004
 GameObject:
@@ -7670,6 +7673,7 @@ GameObject:
   - component: {fileID: 1739062764}
   - component: {fileID: 1739062763}
   - component: {fileID: 1739062767}
+  - component: {fileID: 1739062768}
   m_Layer: 0
   m_Name: Mr. Deprueba
   m_TagString: Untagged
@@ -7762,7 +7766,7 @@ Transform:
   m_GameObject: {fileID: 1739062761}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.36, y: 1.502, z: -6.538}
+  m_LocalPosition: {x: 5.227, y: 1.995, z: -6.538}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7786,6 +7790,24 @@ MonoBehaviour:
   m_dialogueEvent: {fileID: 11400000, guid: 07b85288ccaec794a97830de8622f55a, type: 2}
   m_nameTextSetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
   m_textPositionOffset: {x: 0, y: 1.6, z: 0}
+  m_tip:
+    tip: 'Talk '
+    order: 1
+--- !u!114 &1739062768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739062761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14776952de794f27bb94acb6b2001fc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_consumeAction: {fileID: 11400000, guid: 4e2d7839a1002ac4d800e0f903bdf873, type: 2}
+  m_haveAction: {fileID: 11400000, guid: c2b5e8257d2e8494ab3be22be583716b, type: 2}
+  cost: 1
 --- !u!1001 &1745939170
 PrefabInstance:
   m_ObjectHideFlags: 0

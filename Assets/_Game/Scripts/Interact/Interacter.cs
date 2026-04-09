@@ -13,7 +13,6 @@ public class Interacter : MonoBehaviour
 
     private IInteractable _lastInteractable;
     private float  _hoverTimer;
-   
 
     private IActivity _activity;
     
