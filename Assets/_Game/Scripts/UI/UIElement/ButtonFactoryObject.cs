@@ -13,7 +13,6 @@ public class ButtonFactoryObject : FactoryUIObject
        m_button.onClick.RemoveAllListeners();
     }
 
-    
     public void SetText(string text)
     {
         m_text.text = text;

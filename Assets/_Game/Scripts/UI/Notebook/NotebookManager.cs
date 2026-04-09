@@ -5,9 +5,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 
-
-
-public class NotebookManager : MonoBehaviour, IActivity
+public class NotebookManager : Singleton<NotebookManager>, IActivity
 {
     
     #region  Inputs & Cursor
@@ -26,7 +24,6 @@ public class NotebookManager : MonoBehaviour, IActivity
     [ReadOnly,ShowInInspector] private NoteType _currentNoteType;
     [ReadOnly, ShowInInspector] public Dictionary<SerializableGuid, Note> markedClues = new();
     [SerializeField] MarkClueEvent markedClueEvent;
-
     private void Start()
     {
         m_view = Instantiate(m_view,transform);
@@ -156,6 +153,9 @@ public class NotebookManager : MonoBehaviour, IActivity
       return true;
     }
     #endregion
+     
+    public bool CheckNote(SerializableGuid guid) => _notebookPages.ContainsKey(guid);
+    
 }
 public enum NoteType
 {
