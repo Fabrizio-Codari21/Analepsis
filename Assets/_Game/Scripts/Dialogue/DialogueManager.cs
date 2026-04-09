@@ -78,11 +78,11 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         m_dialogueView.ClearResponses();
         
         AppendToRecord(node.dialogueText);
-        await m_dialogueView.PlayDialogueText(node.dialogueText, token); // 假设方法重载支持直接传 string
+        await m_dialogueView.PlayDialogueText(node.dialogueText, token);
         
         if(token.IsCancellationRequested) return;
 
-        // 2. 获取可用回复
+  
         List<DialogueResponse> availableResponses = node.responses?.FindAll(res => res.IsAvailable()) ?? new List<DialogueResponse>();
         
         if (availableResponses.Count == 0)
@@ -98,7 +98,8 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         {
             var button = m_dialogueView.CreateResponseButton(response.responseText);
             button.AddListener(() => {
-                _ = PlayResponseProcess(response);
+                button.SetInteractable(false);
+                PlayResponseProcess(response).Forget();
             });
         }
     }
@@ -121,7 +122,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 
         if (response.nextNode != null)
         {
-            _ = PlayDialogueNode(response.nextNode);
+            PlayDialogueNode(response.nextNode).Forget();
         }
         else
         {

@@ -32,6 +32,7 @@ public class DialogueView : MonoBehaviour
         var b = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(m_responseButton, Vector3.zero, Quaternion.identity, m_responseButtonRoot);
         b.SetText(text);
         b.SetInteractable(true);
+        b.MoveToLast();
         return b;
     }
     public void ClearResponses()
@@ -55,6 +56,7 @@ public class DialogueView : MonoBehaviour
             m_conversationRoot
         );
         t.SetText("- " + content,m_dialogueTextSetting.size,m_dialogueTextSetting.color);
+        t.ToLast();
         await UniTask.NextFrame();
         token.ThrowIfCancellationRequested();
         m_scrollRect.verticalNormalizedPosition = 0;

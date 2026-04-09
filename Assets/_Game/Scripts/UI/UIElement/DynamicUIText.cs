@@ -34,6 +34,11 @@ public class DynamicUIText : FactoryUIObject
         m_rectTransform.sizeDelta = new Vector2(prefSize.x, prefSize.y);
         m_rectTransform.anchoredPosition = new Vector2(0, 0);
     }
+
+    public void ToLast()
+    {
+        transform.SetAsLastSibling();
+    }
     
   
     public async UniTask PlayTypeWriterEffect(string text = null,CancellationToken externalToken = default, float typingSpeed = default)

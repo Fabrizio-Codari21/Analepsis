@@ -18,6 +18,11 @@ public class ButtonFactoryObject : FactoryUIObject
     {
         m_text.text = text;
     }
+
+    public void MoveToLast()
+    {
+        transform.SetAsLastSibling();
+    }
     
     public void SetInteractable(bool interactable) => m_button.interactable = interactable;
     public void AddListener(UnityAction listener) => m_button.onClick.AddListener(listener);

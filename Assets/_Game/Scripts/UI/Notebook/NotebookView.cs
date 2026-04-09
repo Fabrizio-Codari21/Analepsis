@@ -85,6 +85,7 @@ public class NotebookView : MonoBehaviour
             m_detailRoot
         );
         t.SetText(text,m_dynamicTextSetting.size,m_dynamicTextSetting.color);
+        t.ToLast();
         await UniTask.NextFrame(token);
         token.ThrowIfCancellationRequested();
         m_scrollRect.verticalNormalizedPosition = 0;
