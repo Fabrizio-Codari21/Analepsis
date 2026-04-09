@@ -114,6 +114,7 @@ public sealed class DialogueResponseGraphNode : Node
                 
             };
 
+            // si es DialogueNodeCondition , me da paja de hacer "bien solid", asi que algo mas facil posible, vamos hacer uno por uno los conditiones posible
             if (condition is DialogueNodeCondition nodeCond)
             {
                 ObjectField dialogueAssetField = new ObjectField("Target Dialogue")
@@ -171,10 +172,28 @@ public sealed class DialogueResponseGraphNode : Node
                 row.Add(dialogueAssetField);
                 row.Add(nodeSelector);
             }
+            
+            if (condition is ItemNodeCondition itemCond)
+            {
+                ObjectField itemAssetField = new ObjectField("Required Item")
+                {
+                    objectType = typeof(Item), 
+                    value = itemCond.item,
+                    style = { flexGrow = 1 }
+                };
+                
+                itemAssetField.RegisterValueChangedCallback(evt => {
+                    itemCond.item = (Item)evt.newValue;
+                    EditorUtility.SetDirty(Selection.activeObject);
+                });
+                
+                row.Add(itemAssetField);
+            }
         
             Button removeBtn = new Button(() => {
                 ResponseData.m_conditions.Remove(condition);
                 GenerateConditionUI();
+                EditorUtility.SetDirty(Selection.activeObject);
             }) { text = "X" };
             
             row.Add(header);
@@ -183,13 +202,6 @@ public sealed class DialogueResponseGraphNode : Node
         }
         RefreshExpandedState();
     }
-    
-    private string GetShortText(string fullText)
-    {
-        if (string.IsNullOrEmpty(fullText)) return "Empty...";
-        return fullText.Length > 15 ? fullText[..15] + "..." : fullText;
-    }
-
     private void AddCondition()
     {
         Vector2 mousePos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);

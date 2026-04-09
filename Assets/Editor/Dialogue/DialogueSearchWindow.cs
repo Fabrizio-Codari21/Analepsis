@@ -129,6 +129,11 @@ public class ConditionSearchWindow : ScriptableObject, ISearchWindowProvider
                 level = 1,
                 userData = typeof(DialogueNodeCondition)
             },
+            new SearchTreeEntry(new GUIContent("Item Condition"))
+            {
+                level = 1,
+                userData = typeof(ItemNodeCondition)
+            },
         };
         return tree;
     }

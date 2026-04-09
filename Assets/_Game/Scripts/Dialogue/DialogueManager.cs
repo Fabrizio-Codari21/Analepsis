@@ -29,6 +29,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         OnResume?.Invoke();
         m_inputReader?.SetEnable();
         m_dialogueView?.gameObject.SetActive(true);
+        if (m_inputReader) m_inputReader.Skip += Skip;
         m_cursorEnable.Raise(true);
     }
 
@@ -37,6 +38,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         OnPause?.Invoke();
         m_inputReader?.SetEnable(false);
         m_dialogueView?.gameObject.SetActive(false);
+        if (m_inputReader) m_inputReader.Skip -= Skip;
         m_cursorEnable.Raise(false);
     }
 
@@ -44,6 +46,12 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     {
        OnStop?.Invoke();
        Pause();
+    }
+
+
+    private void Skip()
+    {
+        _dialogueCts?.Cancel();
     }
 
     public bool CanPopWithKey()
@@ -72,26 +80,35 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         _dialogueNodesTalked.Add(node.guid);
         ResetCancellationToken();
         var token = _dialogueCts.Token;
-        
+    
         m_dialogueView.ClearResponses();
-        
         AppendToRecord(node.dialogueText);
-        await m_dialogueView.PlayDialogueText(node.dialogueText, token);
         
-        if(token.IsCancellationRequested) return;
+        try 
+        {
+            await m_dialogueView.PlayDialogueText(node.dialogueText, token);
+        }
+        catch (OperationCanceledException) 
+        {
+    
+        }
+    
+        if (_currentDialoguer == null) return;
 
-  
         List<DialogueResponse> availableResponses = node.responses?.FindAll(res => res.IsAvailable()) ?? new List<DialogueResponse>();
-        
+    
         if (availableResponses.Count == 0)
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(timeToOutDialogue), cancellationToken: token);
-            if (token.IsCancellationRequested) return;
+            try 
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(timeToOutDialogue), cancellationToken: token);
+            }
+            catch (OperationCanceledException) { }
+
             EndDialogue(); 
             return;
         }
         
-     
         foreach (var response in availableResponses)
         {
             var button = m_dialogueView.CreateResponseButton(response.responseText);
@@ -108,15 +125,21 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         var token = _dialogueCts.Token;
 
         m_dialogueView.ClearResponses();
-        
-       
         AppendToRecord($"[Player]: {response.responseText}");
-        
-        await m_dialogueView.PlayDialogueText(response.responseText, token);
+    
+        try 
+        {
+            await m_dialogueView.PlayDialogueText(response.responseText, token);
+        }
+        catch (OperationCanceledException) { }
 
-        if (token.IsCancellationRequested) return;
-        
-        await UniTask.Delay(TimeSpan.FromSeconds(0.5f), cancellationToken: token);
+        if (_currentDialoguer == null) return;
+    
+        try 
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5f), cancellationToken: token);
+        }
+        catch (OperationCanceledException) { }
 
         if (response.nextNode != null)
         {
@@ -127,7 +150,6 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
             EndDialogue();
         }
     }
-
 
     private void AppendToRecord(string text)
     {

@@ -11,8 +11,19 @@ public class DialogueResponse
     
     public bool IsAvailable()
     {
-        if(m_conditions == null || m_conditions.Count == 0) return true;
-        foreach(DialogueCondition condition in m_conditions) if(condition!= null && !condition.Evaluate()) return false;
+        if (m_conditions == null || m_conditions.Count == 0)
+        {
+            return true;
+        }
+
+        foreach (DialogueCondition condition in m_conditions)
+        {
+            if (condition != null && !condition.Evaluate())
+            {
+                Debug.LogWarning("Condition Evaluate failed");
+                return false;
+            }
+        }
         return true;
     }
     #if UNITY_EDITOR
@@ -33,6 +44,7 @@ public class DialogueNodeCondition : DialogueCondition
     [SerializeField] public DialogueNode isTalkDialogueNode;
     public override bool Evaluate()
     {
+        Debug.Log(isTalkDialogueNode.dialogueText);
         return targetDialogue && isTalkDialogueNode != null && 
                DialogueManager.Instance.CheckDialogue(isTalkDialogueNode.guid);
     }
@@ -43,6 +55,7 @@ public class ItemNodeCondition : DialogueCondition
     [SerializeField] public Item item;
     public override bool Evaluate()
     {
-        throw new NotImplementedException();
+        return !item || NotebookManager.Instance.CheckNote(item.guid);
     }
 }
+
