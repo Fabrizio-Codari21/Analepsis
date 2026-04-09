@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6498975604833426474
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3674567462058857168}
+  - component: {fileID: 767899062913534610}
+  m_Layer: 0
+  m_Name: TheoryboardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3674567462058857168
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6498975604833426474}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -19.250189, y: 9.551306, z: -0.40694287}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &767899062913534610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6498975604833426474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35a10f2524681364db0c231f7210dbf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputReader: {fileID: 11400000, guid: d09f16c3490ce7f4db44b9a8c03c6202, type: 2}
+  enableCursor: {fileID: 11400000, guid: e691ca0bdc44b8f4cbd61759a64638cf, type: 2}
+  inputReaderBoard: {fileID: 11400000, guid: 4699ecb620894a04e9fd7480b8f28d68, type: 2}
+  pushEvent: {fileID: 11400000, guid: 3027f54723217b445909fe93945c6bd2, type: 2}
+  popEvent: {fileID: 11400000, guid: 76cb339f73e2d5646ac0696838117b5e, type: 2}
+  notebookManager: {fileID: 0}
+  boardView: {fileID: 0}
+  playerCamera: {fileID: 0}
+  playerMenuTransform: {fileID: 0}
+  boardTransform: {fileID: 0}
+  player: {fileID: 0}
