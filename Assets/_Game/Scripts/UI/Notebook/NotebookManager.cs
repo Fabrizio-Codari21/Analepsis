@@ -23,22 +23,33 @@ public class NotebookManager : MonoBehaviour, IActivity
     private CancellationTokenSource _cts;
     private readonly Dictionary<SerializableGuid,Note> _notebookPages = new();
     [ReadOnly,ShowInInspector] private NoteType _currentNoteType;
+
+    [ReadOnly, ShowInInspector] public Dictionary<SerializableGuid, Note> markedClues = new();
+    [SerializeField] MarkClueEvent markedClueEvent;
+
     private void Start()
     {
         m_view = Instantiate(m_view,transform);
         inputReader.OpenNotebook += Open;
         inputReaderNoteBook.Close += Close;
         m_recordNote.OnEventRaised += Record;
+        markedClueEvent.OnEventRaised += MarkClue;
     }
+
     private void Record(Note note)
     {
         _notebookPages.TryAdd(note.guid, note);
+        MarkClue(note);
+    }
+
+    private void MarkClue(Note note)
+    {
+        markedClues.TryAdd(note.guid, note);
     }
 
     private void Open()
     {
-        pushEvent.Raise(this);
-      
+        pushEvent.Raise(this);     
     }
 
     private void Close()

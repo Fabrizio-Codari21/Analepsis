@@ -7,15 +7,17 @@ using UnityEngine;
 
 public class TheoryboardManager : MonoBehaviour, IActivity
 {
+    [SerializeField] TheoryboardView view;
+
     [SerializeField] private CCInputReader inputReader;
     [SerializeField] private BoolEventChannel enableCursor;
     [SerializeField] private BoardInputReader inputReaderBoard;
     [SerializeField] private IActivityEvent pushEvent;
     [SerializeField] private EventChannel popEvent;
 
-    [SerializeField] NotebookManager notebookManager;
+    //[SerializeField] NotebookManager notebookManager;
     [SerializeField] private Canvas boardView;
-    [SerializeField] private SimpleCamera playerCamera;
+    //[SerializeField] private SimpleCamera playerCamera;
 
     [SerializeField] Transform playerMenuTransform;
     [SerializeField] Transform boardTransform;
@@ -70,9 +72,11 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         //boardView.renderMode = RenderMode.WorldSpace;
         //boardView.worldCamera = Camera.current;
         inputReader.OpenTheoryBoard += Open;
+        inputReader.OpenTheoryBoard += view.LoadMarkedClues;
         inputReaderBoard.Close += Close;
     }
 
     void Open() => pushEvent.Raise(this);
     void Close() => popEvent.Raise();
+
 }
