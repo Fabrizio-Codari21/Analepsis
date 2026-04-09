@@ -41,7 +41,7 @@ public class TheoryboardView : MonoBehaviour
             Vector3.zero,
             Quaternion.identity,
             parent
-        ) as DraggableButton;
+        );
 
         button.SetText(text);
         button.SetInteractable(true);

@@ -5,9 +5,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    Transform _boardTransform;
     Transform _originalTransform;
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -27,15 +26,11 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (m_button != null)
+        if (m_button != null && eventData.pointerDrag != null)
         {
+            InsertClue(eventData);
             m_button.transform.SetParent(_originalTransform, true); //MoveToLast();
         }
-    }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-        if (m_button != null && eventData.pointerDrag != null) InsertClue(eventData);
     }
 
     private void SetDraggedPosition(PointerEventData data)
@@ -58,7 +53,7 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
         print($"You inserted: {m_text.text}.");
     }
 
-    public void SetBoard(Transform board) => _boardTransform = board;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
