@@ -19,8 +19,6 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     [SerializeField] private RecordNoteEvent m_recordNoteEvent;
     private IDialogable _currentDialoguer;
     private string _recordText = string.Empty;
-    
-    
     [ShowInInspector, ReadOnly] private HashSet<SerializableGuid> _dialogueNodesTalked = new HashSet<SerializableGuid>();
     #region  IActivity
     public event Action OnResume;

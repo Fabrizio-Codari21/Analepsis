@@ -62,7 +62,7 @@ public class NotebookView : MonoBehaviour
 
         button.SetText(text);
         button.SetInteractable(true);
-
+        button.MoveToLast();
         return button;
     }
 
@@ -96,6 +96,7 @@ public class NotebookView : MonoBehaviour
     {
         var image = FlyweightFactory.Instance.Spawn<UIImage>(m_imageSetting, Vector3.zero, Quaternion.identity, m_detailRoot);
         image.SetImage(sprite);
+        
     }
     
     private void Despawn(Transform root) 

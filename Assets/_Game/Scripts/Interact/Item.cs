@@ -6,17 +6,10 @@ public class Item : ScriptableObject
 {
     public GameObject gameObject;
     
+    public SerializableGuid guid = SerializableGuid.NewGuid();
     [MinValue(1)] public float size;
-
-    [SerializeReference] public Clue clueInfo;
-    
     public string Name;
+    public Sprite sprite;
+    public string Description;
 }
 
-public class Clue
-{
-    public string clueId;
-    public Sprite sprite;
-    public GameObject clueDisplay;
-    [TextArea(0,20)] public List<string> clues;
-}

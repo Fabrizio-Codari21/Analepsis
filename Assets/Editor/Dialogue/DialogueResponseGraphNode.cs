@@ -145,8 +145,8 @@ public sealed class DialogueResponseGraphNode : Node
 
                         nodeSelector.choices = nodes;
 
-                        if (nodeCond.targetNode != null && nodes.Contains(nodeCond.targetNode))
-                            nodeSelector.value = nodeCond.targetNode;
+                        if (nodeCond.isTalkDialogueNode != null && nodes.Contains(nodeCond.isTalkDialogueNode))
+                            nodeSelector.value = nodeCond.isTalkDialogueNode;
                         else if (nodes.Count > 0) nodeSelector.index = 0;
                     }
                     else
@@ -163,7 +163,7 @@ public sealed class DialogueResponseGraphNode : Node
                 });
 
                 nodeSelector.RegisterValueChangedCallback(evt => {
-                    nodeCond.targetNode = evt.newValue;
+                    nodeCond.isTalkDialogueNode = evt.newValue;
                     EditorUtility.SetDirty(Selection.activeObject);
                 });
 
