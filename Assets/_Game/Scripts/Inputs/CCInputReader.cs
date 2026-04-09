@@ -12,6 +12,7 @@ public class CCInputReader : InputReader,InputActions.IPlayerActions
     public event Action InteractReleased = delegate { };
 
     public event Action OpenNotebook = delegate { };
+    public event Action OpenTheoryBoard = delegate { };
     public void OnMove(InputAction.CallbackContext context)
     {
         if (context.started) return;
@@ -46,9 +47,16 @@ public class CCInputReader : InputReader,InputActions.IPlayerActions
     public void OnOpenNotebook(InputAction.CallbackContext context)
     {
         if (context.started)
-        {
-       
+        {      
             OpenNotebook?.Invoke();
+        }
+    }
+
+    public void OnOpenTheoryBoard(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            OpenTheoryBoard?.Invoke();
         }
     }
 }

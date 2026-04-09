@@ -155,6 +155,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenTheoryBoard"",
+                    ""type"": ""Button"",
+                    ""id"": ""c4b18dd0-8c9c-43f8-9f88-e10cf3713b50"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -364,6 +373,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""OpenNotebook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f271dd2a-290c-4965-880c-a4b4409e5a0c"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenTheoryBoard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1132,6 +1152,34 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""TheoryBoard"",
+            ""id"": ""46027b07-5bd4-46bd-857e-4a5a1d984f31"",
+            ""actions"": [
+                {
+                    ""name"": ""Close"",
+                    ""type"": ""Button"",
+                    ""id"": ""cc17a700-cfd6-49f9-882c-ad4863c313d0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""50842a1a-a1fe-4fa1-9504-e888487f2e5d"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Close"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1206,6 +1254,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_OpenNotebook = m_Player.FindAction("OpenNotebook", throwIfNotFound: true);
+        m_Player_OpenTheoryBoard = m_Player.FindAction("OpenTheoryBoard", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1233,6 +1282,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_NoteBook = asset.FindActionMap("NoteBook", throwIfNotFound: true);
         m_NoteBook_Close = m_NoteBook.FindAction("Close", throwIfNotFound: true);
         m_NoteBook_Flip = m_NoteBook.FindAction("Flip", throwIfNotFound: true);
+        // TheoryBoard
+        m_TheoryBoard = asset.FindActionMap("TheoryBoard", throwIfNotFound: true);
+        m_TheoryBoard_Close = m_TheoryBoard.FindAction("Close", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -1243,6 +1295,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_Dialogue.enabled, "This will cause a leak and performance issues, InputActions.Dialogue.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Inspection.enabled, "This will cause a leak and performance issues, InputActions.Inspection.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_NoteBook.enabled, "This will cause a leak and performance issues, InputActions.NoteBook.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_TheoryBoard.enabled, "This will cause a leak and performance issues, InputActions.TheoryBoard.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1418,6 +1471,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_OpenNotebook;
+    private readonly InputAction m_Player_OpenTheoryBoard;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1445,6 +1499,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/OpenNotebook".
         /// </summary>
         public InputAction @OpenNotebook => m_Wrapper.m_Player_OpenNotebook;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/OpenTheoryBoard".
+        /// </summary>
+        public InputAction @OpenTheoryBoard => m_Wrapper.m_Player_OpenTheoryBoard;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1483,6 +1541,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @OpenNotebook.started += instance.OnOpenNotebook;
             @OpenNotebook.performed += instance.OnOpenNotebook;
             @OpenNotebook.canceled += instance.OnOpenNotebook;
+            @OpenTheoryBoard.started += instance.OnOpenTheoryBoard;
+            @OpenTheoryBoard.performed += instance.OnOpenTheoryBoard;
+            @OpenTheoryBoard.canceled += instance.OnOpenTheoryBoard;
         }
 
         /// <summary>
@@ -1506,6 +1567,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @OpenNotebook.started -= instance.OnOpenNotebook;
             @OpenNotebook.performed -= instance.OnOpenNotebook;
             @OpenNotebook.canceled -= instance.OnOpenNotebook;
+            @OpenTheoryBoard.started -= instance.OnOpenTheoryBoard;
+            @OpenTheoryBoard.performed -= instance.OnOpenTheoryBoard;
+            @OpenTheoryBoard.canceled -= instance.OnOpenTheoryBoard;
         }
 
         /// <summary>
@@ -2088,6 +2152,102 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="NoteBookActions" /> instance referencing this action map.
     /// </summary>
     public NoteBookActions @NoteBook => new NoteBookActions(this);
+
+    // TheoryBoard
+    private readonly InputActionMap m_TheoryBoard;
+    private List<ITheoryBoardActions> m_TheoryBoardActionsCallbackInterfaces = new List<ITheoryBoardActions>();
+    private readonly InputAction m_TheoryBoard_Close;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "TheoryBoard".
+    /// </summary>
+    public struct TheoryBoardActions
+    {
+        private @InputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public TheoryBoardActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "TheoryBoard/Close".
+        /// </summary>
+        public InputAction @Close => m_Wrapper.m_TheoryBoard_Close;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_TheoryBoard; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="TheoryBoardActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(TheoryBoardActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="TheoryBoardActions" />
+        public void AddCallbacks(ITheoryBoardActions instance)
+        {
+            if (instance == null || m_Wrapper.m_TheoryBoardActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_TheoryBoardActionsCallbackInterfaces.Add(instance);
+            @Close.started += instance.OnClose;
+            @Close.performed += instance.OnClose;
+            @Close.canceled += instance.OnClose;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="TheoryBoardActions" />
+        private void UnregisterCallbacks(ITheoryBoardActions instance)
+        {
+            @Close.started -= instance.OnClose;
+            @Close.performed -= instance.OnClose;
+            @Close.canceled -= instance.OnClose;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="TheoryBoardActions.UnregisterCallbacks(ITheoryBoardActions)" />.
+        /// </summary>
+        /// <seealso cref="TheoryBoardActions.UnregisterCallbacks(ITheoryBoardActions)" />
+        public void RemoveCallbacks(ITheoryBoardActions instance)
+        {
+            if (m_Wrapper.m_TheoryBoardActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="TheoryBoardActions.AddCallbacks(ITheoryBoardActions)" />
+        /// <seealso cref="TheoryBoardActions.RemoveCallbacks(ITheoryBoardActions)" />
+        /// <seealso cref="TheoryBoardActions.UnregisterCallbacks(ITheoryBoardActions)" />
+        public void SetCallbacks(ITheoryBoardActions instance)
+        {
+            foreach (var item in m_Wrapper.m_TheoryBoardActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_TheoryBoardActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="TheoryBoardActions" /> instance referencing this action map.
+    /// </summary>
+    public TheoryBoardActions @TheoryBoard => new TheoryBoardActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -2203,6 +2363,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnOpenNotebook(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OpenTheoryBoard" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenTheoryBoard(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
@@ -2368,5 +2535,20 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnFlip(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "TheoryBoard" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="TheoryBoardActions.AddCallbacks(ITheoryBoardActions)" />
+    /// <seealso cref="TheoryBoardActions.RemoveCallbacks(ITheoryBoardActions)" />
+    public interface ITheoryBoardActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Close" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnClose(InputAction.CallbackContext context);
     }
 }

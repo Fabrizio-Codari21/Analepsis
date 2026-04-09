@@ -37,7 +37,7 @@ public class DynamicText : FactoryObject
     }
     
   
-    public async UniTask PlayTypeWriterEffect(string text = null,CancellationToken externalToken = default)
+    public async UniTask PlayTypeWriterEffect(string text = null,CancellationToken externalToken = default, float typingSpeed = default)
     {
         Cancel();
 
@@ -50,6 +50,7 @@ public class DynamicText : FactoryObject
         var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, externalToken);
         var token = linkedCts.Token;
         int totalChars = m_text.textInfo.characterCount;
+        float typeSpeed = typingSpeed != default ? typingSpeed : m_charsPerSecond;
         try
         {
             for (int i = 1; i <= totalChars; i++)
@@ -59,7 +60,7 @@ public class DynamicText : FactoryObject
                 m_text.maxVisibleCharacters = i;
 
                 await UniTask.Delay(
-                    TimeSpan.FromSeconds(1f / m_charsPerSecond),
+                    TimeSpan.FromSeconds(1f / typeSpeed),
                     cancellationToken: token);
             }
         }

@@ -69,6 +69,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenTheoryBoard",
+                    "type": "Button",
+                    "id": "c4b18dd0-8c9c-43f8-9f88-e10cf3713b50",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -278,6 +287,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "OpenNotebook",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f271dd2a-290c-4965-880c-a4b4409e5a0c",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenTheoryBoard",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1044,6 +1064,34 @@
                     "action": "Flip",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "TheoryBoard",
+            "id": "46027b07-5bd4-46bd-857e-4a5a1d984f31",
+            "actions": [
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "cc17a700-cfd6-49f9-882c-ad4863c313d0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "50842a1a-a1fe-4fa1-9504-e888487f2e5d",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
