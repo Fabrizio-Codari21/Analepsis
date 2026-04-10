@@ -49,8 +49,8 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
 
     void InsertClue(PointerEventData data)
     {
-        GameObject droppedOn = data.pointerEnter;
-        if (droppedOn != null && droppedOn == _boardTransform.gameObject)
+        Transform droppedOn = data.pointerEnter.transform;
+        if (droppedOn != null && droppedOn == _boardTransform)
         {
             var button = _view.CreateClueButton(m_text.text, _boardTransform);
 
