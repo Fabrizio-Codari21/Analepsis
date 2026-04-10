@@ -538,6 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 722f199ad78107e4db437bac1cd57e4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionsLeft: 0
   m_maxActionsLevel: 30
   m_consumeAction: {fileID: 11400000, guid: 4e2d7839a1002ac4d800e0f903bdf873, type: 2}
   m_checkActionAmount: {fileID: 11400000, guid: c2b5e8257d2e8494ab3be22be583716b, type: 2}
@@ -8756,9 +8757,21 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5393990005422130907, guid: 139351e29e8887c44a8b45064df4a449, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6331490523339072693, guid: 139351e29e8887c44a8b45064df4a449, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331490523339072693, guid: 139351e29e8887c44a8b45064df4a449, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331490523339072693, guid: 139351e29e8887c44a8b45064df4a449, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.0001466295
       objectReference: {fileID: 0}
     - target: {fileID: 7169868932918882162, guid: 139351e29e8887c44a8b45064df4a449, type: 3}
       propertyPath: m_AnchorMax.x

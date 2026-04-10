@@ -34,7 +34,7 @@ public class TheoryboardView : MonoBehaviour
 
     }
 
-    private ButtonFactoryObject CreateClueButton(string text, Transform parent)
+    public ButtonFactoryObject CreateClueButton(string text, Transform parent)
     {
         var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
             clueButtonSetting,
@@ -46,6 +46,7 @@ public class TheoryboardView : MonoBehaviour
         button.SetText(text);
         button.SetInteractable(true);
         button.SetBoard(boardRoot);
+        button.SetView(this);
 
         return button;
     }

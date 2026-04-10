@@ -7,7 +7,10 @@ public class ButtonFactoryObject : FactoryUIObject
 {
     [SerializeField]  protected Button m_button;
     [SerializeField]  protected TextMeshProUGUI m_text;
+
     protected Transform _boardTransform;
+    protected TheoryboardView _view;
+
     public override void Despawn()
     {
        base.Despawn();
@@ -28,4 +31,5 @@ public class ButtonFactoryObject : FactoryUIObject
     public void AddListener(UnityAction listener) => m_button.onClick.AddListener(listener);
     public void RemoveAllListeners() => m_button.onClick.RemoveAllListeners();
     public void SetBoard(Transform board) => _boardTransform = board;
+    public void SetView(TheoryboardView view) => view = _view;
 }

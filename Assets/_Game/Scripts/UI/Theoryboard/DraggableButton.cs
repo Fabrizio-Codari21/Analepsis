@@ -29,7 +29,6 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
         if (m_button != null && eventData.pointerDrag != null)
         {
             InsertClue(eventData);
-            m_button.transform.SetParent(_originalTransform, true); //MoveToLast();
         }
     }
 
@@ -50,7 +49,19 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
 
     void InsertClue(PointerEventData data)
     {
-        print($"You inserted: {m_text.text}.");
+        GameObject droppedOn = data.pointerEnter;
+        if (droppedOn != null && droppedOn == _boardTransform.gameObject)
+        {
+            var button = _view.CreateClueButton(m_text.text, _boardTransform);
+
+            m_button.transform.SetParent(_originalTransform, true);
+            print($"You inserted: {m_text.text}.");
+        }
+        else
+        {
+            m_button.transform.SetParent(_originalTransform, true); //MoveToLast();
+            return;
+        }
     }
 
 
