@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 public class Inspection : MonoBehaviour,IActivity
@@ -12,7 +13,9 @@ public class Inspection : MonoBehaviour,IActivity
     [SerializeField] private IActivityEvent m_onActivity;
     [SerializeField] private EventChannel m_popEvent;
     [SerializeField] private BoolEventChannel m_cursorEnable;
-    
+
+
+
     [Header("Zoom")]
     [SerializeField] private RawImage m_objectRawImage;
 
@@ -75,15 +78,10 @@ public class Inspection : MonoBehaviour,IActivity
         m_camera.orthographicSize = item.size;
         m_onActivity.Raise(this);
     }
-    
     private void Exit()=> m_popEvent?.Raise();
-    
     private void Zoom(Vector2 zoom)
     {
-       
         RectTransform rectTrans = m_objectRawImage.rectTransform;
-
-      
         float delta = zoom.y * m_zoomScaleSensitive * m_zoomScaleFactor;
         
         float newWidth = rectTrans.sizeDelta.x + delta;
@@ -94,7 +92,6 @@ public class Inspection : MonoBehaviour,IActivity
         
         rectTrans.sizeDelta = new Vector2(newWidth, newHeight);
     }
-    
     
     private void BeginPlaneRotation()
     {
@@ -116,6 +113,7 @@ public class Inspection : MonoBehaviour,IActivity
       m_inputReader.Scroll += Zoom;
       m_inputReader.Exit  += Exit;
       m_inputReader.PlaneRotate += PlaneRotation;
+      m_inputReader.PointerMoved += OnMouseMove;
       gameObject.SetActive(true);
       m_cursorEnable.Raise(true);
     }
@@ -126,11 +124,24 @@ public class Inspection : MonoBehaviour,IActivity
         m_inputReader.SetEnable(false);
         m_inputReader.Rotate -= Rotate;
         m_inputReader.DragPressed -= RotateStart;
+        
         m_inputReader.Scroll -= Zoom;
         m_inputReader.Exit  -= Exit;
         m_inputReader.PlaneRotate -= PlaneRotation;
+        m_inputReader.PointerMoved -= OnMouseMove;
         gameObject.SetActive(false);
         m_cursorEnable.Raise(false);
+    }
+    
+    private void OnMouseMove(Vector2 mousePos)
+    {
+        Ray ray = m_camera.ScreenPointToRay(mousePos);
+        bool hasHit = Physics.Raycast(ray, out RaycastHit hit, 1000f);
+        if (hasHit)
+        {
+            Debug.Log("Hit " + hit.transform.name);
+        }
+      
     }
 
     public void Stop()
@@ -144,5 +155,8 @@ public class Inspection : MonoBehaviour,IActivity
        return true;
     }
 }
+
+
+
 
 

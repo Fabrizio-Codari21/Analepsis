@@ -990,6 +990,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MovePointer"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""c668d007-ffcb-499b-9946-cc16a8e5d0b7"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -1056,6 +1065,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""PlaneRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a5cfe35a-15c6-4abc-9db7-3a44a81252db"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MovePointer"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1278,6 +1298,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Inspection_Exit = m_Inspection.FindAction("Exit", throwIfNotFound: true);
         m_Inspection_PlaneRotationDelta = m_Inspection.FindAction("PlaneRotationDelta", throwIfNotFound: true);
         m_Inspection_PlaneRotation = m_Inspection.FindAction("PlaneRotation", throwIfNotFound: true);
+        m_Inspection_MovePointer = m_Inspection.FindAction("MovePointer", throwIfNotFound: true);
         // NoteBook
         m_NoteBook = asset.FindActionMap("NoteBook", throwIfNotFound: true);
         m_NoteBook_Close = m_NoteBook.FindAction("Close", throwIfNotFound: true);
@@ -1904,6 +1925,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Inspection_Exit;
     private readonly InputAction m_Inspection_PlaneRotationDelta;
     private readonly InputAction m_Inspection_PlaneRotation;
+    private readonly InputAction m_Inspection_MovePointer;
     /// <summary>
     /// Provides access to input actions defined in input action map "Inspection".
     /// </summary>
@@ -1939,6 +1961,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Inspection/PlaneRotation".
         /// </summary>
         public InputAction @PlaneRotation => m_Wrapper.m_Inspection_PlaneRotation;
+        /// <summary>
+        /// Provides access to the underlying input action "Inspection/MovePointer".
+        /// </summary>
+        public InputAction @MovePointer => m_Wrapper.m_Inspection_MovePointer;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1983,6 +2009,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @PlaneRotation.started += instance.OnPlaneRotation;
             @PlaneRotation.performed += instance.OnPlaneRotation;
             @PlaneRotation.canceled += instance.OnPlaneRotation;
+            @MovePointer.started += instance.OnMovePointer;
+            @MovePointer.performed += instance.OnMovePointer;
+            @MovePointer.canceled += instance.OnMovePointer;
         }
 
         /// <summary>
@@ -2012,6 +2041,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @PlaneRotation.started -= instance.OnPlaneRotation;
             @PlaneRotation.performed -= instance.OnPlaneRotation;
             @PlaneRotation.canceled -= instance.OnPlaneRotation;
+            @MovePointer.started -= instance.OnMovePointer;
+            @MovePointer.performed -= instance.OnMovePointer;
+            @MovePointer.canceled -= instance.OnMovePointer;
         }
 
         /// <summary>
@@ -2513,6 +2545,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPlaneRotation(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "MovePointer" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMovePointer(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "NoteBook" which allows adding and removing callbacks.

@@ -904,6 +904,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "MovePointer",
+                    "type": "PassThrough",
+                    "id": "c668d007-ffcb-499b-9946-cc16a8e5d0b7",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -970,6 +979,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "PlaneRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a5cfe35a-15c6-4abc-9db7-3a44a81252db",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "MovePointer",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
