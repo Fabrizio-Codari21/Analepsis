@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 // Lo que pueden decir los NPC y como podemos responder a eso.
 [System.Serializable]
-public class DialogueNode : IClue
+public class DialogueNode
 {
     [TextArea(0,20)] public string dialogueText;
     public TheoryboardManager.Whodunnit doesItProveAnything;
@@ -15,8 +15,4 @@ public class DialogueNode : IClue
     public SerializableGuid guid = SerializableGuid.NewGuid();
     public string tag = "";
 
-    public TheoryboardManager.Whodunnit DoesItProveAnything()
-    {
-        return doesItProveAnything;    
-    }
 }

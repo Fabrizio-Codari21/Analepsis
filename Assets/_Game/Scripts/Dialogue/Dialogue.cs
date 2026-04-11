@@ -3,10 +3,22 @@ using UnityEngine;
 
 // Objeto base que contiene toda la logica de un dialogo.
 [CreateAssetMenu(fileName = "New Dialogue", menuName = "Game/Dialogue Assets/New Dialogue")]
-public class Dialogue : ScriptableObject
+public class Dialogue : ScriptableObject, IClue
 {
     [Space(20)]
     [Header("DIALOGUE")]
     public DialogueNode startingNode;
     public List<DialogueNode> allNodes =  new List<DialogueNode>();
+
+    List<TheoryboardManager.Whodunnit> _hiddenProof = new();
+    public void DiscoverProof(TheoryboardManager.Whodunnit proof)
+    {
+        if (!_hiddenProof.Contains(proof)) _hiddenProof.Add(proof); 
+    }
+
+    public List<TheoryboardManager.Whodunnit> DoesItProveAnything()
+    {
+        return _hiddenProof;
+
+    }
 }

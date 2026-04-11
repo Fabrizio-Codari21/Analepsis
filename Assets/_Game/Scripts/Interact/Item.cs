@@ -12,9 +12,9 @@ public class Item : ScriptableObject, IClue
     public Sprite sprite;
     public string Description;
 
-    public TheoryboardManager.Whodunnit doesItProveAnything;
+    [SerializeField] List<TheoryboardManager.Whodunnit> doesItProveAnything;
 
-    public TheoryboardManager.Whodunnit DoesItProveAnything()
+    public List<TheoryboardManager.Whodunnit> DoesItProveAnything()
     {
         return doesItProveAnything;
     }
@@ -22,6 +22,6 @@ public class Item : ScriptableObject, IClue
 
 public interface IClue
 {
-    public TheoryboardManager.Whodunnit DoesItProveAnything();
+    public List<TheoryboardManager.Whodunnit> DoesItProveAnything();
 }
 

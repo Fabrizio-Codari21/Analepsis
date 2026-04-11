@@ -1,4 +1,5 @@
 using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -11,7 +12,7 @@ public class ButtonFactoryObject : FactoryUIObject
     // estas no habria que asignarlas en el inspector en teoria
     [SerializeField, HideInInspector] protected Transform _boardTransform;
     [SerializeField, HideInInspector] protected TheoryboardView _view;
-    [SerializeField, HideInInspector] protected TheoryboardManager.Whodunnit proof = TheoryboardManager.Whodunnit.NoProof;
+    [SerializeField, HideInInspector] protected List<TheoryboardManager.Whodunnit> proof = new();
 
     public override void Despawn()
     {
@@ -37,5 +38,5 @@ public class ButtonFactoryObject : FactoryUIObject
     public void SetBoard(Transform board) => _boardTransform = board;
     public void SetView(TheoryboardView view) => _view = view;
 
-    public void SetProof(TheoryboardManager.Whodunnit isProof) => proof = isProof;
+    public void SetProof(List<TheoryboardManager.Whodunnit> isProof) => proof = isProof;
 }

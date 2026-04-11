@@ -38,7 +38,7 @@ public class TheoryboardView : MonoBehaviour
 
     }
 
-    public ButtonFactoryObject CreateClueButton(string text, Transform parent, TheoryboardManager.Whodunnit proof)
+    public ButtonFactoryObject CreateClueButton(string text, Transform parent, List<TheoryboardManager.Whodunnit> proof)
     {
         var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
             clueButtonSetting,

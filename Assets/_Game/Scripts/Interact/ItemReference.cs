@@ -38,9 +38,9 @@ public class ItemReference : MonoBehaviour
     private void RecordItem()
     {
         m_recordNoteEvent.Raise(new ItemNote
-            ($"Talked with {m_itemReference.Name} -\n Action {ActionTimer.Instance.CurrentAction()}",
+            ($"Inspected {m_itemReference.Name} -\n Action {ActionTimer.Instance.CurrentAction()}",
             m_itemReference,
-            m_itemReference.doesItProveAnything != default ? m_itemReference.doesItProveAnything : 0));
+            m_itemReference.DoesItProveAnything()));
     }
     
     

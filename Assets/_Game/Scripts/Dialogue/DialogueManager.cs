@@ -82,6 +82,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         var token = _dialogueCts.Token;
     
         m_dialogueView.ClearResponses();
+        if (node.doesItProveAnything != 0) _currentDialoguer.Dialogue.DiscoverProof(node.doesItProveAnything);
         AppendToRecord(node.dialogueText);
         
         try 
@@ -92,7 +93,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         {
     
         }
-    
+
         if (_currentDialoguer == null) return;
 
         List<DialogueResponse> availableResponses = node.responses?.FindAll(res => res.IsAvailable()) ?? new List<DialogueResponse>();
