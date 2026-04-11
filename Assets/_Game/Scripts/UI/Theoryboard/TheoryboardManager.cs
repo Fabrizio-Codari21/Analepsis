@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 //using Sirenix.OdinInspector.Editor;
 using Sirenix.Serialization;
 using System;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -24,6 +25,9 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     [SerializeField] GameObject player;
     Tuple<Vector3, Quaternion> _playerTransform;
     Transform _oldLookAt;
+
+    [Space(20), Header("WHAT'S THE RIGHT ANSWER?")]
+    [ShowInInspector, TableList] public Dictionary<Whodunnit, IClue> correctAnswer;
 
     #region IActivity
     public event Action OnResume;
@@ -80,4 +84,13 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     void Open() => pushEvent.Raise(this);
     void Close() => popEvent.Raise();
 
+    public enum Whodunnit
+    {
+        NoProof,
+        Victim,
+        Killer,
+        Motive,
+        Weapon,
+        //Place
+    }
 }

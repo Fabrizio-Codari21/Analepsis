@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -49,8 +50,37 @@ public sealed class DialogueGraphNode : Node
 
         extensionContainer.Add(tagField);
 
+        Foldout proofFoldOut = new Foldout()
+        {
+            text = "Does it prove anything?",
+            value = false,
+        };
 
-        
+        PopupField<TheoryboardManager.Whodunnit> proofField = 
+        new PopupField<TheoryboardManager.Whodunnit>("What does it prove?")
+        {
+            value = nodeData.doesItProveAnything,
+            choices = new List<TheoryboardManager.Whodunnit> 
+            { 
+                TheoryboardManager.Whodunnit.NoProof,
+                TheoryboardManager.Whodunnit.Victim,
+                TheoryboardManager.Whodunnit.Killer,
+                TheoryboardManager.Whodunnit.Motive,
+                TheoryboardManager.Whodunnit.Weapon,
+                //TheoryboardManager.Whodunnit.Place,
+            }
+        };
+
+        proofField.RegisterValueChangedCallback(evt =>
+        {
+            NodeData.doesItProveAnything = evt.newValue;
+        });
+
+        proofFoldOut.Add(proofField);
+        extensionContainer.Add(proofFoldOut);
+
+
+
         if (!nodeData.isRootNode)
         {
             InputPort = InstantiatePort(

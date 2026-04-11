@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
+using Sirenix.OdinInspector;
 
 public class TheoryboardView : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class TheoryboardView : MonoBehaviour
     public Transform markedItemsRoot;
     public Transform boardRoot;
     public ButtonSetting clueButtonSetting;
+
+    [ShowInInspector, TableList] public Dictionary<TheoryboardManager.Whodunnit, Transform> boardRoots;
 
     public void LoadMarkedClues()
     {
@@ -21,7 +25,7 @@ public class TheoryboardView : MonoBehaviour
 
         foreach (var log in markedLogs) 
         {
-            var button = CreateClueButton(log.Value.displayName, markedLogsRoot);
+            var button = CreateClueButton(log.Value.displayName, markedLogsRoot, log.Value.isProof);
             button.AddListener(() =>
             {
 
@@ -29,12 +33,12 @@ public class TheoryboardView : MonoBehaviour
         }
         foreach (var item in markedItems)
         {
-            var button = CreateClueButton(item.Value.displayName, markedItemsRoot);
+            var button = CreateClueButton(item.Value.displayName, markedItemsRoot, item.Value.isProof);
         }
 
     }
 
-    public ButtonFactoryObject CreateClueButton(string text, Transform parent)
+    public ButtonFactoryObject CreateClueButton(string text, Transform parent, TheoryboardManager.Whodunnit proof)
     {
         var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
             clueButtonSetting,
@@ -46,7 +50,9 @@ public class TheoryboardView : MonoBehaviour
         button.SetText(text);
         button.SetInteractable(true);
         button.SetBoard(boardRoot);
-        button.SetView(this);       
+        button.SetView(this);
+        
+        button.SetProof(proof);
 
         return button;
     }

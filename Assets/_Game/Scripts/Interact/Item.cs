@@ -2,7 +2,7 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(menuName = "Game/Item",fileName = "Item")]
-public class Item : ScriptableObject
+public class Item : ScriptableObject, IClue
 {
     public GameObject gameObject;
     
@@ -11,5 +11,17 @@ public class Item : ScriptableObject
     public string Name;
     public Sprite sprite;
     public string Description;
+
+    public TheoryboardManager.Whodunnit doesItProveAnything;
+
+    public TheoryboardManager.Whodunnit DoesItProveAnything()
+    {
+        return doesItProveAnything;
+    }
+}
+
+public interface IClue
+{
+    public TheoryboardManager.Whodunnit DoesItProveAnything();
 }
 

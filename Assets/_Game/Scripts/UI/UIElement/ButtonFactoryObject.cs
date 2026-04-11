@@ -9,8 +9,9 @@ public class ButtonFactoryObject : FactoryUIObject
     [SerializeField]  protected TextMeshProUGUI m_text;
 
     // estas no habria que asignarlas en el inspector en teoria
-    [SerializeField] protected Transform _boardTransform;
-    [SerializeField] protected TheoryboardView _view;
+    [SerializeField, HideInInspector] protected Transform _boardTransform;
+    [SerializeField, HideInInspector] protected TheoryboardView _view;
+    [SerializeField, HideInInspector] protected TheoryboardManager.Whodunnit proof = TheoryboardManager.Whodunnit.NoProof;
 
     public override void Despawn()
     {
@@ -35,4 +36,6 @@ public class ButtonFactoryObject : FactoryUIObject
     public void RemoveAllListeners() => m_button.onClick.RemoveAllListeners();
     public void SetBoard(Transform board) => _boardTransform = board;
     public void SetView(TheoryboardView view) => _view = view;
+
+    public void SetProof(TheoryboardManager.Whodunnit isProof) => proof = isProof;
 }

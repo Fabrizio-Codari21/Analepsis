@@ -53,7 +53,7 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
         Transform droppedOn = data.pointerEnter.transform ? data.pointerEnter.transform : null;
         if (droppedOn != null && (droppedOn == _boardTransform || droppedOn == _boardTransform.parent))
         {
-            var button = _view.CreateClueButton(m_text.text, _boardTransform);
+            var button = _view.CreateClueButton(m_text.text, _boardTransform, proof);
 
             m_button.transform.SetParent(_originalTransform, true);
             print($"You inserted: {m_text.text}.");

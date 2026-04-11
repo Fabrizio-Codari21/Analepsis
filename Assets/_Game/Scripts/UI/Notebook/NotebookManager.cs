@@ -169,21 +169,26 @@ public abstract class Note
 {
     public SerializableGuid guid = SerializableGuid.NewGuid();
     public NoteType type;
-    public string displayName; 
-    protected Note(string displayName)
+    public string displayName;
+    public TheoryboardManager.Whodunnit isProof;
+
+    protected Note(string displayName, TheoryboardManager.Whodunnit proof = 0)
     {
         this.displayName = displayName;
     }
+
     public virtual string GetButtonText()
     {
         return displayName;
     }
+
     public abstract UniTask Show(NotebookView view, CancellationToken token);
 }
+
 public class LogNote : Note
 {
     private readonly string _info;
-    public LogNote(string displayName, string info) : base( displayName)
+    public LogNote(string displayName, string info, TheoryboardManager.Whodunnit proof = 0) : base(displayName, proof)
     {
         _info = info;
         type =  NoteType.Log;
@@ -197,7 +202,7 @@ public class LogNote : Note
 public class ItemNote : Note
 {
     private readonly Item _item;
-    public ItemNote(string displayName,Item item) : base(displayName)
+    public ItemNote(string displayName,Item item, TheoryboardManager.Whodunnit proof = 0) : base(displayName, proof)
     {
         _item =  item;
         type = NoteType.Objects;
