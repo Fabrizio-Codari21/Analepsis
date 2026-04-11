@@ -38,7 +38,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     public void Pause()
     {
         OnPause?.Invoke();
-        inputReader.SetEnable(true);
+        inputReaderBoard.SetEnable(false);
         enableCursor.Raise(false);
 
         //playerCamera.Camera.LookAt = _oldLookAt;
@@ -50,7 +50,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     public void Resume()
     {
         OnResume?.Invoke();
-        inputReader.SetEnable(false);
+        inputReaderBoard.SetEnable();
         enableCursor.Raise(true);
 
         _playerTransform = new Tuple<Vector3, Quaternion>(player.transform.position, player.transform.rotation);
@@ -63,7 +63,8 @@ public class TheoryboardManager : MonoBehaviour, IActivity
 
     public void Stop()
     {
-        throw new NotImplementedException();
+        OnStop?.Invoke();
+        Pause();
     }
     #endregion
 
