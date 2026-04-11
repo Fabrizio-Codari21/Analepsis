@@ -167,7 +167,10 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 
     private void EndDialogue()
     {
-        m_recordNoteEvent.Raise(new LogNote(_currentDialoguer.NpcName,_recordText));
+        m_recordNoteEvent.Raise(new LogNote(
+            $"Talked with {_currentDialoguer.NpcName} -\n Action {ActionTimer.Instance.CurrentAction()}"
+            ,_recordText));
+
         _currentDialoguer = null;
         _recordText = String.Empty;
         m_popActivity.Raise();

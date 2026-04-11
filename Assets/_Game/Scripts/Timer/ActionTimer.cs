@@ -3,8 +3,10 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 public class ActionTimer : MonoBehaviour
 {
+    public static ActionTimer Instance { get; private set; }
+
     [ShowInInspector,ReadOnly] public int actionsLeft;
-    [SerializeField] private int m_maxActionsLevel;
+    public int m_maxActionsLevel;
     [SerializeField] private CheckIntAmount m_consumeAction;
     
     [SerializeField] private CheckIntAmount m_checkActionAmount;
@@ -14,7 +16,8 @@ public class ActionTimer : MonoBehaviour
 
     private void Awake()
     {
-        m_view = Instantiate(m_view,transform);
+        m_view = Instantiate(m_view, transform);
+        Instance = this;
     }
 
     private void Start()
@@ -22,8 +25,7 @@ public class ActionTimer : MonoBehaviour
         m_consumeAction.OnRequest += TryCostAction;
         m_checkActionAmount.OnRequest += Check;
          actionsLeft = m_maxActionsLevel;
-         OnActionChanged?.Invoke(actionsLeft);
-      
+         OnActionChanged?.Invoke(actionsLeft);    
     }
 
     private bool Check(int cost)
@@ -45,6 +47,8 @@ public class ActionTimer : MonoBehaviour
     {
         m_checkActionAmount.OnRequest -= TryCostAction;
     }
+
+    public int CurrentAction() => m_maxActionsLevel - actionsLeft;
 }
 
 public interface IAction

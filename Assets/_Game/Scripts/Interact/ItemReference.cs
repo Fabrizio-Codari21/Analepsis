@@ -37,7 +37,9 @@ public class ItemReference : MonoBehaviour
 
     private void RecordItem()
     {
-        m_recordNoteEvent.Raise(new ItemNote(m_itemReference.Name,m_itemReference));
+        m_recordNoteEvent.Raise(new ItemNote
+            ($"Talked with {m_itemReference.Name} -\n Action {ActionTimer.Instance.CurrentAction()}",
+            m_itemReference));
     }
     
     

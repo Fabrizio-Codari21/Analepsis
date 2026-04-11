@@ -13,7 +13,7 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
     {
         var canvas = GetComponentInParent<Canvas>(); if(!canvas) return;
 
-        _originalTransform = m_button.transform.parent;
+        if(m_button.transform.parent != _boardTransform) _originalTransform = m_button.transform.parent;
         m_button.transform.SetParent(canvas.transform, false); MoveToFirst();
 
         SetDraggedPosition(eventData);
