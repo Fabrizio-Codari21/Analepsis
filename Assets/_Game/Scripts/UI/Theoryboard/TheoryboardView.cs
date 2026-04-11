@@ -46,7 +46,7 @@ public class TheoryboardView : MonoBehaviour
         button.SetText(text);
         button.SetInteractable(true);
         button.SetBoard(boardRoot);
-        button.SetView(this);
+        button.SetView(this);       
 
         return button;
     }

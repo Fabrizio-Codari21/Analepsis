@@ -14,7 +14,7 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
         var canvas = GetComponentInParent<Canvas>(); if(!canvas) return;
 
         _originalTransform = m_button.transform.parent;
-        m_button.transform.SetParent(canvas.transform, false); MoveToLast();
+        m_button.transform.SetParent(canvas.transform, false); MoveToFirst();
 
         SetDraggedPosition(eventData);
     }
@@ -49,8 +49,9 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
 
     void InsertClue(PointerEventData data)
     {
-        Transform droppedOn = data.pointerEnter.transform;
-        if (droppedOn != null && droppedOn == _boardTransform)
+        print("Dropped on " + data.pointerEnter.gameObject.name);
+        Transform droppedOn = data.pointerEnter.transform ? data.pointerEnter.transform : null;
+        if (droppedOn != null && (droppedOn == _boardTransform || droppedOn == _boardTransform.parent))
         {
             var button = _view.CreateClueButton(m_text.text, _boardTransform);
 
@@ -67,7 +68,6 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
 
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //m_text = m_rectTransform.GetChild(0).GetComponent<TextMeshProUGUI>();
