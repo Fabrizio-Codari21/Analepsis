@@ -8,18 +8,16 @@ public class CcInputHandler : MonoBehaviour
    [SerializeField] private CCInputReader m_reader;
    [SerializeField] private IActivityEvent m_readerEvent;
    [SerializeField] private CinemachineInputAxisController m_cameraAxisController;
-   
+   [SerializeField] private CinemachineCamera  m_camera;
+   [SerializeField] private Transform m_cameraTransform;
    public event Action<Vector2> Move = delegate { };
    public event Action InteractPressed = delegate { };
    public event Action InteractReleased = delegate { };
-
    private IActivity activity;
 
+   [SerializeField] private TransformEventChannel m_cameraTransformEvent;
 
-    private void Awake()
-    {
-       
-    }
+
     private void Start()
    {
 
@@ -33,8 +31,10 @@ public class CcInputHandler : MonoBehaviour
         activity.OnResume += Resume;
         activity.OnPause += Pause;
         activity.OnStop += Stop;
-
+        
         m_readerEvent.Raise(activity); // BASE ACTIVITY EN TEORIA
+
+        m_cameraTransformEvent.OnEventRaised += SetCamera;
    }
    
 
@@ -65,5 +65,19 @@ public class CcInputHandler : MonoBehaviour
    public void Stop()
    {
       Pause();
+   }
+
+
+   private void SetCamera(Transform target)
+   {
+      
+      m_camera.ForceCameraPosition(target.position, target.rotation);
+      m_camera.Follow = target;
+      
+   }
+
+   private void OnDestroy()
+   {
+      m_cameraTransformEvent.OnEventRaised -= SetCamera;
    }
 }

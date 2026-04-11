@@ -21,7 +21,6 @@ public class CCInputReader : InputReader,InputActions.IPlayerActions
 
     public void OnLook(InputAction.CallbackContext context)
     {
-             
         if (context.started) return;
         Look?.Invoke(context.ReadValue<Vector2>());
     }
