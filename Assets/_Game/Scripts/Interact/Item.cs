@@ -7,7 +7,7 @@ public class Item : ScriptableObject, IClue
     public GameObject gameObject;
     
     public SerializableGuid guid = SerializableGuid.NewGuid();
-    [MinValue(1)] public float size;
+    [MinValue(1)] public float size = 1;
     public string Name;
     public Sprite sprite;
     public string Description;
