@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Cysharp.Threading.Tasks;
+using TMPro;
 
 public class TheoryboardView : MonoBehaviour
 {
@@ -11,6 +14,7 @@ public class TheoryboardView : MonoBehaviour
     public Transform markedItemsRoot;
     public Transform boardRoot;
     public ButtonSetting clueButtonSetting;
+    public Button solveButton;
 
     [ShowInInspector, TableList] public Dictionary<TheoryboardManager.Whodunnit, Transform> boardRoots;
 
@@ -49,7 +53,7 @@ public class TheoryboardView : MonoBehaviour
 
         button.SetText(text);
         button.SetInteractable(true);
-        button.SetBoard(boardRoot);
+        button.SetBoard(boardRoots);
         button.SetView(this);
         
         button.SetProof(proof);
@@ -57,13 +61,35 @@ public class TheoryboardView : MonoBehaviour
         return button;
     }
 
-    void Start()
+    public async UniTask TryToSolveCase()
     {
+        foreach(var item in boardRoots) 
+        { 
+            var choice = item.Value.GetChild(0).GetComponent<DraggableButton>();
+            var rightChoice = manager.correctAnswer.FirstOrDefault(x => x.Key == item.Key);
+
+            if (choice != null && choice.GetProof().Contains(rightChoice.Key)) continue; else
+            {
+                await ShowError(); return;
+            }
+        }
         
+        manager.SolveCase();
     }
 
-    void Update()
+    public async UniTask ShowError()
     {
-        
+        var unsolved = solveButton?.GetComponentInChildren<TextMeshProUGUI>();
+        var oldText = unsolved.text;
+
+        unsolved.text = "Not quite";
+        await UniTask.Delay(1000);
+        unsolved.text = oldText;
     }
+
+    void Start()
+    {
+        solveButton.onClick.AddListener(() => TryToSolveCase());
+    }
+
 }

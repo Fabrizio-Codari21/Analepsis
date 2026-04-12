@@ -10,7 +10,7 @@ public class ButtonFactoryObject : FactoryUIObject
     [SerializeField]  protected TextMeshProUGUI m_text;
 
     // estas no habria que asignarlas en el inspector en teoria
-    [SerializeField, HideInInspector] protected Transform _boardTransform;
+    [SerializeField, HideInInspector] protected Dictionary<TheoryboardManager.Whodunnit,Transform> _boardTransforms;
     [SerializeField, HideInInspector] protected TheoryboardView _view;
     [SerializeField, HideInInspector] protected List<TheoryboardManager.Whodunnit> proof = new();
 
@@ -35,8 +35,9 @@ public class ButtonFactoryObject : FactoryUIObject
     public void SetInteractable(bool interactable) => m_button.interactable = interactable;
     public void AddListener(UnityAction listener) => m_button.onClick.AddListener(listener);
     public void RemoveAllListeners() => m_button.onClick.RemoveAllListeners();
-    public void SetBoard(Transform board) => _boardTransform = board;
+    public void SetBoard(Dictionary<TheoryboardManager.Whodunnit, Transform> board) => _boardTransforms = board;
     public void SetView(TheoryboardView view) => _view = view;
 
     public void SetProof(List<TheoryboardManager.Whodunnit> isProof) => proof = isProof;
+    public List<TheoryboardManager.Whodunnit> GetProof() => proof;
 }

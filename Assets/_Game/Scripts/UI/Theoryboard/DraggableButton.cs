@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -13,7 +14,7 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
     {
         var canvas = GetComponentInParent<Canvas>(); if(!canvas) return;
 
-        if(m_button.transform.parent != _boardTransform) _originalTransform = m_button.transform.parent;
+        if(!_boardTransforms.ContainsValue(m_button.transform.parent)) _originalTransform = m_button.transform.parent;
         m_button.transform.SetParent(canvas.transform, false); MoveToFirst();
 
         SetDraggedPosition(eventData);
@@ -51,12 +52,17 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
     {
         print("Dropped on " + data.pointerEnter.gameObject.name);
         Transform droppedOn = data.pointerEnter.transform ? data.pointerEnter.transform : null;
-        if (droppedOn != null && (droppedOn == _boardTransform || droppedOn == _boardTransform.parent))
+        if (droppedOn != null && (_boardTransforms.ContainsValue(droppedOn) || _boardTransforms.ContainsValue(droppedOn.parent)))
         {
-            var button = _view.CreateClueButton(m_text.text, _boardTransform, proof);
+            var panel = _boardTransforms.Where(x => x.Value == droppedOn || x.Value == droppedOn.parent).FirstOrDefault();
+            if(proof.Contains(panel.Key)) 
+            {
+                var button = _view.CreateClueButton(m_text.text, panel.Value, proof);
 
-            m_button.transform.SetParent(_originalTransform, true);
-            print($"You inserted: {m_text.text}.");
+                m_button.transform.SetParent(_originalTransform, true);
+                print($"You inserted: {m_text.text}.");
+            }
+
         }
         else
         {

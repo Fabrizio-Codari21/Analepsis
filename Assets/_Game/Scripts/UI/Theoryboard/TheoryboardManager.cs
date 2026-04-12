@@ -1,9 +1,7 @@
 using Sirenix.OdinInspector;
-
-using Sirenix.Serialization;
+//using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 public class TheoryboardManager : MonoBehaviour, IActivity
@@ -24,10 +22,11 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     [SerializeField] Transform boardTransform;
     [SerializeField] GameObject player;
     Tuple<Vector3, Quaternion> _playerTransform;
-    Transform _oldLookAt;
+    //Transform _oldLookAt;
 
     [Space(20), Header("WHAT'S THE RIGHT ANSWER?")]
-    [ShowInInspector, TableList] public Dictionary<Whodunnit, IClue> correctAnswer;
+    [ShowInInspector, TableList, DictionaryDrawerSettings(KeyLabel = "Role", ValueLabel = "Proof")] 
+    public Dictionary<Whodunnit, IClue> correctAnswer;
 
     #region IActivity
     public event Action OnResume;
@@ -83,6 +82,11 @@ public class TheoryboardManager : MonoBehaviour, IActivity
 
     void Open() => pushEvent.Raise(this);
     void Close() => popEvent.Raise();
+
+    public void SolveCase()
+    {
+        print("Case solved");
+    }
 
     public enum Whodunnit
     {
