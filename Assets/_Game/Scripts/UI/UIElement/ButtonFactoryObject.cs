@@ -1,8 +1,10 @@
 using TMPro;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+//using System.ComponentModel;
 
 public class ButtonFactoryObject : FactoryUIObject
 {
@@ -12,7 +14,7 @@ public class ButtonFactoryObject : FactoryUIObject
     // estas no habria que asignarlas en el inspector en teoria
     [SerializeField, HideInInspector] protected Dictionary<TheoryboardManager.Whodunnit, TheoryPanel> _boardTransforms;
     [SerializeField, HideInInspector] protected TheoryboardView _view;
-    [SerializeField, HideInInspector] protected List<TheoryboardManager.Whodunnit> proof = new();
+    [SerializeField, ShowInInspector, ReadOnly] protected List<TheoryboardManager.Whodunnit> proof = new();
 
     public override void Despawn()
     {

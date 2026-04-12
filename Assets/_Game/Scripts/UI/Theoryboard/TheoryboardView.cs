@@ -33,10 +33,10 @@ public class TheoryboardView : MonoBehaviour
         foreach (var log in markedLogs) 
         {
             var button = CreateClueButton(log.Value.displayName, markedLogsRoot, log.Value.isProof);
-            button.AddListener(() =>
-            {
+            //button.AddListener(() =>
+            //{
 
-            });
+            //});
         }
         foreach (var item in markedItems)
         {
@@ -73,7 +73,7 @@ public class TheoryboardView : MonoBehaviour
 
             if (choice != null && choice.GetProof().Contains(item.Key)) continue; else
             {
-                print("unsolved"); await ShowError(solveText); return;
+                await ShowError(solveText); return;
             }
         }
         
@@ -84,6 +84,7 @@ public class TheoryboardView : MonoBehaviour
     {
         var oldText = solveText.text;
 
+        print("unsolved");
         solveText.text = "Not quite";
         await UniTask.Delay(700);
         solveText.text = oldText;

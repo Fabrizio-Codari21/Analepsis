@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+//using System.ComponentModel;
+using Sirenix.OdinInspector;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 // Objeto base que contiene toda la logica de un dialogo.
@@ -12,14 +15,19 @@ public class Dialogue : ScriptableObject, IClue
     public DialogueNode startingNode;
     public List<DialogueNode> allNodes =  new List<DialogueNode>();
 
-    List<TheoryboardManager.Whodunnit> _hiddenProof = new();
+    [ReadOnly] public List<TheoryboardManager.Whodunnit> _hiddenProof = new();
     public void DiscoverProof(TheoryboardManager.Whodunnit proof)
     {
-        if (!_hiddenProof.Contains(proof)) _hiddenProof.Add(proof); 
+        if (!_hiddenProof.Contains(proof)) 
+        {
+            _hiddenProof.Add(proof);
+            Debug.Log("added: " + proof);
+        }
     }
 
     public List<TheoryboardManager.Whodunnit> DoesItProveAnything()
     {
+        Debug.Log(_hiddenProof.Count);
         return _hiddenProof;
 
     }

@@ -55,7 +55,7 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
 
     void InsertClue(PointerEventData data)
     {
-        print("Dropped on " + data.pointerEnter.gameObject.name);
+        //print("Dropped on " + data.pointerEnter.gameObject.name);
 
         TheoryPanel droppedOn = default;
         if (!data.pointerEnter.TryGetComponent(out droppedOn))
@@ -67,7 +67,7 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
         }
 
         var panel = _boardTransforms.Where(x => x.Value == droppedOn).FirstOrDefault();
-        if (panel.Value == default) print("no hay pruebas en " + m_text.text);
+        //if (panel.Value == default) print("no hay pruebas en " + m_text.text);
 
         if (droppedOn != null
             && _boardTransforms.ContainsValue(droppedOn)

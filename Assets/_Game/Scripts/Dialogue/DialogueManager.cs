@@ -68,6 +68,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     {
         m_pushActivity.Raise(this);
         _currentDialoguer = dialogable;
+        _currentDialoguer.Dialogue._hiddenProof.Clear();
         m_dialogueView.ClearDialogues();
         m_dialogueView.SetSpeakerName(dialogable.NpcName);
         await PlayDialogueNode(dialogable.Dialogue.startingNode);
