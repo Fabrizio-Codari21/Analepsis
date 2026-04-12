@@ -1,6 +1,8 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+[Serializable]
 [CreateAssetMenu(menuName = "Game/Item",fileName = "Item")]
 public class Item : ScriptableObject, IClue
 {
@@ -19,6 +21,7 @@ public class Item : ScriptableObject, IClue
         return doesItProveAnything;
     }
 }
+
 
 public interface IClue
 {

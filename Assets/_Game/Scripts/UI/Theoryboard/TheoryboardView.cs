@@ -3,8 +3,10 @@ using UnityEngine.UI;
 using System.Linq;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using UnityEngine.Rendering;
 using Cysharp.Threading.Tasks;
 using TMPro;
+using System;
 
 public class TheoryboardView : MonoBehaviour
 {
@@ -16,7 +18,7 @@ public class TheoryboardView : MonoBehaviour
     public ButtonSetting clueButtonSetting;
     public Button solveButton;
 
-    [ShowInInspector, TableList] public Dictionary<TheoryboardManager.Whodunnit, Transform> boardRoots;
+    public SerializedDictionary<TheoryboardManager.Whodunnit, Transform> boardRoots = new();
 
     public void LoadMarkedClues()
     {
@@ -66,11 +68,11 @@ public class TheoryboardView : MonoBehaviour
         foreach(var item in boardRoots) 
         { 
             var choice = item.Value.GetChild(0).GetComponent<DraggableButton>();
-            var rightChoice = manager.correctAnswer.FirstOrDefault(x => x.Key == item.Key);
+            //var rightChoice = manager.correctAnswer.FirstOrDefault(x => x.Key == item.Key);
 
-            if (choice != null && choice.GetProof().Contains(rightChoice.Key)) continue; else
+            if (choice != null && choice.GetProof().Contains(item.Key)) continue; else
             {
-                await ShowError(); return;
+                print("unsolved"); await ShowError(); return;
             }
         }
         
@@ -90,6 +92,7 @@ public class TheoryboardView : MonoBehaviour
     void Start()
     {
         solveButton.onClick.AddListener(() => TryToSolveCase());
+        //print(boardRoots.Count);
     }
 
 }

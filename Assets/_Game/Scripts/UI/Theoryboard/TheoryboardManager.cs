@@ -1,5 +1,5 @@
 using Sirenix.OdinInspector;
-//using Sirenix.Serialization;
+using UnityEngine.Rendering;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,8 +25,8 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     //Transform _oldLookAt;
 
     [Space(20), Header("WHAT'S THE RIGHT ANSWER?")]
-    [ShowInInspector, TableList, DictionaryDrawerSettings(KeyLabel = "Role", ValueLabel = "Proof")] 
-    public Dictionary<Whodunnit, IClue> correctAnswer;
+    //[DictionaryDrawerSettings(KeyLabel = "Role", ValueLabel = "Proof")] 
+    public SerializedDictionary<Whodunnit, IClue> correctAnswer = new();
 
     #region IActivity
     public event Action OnResume;
@@ -78,6 +78,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         inputReader.OpenTheoryBoard += Open;
         inputReader.OpenTheoryBoard += view.LoadMarkedClues;
         inputReaderBoard.Close += Close;
+
     }
 
     void Open() => pushEvent.Raise(this);

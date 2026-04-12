@@ -55,13 +55,14 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
         if (droppedOn != null && (_boardTransforms.ContainsValue(droppedOn) || _boardTransforms.ContainsValue(droppedOn.parent)))
         {
             var panel = _boardTransforms.Where(x => x.Value == droppedOn || x.Value == droppedOn.parent).FirstOrDefault();
-            if(proof.Contains(panel.Key)) 
+            if (proof != default && proof.Contains(panel.Key))
             {
                 var button = _view.CreateClueButton(m_text.text, panel.Value, proof);
 
                 m_button.transform.SetParent(_originalTransform, true);
                 print($"You inserted: {m_text.text}.");
             }
+            else print("No proof list found: " + proof);
 
         }
         else

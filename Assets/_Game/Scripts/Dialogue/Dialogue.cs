@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 // Objeto base que contiene toda la logica de un dialogo.
+[Serializable]
 [CreateAssetMenu(fileName = "New Dialogue", menuName = "Game/Dialogue Assets/New Dialogue")]
 public class Dialogue : ScriptableObject, IClue
 {

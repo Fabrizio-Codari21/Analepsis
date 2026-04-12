@@ -170,7 +170,7 @@ public abstract class Note
     public SerializableGuid guid = SerializableGuid.NewGuid();
     public NoteType type;
     public string displayName;
-    public List<TheoryboardManager.Whodunnit> isProof;
+    public List<TheoryboardManager.Whodunnit> isProof = default;
 
     protected Note(string displayName, List<TheoryboardManager.Whodunnit> proof = default)
     {
