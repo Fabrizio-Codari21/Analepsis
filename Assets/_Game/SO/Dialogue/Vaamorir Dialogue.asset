@@ -1,0 +1,142 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
+  m_Name: Vaamorir Dialogue
+  m_EditorClassIdentifier: 
+  startingNode:
+    dialogueText: Hi! Do you want to talk about something?
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356755246285052
+    - rid: 5324356755246285053
+    isRootNode: 1
+    editorPosition: {x: 300, y: 200}
+    guid:
+      Part1: 856611882
+      Part2: 1127036171
+      Part3: 4095525285
+      Part4: 921241504
+    tag: 
+  allNodes:
+  - dialogueText: 
+    doesItProveAnything: 0
+    responses: []
+    isRootNode: 1
+    editorPosition: {x: 300, y: 200}
+    guid:
+      Part1: 856611882
+      Part2: 1127036171
+      Part3: 4095525285
+      Part4: 921241504
+    tag: 
+  - dialogueText: It's... cold, i guess. Don't you have something more <b>useful</b>
+      to talk about?
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356755246285054
+    isRootNode: 0
+    editorPosition: {x: 1174.95, y: -36.00001}
+    guid:
+      Part1: 3389315091
+      Part2: 1272145350
+      Part3: 1909760188
+      Part4: 2163844549
+    tag: 
+  - dialogueText: 'OH NO, NOT KNIVES! I shouldn''t be saying this, but I''m terribly
+      <b>weak to stab wounds</b>. Please tell me they didn''t leave it over here... '
+    doesItProveAnything: 1
+    responses:
+    - rid: 5324356755246285055
+    isRootNode: 0
+    editorPosition: {x: 1239, y: 219}
+    guid:
+      Part1: 3179810349
+      Part2: 1208839823
+      Part3: 1233843617
+      Part4: 3560227908
+    tag: 
+  _hiddenProof: 01000000
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 5324356755246285052
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Talk about the weather]'
+        nextNode:
+          rid: 5324356755246285056
+        m_conditions: []
+        editorPosition: {x: 833, y: -35.639984}
+    - rid: 5324356755246285053
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Talk about the knife]'
+        nextNode:
+          rid: 5324356755246285057
+        m_conditions:
+        - rid: 5324356755246285058
+        editorPosition: {x: 775, y: 219}
+    - rid: 5324356755246285054
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[She''s right... I should <b>find</b> a topic]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 1844.6, y: -17}
+    - rid: 5324356755246285055
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Awfully specific... I should <b>note</b> that]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 2264.325, y: 218.99998}
+    - rid: 5324356755246285056
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: It's... cold, i guess. Don't you have something more <b>useful</b>
+          to talk about?
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356755246285054
+        isRootNode: 0
+        editorPosition: {x: 1174.95, y: -36.00001}
+        guid:
+          Part1: 3389315091
+          Part2: 1272145350
+          Part3: 1909760188
+          Part4: 2163844549
+        tag: 
+    - rid: 5324356755246285057
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'OH NO, NOT KNIVES! I shouldn''t be saying this, but I''m terribly
+          <b>weak to stab wounds</b>. Please tell me they didn''t leave it over here... '
+        doesItProveAnything: 1
+        responses:
+        - rid: 5324356755246285055
+        isRootNode: 0
+        editorPosition: {x: 1239, y: 219}
+        guid:
+          Part1: 3179810349
+          Part2: 1208839823
+          Part3: 1233843617
+          Part4: 3560227908
+        tag: 
+    - rid: 5324356755246285058
+      type: {class: ItemNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        item: {fileID: 11400000, guid: 38078761dd0663346bad54d2f88251b9, type: 2}
