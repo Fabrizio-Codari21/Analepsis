@@ -170,7 +170,8 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     {
         m_recordNoteEvent.Raise(new LogNote(
             $"Talked with {_currentDialoguer.NpcName} -\n Action {ActionTimer.Instance.CurrentAction()}"
-            ,_recordText));
+            ,_recordText
+            ,_currentDialoguer.Dialogue.DoesItProveAnything()));
 
         _currentDialoguer = null;
         _recordText = String.Empty;

@@ -17,8 +17,9 @@ public class TheoryboardView : MonoBehaviour
     public Transform boardRoot;
     public ButtonSetting clueButtonSetting;
     public Button solveButton;
+    public TextMeshProUGUI solveText;
 
-    public SerializedDictionary<TheoryboardManager.Whodunnit, Transform> boardRoots = new();
+    public SerializedDictionary<TheoryboardManager.Whodunnit, TheoryPanel> boardRoots = new();
 
     public void LoadMarkedClues()
     {
@@ -63,35 +64,34 @@ public class TheoryboardView : MonoBehaviour
         return button;
     }
 
-    public async UniTask TryToSolveCase()
+    public async UniTask TryToSolveCase(TextMeshProUGUI solveText)
     {
         foreach(var item in boardRoots) 
         { 
-            var choice = item.Value.GetChild(0).GetComponent<DraggableButton>();
+            var choice = item.Value.droppedClue;
             //var rightChoice = manager.correctAnswer.FirstOrDefault(x => x.Key == item.Key);
 
             if (choice != null && choice.GetProof().Contains(item.Key)) continue; else
             {
-                print("unsolved"); await ShowError(); return;
+                print("unsolved"); await ShowError(solveText); return;
             }
         }
         
         manager.SolveCase();
     }
 
-    public async UniTask ShowError()
+    public async UniTask ShowError(TextMeshProUGUI solveText)
     {
-        var unsolved = solveButton?.GetComponentInChildren<TextMeshProUGUI>();
-        var oldText = unsolved.text;
+        var oldText = solveText.text;
 
-        unsolved.text = "Not quite";
-        await UniTask.Delay(1000);
-        unsolved.text = oldText;
+        solveText.text = "Not quite";
+        await UniTask.Delay(700);
+        solveText.text = oldText;
     }
 
     void Start()
     {
-        solveButton.onClick.AddListener(() => TryToSolveCase());
+        solveButton.onClick.AddListener(() => TryToSolveCase(solveText));
         //print(boardRoots.Count);
     }
 

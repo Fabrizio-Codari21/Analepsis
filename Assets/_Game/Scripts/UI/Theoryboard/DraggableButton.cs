@@ -9,12 +9,17 @@ using UnityEngine.EventSystems;
 public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     Transform _originalTransform;
+    int _originalHierarchyPosition;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         var canvas = GetComponentInParent<Canvas>(); if(!canvas) return;
 
-        if(!_boardTransforms.ContainsValue(m_button.transform.parent)) _originalTransform = m_button.transform.parent;
+        if(!_boardTransforms.ContainsValue(m_button.transform.parent.GetComponent<TheoryPanel>())) 
+        {
+            _originalTransform = m_button.transform.parent;
+            _originalHierarchyPosition = m_button.transform.GetSiblingIndex();
+        }
         m_button.transform.SetParent(canvas.transform, false); MoveToFirst();
 
         SetDraggedPosition(eventData);
@@ -51,23 +56,31 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
     void InsertClue(PointerEventData data)
     {
         print("Dropped on " + data.pointerEnter.gameObject.name);
-        Transform droppedOn = data.pointerEnter.transform ? data.pointerEnter.transform : null;
-        if (droppedOn != null && (_boardTransforms.ContainsValue(droppedOn) || _boardTransforms.ContainsValue(droppedOn.parent)))
-        {
-            var panel = _boardTransforms.Where(x => x.Value == droppedOn || x.Value == droppedOn.parent).FirstOrDefault();
-            if (proof != default && proof.Contains(panel.Key))
-            {
-                var button = _view.CreateClueButton(m_text.text, panel.Value, proof);
 
-                m_button.transform.SetParent(_originalTransform, true);
-                print($"You inserted: {m_text.text}.");
-            }
-            else print("No proof list found: " + proof);
+        TheoryPanel droppedOn = data.pointerEnter.GetComponent<TheoryPanel>();
+        var panel = _boardTransforms.Where(x => x.Value == droppedOn.transform || x.Value == droppedOn.transform.parent).FirstOrDefault();
+
+        if (droppedOn != null
+            && (_boardTransforms.ContainsValue(droppedOn))
+            && (proof != default && proof.Contains(panel.Key)))
+        {
+            if (droppedOn.droppedClue != default) Destroy(droppedOn.droppedClue.gameObject);
+
+            var button = _view.CreateClueButton(m_text.text, panel.Value.transform, proof);
+            droppedOn.droppedClue = button;
+
+            m_button.transform.SetParent(_originalTransform, true);
+            m_button.transform.SetSiblingIndex(_originalHierarchyPosition);
+            print($"You inserted: {m_text.text}.");
 
         }
         else
         {
-            m_button.transform.SetParent(_originalTransform, true); //MoveToLast();
+            if (proof == default || !proof.Contains(panel.Key)) print("No valid proof list found: " + proof);
+            else print("No panel found");
+
+            m_button.transform.SetParent(_originalTransform, true);
+            m_button.transform.SetSiblingIndex(_originalHierarchyPosition);
             return;
         }
     }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingNode:
     dialogueText: Oh... hey, um... what's up?
-    doesItProveAnything: 0
+    doesItProveAnything: 4
     responses:
     - rid: 8982846198710272093
     - rid: 8982846281244737605
@@ -120,11 +120,6 @@ MonoBehaviour:
           rid: -2
         m_conditions: []
         editorPosition: {x: 1216, y: 540}
-    - rid: 5324356693796585584
-      type: {class: ItemNodeCondition, ns: , asm: Assembly-CSharp}
-      data:
-        conditionName: 
-        item: {fileID: 11400000, guid: 1714cf3db6e82e54fb24872b5092ad37, type: 2}
     - rid: 8982846198710272093
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -137,7 +132,7 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: Oh, I'm not important. Just a guy who likes <b>games</b>...
-        doesItProveAnything: 0
+        doesItProveAnything: 1
         responses:
         - rid: 8982846301971677268
         isRootNode: 0
@@ -164,7 +159,6 @@ MonoBehaviour:
           rid: 8982846281244737608
         m_conditions:
         - rid: 5324356605152329805
-        - rid: 5324356693796585584
         editorPosition: {x: -9.713184, y: 556}
     - rid: 8982846281244737607
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
@@ -173,7 +167,7 @@ MonoBehaviour:
 
           Please
           leave.'
-        doesItProveAnything: 0
+        doesItProveAnything: 2
         responses:
         - rid: 5324356605152329803
         isRootNode: 0
@@ -188,7 +182,7 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: :0 OMG I LOVE GAMES HOW DID U KNOW!!1!
-        doesItProveAnything: 0
+        doesItProveAnything: 3
         responses:
         - rid: 5324356605152329806
         isRootNode: 0
