@@ -45,19 +45,17 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
             draggingPlane = data.pointerEnter.transform as RectTransform;
 
         var rt = m_rectTransform;
-        Vector3 globalMousePos;
-        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(draggingPlane, data.position, data.pressEventCamera, out globalMousePos))
-        {
-            rt.position = globalMousePos;
-            rt.rotation = draggingPlane.rotation;
-        }
+        if (!RectTransformUtility.ScreenPointToWorldPointInRectangle(draggingPlane, data.position,
+                data.pressEventCamera, out var globalMousePos)) return;
+        rt.position = globalMousePos;
+        rt.rotation = draggingPlane.rotation;
     }
 
     void InsertClue(PointerEventData data)
     {
         //print("Dropped on " + data.pointerEnter.gameObject.name);
 
-        TheoryPanel droppedOn = default;
+        TheoryPanel droppedOn = null;
         if (!data.pointerEnter.TryGetComponent(out droppedOn))
         {
             print("No panel found");
@@ -66,15 +64,12 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
             return;
         }
 
-        var panel = _boardTransforms.Where(x => x.Value == droppedOn).FirstOrDefault();
+        var panel = _boardTransforms.FirstOrDefault(x => x.Value == droppedOn);
         //if (panel.Value == default) print("no hay pruebas en " + m_text.text);
 
-        if (droppedOn != null
-            && _boardTransforms.ContainsValue(droppedOn)
-            && (proof != default && proof.Contains(panel.Key)))
+        if (droppedOn != null && _boardTransforms.ContainsValue(droppedOn) && (proof != null && proof.Contains(panel.Key)))
         {
-            if (droppedOn.droppedClue != default) Destroy(droppedOn.droppedClue.gameObject);
-
+            if (droppedOn.droppedClue != null) Destroy(droppedOn.droppedClue.gameObject);
             var button = _view.CreateClueButton(m_text.text, panel.Value.transform, proof);
             droppedOn.droppedClue = button;
 
@@ -85,27 +80,16 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
         }
         else
         {
-            if (proof == default || !proof.Contains(panel.Key)) print("No valid proof list found: " + proof);
+            if (proof == null || !proof.Contains(panel.Key)) print("No valid proof list found: " + proof);
             else print("No panel found");
 
             m_button.transform.SetParent(_originalTransform, true);
             m_button.transform.SetSiblingIndex(_originalHierarchyPosition);
-            return;
         }
     }
 
 
 
 
-    void Start()
-    {
-        //m_text = m_rectTransform.GetChild(0).GetComponent<TextMeshProUGUI>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
 }

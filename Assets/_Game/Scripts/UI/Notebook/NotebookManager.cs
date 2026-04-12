@@ -36,7 +36,9 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
     private void Record(Note note)
     {
-        _notebookPages.TryAdd(note.guid, note);
+        if (_notebookPages.TryAdd(note.guid, note)) ;
+        else Debug.Log("Has Note");
+  
         MarkClue(note); //esto es temporal
     }
 
@@ -170,9 +172,9 @@ public abstract class Note
     public SerializableGuid guid = SerializableGuid.NewGuid();
     public NoteType type;
     public string displayName;
-    public List<TheoryboardManager.Whodunnit> isProof = default;
+    public List<TheoryboardManager.Whodunnit> isProof;
 
-    protected Note(string displayName, List<TheoryboardManager.Whodunnit> proof = default)
+    protected Note(string displayName, List<TheoryboardManager.Whodunnit> proof = null)
     {
         this.displayName = displayName;
         this.isProof = proof;
@@ -189,7 +191,8 @@ public abstract class Note
 public class LogNote : Note
 {
     private readonly string _info;
-    public LogNote(string displayName, string info, List<TheoryboardManager.Whodunnit> proof = default) : base(displayName, proof)
+    
+    public LogNote(string displayName, string info, List<TheoryboardManager.Whodunnit> proof = null) : base(displayName, proof)
     {
         _info = info;
         type =  NoteType.Log;

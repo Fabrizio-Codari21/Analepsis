@@ -7,6 +7,7 @@ using UnityEngine.Rendering;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using System;
+using System.Reflection;
 
 public class TheoryboardView : MonoBehaviour
 {
@@ -21,22 +22,38 @@ public class TheoryboardView : MonoBehaviour
 
     public SerializedDictionary<TheoryboardManager.Whodunnit, TheoryPanel> boardRoots = new();
 
+
+    private IActivity _activity;
+    
+    void Start()
+    {
+        solveButton.onClick.AddListener(() => _ = TryToSolveCase(solveText));
+   
+        
+        _activity = manager.GetComponent<IActivity>();
+
+        _activity.OnStop += () =>
+        {
+            Despawn(markedLogsRoot);
+            Despawn(markedItemsRoot);
+        };
+    }
+    
+    
+
     public void LoadMarkedClues()
     {
         if (notebookManager.markedClues.Count <= 0) return;
 
         var markedLogs = notebookManager.markedClues.Where(x => x.Value.type == NoteType.Log);
-        print("Marked logs: " + markedLogs.Count());
+        // print("Marked logs: " + markedLogs.Count());
         var markedItems = notebookManager.markedClues.Where(x => x.Value.type == NoteType.Objects);
-        print("Marked items: " + markedItems.Count());
+        // print("Marked items: " + markedItems.Count());
 
         foreach (var log in markedLogs) 
         {
             var button = CreateClueButton(log.Value.displayName, markedLogsRoot, log.Value.isProof);
-            //button.AddListener(() =>
-            //{
-
-            //});
+           
         }
         foreach (var item in markedItems)
         {
@@ -58,11 +75,19 @@ public class TheoryboardView : MonoBehaviour
         button.SetInteractable(true);
         button.SetBoard(boardRoots);
         button.SetView(this);
-
         button.SetProof(proof);
 
         return button;
     }
+
+    private void Despawn(Transform root) 
+    {
+        foreach (var f in root.GetComponentsInChildren<IFlyweight>())
+        {
+            FlyweightFactory.Instance.Return(f);
+        }
+    }
+
 
     public async UniTask TryToSolveCase(TextMeshProUGUI solveText)
     {
@@ -90,10 +115,6 @@ public class TheoryboardView : MonoBehaviour
         solveText.text = oldText;
     }
 
-    void Start()
-    {
-        solveButton.onClick.AddListener(() => TryToSolveCase(solveText));
-        //print(boardRoots.Count);
-    }
+  
 
 }

@@ -18,7 +18,7 @@ public class Item : ScriptableObject, IClue
 
     public List<TheoryboardManager.Whodunnit> DoesItProveAnything()
     {
-        return doesItProveAnything;
+        return new List<TheoryboardManager.Whodunnit>(doesItProveAnything);
     }
 }
 

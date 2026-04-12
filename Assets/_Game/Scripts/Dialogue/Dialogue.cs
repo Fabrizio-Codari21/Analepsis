@@ -18,17 +18,13 @@ public class Dialogue : ScriptableObject, IClue
     [ReadOnly] public List<TheoryboardManager.Whodunnit> _hiddenProof = new();
     public void DiscoverProof(TheoryboardManager.Whodunnit proof)
     {
-        if (!_hiddenProof.Contains(proof)) 
-        {
-            _hiddenProof.Add(proof);
-            Debug.Log("added: " + proof);
-        }
+        if (_hiddenProof.Contains(proof)) return;
+        _hiddenProof.Add(proof);
     }
 
     public List<TheoryboardManager.Whodunnit> DoesItProveAnything()
     {
-        Debug.Log(_hiddenProof.Count);
-        return _hiddenProof;
+        return new List<TheoryboardManager.Whodunnit>(_hiddenProof);
 
     }
 }
