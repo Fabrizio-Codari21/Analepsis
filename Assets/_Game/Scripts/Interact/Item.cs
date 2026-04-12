@@ -12,7 +12,7 @@ public class Item : ScriptableObject, IClue
     [MinValue(1)] public float size = 1;
     public string Name;
     public Sprite sprite;
-    public string Description;
+    [TextArea(0,20)]public string Description;
 
     [SerializeField] List<TheoryboardManager.Whodunnit> doesItProveAnything;
 
