@@ -57,11 +57,20 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
     {
         print("Dropped on " + data.pointerEnter.gameObject.name);
 
-        TheoryPanel droppedOn = data.pointerEnter.GetComponent<TheoryPanel>();
-        var panel = _boardTransforms.Where(x => x.Value == droppedOn.transform || x.Value == droppedOn.transform.parent).FirstOrDefault();
+        TheoryPanel droppedOn = default;
+        if (!data.pointerEnter.TryGetComponent(out droppedOn))
+        {
+            print("No panel found");
+            m_button.transform.SetParent(_originalTransform, true);
+            m_button.transform.SetSiblingIndex(_originalHierarchyPosition);
+            return;
+        }
+
+        var panel = _boardTransforms.Where(x => x.Value == droppedOn).FirstOrDefault();
+        if (panel.Value == default) print("no hay pruebas en " + m_text.text);
 
         if (droppedOn != null
-            && (_boardTransforms.ContainsValue(droppedOn))
+            && _boardTransforms.ContainsValue(droppedOn)
             && (proof != default && proof.Contains(panel.Key)))
         {
             if (droppedOn.droppedClue != default) Destroy(droppedOn.droppedClue.gameObject);
