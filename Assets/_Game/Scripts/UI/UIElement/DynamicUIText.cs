@@ -9,30 +9,43 @@ public class DynamicUIText : FactoryUIObject
 {
     [SerializeField] private TMP_Text m_text;
     [SerializeField] private float m_charsPerSecond = 30f;
+     private float m_maxWidth = 500f;
     private CancellationTokenSource _cts;
 
     [Button]
     public void CalculateWidthAndHeight()
     {
         Vector2 prefSize = m_text.GetPreferredValues(m_text.text);
-        m_rectTransform.sizeDelta = new Vector2(prefSize.x, prefSize.y);
-        m_rectTransform.anchoredPosition = new Vector2(0, 0);
+        
+        float finalWidth;
+        float finalHeight;
+
+        if (prefSize.x > m_maxWidth)
+        {
+            finalWidth = m_maxWidth;
+            finalHeight = m_text.GetPreferredValues(m_text.text, m_maxWidth, 0).y;
+        }
+        else
+        {
+            finalWidth = prefSize.x;
+            finalHeight = prefSize.y;
+        }
+        m_rectTransform.sizeDelta = new Vector2(finalWidth, finalHeight);
+        m_rectTransform.anchoredPosition = Vector2.zero;
     }
     public override void OnSpawn()
     {
        base.OnSpawn();
        Cancel();
     }
-    public void SetText(string text,float size, Color color)
+    public void SetText(string text,float size, Color color,float maxWidth = 500f)
     {
         m_text.text = text;
         m_text.color = color;
         m_text.fontSize = size;
         m_text.maxVisibleCharacters = 0; 
-        
-        Vector2 prefSize = m_text.GetPreferredValues(m_text.text);
-        m_rectTransform.sizeDelta = new Vector2(prefSize.x, prefSize.y);
-        m_rectTransform.anchoredPosition = new Vector2(0, 0);
+        m_maxWidth =  maxWidth;
+        CalculateWidthAndHeight();
     }
 
     public void ToLast()
