@@ -17,8 +17,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private EventChannel popEvent;
 
     #endregion
-
-    [SerializeField] GameObject notebookPrefab;
+    
     [SerializeField] private NotebookView m_view;
     [SerializeField] private RecordNoteEvent m_recordNote;
     private CancellationTokenSource _cts;
@@ -29,7 +28,6 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private void Start()
     {
         m_view = Instantiate(m_view,transform);
-        notebookPrefab.SetActive(false);
         inputReader.OpenNotebook += Open;
         inputReaderNoteBook.Close += Close;
         m_recordNote.OnEventRaised += Record;
@@ -51,13 +49,11 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
     private void Open()
     {
-        notebookPrefab.SetActive(true);
         pushEvent.Raise(this);     
     }
 
     private void Close()
     {
-        notebookPrefab.SetActive(false);
         popEvent.Raise();
     }
 
