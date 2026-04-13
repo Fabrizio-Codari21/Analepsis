@@ -90,6 +90,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     public void SolveCase()
     {
         print("Case solved");
+        this.AsyncLoader("WinScene");
     }
 
     public enum Whodunnit
