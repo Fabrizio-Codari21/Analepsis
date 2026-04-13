@@ -1963,6 +1963,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: character test1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bfef38a9106b4ff43add9c036fc183be, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3343,7 +3347,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 87
+    m_Bits: 343
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -3817,7 +3821,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &410087040
 Light:
   m_ObjectHideFlags: 0
@@ -3891,13 +3895,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0404993, y: -0.2121002, z: 0.06716186, w: 0.9740958}
+  m_LocalRotation: {x: -0.588656, y: -0.13595586, z: 0.17610592, w: 0.77716595}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -2.89, y: -24.783, z: 8.523}
+  m_LocalEulerAnglesHint: {x: -60.121, y: -57.181, z: 60.548}
 --- !u!114 &410087042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3993,6 +3997,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: bfef38a9106b4ff43add9c036fc183be, type: 3}
       propertyPath: m_Name
       value: character test1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bfef38a9106b4ff43add9c036fc183be, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6010,7 +6018,7 @@ GameObject:
   - component: {fileID: 693035328}
   - component: {fileID: 693035327}
   - component: {fileID: 693035326}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6308,7 +6316,7 @@ MonoBehaviour:
   inputReaderNoteBook: {fileID: 11400000, guid: 9903e482b1106a94f8aaa831e3fd6532, type: 2}
   pushEvent: {fileID: 11400000, guid: 3027f54723217b445909fe93945c6bd2, type: 2}
   popEvent: {fileID: 11400000, guid: 76cb339f73e2d5646ac0696838117b5e, type: 2}
-  m_view: {fileID: 6415336447183091780, guid: 2f334ad02ab2e90418fecec3adcd8b53, type: 3}
+  m_view: {fileID: 4557089674583278203, guid: 77d25bf58875ca64294ada7a227bd86b, type: 3}
   m_recordNote: {fileID: 11400000, guid: 1b1d8c85c67ad1044a318c65776e259a, type: 2}
   markedClueEvent: {fileID: 11400000, guid: c081a996fd203124a80c6a8e1d284a5c, type: 2}
 --- !u!4 &703983305
@@ -6899,6 +6907,10 @@ PrefabInstance:
     - target: {fileID: 287121109457506133, guid: b394ef1d4d6e48a4cab04b3577a70a79, type: 3}
       propertyPath: m_Name
       value: Kitchen Knife
+      objectReference: {fileID: 0}
+    - target: {fileID: 287121109457506133, guid: b394ef1d4d6e48a4cab04b3577a70a79, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8209430369944604660, guid: b394ef1d4d6e48a4cab04b3577a70a79, type: 3}
       propertyPath: m_LocalScale.x
@@ -8670,7 +8682,7 @@ GameObject:
   - component: {fileID: 1118292405}
   - component: {fileID: 1118292406}
   - component: {fileID: 1118292407}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: KnifeItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10899,7 +10911,7 @@ GameObject:
   - component: {fileID: 1532737901}
   - component: {fileID: 1532737900}
   - component: {fileID: 1532737899}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14627,6 +14639,7 @@ GameObject:
   - component: {fileID: 2088846829}
   - component: {fileID: 2088846828}
   - component: {fileID: 2088846827}
+  - component: {fileID: 2088846831}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -14725,6 +14738,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2088846831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088846826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7444c788e9c131a4889135791a986430, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shader: {fileID: 2100000, guid: 3dafed841de8ee14980854fb4faed42b, type: 2}
 --- !u!1 &2088914561
 GameObject:
   m_ObjectHideFlags: 0

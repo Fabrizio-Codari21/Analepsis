@@ -27,7 +27,7 @@ public class ActionTimerView : MonoBehaviour
 
     private void ShowCostLeft(int left)
     {
-        m_text.text =  "Cost Left : "+ left ;
+        m_text.text =  "Actions Left : "+ left ;
         UIElement.CalculateWidthAndHeight(m_text,m_text.rectTransform);
     }
 }
