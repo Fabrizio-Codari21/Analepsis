@@ -18,6 +18,8 @@ public class NotebookView : MonoBehaviour
     [SerializeField] private ScrollRect m_scrollRect;
     [SerializeField] private Button m_next;
     [SerializeField] private Button m_previous;
+    
+    [Range(200f,500f)][SerializeField] private float m_textWidth = 200f;
     private void Start()
     {
         gameObject.SetActive(false);
@@ -84,7 +86,7 @@ public class NotebookView : MonoBehaviour
             Quaternion.identity,
             m_detailRoot
         );
-        t.SetText(text,m_dynamicTextSetting.size,m_dynamicTextSetting.color);
+        t.SetText(text,m_dynamicTextSetting.size,m_dynamicTextSetting.color,m_textWidth);
         t.ToLast();
         await UniTask.NextFrame(token);
         token.ThrowIfCancellationRequested();

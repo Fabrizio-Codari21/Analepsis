@@ -53,6 +53,7 @@ public class TheoryboardView : MonoBehaviour
         foreach (var log in markedLogs) 
         {
             var button = CreateClueButton(log.Value.displayName, markedLogsRoot, log.Value.isProof);
+            
            
         }
         foreach (var item in markedItems)
@@ -76,6 +77,7 @@ public class TheoryboardView : MonoBehaviour
         button.SetBoard(boardRoots);
         button.SetView(this);
         button.SetProof(proof);
+        button.MoveToLast();
 
         return button;
     }
