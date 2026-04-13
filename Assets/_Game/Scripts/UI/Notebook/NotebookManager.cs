@@ -18,7 +18,8 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
     #endregion
 
-    [SerializeField]private NotebookView m_view;
+    [SerializeField] GameObject notebookPrefab;
+    [SerializeField] private NotebookView m_view;
     [SerializeField] private RecordNoteEvent m_recordNote;
     private CancellationTokenSource _cts;
     private readonly Dictionary<SerializableGuid,Note> _notebookPages = new();
@@ -28,6 +29,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private void Start()
     {
         m_view = Instantiate(m_view,transform);
+        notebookPrefab.SetActive(false);
         inputReader.OpenNotebook += Open;
         inputReaderNoteBook.Close += Close;
         m_recordNote.OnEventRaised += Record;
@@ -49,11 +51,13 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
     private void Open()
     {
+        notebookPrefab.SetActive(true);
         pushEvent.Raise(this);     
     }
 
     private void Close()
     {
+        notebookPrefab.SetActive(false);
         popEvent.Raise();
     }
 
