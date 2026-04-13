@@ -18,6 +18,7 @@ MonoBehaviour:
     responses:
     - rid: 5324356755246285052
     - rid: 5324356755246285053
+    - rid: 5324356755246285067
     isRootNode: 1
     editorPosition: {x: 300, y: 200}
     guid:
@@ -140,3 +141,11 @@ MonoBehaviour:
       data:
         conditionName: 
         item: {fileID: 11400000, guid: 38078761dd0663346bad54d2f88251b9, type: 2}
+    - rid: 5324356755246285067
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I made a mistake. (Leave)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 808.0001, y: 426.00003}

@@ -18,6 +18,7 @@ MonoBehaviour:
     responses:
     - rid: 5324356755246285046
     - rid: 5324356755246285049
+    - rid: 5324356755246285066
     isRootNode: 1
     editorPosition: {x: 300, y: 200}
     guid:
@@ -65,7 +66,7 @@ MonoBehaviour:
       Part3: 4175621567
       Part4: 3656999561
     tag: 
-  _hiddenProof: 
+  _hiddenProof: 02000000
   references:
     version: 2
     RefIds:
@@ -98,7 +99,7 @@ MonoBehaviour:
     - rid: 5324356755246285048
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[He''s right... I should <b>investigate</b> further]'
+        responseText: '[He''s right... Let''s <b>investigate</b> further]'
         nextNode:
           rid: -2
         m_conditions: []
@@ -120,10 +121,12 @@ MonoBehaviour:
     - rid: 5324356755246285051
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: Is... Is that DULCE DE LECHE? I... HATE dulce de leche. I swear,
-          if I find whoever left it there, I'm gonna <b>STAB</b> them...
+        dialogueText: "Is... Is that DULCE DE LECHE? \nI... HATE dulce de leche.
+          It fills me with such anger, I lose all control over my actions. \nI swear,
+          if I find whoever left it there, I'm gonna <b>STAB</b> them..."
         doesItProveAnything: 2
-        responses: []
+        responses:
+        - rid: 5324356755246285061
         isRootNode: 0
         editorPosition: {x: 1160, y: 344}
         guid:
@@ -132,3 +135,19 @@ MonoBehaviour:
           Part3: 4175621567
           Part4: 3656999561
         tag: 
+    - rid: 5324356755246285061
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[<b>Stab</b>, you say? Interesting...]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 2092, y: 319}
+    - rid: 5324356755246285066
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I made a mistake. (Leave)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 726, y: 539}

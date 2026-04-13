@@ -127,6 +127,11 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         var token = _dialogueCts.Token;
 
         m_dialogueView.ClearResponses();
+        if (response.nextNode == null)
+        {
+            EndDialogue();
+            return;
+        }
         AppendToRecord($"[Player]: {response.responseText}");
     
         try 
