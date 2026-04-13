@@ -70,10 +70,9 @@ public class CcInputHandler : MonoBehaviour
 
    private void SetCamera(Transform target)
    {
-      
       m_camera.ForceCameraPosition(target.position, target.rotation);
-      m_camera.Follow = target;
-      
+
+      m_camera.Follow = target;     
    }
 
    private void OnDestroy()

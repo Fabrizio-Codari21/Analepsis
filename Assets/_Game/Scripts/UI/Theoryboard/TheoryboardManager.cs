@@ -40,6 +40,8 @@ public class TheoryboardManager : MonoBehaviour, IActivity
 
     public void Pause()
     {
+        //var newTransform = Instantiate(new GameObject("View"), _playerTransform.Item1, _playerTransform.Item2).transform;
+
         OnPause?.Invoke();
         inputReaderBoard.SetEnable(false);
         enableCursor.Raise(false);
@@ -48,6 +50,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         player.transform.position = _playerTransform.Item1;
         player.transform.rotation = _playerTransform.Item2;
         m_cameraRotationEventChannel.Raise(player.transform);
+        //Destroy(newTransform.gameObject, 0.5f);
         
     }
 
