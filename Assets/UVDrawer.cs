@@ -10,7 +10,7 @@ public class UVDrawer : MonoBehaviour
 
     private void Start()
     {
-        RenderPipelineManager.endCameraRendering += OnCameraRendering;
+        RenderPipelineManager.beginCameraRendering += OnCameraRendering;
         m_pass = new UVDrawerPass( m_uvDrawerMaterial);
     }
 
