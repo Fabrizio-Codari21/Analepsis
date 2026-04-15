@@ -126,7 +126,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         enableCursor.Raise(true);
         inputReaderNoteBook.SetEnable();
         m_view.gameObject.SetActive(true);
-        m_view.NextButtonAdd(()=>ChangeType(1));
+        m_view.NextButtonAdd(()=> ChangeType(1));
         m_view.PreviousButtonAdd(()=>ChangeType(-1));
         inputReaderNoteBook.Flip += ChangeType;
         

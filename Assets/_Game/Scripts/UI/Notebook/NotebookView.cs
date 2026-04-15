@@ -11,17 +11,22 @@ public class NotebookView : MonoBehaviour
     [SerializeField] private TMP_Text m_titleText;
     [SerializeField] private Transform m_buttonRoot;
     [SerializeField] private Transform m_detailRoot;
-    
-    [SerializeField] private ButtonSetting m_buttonSetting;
+    [SerializeField] private Camera m_renderCamera;
+    [SerializeField]private ButtonSetting m_buttonSetting;
     [SerializeField] private DynamicTextSetting  m_dynamicTextSetting;
     [SerializeField] private ImageSetting  m_imageSetting;
     [SerializeField] private ScrollRect m_scrollRect;
     [SerializeField] private Button m_next;
     [SerializeField] private Button m_previous;
-    
+
+    private IActivity _activity;
     [Range(200f,500f)][SerializeField] private float m_textWidth = 200f;
     private void Start()
-    {
+    { 
+        _activity = GetComponentInParent<IActivity>();
+        _activity.OnResume += () => { m_renderCamera.enabled = true; };
+        _activity.OnPause += () => { m_renderCamera.enabled = false; };
+        
         gameObject.SetActive(false);
     }
 
