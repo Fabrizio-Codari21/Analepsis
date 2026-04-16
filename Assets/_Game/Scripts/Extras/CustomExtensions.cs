@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -218,6 +219,20 @@ public static class CustomExtensions
         }
 
         return default;
+    }
+
+    #endregion
+
+    #region UI UTILITIES
+
+    public static void ModifyColor(this Color color, float r = 0f, float g = 0f, float b = 0f, float a = 0f)
+    {      
+        color = color + new Color(r, g, b, a);
+    }
+
+    public static void SetAlphaToZero(this Color color)
+    {
+        color = color - new Color(0f, 0f, 0f, color.a);
     }
 
     #endregion

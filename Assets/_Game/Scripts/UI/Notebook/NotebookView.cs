@@ -1,4 +1,5 @@
 using System.Threading;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting.FullSerializer;
@@ -82,21 +83,26 @@ public class NotebookView : MonoBehaviour
     {
         Despawn(m_buttonRoot);
     }
-    public async UniTask PlayText(string text, CancellationToken token) 
+    public async UniTask PlayText(List<string> text, CancellationToken token) 
     {
         token.ThrowIfCancellationRequested();
-        var t = FlyweightFactory.Instance.Spawn<DynamicUIText>(
+
+        foreach (var item in text)
+        {
+            var t = FlyweightFactory.Instance.Spawn<DynamicUIText>(
             m_dynamicTextSetting,
             Vector3.zero,
             Quaternion.identity,
-            m_detailRoot
-        );
-        t.SetText(text,m_dynamicTextSetting.size,m_dynamicTextSetting.color,m_textWidth);
-        t.ToLast();
-        await UniTask.NextFrame(token);
-        token.ThrowIfCancellationRequested();
-        m_scrollRect.verticalNormalizedPosition = 0;
-        await t.PlayTypeWriterEffect(externalToken: token);
+            m_detailRoot);
+
+            t.SetText(item, m_dynamicTextSetting.size, m_dynamicTextSetting.color, m_textWidth);
+            t.ToLast();
+            await UniTask.NextFrame(token);
+            token.ThrowIfCancellationRequested();
+            m_scrollRect.verticalNormalizedPosition = 0;
+            await t.PlayTypeWriterEffect(externalToken: token);
+        }
+
     }
     
     public void CreateImage(Sprite sprite)
