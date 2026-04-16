@@ -10,6 +10,8 @@ public class CcInputHandler : MonoBehaviour
    [SerializeField] private CinemachineInputAxisController m_cameraAxisController;
    [SerializeField] private CinemachineCamera  m_camera;
    [SerializeField] private Transform m_cameraTransform;
+
+   [SerializeField] private EventChannel m_openBook;
    public event Action<Vector2> Move = delegate { };
    public event Action InteractPressed = delegate { };
    public event Action InteractReleased = delegate { };
@@ -35,6 +37,7 @@ public class CcInputHandler : MonoBehaviour
         m_readerEvent.Raise(activity); // BASE ACTIVITY EN TEORIA
 
         m_cameraTransformEvent.OnEventRaised += SetCamera;
+      
    }
    
 
@@ -48,9 +51,16 @@ public class CcInputHandler : MonoBehaviour
       m_reader.Move += dir => Move?.Invoke(dir);
       m_reader.InteractPressed +=  () => InteractPressed?.Invoke();
       m_reader.InteractReleased += () => InteractReleased?.Invoke();
-    
+
+      m_reader.OpenNotebook += OpenNotebook;
+
    }
 
+
+   private void OpenNotebook()
+   {
+      m_openBook?.Raise();
+   }
 
    public void Resume()
    {

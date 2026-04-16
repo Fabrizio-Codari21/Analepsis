@@ -40,5 +40,14 @@ public class ScreenManager : RegulatorSingleton<ScreenManager>
         if(_activities.IsOnlyRoot()|| !_activities.Current.CanPopWithKey()) m_pushEvent.Raise(m_menu);
         else m_popInputEvent.Raise();
     }
-    
+
+
+    private void OnDestroy()
+    {
+        if(!HasInstance || instance != this) return;
+        
+        m_pushEvent.OnEventRaised -= Push;
+        m_popInputEvent.OnEventRaised -= Pop;
+        m_globalReader.EscapePressed -= Escape;
+    }
 }

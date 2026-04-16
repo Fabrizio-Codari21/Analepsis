@@ -1630,6 +1630,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7133448807836855539}
+  - component: {fileID: 5035535547726671749}
   m_Layer: 5
   m_Name: InspectionMesh Root
   m_TagString: Untagged
@@ -1653,6 +1654,24 @@ Transform:
   - {fileID: 718273651247357165}
   m_Father: {fileID: 7671999245805310521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5035535547726671749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7722987346848840038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a109f42617e6d64284a2f9695fde88e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputReader: {fileID: 11400000, guid: 0517a9bc8fe8bf948a1b35b45d4c49ec, type: 2}
+  m_scanTime: 0.1
+  m_layer:
+    serializedVersion: 2
+    m_Bits: 32
+  m_range: 500
 --- !u!1 &7893001818928401006
 GameObject:
   m_ObjectHideFlags: 0

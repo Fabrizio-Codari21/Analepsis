@@ -9,15 +9,16 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 {
     
     #region  Inputs & Cursor
-
-    [SerializeField] private CCInputReader inputReader;
+    
+    [SerializeField] private EventChannel m_openNotebookChannel;
     [SerializeField] private BoolEventChannel enableCursor;
     [SerializeField] private NoteBookInputReader inputReaderNoteBook;
     [SerializeField] private IActivityEvent pushEvent;
     [SerializeField] private EventChannel popEvent;
 
     #endregion
-    
+    [SerializeField] private EventChannel takeOutNotebookChannel;
+    [SerializeField] private EventChannel putInNotebookChannel;
     [SerializeField] private NotebookView m_view;
     [SerializeField] private RecordNoteEvent m_recordNote;
     private CancellationTokenSource _cts;
@@ -28,10 +29,11 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private void Start()
     {
         m_view = Instantiate(m_view,transform);
-        inputReader.OpenNotebook += Open;
+        
         inputReaderNoteBook.Close += Close;
         m_recordNote.OnEventRaised += Record;
         markedClueEvent.OnEventRaised += MarkClue;
+        m_openNotebookChannel.OnEventRaised += Open;
     }
 
     private void Record(Note note)
@@ -50,11 +52,13 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private void Open()
     {
         pushEvent.Raise(this);     
+        takeOutNotebookChannel.Raise();
     }
 
     private void Close()
     {
         popEvent.Raise();
+        putInNotebookChannel.Raise();
     }
 
     private void OpenNotebookByType(NoteType type)
