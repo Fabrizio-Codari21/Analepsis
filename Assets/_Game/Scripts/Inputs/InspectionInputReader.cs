@@ -13,6 +13,7 @@ public class InspectionInputReader : InputReader, InputActions.IInspectionAction
     public event Action<Vector2>  Scroll =  delegate { };
     
     public event Action Exit = delegate { };
+    public event Action SeeFlashback = delegate { };
     public event Action<Vector2> PointerMoved = delegate { };
     protected override void SetCallback(InputActions inputAction)
     {
@@ -79,6 +80,14 @@ public class InspectionInputReader : InputReader, InputActions.IInspectionAction
         if (context.performed)
         {
             PointerMoved?.Invoke(context.ReadValue<Vector2>());
+        }
+    }
+
+    public void OnSeeFlashback(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            SeeFlashback?.Invoke();
         }
     }
 }

@@ -13,11 +13,14 @@ public class Item : ScriptableObject, IClue
     [MinValue(1)] public float size = 1;
     public string Name;
     public Sprite sprite;
+
     [Space(15), Header("WHAT CLUES CAN WE FIND?")]
     // La lista de textos sirve para poder tener la data de los puntos de interes por separado.
     [TextArea(0, 20)] public List<string> itemClues = new();
+
     [Space(15), Header("ON A FLASHBACK, YOU'LL SEE...")]
     public FlashbackInfo flashbackInfo;
+
     [Space(15), Header("WHAT DOES IT PROVE?")]
     [SerializeField] List<TheoryboardManager.Whodunnit> doesItProveAnything;
 
