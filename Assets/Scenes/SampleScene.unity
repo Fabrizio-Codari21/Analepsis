@@ -3709,12 +3709,15 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   AutoUnparentOnAwake: 1
-  inputReader: {fileID: 11400000, guid: d09f16c3490ce7f4db44b9a8c03c6202, type: 2}
+  inputReader: {fileID: 0}
+  flashbackInputReader: {fileID: 11400000, guid: d811055a013c8344582fe9a444113ac9, type: 2}
   inspectionInputReader: {fileID: 11400000, guid: 5bdb497b48b2c624c8165fd9cd680e34, type: 2}
   mainFlashbackShader: {fileID: 2100000, guid: 3dafed841de8ee14980854fb4faed42b, type: 2}
   highlightShader: {fileID: 0}
   transitionPanel: {fileID: 1307102959}
   transitionSpeed: 5
+  pushEvent: {fileID: 11400000, guid: 3027f54723217b445909fe93945c6bd2, type: 2}
+  popEvent: {fileID: 11400000, guid: 76cb339f73e2d5646ac0696838117b5e, type: 2}
 --- !u!4 &396423164
 Transform:
   m_ObjectHideFlags: 0
@@ -15295,7 +15298,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8929737892845642171, guid: 139351e29e8887c44a8b45064df4a449, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.030948455
+      value: -0.020013228
       objectReference: {fileID: 0}
     - target: {fileID: 8935028014222114705, guid: 139351e29e8887c44a8b45064df4a449, type: 3}
       propertyPath: m_SizeDelta.x
@@ -15359,7 +15362,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9159946559454036100, guid: 139351e29e8887c44a8b45064df4a449, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.037120067
+      value: -0.020338021
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

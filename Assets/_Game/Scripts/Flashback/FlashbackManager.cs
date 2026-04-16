@@ -1,23 +1,32 @@
 using Cysharp.Threading.Tasks;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FlashbackManager : PersistentSingleton<MonoBehaviour>
+public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
 {
     [SerializeField] CCInputReader inputReader;
+    [SerializeField] FlashbackInputReader flashbackInputReader;
     [SerializeField] InspectionInputReader inspectionInputReader;
     [SerializeField] Material mainFlashbackShader;
     [SerializeField] Material highlightShader;
     [SerializeField] Image transitionPanel;
     [SerializeField] float transitionSpeed;
+    [SerializeField] private IActivityEvent pushEvent;
+    [SerializeField] private EventChannel popEvent;
+
     bool _isFlashbackOn = false;
     Item _currentItemInspected;
+
+    public event Action OnResume;
+    public event Action OnPause;
+    public event Action OnStop;
 
     void Start()
     {
         transitionPanel.gameObject.SetActive(false);
         transitionPanel.color -= new Color(0, 0, 0, transitionPanel.color.a);
-        inspectionInputReader.SeeFlashback += SeeFlashback;
+
     }
 
     public void SetCurrentItem(Item item) => _currentItemInspected = item;
@@ -30,6 +39,7 @@ public class FlashbackManager : PersistentSingleton<MonoBehaviour>
     {
         bool transitionPanelActive = false;
 
+        //inputReader.SetEnable(false);
         transitionPanel.gameObject.SetActive(true);
         while (mainFlashbackShader.GetFloat("_Control") < 1f)
         {
@@ -53,6 +63,8 @@ public class FlashbackManager : PersistentSingleton<MonoBehaviour>
         //highlightShader.SetFloat("_Control", 1f);
         transitionPanel.color -= new Color(0,0,0,transitionPanel.color.a);
         transitionPanel.gameObject.SetActive(false);
+        flashbackInputReader.ExitFlashback += SeeFlashback; 
+        flashbackInputReader.SetEnable(true);
         _isFlashbackOn = true;
     }
 
@@ -60,6 +72,7 @@ public class FlashbackManager : PersistentSingleton<MonoBehaviour>
     {
         bool transitionPanelActive = false;
 
+        flashbackInputReader.SetEnable(false);
         transitionPanel.gameObject.SetActive(true);
         while (mainFlashbackShader.GetFloat("_Control") > 0f)
         {
@@ -82,7 +95,33 @@ public class FlashbackManager : PersistentSingleton<MonoBehaviour>
         mainFlashbackShader.SetFloat("_Control", 0f);
         //highlightShader.SetFloat("_Control", 0f);
         transitionPanel.color -= new Color(0, 0, 0, transitionPanel.color.a);
-        transitionPanel.gameObject.SetActive(false);
+        //inputReader.SetEnable(true);
+        flashbackInputReader.ExitFlashback -= SeeFlashback;
         _isFlashbackOn = false;
+    }
+
+    public void Resume()
+    {
+        OnResume?.Invoke();
+    }
+
+    public void Pause()
+    {
+        OnPause?.Invoke();
+        flashbackInputReader.SetEnable(false);
+        inputReader.SetEnable(true);
+        //popEvent.Raise();
+        //popEvent.OnEventRaised -= SeeFlashback;
+    }
+
+    public void Stop()
+    {
+        OnStop?.Invoke();
+        Pause();
+    }
+
+    public bool CanPopWithKey()
+    {
+        return true;
     }
 }

@@ -29,8 +29,8 @@ public class Inspection : MonoBehaviour,IActivity
     private void Start()
     {
          m_onInspect.OnEventRaised += Inspect;
-      
-         gameObject.SetActive(false);
+
+        gameObject.SetActive(false);
     }
     private void OnDestroy()
     {
@@ -66,6 +66,7 @@ public class Inspection : MonoBehaviour,IActivity
         
         _lastDirectionFromCenter = currentDirectionFromCenter;
     }
+    Item _currentItem;
     private void Inspect(IInspectable inspectable)
     {
         foreach (Transform child in m_inspectRoot)
@@ -73,12 +74,15 @@ public class Inspection : MonoBehaviour,IActivity
             child.SetParent(null); 
             Destroy(child.gameObject);
         }
-        var item = inspectable.GetInspectItem();
-        Instantiate(item.gameObject,m_inspectRoot);
-        m_camera.orthographicSize = item.size;
+        _currentItem = inspectable.GetInspectItem();
+        Instantiate(_currentItem.gameObject,m_inspectRoot);
+        m_camera.orthographicSize = _currentItem.size;
         m_onActivity.Raise(this);
     }
-    private void Exit()=> m_popEvent?.Raise();
+    private void Exit() 
+    {
+        m_popEvent?.Raise(); 
+    }
     private void Zoom(Vector2 zoom)
     {
         RectTransform rectTrans = m_objectRawImage.rectTransform;
@@ -106,16 +110,21 @@ public class Inspection : MonoBehaviour,IActivity
     public event Action OnStop;
     public void Resume()
     {
-      OnResume?.Invoke();
-      m_inputReader.SetEnable();
-      m_inputReader.Rotate += Rotate;
-      m_inputReader.DragPressed += RotateStart;
-      m_inputReader.Scroll += Zoom;
-      m_inputReader.Exit  += Exit;
-      m_inputReader.PlaneRotate += PlaneRotation;
-      m_inputReader.PointerMoved += OnMouseMove;
-      gameObject.SetActive(true);
-      m_cursorEnable.Raise(true);
+        OnResume?.Invoke();
+        m_inputReader.SetEnable();
+        m_inputReader.Rotate += Rotate;
+        m_inputReader.DragPressed += RotateStart;
+
+        FlashbackManager.Instance.SetCurrentItem(_currentItem);
+        m_inputReader.SeeFlashback += FlashbackManager.Instance.SeeFlashback;
+        m_inputReader.SeeFlashback += Exit;
+
+        m_inputReader.Scroll += Zoom;
+        m_inputReader.Exit  += Exit;
+        m_inputReader.PlaneRotate += PlaneRotation;
+        m_inputReader.PointerMoved += OnMouseMove;
+        gameObject.SetActive(true);
+        m_cursorEnable.Raise(true);
     }
 
     public void Pause()
@@ -124,7 +133,11 @@ public class Inspection : MonoBehaviour,IActivity
         m_inputReader.SetEnable(false);
         m_inputReader.Rotate -= Rotate;
         m_inputReader.DragPressed -= RotateStart;
-        
+
+        FlashbackManager.Instance.SetCurrentItem(default); _currentItem = default;
+        m_inputReader.SeeFlashback -= FlashbackManager.Instance.SeeFlashback;
+        m_inputReader.SeeFlashback -= Exit;
+
         m_inputReader.Scroll -= Zoom;
         m_inputReader.Exit  -= Exit;
         m_inputReader.PlaneRotate -= PlaneRotation;
