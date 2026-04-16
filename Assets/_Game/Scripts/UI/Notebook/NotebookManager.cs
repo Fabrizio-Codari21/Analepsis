@@ -53,13 +53,13 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private void Open()
     {
         pushEvent.Raise(this);     
-        takeOutNotebookChannel.Raise();
+     
     }
 
     private void Close()
     {
         popEvent.Raise();
-        putInNotebookChannel.Raise();
+     
     }
 
     private void OpenNotebookByType(NoteType type)
@@ -128,25 +128,25 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     public void Resume()
     {
         OnResume?.Invoke();
-        enableCursor.Raise(true);
         inputReaderNoteBook.SetEnable();
         m_view.gameObject.SetActive(true);
         m_view.NextButtonAdd(()=> ChangeType(1));
         m_view.PreviousButtonAdd(()=>ChangeType(-1));
         inputReaderNoteBook.Flip += ChangeType;
-        
+        takeOutNotebookChannel.Raise();
+        enableCursor.Raise(true);
         OpenNotebookByType(_currentNoteType);
     }
 
     public void Pause()
     {
         OnPause?.Invoke();
-        enableCursor.Raise(false);
         inputReaderNoteBook.SetEnable(false);
         m_view.gameObject.SetActive(false);
         m_view.RemoveNext();
         m_view.RemovePrevious();
-       
+        enableCursor.Raise(false);
+          putInNotebookChannel.Raise();
         inputReaderNoteBook.Flip -= ChangeType;
     }
 
