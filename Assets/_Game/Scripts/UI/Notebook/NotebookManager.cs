@@ -4,6 +4,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
+using UnityEngine.PlayerLoop;
 
 public class NotebookManager : Singleton<NotebookManager>, IActivity
 {
@@ -164,6 +165,9 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     public bool CheckNote(SerializableGuid guid) => _notebookPages.ContainsKey(guid);
     
 }
+
+
+
 public enum NoteType
 {
     Log,
