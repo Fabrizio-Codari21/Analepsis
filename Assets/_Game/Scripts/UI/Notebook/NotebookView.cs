@@ -21,7 +21,7 @@ public class NotebookView : MonoBehaviour
     [SerializeField] private Button m_previous;
 
     private IActivity _activity;
-    [Range(200f,500f)][SerializeField] private float m_textWidth = 200f;
+    [Range(200f,700f)][SerializeField] private float m_textWidth = 200f;
     private void Start()
     { 
         _activity = GetComponentInParent<IActivity>();

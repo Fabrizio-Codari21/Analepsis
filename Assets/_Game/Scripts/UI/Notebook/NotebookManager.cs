@@ -225,6 +225,6 @@ public class ItemNote : Note
     public override async UniTask Show(NotebookView view, CancellationToken token)
     {
         view.CreateImage(_item.sprite);
-        await view.PlayText(new(_item.itemClues.Append(_item.flashbackClue)), token);
+        await view.PlayText(new(_item.itemClues.Append("- FLASHBACK: " + _item.flashbackClue)), token);
     }
 }

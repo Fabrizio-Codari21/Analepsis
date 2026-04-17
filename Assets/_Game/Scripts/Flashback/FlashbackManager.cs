@@ -57,7 +57,8 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
             {
                 if (!_flashbackObject)
                 {
-                    _flashbackObject = Instantiate(inspected.flashbackInfo.characterPrefab, inspected.flashbackInfo.flashbackTransform);
+                    var transf = Instantiate(inspected.flashbackInfo.flashbackTransform.gameObject);
+                    _flashbackObject = Instantiate(inspected.flashbackInfo.characterPrefab, transf.transform);
                     _flashbackObject.OnFocus += SpawnName;
                     _flashbackObject.OnUnfocus += DespawnName;
                 }
@@ -131,8 +132,7 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
         flashbackClueDisplay = FlyweightFactory.Instance.Spawn<DynamicText>(
                                 displaySetting, 
                                 new Vector3(0,1.5f,0) + _currentItemInspected.flashbackInfo.flashbackTransform.position, 
-                                Quaternion.identity,
-                                _currentItemInspected.flashbackInfo.flashbackTransform);
+                                Quaternion.identity);
 
         flashbackClueDisplay.SetText(_currentItemInspected.flashbackInfo.info, 1, Color.cyan);
         _ = flashbackClueDisplay.PlayTypeWriterEffect();
