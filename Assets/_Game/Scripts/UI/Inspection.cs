@@ -134,7 +134,7 @@ public class Inspection : MonoBehaviour,IActivity
         m_inputReader.Rotate -= Rotate;
         m_inputReader.DragPressed -= RotateStart;
 
-        FlashbackManager.Instance.SetCurrentItem(default); _currentItem = default;
+        _currentItem = default;
         m_inputReader.SeeFlashback -= FlashbackManager.Instance.SeeFlashback;
         m_inputReader.SeeFlashback -= Exit;
 

@@ -14,6 +14,7 @@ public class ItemReference : MonoBehaviour
 
     private void Start()
     {
+        m_itemReference.flashbackClue = default;
         _interact = GetComponent<IInteractable>();
         _interact.OnFocus += SpawnName;
         _interact.OnUnfocus  += DespawnName;

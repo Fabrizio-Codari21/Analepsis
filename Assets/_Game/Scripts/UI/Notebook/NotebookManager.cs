@@ -5,6 +5,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine.PlayerLoop;
+using System.Linq;
 
 public class NotebookManager : Singleton<NotebookManager>, IActivity
 {
@@ -224,6 +225,6 @@ public class ItemNote : Note
     public override async UniTask Show(NotebookView view, CancellationToken token)
     {
         view.CreateImage(_item.sprite);
-        await view.PlayText(_item.itemClues, token);
+        await view.PlayText(new(_item.itemClues.Append(_item.flashbackClue)), token);
     }
 }

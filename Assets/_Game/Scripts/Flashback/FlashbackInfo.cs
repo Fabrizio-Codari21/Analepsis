@@ -6,7 +6,7 @@ using UnityEngine;
 public struct FlashbackInfo
 {
     [TextArea(0,20)] public string info; //estaria bueno que esto se vea en escena sobre el personaje o algo asi.
-    [PreviewField] public GameObject characterPrefab;
+    [PreviewField] public Interactable characterPrefab;
     public Transform flashbackTransform;
 
 }

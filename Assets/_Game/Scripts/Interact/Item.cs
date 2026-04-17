@@ -17,6 +17,7 @@ public class Item : ScriptableObject, IClue
     [Space(15), Header("WHAT CLUES CAN WE FIND?")]
     // La lista de textos sirve para poder tener la data de los puntos de interes por separado.
     [TextArea(0, 20)] public List<string> itemClues = new();
+    [HideInInspector] public string flashbackClue;
 
     [Space(15), Header("ON A FLASHBACK, YOU'LL SEE...")]
     public FlashbackInfo flashbackInfo;

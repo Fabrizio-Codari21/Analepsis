@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,7 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
     [SerializeField] float transitionSpeed;
     [SerializeField] private IActivityEvent pushEvent;
     [SerializeField] private EventChannel popEvent;
+    [SerializeField] DynamicTextSetting displaySetting;
 
     bool _isFlashbackOn = false;
     Item _currentItemInspected;
@@ -26,7 +28,6 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
     {
         transitionPanel.gameObject.SetActive(false);
         transitionPanel.color -= new Color(0, 0, 0, transitionPanel.color.a);
-
     }
 
     public void SetCurrentItem(Item item) => _currentItemInspected = item;
@@ -35,11 +36,10 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
         if (!_isFlashbackOn) StartFlashback(_currentItemInspected); else EndFlashback(_currentItemInspected);
     }
 
-    GameObject _flashbackObject;
+    Interactable _flashbackObject;
     public async UniTask StartFlashback(Item inspected = default)
     {
         bool transitionPanelActive = false;
-
         //inputReader.SetEnable(false);
         transitionPanel.gameObject.SetActive(true);
         while (mainFlashbackShader.GetFloat("_Control") < 1f)
@@ -54,8 +54,13 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
             }
             else
             {
-                if (!_flashbackObject) _flashbackObject = Instantiate(inspected.flashbackInfo.characterPrefab, inspected.flashbackInfo.flashbackTransform);
-                //if(inspected.gameObject.activeInHierarchy) inspected.gameObject.SetActive(false);
+                if (!_flashbackObject)
+                {
+                    _flashbackObject = Instantiate(inspected.flashbackInfo.characterPrefab, inspected.flashbackInfo.flashbackTransform);
+                    _flashbackObject.OnFocus += SpawnName;
+                    _flashbackObject.OnUnfocus += DespawnName;
+                }
+                _flashbackObject.AddTip(new(inspected.flashbackClue, TipOrder.Name));
                 transitionPanel.color += new Color(0, 0, 0, a: -0.02f * transitionSpeed/5);
             }
 
@@ -89,7 +94,15 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
             }
             else
             {
-                if (_flashbackObject) Destroy(_flashbackObject);
+                if (_flashbackObject)
+                {
+                    DespawnName();
+                    _flashbackObject.OnFocus -= SpawnName;
+                    _flashbackObject.OnUnfocus -= DespawnName;
+                    SetCurrentItem(default);
+                    Destroy(_flashbackObject.gameObject);
+                }
+                if (inspected.flashbackClue == null) inspected.flashbackClue = inspected.flashbackInfo.info;
                 //if (!inspected.gameObject.activeInHierarchy) inspected.gameObject.SetActive(true);
                 transitionPanel.color += new Color(0, 0, 0, a: -0.02f * transitionSpeed/5);
             }
@@ -103,6 +116,25 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
         //inputReader.SetEnable(true);
         flashbackInputReader.ExitFlashback -= SeeFlashback;
         _isFlashbackOn = false;
+    }
+
+    DynamicText flashbackClueDisplay = new();
+    private void SpawnName()
+    {
+        flashbackClueDisplay = FlyweightFactory.Instance.Spawn<DynamicText>(
+                                displaySetting, 
+                                new Vector3(0,1.5f,0) + _currentItemInspected.flashbackInfo.flashbackTransform.position, 
+                                Quaternion.identity,
+                                _currentItemInspected.flashbackInfo.flashbackTransform);
+
+        flashbackClueDisplay.SetText(_currentItemInspected.flashbackInfo.info, 1, Color.cyan);
+        _ = flashbackClueDisplay.PlayTypeWriterEffect();
+    }
+
+    private void DespawnName()
+    {
+        if (flashbackClueDisplay) FlyweightFactory.Instance.Return(flashbackClueDisplay);
+        flashbackClueDisplay = null;
     }
 
     public void Resume()
