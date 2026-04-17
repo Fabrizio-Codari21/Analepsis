@@ -89,6 +89,7 @@ public class NotebookView : MonoBehaviour
 
         foreach (var item in text)
         {
+            if(item == null) return;
             var t = FlyweightFactory.Instance.Spawn<DynamicUIText>(
             m_dynamicTextSetting,
             Vector3.zero,
