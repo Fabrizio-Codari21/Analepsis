@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0.8666667, g: 0.8106192, b: 0.75686276, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.007
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
@@ -3453,7 +3453,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &410087040
 Light:
   m_ObjectHideFlags: 0
@@ -5687,6 +5687,14 @@ PrefabInstance:
     - target: {fileID: 8081803737250080153, guid: c7bd4870432e89046983a9bb81d9b084, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376222681170754020, guid: c7bd4870432e89046983a9bb81d9b084, type: 3}
+      propertyPath: m_Range
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376222681170754020, guid: c7bd4870432e89046983a9bb81d9b084, type: 3}
+      propertyPath: m_Intensity
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7950,7 +7958,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2426456352758145271, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0016127033
+      value: 0.003023382
       objectReference: {fileID: 0}
     - target: {fileID: 2500570954000331165, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_Name
@@ -20311,6 +20319,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8376222681170754020, guid: c7bd4870432e89046983a9bb81d9b084, type: 3}
+      propertyPath: m_Range
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376222681170754020, guid: c7bd4870432e89046983a9bb81d9b084, type: 3}
+      propertyPath: m_Intensity
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20332,6 +20348,14 @@ PrefabInstance:
     - target: {fileID: 1681481063337688691, guid: fa722f6055635d24a90c5ae642d5f164, type: 3}
       propertyPath: m_Name
       value: Vela
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530217214555877787, guid: fa722f6055635d24a90c5ae642d5f164, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530217214555877787, guid: fa722f6055635d24a90c5ae642d5f164, type: 3}
+      propertyPath: m_Intensity
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7579474895989263220, guid: fa722f6055635d24a90c5ae642d5f164, type: 3}
       propertyPath: m_LocalPosition.x
