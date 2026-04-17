@@ -35,6 +35,7 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
         if (!_isFlashbackOn) StartFlashback(_currentItemInspected); else EndFlashback(_currentItemInspected);
     }
 
+    GameObject _flashbackObject;
     public async UniTask StartFlashback(Item inspected = default)
     {
         bool transitionPanelActive = false;
@@ -53,6 +54,8 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
             }
             else
             {
+                if (!_flashbackObject) _flashbackObject = Instantiate(inspected.flashbackInfo.characterPrefab, inspected.flashbackInfo.flashbackTransform);
+                //if(inspected.gameObject.activeInHierarchy) inspected.gameObject.SetActive(false);
                 transitionPanel.color += new Color(0, 0, 0, a: -0.02f * transitionSpeed/5);
             }
 
@@ -86,6 +89,8 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
             }
             else
             {
+                if (_flashbackObject) Destroy(_flashbackObject);
+                //if (!inspected.gameObject.activeInHierarchy) inspected.gameObject.SetActive(true);
                 transitionPanel.color += new Color(0, 0, 0, a: -0.02f * transitionSpeed/5);
             }
 
