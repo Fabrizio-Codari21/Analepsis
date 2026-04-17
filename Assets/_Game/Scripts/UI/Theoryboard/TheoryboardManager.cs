@@ -21,6 +21,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     [SerializeField] Transform playerMenuTransform;
     [SerializeField] Transform boardTransform;
     [SerializeField] GameObject player;
+    [SerializeField] GameObject cam;
     Tuple<Vector3, Quaternion> _playerTransform;
     //Transform _oldLookAt;
 
@@ -48,7 +49,8 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         //playerCamera.Camera.LookAt = _oldLookAt;
         print("llamado");
         player.transform.position = _playerTransform.Item1;
-        player.transform.rotation = _playerTransform.Item2;
+        player.transform.localEulerAngles = Vector3.zero;
+        cam.transform.rotation = _playerTransform.Item2;
         m_cameraRotationEventChannel.Raise(player.transform);
         //Destroy(newTransform.gameObject, 0.5f);
         
@@ -59,7 +61,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         OnResume?.Invoke();
         inputReaderBoard.SetEnable();
         enableCursor.Raise(true);
-        _playerTransform = new Tuple<Vector3, Quaternion>(player.transform.position, player.transform.rotation);
+        _playerTransform = new Tuple<Vector3, Quaternion>(player.transform.position, cam.transform.rotation);
         //_oldLookAt = playerCamera.Camera.LookAt;
         //playerCamera.Camera.LookAt = boardTransform;
         player.transform.position = playerMenuTransform.position;

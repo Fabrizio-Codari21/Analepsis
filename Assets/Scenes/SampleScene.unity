@@ -3228,7 +3228,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -7438,7 +7438,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2426267404449136652, guid: 43f24e5dc3ca6db45b74fe971c735128, type: 3}
   m_PrefabInstance: {fileID: 3185908383252735702}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1128971194}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
@@ -7647,7 +7647,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2426456352758145271, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0029535335
+      value: 0.0017553413
       objectReference: {fileID: 0}
     - target: {fileID: 2500570954000331165, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_Name
@@ -7724,6 +7724,10 @@ PrefabInstance:
     - target: {fileID: 3882159642293606291, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_Range
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882159642293606291, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3890821306616863267, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_AnchorMax.y
@@ -8681,6 +8685,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3b19af1da1ea4c4459325296fe59920a, type: 3}
   m_PrefabInstance: {fileID: 1127812052}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1128971194 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4974819183535106899, guid: 43f24e5dc3ca6db45b74fe971c735128, type: 3}
+  m_PrefabInstance: {fileID: 3185908383252735702}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1132217579
 PrefabInstance:
@@ -19578,6 +19587,7 @@ MonoBehaviour:
   playerMenuTransform: {fileID: 1024969834}
   boardTransform: {fileID: 1024969833}
   player: {fileID: 3185908383252735703}
+  cam: {fileID: 1128971194}
   correctAnswer:
     m_Keys: 
 --- !u!1 &775630570207151921
