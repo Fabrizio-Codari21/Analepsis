@@ -39,8 +39,8 @@ public class CCInputReader : InputReader,InputActions.IPlayerActions
 
     public override void SetEnable(bool enable = true)
     {
-       if(enable) InputAction?.Player.Enable();
-       else InputAction?.Player.Disable();
+       if(enable) InputAction.Player.Enable();
+       else InputAction.Player.Disable();
     }
 
     public void OnOpenNotebook(InputAction.CallbackContext context)

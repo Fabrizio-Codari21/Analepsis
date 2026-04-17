@@ -40,15 +40,15 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
 
     private void SetDraggedPosition(PointerEventData data)
     {
-        RectTransform draggingPlane = default;
-        if (data.pointerEnter != null && data.pointerEnter.transform as RectTransform != null)
-            draggingPlane = data.pointerEnter.transform as RectTransform;
+        var canvas = GetComponentInParent<Canvas>();
+        if (canvas == null) return;
+        RectTransform draggingPlane = canvas.transform as RectTransform;
 
         var rt = m_rectTransform;
         if (!RectTransformUtility.ScreenPointToWorldPointInRectangle(draggingPlane, data.position,
                 data.pressEventCamera, out var globalMousePos)) return;
         rt.position = globalMousePos;
-        rt.rotation = draggingPlane.rotation;
+        if (draggingPlane != null) rt.rotation = draggingPlane.rotation;
     }
 
     void InsertClue(PointerEventData data)

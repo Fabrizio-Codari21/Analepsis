@@ -10,12 +10,13 @@ public class CcInputHandler : MonoBehaviour
    [SerializeField] private CinemachineInputAxisController m_cameraAxisController;
    [SerializeField] private CinemachineCamera  m_camera;
    [SerializeField] private Transform m_cameraTransform;
-
    [SerializeField] private EventChannel m_openBook;
    public event Action<Vector2> Move = delegate { };
    public event Action InteractPressed = delegate { };
    public event Action InteractReleased = delegate { };
    private IActivity activity;
+   
+   private bool _isActive = true;
 
    [SerializeField] private TransformEventChannel m_cameraTransformEvent;
 
@@ -23,7 +24,7 @@ public class CcInputHandler : MonoBehaviour
     private void Start()
    {
 
-        InitReaderAction();
+
 
         foreach (var controller in m_cameraAxisController.Controllers)
         {
@@ -34,45 +35,55 @@ public class CcInputHandler : MonoBehaviour
         activity.OnPause += Pause;
         activity.OnStop += Stop;
         
+        m_cameraTransformEvent.OnEventRaised += SetCamera;
         m_readerEvent.Raise(activity); // BASE ACTIVITY EN TEORIA
 
-        m_cameraTransformEvent.OnEventRaised += SetCamera;
       
    }
    
 
-   /// <summary>
-   /// Este metodos es para que input reader susbcribirse a actiones de este clase y para invokarlom
-   /// si quirene ser mas optimada puede cambiarse que sea metodos con firma y susbribe en enable or disable,
-   /// o tambien puede manejar bien la subscrition de otros method a la hora de subscribirse este clase
-   /// </summary>
-   private void InitReaderAction()
+
+
+   private void Movement(Vector2 dir)
    {
-      m_reader.Move += dir => Move?.Invoke(dir);
-      m_reader.InteractPressed +=  () => InteractPressed?.Invoke();
-      m_reader.InteractReleased += () => InteractReleased?.Invoke();
-
-      m_reader.OpenNotebook += OpenNotebook;
-
+      Move?.Invoke(dir);
    }
 
+
+   private void InteractStart()
+   {
+      InteractPressed?.Invoke();
+   }
+
+   private void InteractStop()
+   {
+      InteractReleased?.Invoke();
+   }
 
    private void OpenNotebook()
    {
       m_openBook?.Raise();
    }
 
-   public void Resume()
+   private void Resume()
    {
+      m_reader.Move += Movement;
+      m_reader.InteractPressed += InteractStart;
+      m_reader.InteractReleased += InteractStop;
+      m_reader.OpenNotebook += OpenNotebook;
       m_reader.SetEnable();
    }
 
-   public void Pause()
+   private void Pause()
    {
+      m_reader.Move -= Movement;
+      m_reader.InteractPressed -= InteractStart;
+      m_reader.InteractReleased -= InteractStop;
+      m_reader.OpenNotebook -= OpenNotebook;
       m_reader.SetEnable(false);
    }
 
-   public void Stop()
+   private void Stop()
    {
       Pause();
    }

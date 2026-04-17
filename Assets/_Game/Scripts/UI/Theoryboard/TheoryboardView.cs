@@ -2,20 +2,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine.Rendering;
 using Cysharp.Threading.Tasks;
 using TMPro;
-using System;
-using System.Reflection;
-
 public class TheoryboardView : MonoBehaviour
 {
     [SerializeField] NotebookManager notebookManager;
     [SerializeField] TheoryboardManager manager;
     public Transform markedLogsRoot;
     public Transform markedItemsRoot;
-    public Transform boardRoot;
     public ButtonSetting clueButtonSetting;
     public Button solveButton;
     public TextMeshProUGUI solveText;
@@ -28,7 +23,6 @@ public class TheoryboardView : MonoBehaviour
     void Start()
     {
         solveButton.onClick.AddListener(() => _ = TryToSolveCase(solveText));
-   
         
         _activity = manager.GetComponent<IActivity>();
 

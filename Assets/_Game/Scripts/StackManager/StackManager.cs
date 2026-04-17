@@ -12,28 +12,19 @@ public class StackManager<T> where T : IActivity
 
     public void Push(T item)
     {
-        if (item == null) throw new ArgumentNullException(nameof(item));
-        
-        if (_stack.TryPeek(out var top))
+
+        if (_stack.TryPeek(out var current))
         {
-         
-            if (EqualityComparer<T>.Default.Equals(top, item)) return;
-            top.Pause();
+            if (current.Equals(item)) return;
+            current.Pause();
+
         }
-        
+
         _stack.Push(item);
-    
-        try 
-        {
-            item.Resume();
-        }
-        catch 
-        {
-            _stack.Pop();
-            top?.Resume(); 
-            throw;
-        }
-    }
+
+        item.Resume();
+
+    } 
     
     public bool IsOnlyRoot() => _stack.Count <= 1;
 

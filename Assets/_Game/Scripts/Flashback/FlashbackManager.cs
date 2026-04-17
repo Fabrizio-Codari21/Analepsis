@@ -41,6 +41,7 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
     {
         bool transitionPanelActive = false;
         //inputReader.SetEnable(false);
+        SetCurrentItem(inspected);
         transitionPanel.gameObject.SetActive(true);
         while (mainFlashbackShader.GetFloat("_Control") < 1f)
         {
@@ -99,7 +100,7 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
                     DespawnName();
                     _flashbackObject.OnFocus -= SpawnName;
                     _flashbackObject.OnUnfocus -= DespawnName;
-                    SetCurrentItem(default);
+                    SetCurrentItem(null);
                     Destroy(_flashbackObject.gameObject);
                 }
                 if (inspected.flashbackClue == null) inspected.flashbackClue = inspected.flashbackInfo.info;
@@ -118,9 +119,15 @@ public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
         _isFlashbackOn = false;
     }
 
-    DynamicText flashbackClueDisplay = new();
+    DynamicText flashbackClueDisplay;
     private void SpawnName()
     {
+        if (_currentItemInspected == null)
+        {
+            Debug.Log("No item selected");
+            return;
+        }
+        
         flashbackClueDisplay = FlyweightFactory.Instance.Spawn<DynamicText>(
                                 displaySetting, 
                                 new Vector3(0,1.5f,0) + _currentItemInspected.flashbackInfo.flashbackTransform.position, 

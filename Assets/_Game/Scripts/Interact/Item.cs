@@ -20,7 +20,7 @@ public class Item : ScriptableObject, IClue
     [HideInInspector] public string flashbackClue;
 
     [Space(15), Header("ON A FLASHBACK, YOU'LL SEE...")]
-    public FlashbackInfo flashbackInfo;
+    public FlashbackInfo flashbackInfo ;
 
     [Space(15), Header("WHAT DOES IT PROVE?")]
     [SerializeField] List<TheoryboardManager.Whodunnit> doesItProveAnything;
