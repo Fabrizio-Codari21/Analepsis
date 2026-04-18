@@ -67,6 +67,7 @@ public class CcInputHandler : MonoBehaviour
 
    private void Resume()
    {
+        print("vuelve el movimiento");
       m_reader.Move += Movement;
       m_reader.InteractPressed += InteractStart;
       m_reader.InteractReleased += InteractStop;

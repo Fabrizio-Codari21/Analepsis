@@ -18,6 +18,8 @@ public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
     //    FlashbackManager.Instance.ToggleByFlashback(gameObject);
     //}
 
+
+
     public virtual void InteractStart()
     {
         var state = GetCurrentState();
@@ -67,6 +69,11 @@ public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
     public void RemoveTip(Tip tip)
     {
         tips.Remove(tip);
+    }
+
+    public void ClearTip()
+    {
+        tips.Clear();
     }
     public InteractionState GetCurrentState() // este para hacer un override de tip si no se puede interactuar
     {

@@ -3044,6 +3044,7 @@ MonoBehaviour:
     SerializationNodes: []
   AutoUnparentOnAwake: 1
   inputReader: {fileID: 11400000, guid: d09f16c3490ce7f4db44b9a8c03c6202, type: 2}
+  enableFlashback: {fileID: 11400000, guid: e865ba2e8caa6484ca4ebd26200eb8f2, type: 2}
   flashbackInputReader: {fileID: 11400000, guid: d811055a013c8344582fe9a444113ac9, type: 2}
   inspectionInputReader: {fileID: 11400000, guid: 5bdb497b48b2c624c8165fd9cd680e34, type: 2}
   mainFlashbackShader: {fileID: 2100000, guid: 3dafed841de8ee14980854fb4faed42b, type: 2}
@@ -6599,6 +6600,7 @@ GameObject:
   - component: {fileID: 775778635}
   - component: {fileID: 775778634}
   - component: {fileID: 775778633}
+  - component: {fileID: 775778639}
   m_Layer: 0
   m_Name: Mrs. Vaamorir
   m_TagString: Untagged
@@ -6736,6 +6738,19 @@ Transform:
   - {fileID: 1636672623}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -110, z: 0}
+--- !u!114 &775778639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775778632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eddc09896185d247abeb3e61ff708a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashbackEnable: {fileID: 11400000, guid: e865ba2e8caa6484ca4ebd26200eb8f2, type: 2}
 --- !u!1001 &809486400
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7647,7 +7662,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2426456352758145271, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.003384818
+      value: 0.0016294707
       objectReference: {fileID: 0}
     - target: {fileID: 2500570954000331165, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_Name
@@ -17238,6 +17253,7 @@ GameObject:
   - component: {fileID: 1739062763}
   - component: {fileID: 1739062767}
   - component: {fileID: 1739062768}
+  - component: {fileID: 1739062769}
   m_Layer: 0
   m_Name: Mr. O'Missida
   m_TagString: Untagged
@@ -17374,6 +17390,19 @@ MonoBehaviour:
   m_consumeAction: {fileID: 11400000, guid: 4e2d7839a1002ac4d800e0f903bdf873, type: 2}
   m_haveAction: {fileID: 11400000, guid: c2b5e8257d2e8494ab3be22be583716b, type: 2}
   cost: 1
+--- !u!114 &1739062769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739062761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eddc09896185d247abeb3e61ff708a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashbackEnable: {fileID: 11400000, guid: e865ba2e8caa6484ca4ebd26200eb8f2, type: 2}
 --- !u!1 &1740553991
 GameObject:
   m_ObjectHideFlags: 0
@@ -19606,6 +19635,7 @@ GameObject:
   - component: {fileID: 3773333334102924873}
   - component: {fileID: 4216895619082931652}
   - component: {fileID: 1845734069002105525}
+  - component: {fileID: 4691290481501954872}
   m_Layer: 8
   m_Name: KnifeItem
   m_TagString: Untagged
@@ -19645,6 +19675,7 @@ GameObject:
   - component: {fileID: 5399985204748958635}
   - component: {fileID: 5973014687402639883}
   - component: {fileID: 8314741127167806927}
+  - component: {fileID: 8314741127167806928}
   m_Layer: 0
   m_Name: JarItem
   m_TagString: Untagged
@@ -20193,6 +20224,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.7, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4691290481501954872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775630570207151921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eddc09896185d247abeb3e61ff708a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashbackEnable: {fileID: 11400000, guid: e865ba2e8caa6484ca4ebd26200eb8f2, type: 2}
 --- !u!114 &5399985204748958635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20406,6 +20450,19 @@ MonoBehaviour:
   m_consumeAction: {fileID: 11400000, guid: 4e2d7839a1002ac4d800e0f903bdf873, type: 2}
   m_haveAction: {fileID: 11400000, guid: c2b5e8257d2e8494ab3be22be583716b, type: 2}
   cost: 1
+--- !u!114 &8314741127167806928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019774462597502403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eddc09896185d247abeb3e61ff708a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashbackEnable: {fileID: 11400000, guid: e865ba2e8caa6484ca4ebd26200eb8f2, type: 2}
 --- !u!1001 &8695210004228799144
 PrefabInstance:
   m_ObjectHideFlags: 0
