@@ -193,7 +193,6 @@ public abstract class Note
     {
         return displayName;
     }
-
     public abstract UniTask Show(NotebookView view, CancellationToken token);
 }
 
@@ -226,5 +225,18 @@ public class ItemNote : Note
     {
         view.CreateImage(_item.sprite);
         await view.PlayText(new(_item.flashbackClue != default ? _item.itemClues.Append("- FLASHBACK: " + _item.flashbackClue) : _item.itemClues), token);
+    }
+}
+
+public class POINote : Note
+{
+    public POINote(string displayName, List<TheoryboardManager.Whodunnit> proof = null) : base(displayName, proof)
+    {
+        
+    }
+
+    public override UniTask Show(NotebookView view, CancellationToken token)
+    {
+        throw new NotImplementedException();
     }
 }

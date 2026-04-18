@@ -13,7 +13,7 @@ public class Toucher : MonoBehaviour
     private ITouch _last;
     private float _lastScanTime;
 
-
+ 
     private void Awake()
     {
         _cam = GetComponentInParent<Camera>();
@@ -44,39 +44,61 @@ public class Toucher : MonoBehaviour
 
     private void Handle()
     {
-
         if (InputsManager.Instance.IsPointerOverUI())
         {
             ResetTouch();
             return;
         }
 
-        if (!_cam)
-        {
-            Debug.LogError("No camera found");
-            return;
-        }
-        Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
+        if (!_cam) return;
 
-        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_layer) ||
-            !hit.collider.TryGetComponent(out ITouch touch))
+        Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
+        bool hasHit = Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_layer);
+
+       
+        Color rayColor = Color.red; 
+        float drawDistance = m_range; 
+
+        if (hasHit)
+        {
+            drawDistance = hit.distance; 
+            if (hit.collider.TryGetComponent(out ITouch touch))
+            {
+       
+                float dist = Vector3.Distance(transform.position, hit.collider.ClosestPoint(transform.position));
+                if (dist <= m_range)
+                {
+                    rayColor = Color.green;
+                }
+                else
+                {
+                    rayColor = Color.yellow; 
+                }
+            }
+        }
+      
+        Debug.DrawRay(ray.origin, ray.direction * drawDistance, rayColor, m_scanTime);
+
+
+        
+        if (!hasHit || !hit.collider.TryGetComponent(out ITouch currentTouch))
         {
             ResetTouch();
             return;
         }
-        
-        if(touch == _last) return;
-        
-        float distanceToHit = Vector3.Distance(transform.position,hit.collider.ClosestPoint(transform.position));
+
+        float distanceToHit = Vector3.Distance(transform.position, hit.collider.ClosestPoint(transform.position));
         if (distanceToHit > m_range)
         {
             ResetTouch();
             return;
         }
-        _last = touch;
+
+        if (currentTouch == _last) return;
+
+        _last = currentTouch;
         _last.Focus();
     }
-
     private void ResetTouch()
     {
         if(_last == null) return;

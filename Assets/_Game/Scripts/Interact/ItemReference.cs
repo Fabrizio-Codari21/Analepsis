@@ -3,18 +3,17 @@ using UnityEngine;
 public class ItemReference : MonoBehaviour
 {
     [SerializeField] private Item m_itemReference;
-    
     [SerializeField] private DynamicTextSetting m_nameTextSetting;
     [SerializeField] private Vector3 m_textPositionOffset;
     private IInteractable _interact;
-
     private ITipProvider _tipProvider;
     private DynamicText _text;
     [SerializeField] private RecordNoteEvent  m_recordNoteEvent;
-
+    
+    
     private void Start()
     {
-        m_itemReference.flashbackClue = default;
+        m_itemReference.flashbackClue = null;
         _interact = GetComponent<IInteractable>();
         _interact.OnFocus += SpawnName;
         _interact.OnUnfocus  += DespawnName;

@@ -7,7 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game/Item",fileName = "Item")]
 public class Item : ScriptableObject, IClue
 {
-    public GameObject gameObject;
+    public ItemViewer gameObject;
     
     public SerializableGuid guid = SerializableGuid.NewGuid();
     [MinValue(1)] public float size = 1;
@@ -29,6 +29,17 @@ public class Item : ScriptableObject, IClue
     {
         return new List<TheoryboardManager.Whodunnit>(doesItProveAnything);
     }
+    
+    public List<ItemPOIData> pois = new();
+}
+
+[Serializable]
+public class ItemPOIData
+{
+    public string poiId;
+    [TextArea]
+    public string description;
+    
 }
 
 

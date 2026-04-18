@@ -14,7 +14,7 @@ public class Inspection : MonoBehaviour,IActivity
     [SerializeField] private EventChannel m_popEvent;
     [SerializeField] private BoolEventChannel m_cursorEnable;
 
-
+    private float _currentZoom;
 
     [Header("Zoom")]
     [SerializeField] private RawImage m_objectRawImage;
@@ -83,19 +83,16 @@ public class Inspection : MonoBehaviour,IActivity
     {
         m_popEvent?.Raise(); 
     }
-    private void Zoom(Vector2 zoom)
-    {
-        RectTransform rectTrans = m_objectRawImage.rectTransform;
-        float delta = zoom.y * m_zoomScaleSensitive * m_zoomScaleFactor;
-        
-        float newWidth = rectTrans.sizeDelta.x + delta;
-        float newHeight = rectTrans.sizeDelta.y + delta;
-        
-        newWidth = Mathf.Clamp(newWidth, m_minScale, m_maxScale);
-        newHeight = Mathf.Clamp(newHeight, m_minScale, m_maxScale);
-        
-        rectTrans.sizeDelta = new Vector2(newWidth, newHeight);
-    }
+         private void Zoom(Vector2 zoom)
+     {
+         float delta = zoom.y * m_zoomScaleSensitive * m_zoomScaleFactor * 0.01f;
+
+         _currentZoom -= delta;
+
+         _currentZoom = Mathf.Clamp(_currentZoom, m_minScale, m_maxScale);
+
+         m_camera.orthographicSize = _currentZoom;
+     }
     
     private void BeginPlaneRotation()
     {
@@ -147,15 +144,33 @@ public class Inspection : MonoBehaviour,IActivity
     }
     
     private void OnMouseMove(Vector2 mousePos)
-    {
-        Ray ray = m_camera.ScreenPointToRay(mousePos);
-        bool hasHit = Physics.Raycast(ray, out RaycastHit hit, 1000f);
-        if (hasHit)
-        {
-            Debug.Log("Hit " + hit.transform.name);
-        }
-      
-    }
+     {
+         RectTransform rectTransform = m_objectRawImage.rectTransform;
+
+         if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, mousePos, null, out Vector2 localPoint)) return;
+
+         Rect rect = rectTransform.rect;
+
+       
+         Vector2 size = rect.size;
+
+         float u = (localPoint.x + size.x * rectTransform.pivot.x) / size.x;
+         float v = (localPoint.y + size.y * rectTransform.pivot.y) / size.y;
+   
+         if (u < 0 || u > 1 || v < 0 || v > 1) return;
+         
+         Vector2 texPos = new Vector2(
+             u * m_camera.pixelWidth,
+             v * m_camera.pixelHeight
+         );
+
+         Ray ray = m_camera.ScreenPointToRay(texPos);
+
+         if (Physics.Raycast(ray, out RaycastHit hit, 1000f))
+         {
+             Debug.Log("Hit " + hit.transform.name);
+         }
+     }
 
     public void Stop()
     {
@@ -168,8 +183,6 @@ public class Inspection : MonoBehaviour,IActivity
        return true;
     }
 }
-
-
 
 
 

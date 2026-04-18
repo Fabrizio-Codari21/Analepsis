@@ -7,17 +7,17 @@ public class POI : MonoBehaviour,ITouch
 {
     public event Action OnFocus;
     public event Action OnUnfocus;
-    public void Focus()
+    public virtual void Focus()
     {
        
     }
 
-    public void Unfocus()
+    public virtual void Unfocus()
     {
        
     }
 
-    public void Touch()
+    public virtual void Touch()
     {
         Debug.Log("Touch");
     }
