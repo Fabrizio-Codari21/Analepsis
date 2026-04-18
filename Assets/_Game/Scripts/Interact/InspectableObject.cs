@@ -18,8 +18,8 @@ public class InspectableObject : MonoBehaviour,IInspectable
         m_event.Raise(this);
     }
 
-    public Item GetInspectItem()
+    public ItemReference GetItemReference()
     {
-       return m_itemReference.GetInspectItem();
+       return m_itemReference;
     }
 }

@@ -11,7 +11,13 @@ public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
     public event Action OnUnfocus;
     
     private List<Tip> tips = new();
-    
+
+    //FlashbackManager.Instance.AddInteractable(gameObject);
+    //public void Update()
+    //{
+    //    FlashbackManager.Instance.ToggleByFlashback(gameObject);
+    //}
+
     public virtual void InteractStart()
     {
         var state = GetCurrentState();
@@ -106,6 +112,6 @@ public interface IInteractableStrategy : IFocusStrategy<Interactable>
 
 public interface IInspectable
 {
-    public Item GetInspectItem();
+    public ItemReference GetItemReference();
 }
 

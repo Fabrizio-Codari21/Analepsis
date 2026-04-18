@@ -17,6 +17,10 @@ public class ActionConsumer : MonoBehaviour,IAction
         _conditionCheck = GetComponent<IConditionCheck>();
         _interactable.OnStart += RequiredConsume;
         _conditionCheck?.Conditions.Add(new NotAction((() => m_haveAction.Request(cost))));
+        _conditionCheck?.Conditions.Add(new NotAction((
+            () => FlashbackManager.Instance.GetFlashbackObject() != _interactable 
+            ? !FlashbackManager.Instance.IsFlashbackOn()
+            : true), "Can't interact during a flashback; press 'F' to leave."));
     }
 
     private void Start()
@@ -50,10 +54,12 @@ public class NotAction : ICondition
 {
     
     Func<bool> m_checkAction;
+    string _failureTip;
 
-    public NotAction(Func<bool> checkAction)
+    public NotAction(Func<bool> checkAction, string failureTip = "I've run out of actions: time to solve the case...")
     {
         m_checkAction = checkAction;
+        _failureTip = failureTip;
     }
     
     public bool Check()
@@ -63,6 +69,6 @@ public class NotAction : ICondition
 
     public string GetFailureTip()
     {
-        return "Insufficient Action";
+        return _failureTip;
     }
 }

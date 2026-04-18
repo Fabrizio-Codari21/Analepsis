@@ -66,7 +66,7 @@ public class Inspection : MonoBehaviour,IActivity
         
         _lastDirectionFromCenter = currentDirectionFromCenter;
     }
-    Item _currentItem;
+    ItemReference _currentItem;
     private void Inspect(IInspectable inspectable)
     {
         foreach (Transform child in m_inspectRoot)
@@ -74,9 +74,9 @@ public class Inspection : MonoBehaviour,IActivity
             child.SetParent(null); 
             Destroy(child.gameObject);
         }
-        _currentItem = inspectable.GetInspectItem();
-        Instantiate(_currentItem.gameObject,m_inspectRoot);
-        m_camera.orthographicSize = _currentItem.size;
+        _currentItem = inspectable.GetItemReference();
+        Instantiate(_currentItem.GetInspectItem().gameObject,m_inspectRoot);
+        m_camera.orthographicSize = _currentItem.GetInspectItem().size;
         m_onActivity.Raise(this);
     }
     private void Exit() 
@@ -117,7 +117,7 @@ public class Inspection : MonoBehaviour,IActivity
 
         FlashbackManager.Instance.SetCurrentItem(_currentItem);
         m_inputReader.SeeFlashback += FlashbackManager.Instance.SeeFlashback;
-        m_inputReader.SeeFlashback += Exit;
+        m_inputReader.SeeFlashback += FlashbackManager.Instance.Exit;
 
         m_inputReader.Scroll += Zoom;
         m_inputReader.Exit  += Exit;
