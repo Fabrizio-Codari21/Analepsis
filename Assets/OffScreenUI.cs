@@ -9,10 +9,7 @@ public class OffScreenUI : MonoBehaviour
     [SerializeField] private GraphicRaycaster raycaster;
     [SerializeField] private Vector2EventChannel uvPositionChannel;
     [SerializeField] private Camera uiCamera; 
-
-    [Header("Debug Setup")]
-    [SerializeField] private RectTransform debugDot; 
-    [SerializeField] private bool showDebugDot = true;
+    
 
     private PointerEventData m_pointerData;
     private GameObject m_currentHovered;
@@ -23,12 +20,15 @@ public class OffScreenUI : MonoBehaviour
 
     private void HandleInteraction(Vector2 uv)
     {
-        if (EventSystem.current == null || uiCamera == null) return;
+        if (EventSystem.current == null || uiCamera == null)
+        {
+            Debug.Log("No UI camera set");
+            return;
+        }
         m_pointerData ??= new PointerEventData(EventSystem.current);
 
         if (uv.x < 0) 
         { 
-            if(debugDot != null) debugDot.gameObject.SetActive(false);
             ClearHover(); 
             return; 
         }
@@ -37,12 +37,6 @@ public class OffScreenUI : MonoBehaviour
         float width = canvasRect.rect.width;
         float height = canvasRect.rect.height;
         
-        if (debugDot != null)
-        {
-            debugDot.gameObject.SetActive(showDebugDot);
-         
-            debugDot.anchoredPosition = new Vector2((uv.x - 0.5f) * width, (uv.y - 0.5f) * height);
-        }
 
       
         m_pointerData.position = new Vector2(uv.x * width, uv.y * height);
@@ -76,6 +70,7 @@ public class OffScreenUI : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
          
+            Debug.Log("Click dOWN");
             GameObject handler = ExecuteEvents.GetEventHandler<IPointerClickHandler>(hitObject);
             if (handler != null)
             {
@@ -88,15 +83,15 @@ public class OffScreenUI : MonoBehaviour
         
         if (Input.GetMouseButton(0) && m_currentPressed != null)
         {
+            Debug.Log("OnClick");
             ExecuteEvents.Execute(m_currentPressed, m_pointerData, ExecuteEvents.dragHandler);
         }
-        
-        if (Input.GetMouseButtonUp(0) && m_currentPressed != null)
-        {
-            ExecuteEvents.Execute(m_currentPressed, m_pointerData, ExecuteEvents.pointerUpHandler);
-            ExecuteEvents.Execute(m_currentPressed, m_pointerData, ExecuteEvents.pointerClickHandler);
-            m_currentPressed = null;
-        }
+
+        if (!Input.GetMouseButtonUp(0) || m_currentPressed == null) return;
+        Debug.Log("OnRelease");
+        ExecuteEvents.Execute(m_currentPressed, m_pointerData, ExecuteEvents.pointerUpHandler);
+        ExecuteEvents.Execute(m_currentPressed, m_pointerData, ExecuteEvents.pointerClickHandler);
+        m_currentPressed = null;
     }
 
     private void ClearHover()

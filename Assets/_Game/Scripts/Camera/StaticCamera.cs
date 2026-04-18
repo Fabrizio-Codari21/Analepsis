@@ -6,7 +6,7 @@ public class StaticCamera : MonoBehaviour,IActivity,ITouch
 {
    [SerializeField] private CinemachineCamera m_camera;
    [SerializeField] private bool m_canPopWithKey;
-   
+   [SerializeField] private Collider myCollider;
    [SerializeField] private IActivityEvent m_pushEvent;
    public event Action OnResume;
    public event Action OnPause;
@@ -14,12 +14,14 @@ public class StaticCamera : MonoBehaviour,IActivity,ITouch
    public void Resume()
    {
       m_camera.enabled = true;
+      myCollider.enabled = false;
       OnResume?.Invoke();
    }
 
    public void Pause()
    {
       m_camera.enabled = false;
+      myCollider.enabled = true;
       OnPause?.Invoke();
    }
 
