@@ -13,7 +13,8 @@ public class NotebookView : MonoBehaviour
     [SerializeField] private Transform m_buttonRoot;
     [SerializeField] private Transform m_detailRoot;
     [SerializeField] private Camera m_renderCamera;
-    [SerializeField]private ButtonSetting m_buttonSetting;
+    [SerializeField] private ButtonSetting m_buttonSetting;
+    [SerializeField] private ButtonSetting m_detailButtonSetting;
     [SerializeField] private DynamicTextSetting  m_dynamicTextSetting;
     [SerializeField] private ImageSetting  m_imageSetting;
     [SerializeField] private ScrollRect m_scrollRect;
@@ -51,18 +52,18 @@ public class NotebookView : MonoBehaviour
     
     public ButtonFactoryObject CreateButton(string text)
     {
-        return CreateButtonInternal(text, m_buttonRoot);
+        return CreateButtonInternal(text, m_buttonRoot, m_buttonSetting);
     }
 
     public ButtonFactoryObject CreateDetailButton(string text)
     {
-        return CreateButtonInternal(text, m_detailRoot);
+        return CreateButtonInternal(text, m_detailRoot, m_detailButtonSetting);
     }
     
-    private ButtonFactoryObject CreateButtonInternal(string text, Transform parent)  
+    private ButtonFactoryObject CreateButtonInternal(string text, Transform parent, ButtonSetting setting)  
     {
         var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
-            m_buttonSetting,
+            setting,
             Vector3.zero,
             Quaternion.identity,
             parent

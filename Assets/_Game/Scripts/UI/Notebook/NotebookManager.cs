@@ -43,12 +43,14 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         if (_notebookPages.TryAdd(note.guid, note)) ;
         else Debug.Log("Has Note");
   
-        MarkClue(note); //esto es temporal
+        //MarkClue(note); //esto es temporal
     }
 
     private void MarkClue(Note note)
     {
-        markedClues.TryAdd(note.guid, note);
+        if(!markedClues.ContainsKey(note.guid)) markedClues.TryAdd(note.guid, note);
+        else markedClues.Remove(note.guid);
+        print("Marked clue: " + note.displayName);
     }
 
     private void Open()
@@ -86,6 +88,14 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                 _cts = new CancellationTokenSource();
                 m_view.ClearDetail();
                 _ = SelectNote(cachedNote,_cts.Token);
+            });
+            //button.MoveSubToLast();
+            button.AddListenerToSub(() =>
+            {
+                //_cts?.Cancel();
+                //_cts?.Dispose();
+                //_cts = new CancellationTokenSource();
+                markedClueEvent.Raise(note);
             });
         }
     }

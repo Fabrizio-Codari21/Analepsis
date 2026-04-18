@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class ButtonFactoryObject : FactoryUIObject
 {
     [SerializeField]  protected Button m_button;
+    [SerializeField]  protected Button subButton;
     [SerializeField]  protected TextMeshProUGUI m_text;
 
     // estas no habria que asignarlas en el inspector en teoria
@@ -20,6 +21,7 @@ public class ButtonFactoryObject : FactoryUIObject
     {
        base.Despawn();
        m_button.onClick.RemoveAllListeners();
+       if(subButton) subButton.onClick.RemoveAllListeners();
     }
 
     public void SetText(string text)
@@ -33,10 +35,13 @@ public class ButtonFactoryObject : FactoryUIObject
     }
 
     public void MoveToFirst() { transform.SetAsFirstSibling(); }
+    public void MoveSubToLast() => subButton?.transform.SetAsLastSibling();
     
     public void SetInteractable(bool interactable) => m_button.interactable = interactable;
     public void AddListener(UnityAction listener) => m_button.onClick.AddListener(listener);
+    public void AddListenerToSub(UnityAction listener) => subButton?.onClick.AddListener(listener);
     public void RemoveAllListeners() => m_button.onClick.RemoveAllListeners();
+    public void RemoveAllListenersFromSub() => subButton?.onClick.RemoveAllListeners();
     public void SetBoard(Dictionary<TheoryboardManager.Whodunnit, TheoryPanel> board) => _boardTransforms = board;
     public void SetView(TheoryboardView view) => _view = view;
 
