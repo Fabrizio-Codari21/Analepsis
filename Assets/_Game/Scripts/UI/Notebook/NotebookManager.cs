@@ -23,15 +23,31 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private EventChannel putInNotebookChannel;
     [SerializeField] private NotebookView m_view;
     [SerializeField] private RecordNoteEvent m_recordNote;
+    [SerializeField] private BoolEventChannel m_udpatePoi;
     private CancellationTokenSource _cts;
     private readonly Dictionary<SerializableGuid,Note> _notebookPages = new();
     [ReadOnly,ShowInInspector] private NoteType _currentNoteType;
     [ReadOnly, ShowInInspector] public Dictionary<SerializableGuid, Note> markedClues = new();
+    
+    private readonly Dictionary<SerializableGuid, HashSet<string>> _unlockedPoisByItem = new();
+
+    public bool HasAllPois(Item item)
+    {
+        if (!_unlockedPoisByItem.TryGetValue(item.guid, out var unlockedIds)) return false;
+
+        if (item.pois == null || item.pois.Count == 0) return true;
+
+        foreach (var poi in item.pois)
+        {
+            if (!unlockedIds.Contains(poi.poiId)) return false;
+        }
+
+        return true;
+    }
     [SerializeField] MarkClueEvent markedClueEvent;
     private void Start()
     {
         m_view = Instantiate(m_view,transform);
-        
         inputReaderNoteBook.Close += Close;
         m_recordNote.OnEventRaised += Record;
         markedClueEvent.OnEventRaised += MarkClue;
@@ -63,6 +79,36 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         popEvent.Raise();
      
+    }
+    
+    public void UnlockPoi(Item item, string poiId)
+    {
+        if (!_unlockedPoisByItem.ContainsKey(item.guid))
+        {
+            _unlockedPoisByItem[item.guid] = new HashSet<string>();
+        }
+        var set = _unlockedPoisByItem[item.guid];
+        bool wasCompleteBefore = HasAllPois(item);
+        if (!set.Add(poiId)) return;
+        bool isCompleteNow = HasAllPois(item);
+        if (wasCompleteBefore != isCompleteNow)
+        {
+            m_udpatePoi.Raise(isCompleteNow);
+        }
+    }
+    
+    public List<string> GetUnlockedPoiDescriptions(Item item)
+    {
+        List<string> descriptions = new();
+        if (!_unlockedPoisByItem.TryGetValue(item.guid, out var unlockedIds)) return descriptions;
+        foreach (var poiData in item.pois)
+        {
+            if (unlockedIds.Contains(poiData.poiId))
+            {
+                descriptions.Add(poiData.description);
+            }
+        }
+        return descriptions;
     }
 
     private void OpenNotebookByType(NoteType type)
@@ -198,9 +244,9 @@ public abstract class Note
     public SerializableGuid guid = SerializableGuid.NewGuid();
     public NoteType type;
     public string displayName;
-    public List<TheoryboardManager.Whodunnit> isProof;
+    public List<Whodunnit> isProof;
 
-    protected Note(string displayName, List<TheoryboardManager.Whodunnit> proof = null)
+    protected Note(string displayName, List<Whodunnit> proof = null)
     {
         this.displayName = displayName;
         this.isProof = proof;
@@ -217,7 +263,7 @@ public class LogNote : Note
 {
     private readonly string _info;
     
-    public LogNote(string displayName, string info, List<TheoryboardManager.Whodunnit> proof = null) : base(displayName, proof)
+    public LogNote(string displayName, string info, List<Whodunnit> proof = null) : base(displayName, proof)
     {
         _info = info;
         type =  NoteType.Log;
@@ -231,7 +277,7 @@ public class LogNote : Note
 public class ItemNote : Note
 {
     private readonly Item _item;
-    public ItemNote(string displayName,Item item, List<TheoryboardManager.Whodunnit> proof = default) : base(displayName, proof)
+    public ItemNote(string displayName,Item item, List<Whodunnit> proof = null) : base(displayName, proof)
     {
         _item =  item;
         type = NoteType.Objects;
@@ -241,19 +287,24 @@ public class ItemNote : Note
     public override async UniTask Show(NotebookView view, CancellationToken token)
     {
         view.CreateImage(_item.sprite);
-        await view.PlayText(new(_item.flashbackClue != default ? _item.itemClues.Append("- FLASHBACK: " + _item.flashbackClue) : _item.itemClues), token);
-    }
-}
-
-public class POINote : Note
-{
-    public POINote(string displayName, List<TheoryboardManager.Whodunnit> proof = null) : base(displayName, proof)
-    {
+        List<string> fullContent = new List<string>();
+        var unlockedDescriptions = NotebookManager.Instance.GetUnlockedPoiDescriptions(_item);
         
-    }
-
-    public override UniTask Show(NotebookView view, CancellationToken token)
-    {
-        throw new NotImplementedException();
+        foreach (var desc in unlockedDescriptions)
+        {
+            fullContent.Add($"POI :  {desc}"); 
+        }
+        
+        if (_item.itemClues != null)
+        {
+            fullContent.AddRange(_item.itemClues);
+        }
+        
+        if (!string.IsNullOrEmpty(_item.flashbackClue))
+        {
+            fullContent.Add($"<i>- FLASHBACK: {_item.flashbackClue}</i>");
+        }
+        
+        await view.PlayText(fullContent, token);
     }
 }

@@ -95,13 +95,15 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         this.AsyncLoader("WinScene");
     }
 
-    public enum Whodunnit
-    {
-        NoProof,
-        Victim,
-        Killer,
-        Motive,
-        Weapon,
-        //Place
-    }
+  
+}
+
+public enum Whodunnit
+{
+    NoProof,
+    Victim,
+    Killer,
+    Motive,
+    Weapon,
+    //Place
 }

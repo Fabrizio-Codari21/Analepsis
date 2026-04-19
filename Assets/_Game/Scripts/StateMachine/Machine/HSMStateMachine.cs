@@ -152,7 +152,7 @@ public class HSMStateMachine {
         }
     }
 
-    private void AddTransition<T>(IState from, IState to, T condition) 
+    private void AddTransition<T>(IState from, IState to, T condition) where T : IPredicate
     {
         if (_nodes.TryGetValue(from, out var node)) {
             node.Transitions.Add(new Transition<T>(to, condition));
@@ -175,7 +175,7 @@ public class HSMStateMachine {
         }
         
 
-        public Builder At<TValue>(IState from, IState to, TValue condition) {
+        public Builder At(IState from, IState to, IPredicate condition) {
             _sm.AddTransition(from, to, condition);
             return this;
         }

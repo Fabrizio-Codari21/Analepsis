@@ -16,6 +16,6 @@ public class FlashbackToggled : MonoBehaviour
 
     public virtual void SetEnabled(bool enabled)
     {
-        gameObject.SetActive(enabled);
+        gameObject.SetActive(!enabled);
     }
 }

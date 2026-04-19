@@ -56,17 +56,17 @@ public sealed class DialogueGraphNode : Node
             value = false,
         };
 
-        PopupField<TheoryboardManager.Whodunnit> proofField = 
-        new PopupField<TheoryboardManager.Whodunnit>("What does it prove?")
+        PopupField<Whodunnit> proofField = 
+        new PopupField<Whodunnit>("What does it prove?")
         {
             value = nodeData.doesItProveAnything,
-            choices = new List<TheoryboardManager.Whodunnit> 
+            choices = new List<Whodunnit> 
             { 
-                TheoryboardManager.Whodunnit.NoProof,
-                TheoryboardManager.Whodunnit.Victim,
-                TheoryboardManager.Whodunnit.Killer,
-                TheoryboardManager.Whodunnit.Motive,
-                TheoryboardManager.Whodunnit.Weapon,
+                Whodunnit.NoProof,
+                Whodunnit.Victim,
+                Whodunnit.Killer,
+                Whodunnit.Motive,
+                Whodunnit.Weapon,
                 //TheoryboardManager.Whodunnit.Place,
             }
         };

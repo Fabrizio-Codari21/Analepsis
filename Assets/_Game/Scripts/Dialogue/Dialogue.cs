@@ -16,16 +16,16 @@ public class Dialogue : ScriptableObject, IClue
     public DialogueNode startingNode;
     public List<DialogueNode> allNodes =  new List<DialogueNode>();
 
-    [ReadOnly] public List<TheoryboardManager.Whodunnit> _hiddenProof = new();
-    public void DiscoverProof(TheoryboardManager.Whodunnit proof)
+    [ReadOnly] public List<Whodunnit> _hiddenProof = new();
+    public void DiscoverProof(Whodunnit proof)
     {
         if (_hiddenProof.Contains(proof)) return;
         _hiddenProof.Add(proof);
     }
 
-    public List<TheoryboardManager.Whodunnit> DoesItProveAnything()
+    public List<Whodunnit> DoesItProveAnything()
     {
-        return new List<TheoryboardManager.Whodunnit>(_hiddenProof);
+        return new List<Whodunnit>(_hiddenProof);
 
     }
 }

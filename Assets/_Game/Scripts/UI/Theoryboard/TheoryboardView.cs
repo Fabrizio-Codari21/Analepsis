@@ -15,7 +15,7 @@ public class TheoryboardView : MonoBehaviour
     public Button solveButton;
     public TextMeshProUGUI solveText;
 
-    public SerializedDictionary<TheoryboardManager.Whodunnit, TheoryPanel> boardRoots = new();
+    public SerializedDictionary<Whodunnit, TheoryPanel> boardRoots = new();
 
 
     private IActivity _activity;
@@ -59,7 +59,7 @@ public class TheoryboardView : MonoBehaviour
 
     }
 
-    public ButtonFactoryObject CreateClueButton(string text, Transform parent, List<TheoryboardManager.Whodunnit> proof, bool placeholder = false)
+    public ButtonFactoryObject CreateClueButton(string text, Transform parent, List<Whodunnit> proof, bool placeholder = false)
     {
         var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
             clueButtonSetting,

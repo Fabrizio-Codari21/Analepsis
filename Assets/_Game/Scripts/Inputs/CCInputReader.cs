@@ -6,7 +6,7 @@ public class CCInputReader : InputReader,InputActions.IPlayerActions
 {
     
     public event Action<Vector2> Move = delegate { };
-    public event Action<Vector2> Look = delegate { };
+
     
     public event Action InteractPressed = delegate { };
     public event Action InteractReleased = delegate { };
@@ -21,8 +21,7 @@ public class CCInputReader : InputReader,InputActions.IPlayerActions
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        if (context.started) return;
-        Look?.Invoke(context.ReadValue<Vector2>());
+       
     }
 
     public void OnInteract(InputAction.CallbackContext context)

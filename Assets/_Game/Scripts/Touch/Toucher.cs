@@ -4,8 +4,7 @@ using UnityEngine;
 public class Toucher : MonoBehaviour
 {
     private Camera _cam ;
-
-
+    
     [SerializeField] private MenuInputReader _inputReader;
     [SerializeField] private float m_scanTime;
     [SerializeField] private LayerMask m_layer;
@@ -54,31 +53,8 @@ public class Toucher : MonoBehaviour
 
         Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
         bool hasHit = Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_layer);
-
-       
-        Color rayColor = Color.red; 
-        float drawDistance = m_range; 
-
-        if (hasHit)
-        {
-            drawDistance = hit.distance; 
-            if (hit.collider.TryGetComponent(out ITouch touch))
-            {
-       
-                float dist = Vector3.Distance(transform.position, hit.collider.ClosestPoint(transform.position));
-                if (dist <= m_range)
-                {
-                    rayColor = Color.green;
-                }
-                else
-                {
-                    rayColor = Color.yellow; 
-                }
-            }
-        }
-      
-        Debug.DrawRay(ray.origin, ray.direction * drawDistance, rayColor, m_scanTime);
-
+        
+        
 
         
         if (!hasHit || !hit.collider.TryGetComponent(out ITouch currentTouch))

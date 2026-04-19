@@ -1,212 +1,237 @@
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.UI;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class FlashbackManager : PersistentSingleton<FlashbackManager>, IActivity
+public class FlashbackManager : MonoBehaviour
 {
-    [SerializeField] CCInputReader inputReader;
-    [SerializeField] BoolEventChannel enableFlashback;
-    [SerializeField] FlashbackInputReader flashbackInputReader;
-    [SerializeField] InspectionInputReader inspectionInputReader;
-    [SerializeField] Material mainFlashbackShader;
-    [SerializeField] Material highlightShader;
-    [SerializeField] Image transitionPanel;
-    [SerializeField] float transitionSpeed;
-    [SerializeField] private IActivityEvent pushEvent;
-    [SerializeField] private EventChannel popEvent;
-    [SerializeField] DynamicTextSetting displaySetting;
-
-    bool _isFlashbackOn = false;
-    ItemReference _currentItemInspected;
-    //List<IInteractable> _allInteractables;
-
+ 
+    [SerializeField] private Material highlightShader;
     
-    public bool IsFlashbackOn() => _isFlashbackOn;
-    //public void AddInteractable(GameObject interactable) => _allInteractables.Add(interactable);
-    public void SetCurrentItem(ItemReference item) => _currentItemInspected = item;
-    public Item CurrentItem => _currentItemInspected?.GetInspectItem();
-
-    public event Action OnResume;
-    public event Action OnPause;
-    public event Action OnStop;
-
-    void Start()
-    {
-        transitionPanel.gameObject.SetActive(false);
-        transitionPanel.color -= new Color(0, 0, 0, transitionPanel.color.a);
-    }
-
-    public void SeeFlashback()
-    {
-        if (!_isFlashbackOn) _ = StartFlashback(_currentItemInspected); else _ = EndFlashback(_currentItemInspected);
-    }
-
-    Interactable _flashbackObject;
-    public IInteractable GetFlashbackObject() => _flashbackObject;
-
-    public async UniTask StartFlashback(ItemReference inspected = default)
-    {
-        bool transitionPanelActive = false;
-        //Pause();
-        //pushEvent.Raise(this);
-        _isFlashbackOn = true;
-        SetCurrentItem(inspected);
-        transitionPanel.gameObject.SetActive(true);
-        while (mainFlashbackShader.GetFloat("_Control") < 1f)
-        {
-            mainFlashbackShader.SetFloat("_Control", mainFlashbackShader.GetFloat("_Control") + 0.01f * transitionSpeed/5);
-            //highlightShader.SetFloat("_Control", highlightShader.GetFloat("_Control") + 0.01f * transitionSpeed);
-
-            if (!transitionPanelActive)
-            {
-                transitionPanel.color += new Color(0,0,0, 0.04f * transitionSpeed/5);
-                if(transitionPanel.color.a >= 1f) transitionPanelActive = true;
-            }
-            else
-            {
-                if (!_flashbackObject)
-                {
-                    if (CurrentItem == null) print("null");
-                    enableFlashback.Raise(false);
-                    var transf = Instantiate(CurrentItem.flashbackInfo.flashbackTransform.gameObject);
-                    _flashbackObject = Instantiate(CurrentItem.flashbackInfo.characterPrefab, transf.transform);
-                    inspected.gameObject.SetActive(false);
-                    _flashbackObject.OnFocus += SpawnName;
-                    _flashbackObject.OnUnfocus += DespawnName;
-                    //_flashbackObject.AddTip(new(CurrentItem.flashbackClue, TipOrder.Name));
-                    flashbackInputReader.SetEnable(true);
-                }
-                //_flashbackObject.AddTip(new("Click on them or press 'F' to leave the flashback", TipOrder.ActionCost));
-                transitionPanel.color += new Color(0, 0, 0, a: -0.02f * transitionSpeed/5);
-            }
-
-            await UniTask.Delay(20);
-        }
-
-        mainFlashbackShader.SetFloat("_Control", 1f);
-        //highlightShader.SetFloat("_Control", 1f);
-        transitionPanel.color -= new Color(0,0,0,transitionPanel.color.a);
-        transitionPanel.gameObject.SetActive(false);
-        flashbackInputReader.ExitFlashback += SeeFlashback; 
-    }
-
-    public async UniTask EndFlashback(ItemReference inspected = default)
-    {
-        bool transitionPanelActive = false;
-        transitionPanel.gameObject.SetActive(true);
-        while (mainFlashbackShader.GetFloat("_Control") > 0f)
-        {
-            mainFlashbackShader.SetFloat("_Control", mainFlashbackShader.GetFloat("_Control") - 0.01f * transitionSpeed/5);
-            //highlightShader.SetFloat("_Control", highlightShader.GetFloat("_Control") - 0.01f * transitionSpeed);
-
-            if (!transitionPanelActive)
-            {
-                transitionPanel.color += new Color(0, 0, 0, a: 0.04f * transitionSpeed/5);
-                if (transitionPanel.color.a >= 1f) transitionPanelActive = true;
-            }
-            else
-            {
-                if (_flashbackObject)
-                {
-                    _isFlashbackOn = false;
-                    enableFlashback.Raise(true);
-                    DespawnName();
-                    _flashbackObject.OnFocus -= SpawnName;
-                    _flashbackObject.OnUnfocus -= DespawnName;
-                    if (CurrentItem.flashbackClue == null) CurrentItem.flashbackClue = CurrentItem.flashbackInfo.info;
-                    SetCurrentItem(null);
-                    _flashbackObject.ClearTip();
-                    Destroy(_flashbackObject.gameObject);
-                    inspected.gameObject.SetActive(true);
-                    inputReader.SetEnable(true);
-                }
-
-                //if (!inspected.gameObject.activeInHierarchy) inspected.gameObject.SetActive(true);
-                transitionPanel.color += new Color(0, 0, 0, a: -0.02f * transitionSpeed/5);
-            }
-
-            await UniTask.Delay(20);
-        }
-
-        mainFlashbackShader.SetFloat("_Control", 0f);
-        //highlightShader.SetFloat("_Control", 0f);
-        transitionPanel.color -= new Color(0, 0, 0, transitionPanel.color.a);
-        flashbackInputReader.ExitFlashback -= SeeFlashback;
-    }
-
+    [Header("Transition")]
+    [SerializeField] private FlashbackContext m_ctx;
+    public BoolEventChannel enableFlashback;
+    
+    
+    [SerializeField] private DynamicTextSetting displaySetting;
+    [SerializeField] private ItemEventChannel itemEvent;
+    
+    private Interactable _flashbackObject;
+    private Item _currentItem;
     DynamicText flashbackClueDisplay;
-    private void SpawnName()
+     
+    private AsyncFiniteStateMachine<FlashbackState> _stateMachine;
+    
+    private void Start()
     {
-        if (_currentItemInspected == null)
+        FsmSetup();
+       
+    }
+    
+    private void SetCurrentItem(Item item) => _currentItem = item;
+
+    private void OnEnable()
+    {
+        enableFlashback.OnEventRaised += OnFlashback;
+        itemEvent.OnEventRaised += SetCurrentItem;
+    }
+
+    private void OnDisable()
+    {
+        enableFlashback.OnEventRaised -= OnFlashback;
+        itemEvent.OnEventRaised -= SetCurrentItem;
+    }
+
+    private async void OnFlashback(bool enable)
+    {
+        try
         {
-            Debug.Log("No item selected");
+            if (enable) await _stateMachine.TransitionTo(FlashbackState.Active);
+            else await _stateMachine.TransitionTo(FlashbackState.Inactive);
+        }
+        catch (Exception e)
+        {
+           Debug.LogError(e);
+        }
+    }
+
+    private void SpawnFlashObject()
+    {
+        if(!_currentItem) return;
+        if (_flashbackObject) return;
+
+        var fb = _currentItem.flashbackInfo;
+
+        var t = TransformKeyManager.Instance.GetTransform(fb.key);
+
+        if (!t)
+        {
+            Debug.LogError("No transform key found or not transform instance create, check plis");
             return;
         }
+        var position = t.position + fb.offset;
+        var rotation = t.rotation;
+        _flashbackObject = Instantiate(fb.characterPrefab,position,rotation);
+    }
+
+    private void Despawn()
+    {
+        Debug.Log("Despawn");
+        Destroy(_flashbackObject.gameObject);
+        _flashbackObject = null;
+        _currentItem = null;
+    }
+    private void FsmSetup()
+    {
+        var inactive = new FlashbackInactiveState(m_ctx);
+        var active = new FlashbackActiveState(
+            m_ctx,
+            SpawnFlashObject,
+            Despawn
+        );
+        _stateMachine = new AsyncFiniteStateMachine<FlashbackState>
+                .Builder()
+            .State(FlashbackState.Inactive, inactive)
+            .State(FlashbackState.Active, active)
+            .Build(FlashbackState.Inactive);
+    }
+ 
+}
+[Serializable]
+public class FlashbackContext
+{
+    [Header("Transition")]
+    public UITransitionEffect transitionEffect;
+    public FlashbackInputReader flashbackInputReader;
+    
+    [Header("Material")]
+    public Material flashbackMaterial;
+    [Range(0.5f,1f)]public float targetValue;
+    public float lerpDuration;
+    
+    public BoolEventChannel enableFlashback;
+
+}
+
+
+public enum FlashbackState
+{
+    Active,
+    Inactive
+}
+
+public class FlashbackActiveState : IAsyncState  // Enter flashback 
+{
+    private readonly FlashbackContext _context;
+    private readonly Action _spawn;
+    private readonly Action _despawn;
+    public FlashbackActiveState(FlashbackContext context,Action Spawn,Action Despawn)
+    {
+       _context = context;
+       _spawn = Spawn;
+       _despawn = Despawn;
+    }
+
+    public async Task OnEnter()
+    {
+        var fadeTask = _context.transitionEffect.FadeIn();
+        var matTask =LerpMaterialFloat(
+            _context.flashbackMaterial,
+            "_Control",
+            0f,
+            _context.targetValue,
+            _context.lerpDuration
+        );
+        await UniTask.WhenAll(fadeTask, matTask);
+        _spawn?.Invoke();
+
+        _context.flashbackInputReader.SetEnable();
+        _context.flashbackInputReader.ExitFlashback += Exit;
+        await _context.transitionEffect.FadeOut();
+     
+    }
+
+    private void Exit()
+    {
         
-        flashbackClueDisplay = FlyweightFactory.Instance.Spawn<DynamicText>(
-                                displaySetting, 
-                                new Vector3(0,1.5f,0) + CurrentItem.flashbackInfo.flashbackTransform.position, 
-                                Quaternion.identity);
-
-        flashbackClueDisplay.SetText(CurrentItem.flashbackInfo.info, 1, Color.cyan);
-        _ = flashbackClueDisplay.PlayTypeWriterEffect();
+        _context.enableFlashback.Raise(false);
     }
 
-    private void DespawnName()
+    public void Update()
     {
-        if (flashbackClueDisplay) FlyweightFactory.Instance.Return(flashbackClueDisplay);
-        flashbackClueDisplay = null;
+      
     }
 
-    //public void ToggleByFlashback(IFocus toggled)
-    public void ToggleByFlashback(GameObject obj)
+    public async Task OnExit()
     {
-        //foreach (var obj in _allInteractables)
-        //print("llamado");
-        //var obj = toggled as MonoBehaviour;
-        if(_flashbackObject != null && obj != _flashbackObject)
+       
+        await _context.transitionEffect.FadeIn();
+        
+       
+        _context.flashbackInputReader.ExitFlashback -= Exit;
+        _context.flashbackInputReader.SetEnable(false);
+  
+        _despawn?.Invoke();
+        var fadeTask = _context.transitionEffect.FadeOut();
+        var matTask =LerpMaterialFloat(
+            _context.flashbackMaterial,
+            "_Control",
+            _context.targetValue,
+            0f,
+            _context.lerpDuration
+        );
+        await UniTask.WhenAll(matTask,fadeTask);
+     
+    }
+    
+    
+   private  async UniTask LerpMaterialFloat(
+        Material mat,
+        string property,
+        float from,
+        float to,
+        float duration,
+        CancellationToken token = default)
+    {
+        float time = 0;
+
+        while (time < duration)
         {
-            //toggled.Unfocus();
-            if (IsFlashbackOn() && obj.activeInHierarchy) obj.SetActive(false);
-            else if (!IsFlashbackOn() && !obj.activeInHierarchy) obj.SetActive(true);
-            print("Turning " + (obj.activeInHierarchy ? "on" : "off"));
+            time += Time.deltaTime;
+            float t = time / duration;
+            float value = Mathf.Lerp(from, to, t);
+
+            mat.SetFloat(property, value);
+
+            await UniTask.Yield(PlayerLoopTiming.Update, token);
         }
-    }
 
-    public void Resume()
-    {
-        flashbackInputReader.SetEnable(false);
-        //popEvent.OnEventRaised -= SeeFlashback;
-        OnResume?.Invoke();
-        print("resume");
-    }
-
-    public void Pause()
-    {
-        print("pause");
-        flashbackInputReader.SetEnable(false);
-        inputReader.SetEnable(false);
-        OnPause?.Invoke();
-        //inspectionInputReader.SeeFlashback -= Exit;
-        //inspectionInputReader.SetEnable(false);
-        //popEvent.OnEventRaised += SeeFlashback;
-    }
-
-    public void Stop()
-    {
-        print("stop");
-        OnStop?.Invoke();
-        Pause();
-    }
-
-    public void Exit() => popEvent.Raise();
-
-    public bool CanPopWithKey()
-    {
-        return true;
+        mat.SetFloat(property, to);
     }
 }
+
+public class FlashbackInactiveState : IAsyncState // Back
+{
+    private readonly FlashbackContext _context;
+    public FlashbackInactiveState(FlashbackContext context)
+    {
+        _context = context;
+    }
+    public Task OnEnter()
+    {
+        return Task.CompletedTask;
+    }
+    
+
+    public void Update()
+    {
+      
+    }
+
+    public Task OnExit()
+    {
+        return Task.CompletedTask;
+    }
+}
+
