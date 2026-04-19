@@ -12,6 +12,7 @@ public class Dialogue : ScriptableObject, IClue
 {
     [Space(20)]
     [Header("DIALOGUE")]
+    public Color dialogueColor;
     public DialogueNode startingNode;
     public List<DialogueNode> allNodes =  new List<DialogueNode>();
 

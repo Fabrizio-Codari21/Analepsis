@@ -88,7 +88,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         
         try 
         {
-            await m_dialogueView.PlayDialogueText(node.dialogueText, token);
+            await m_dialogueView.PlayDialogueText(node.dialogueText, token, _currentDialoguer.Dialogue.dialogueColor);
         }
         catch (OperationCanceledException) 
         {

@@ -195,7 +195,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1887523254735514167}
   m_HandleRect: {fileID: 3045474129332589906}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -390,6 +390,7 @@ MonoBehaviour:
   m_dialoguerName: {fileID: 123135222360158513}
   m_dialogueTextSetting: {fileID: 11400000, guid: b152a322092e3344587f1658f8b9e87a, type: 2}
   m_conversationRoot: {fileID: 8738408707836181223}
+  playerDialogueColor: {r: 0.30807227, g: 0.35554758, b: 0.4056604, a: 1}
   m_responseButton: {fileID: 11400000, guid: 34b5f6d8c98c5244a8cdff53f9245a87, type: 2}
   m_responseButtonRoot: {fileID: 1258649740700956179}
   m_scrollRect: {fileID: 789775843116306203}
@@ -659,12 +660,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 10
-    m_Right: 10
-    m_Top: 10
-    m_Bottom: 10
+    m_Left: 30
+    m_Right: 30
+    m_Top: 30
+    m_Bottom: 30
   m_ChildAlignment: 1
-  m_Spacing: 10
+  m_Spacing: 30
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
@@ -843,8 +844,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Mr. Deprueba
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9a7744a587679fb4db0969693412ecc7, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 9a7744a587679fb4db0969693412ecc7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -868,14 +869,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 61.5
+  m_fontSize: 70
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1068,7 +1069,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4703698170993758440}
   m_HandleRect: {fileID: 5808889314264759283}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

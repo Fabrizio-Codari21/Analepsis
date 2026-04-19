@@ -11,6 +11,7 @@ public class DialogueView : MonoBehaviour
     [Header("Dynamic Text")]
     [SerializeField] private DynamicTextSetting m_dialogueTextSetting;
     [SerializeField] private Transform m_conversationRoot;
+    [SerializeField] Color playerDialogueColor;
     [Header("Response Button")]
     [SerializeField] private ButtonSetting m_responseButton;
     [SerializeField] private Transform m_responseButtonRoot;
@@ -45,7 +46,7 @@ public class DialogueView : MonoBehaviour
         Despawn(m_conversationRoot);
     }
    
-    public async UniTask PlayDialogueText(string content, CancellationToken token) // view
+    public async UniTask PlayDialogueText(string content, CancellationToken token, Color color = default) // view
     {
         token.ThrowIfCancellationRequested();
 
@@ -55,7 +56,7 @@ public class DialogueView : MonoBehaviour
             Quaternion.identity,
             m_conversationRoot
         );
-        t.SetText("- " + content,m_dialogueTextSetting.size,m_dialogueTextSetting.color);
+        t.SetText("- " + content,m_dialogueTextSetting.size, color != default ? color : playerDialogueColor);
         t.ToLast();
         await UniTask.NextFrame();
         token.ThrowIfCancellationRequested();
