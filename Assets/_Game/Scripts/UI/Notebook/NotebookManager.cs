@@ -96,6 +96,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                 //_cts?.Dispose();
                 //_cts = new CancellationTokenSource();
                 markedClueEvent.Raise(note);
+                button.DisplayMark(markedClues.ContainsKey(note.guid));
             });
         }
     }

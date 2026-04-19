@@ -36,7 +36,9 @@ public class ButtonFactoryObject : FactoryUIObject
 
     public void MoveToFirst() { transform.SetAsFirstSibling(); }
     public void MoveSubToLast() => subButton?.transform.SetAsLastSibling();
-    
+    public void DisplayMark(bool marked) 
+        => subButton.GetComponent<Image>().color = marked ? Color.yellow : Color.gray;
+
     public void SetInteractable(bool interactable) => m_button.interactable = interactable;
     public void AddListener(UnityAction listener) => m_button.onClick.AddListener(listener);
     public void AddListenerToSub(UnityAction listener) => subButton?.onClick.AddListener(listener);
