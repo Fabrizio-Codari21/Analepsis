@@ -58,8 +58,10 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
     private void Record(Note note)
     {
-        if (_notebookPages.TryAdd(note.guid, note)) ;
-        else Debug.Log("Has Note");
+        if (!_notebookPages.TryAdd(note.guid, note))
+        {
+            Debug.Log("Has Note");
+        }
   
         //MarkClue(note); //esto es temporal
     }
