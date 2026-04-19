@@ -76,18 +76,28 @@ public class Inspection : MonoBehaviour,IActivity
     {
         foreach (Transform child in m_inspectRoot)
         {
-            child.SetParent(null); 
             Destroy(child.gameObject);
         }
+
         _currentItem = inspectable.GetItemReference();
-        Instantiate(_currentItem.GetInspectItem().gameObject,m_inspectRoot);
         var inspectItem = _currentItem.GetInspectItem();
+
+        Instantiate(inspectItem.gameObject, m_inspectRoot);
+
         _maxScale = inspectItem.renderCameraScaleMax;
         _minScale = inspectItem.renderCameraScaleMin;
+
+        
+        _currentZoom = (_maxScale + _minScale) / 2;
+        m_camera.orthographicSize = _currentZoom;
+
+        
+        _hasFlashback = NotebookManager.Instance.HasAllPois(inspectItem);
+        m_flashbackIndication.SetActive(_hasFlashback);
+        
+        _lastDirectionFromCenter = Vector2.zero;
+
         itemEvent.Raise(inspectItem);
-        bool has = NotebookManager.Instance.HasAllPois(inspectItem);
-        m_flashbackIndication.SetActive(has);
-        m_camera.orthographicSize = (_maxScale + _minScale) / 2;
         m_onActivity.Raise(this);
     }
 
