@@ -8,9 +8,11 @@ using UnityEngine;
 public class Item : ScriptableObject, IClue
 {
     public ItemViewer gameObject;
-    
     public SerializableGuid guid = SerializableGuid.NewGuid();
-    [MinValue(1)] public float size = 1;
+    [InfoBox("Si la scale es mas chico, el objeto se ve mas grande")]
+    public float renderCameraScaleMax = 1;
+    public float renderCameraScaleMin = 1;
+    
     public string Name;
     public Sprite sprite;
 
@@ -23,11 +25,11 @@ public class Item : ScriptableObject, IClue
     public FlashbackInfo flashbackInfo ;
 
     [Space(15), Header("WHAT DOES IT PROVE?")]
-    [SerializeField] List<TheoryboardManager.Whodunnit> doesItProveAnything;
+    [SerializeField] List<Whodunnit> doesItProveAnything;
 
-    public List<TheoryboardManager.Whodunnit> DoesItProveAnything()
+    public List<Whodunnit> DoesItProveAnything()
     {
-        return new List<TheoryboardManager.Whodunnit>(doesItProveAnything);
+        return new List<Whodunnit>(doesItProveAnything);
     }
     
     public List<ItemPOIData> pois = new();
@@ -45,6 +47,6 @@ public class ItemPOIData
 
 public interface IClue
 {
-    public List<TheoryboardManager.Whodunnit> DoesItProveAnything();
+    public List<Whodunnit> DoesItProveAnything();
 }
 

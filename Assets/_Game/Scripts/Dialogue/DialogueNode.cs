@@ -5,7 +5,7 @@ using UnityEngine;
 public class DialogueNode
 {
     [TextArea(0,20)] public string dialogueText;
-    public TheoryboardManager.Whodunnit doesItProveAnything;
+    public Whodunnit doesItProveAnything;
 
     [SerializeReference] public List<DialogueResponse> responses;
     public bool isRootNode = true;

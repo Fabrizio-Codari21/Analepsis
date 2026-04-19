@@ -87,14 +87,14 @@ public class Controller :  MonoBehaviour,IGravityActor,IMoverActor
             .State(airIdle,air,true)
             .State(airMove,air)
             
-            .At<Func<bool>>(air,ground, ()=>_moveEngine.GroundedState.StandingOnGround && !_moveEngine.MovingUp(_velocity))
-            .At<Func<bool>>(ground,air,()=>_moveEngine.GroundedState.Falling || _moveEngine.GroundedState.Sliding)
+            .At(air,ground, new FuncPredicate(() =>_moveEngine.GroundedState.StandingOnGround && !_moveEngine.MovingUp(_velocity)))
+            .At(ground,air,new FuncPredicate(() =>_moveEngine.GroundedState.Falling || _moveEngine.GroundedState.Sliding))
             
-            .At<Func<bool>>(groundIdle, groundMove,() => _moveInput.sqrMagnitude > 0.001f)
-            .At<Func<bool>>(groundMove ,groundIdle,() => _moveInput.sqrMagnitude <= 0.001f)
+            .At(groundIdle, groundMove, new FuncPredicate(() => _moveInput.sqrMagnitude > 0.001f))
+            .At(groundMove ,groundIdle,new FuncPredicate(() => _moveInput.sqrMagnitude <= 0.001f))
             
-            .At<Func<bool>>(airIdle,airMove,() => _moveInput.sqrMagnitude > 0.001f)
-            .At<Func<bool>>(airMove,airIdle,() => _moveInput.sqrMagnitude <= 0.001f)
+            .At(airIdle,airMove,new FuncPredicate(() => _moveInput.sqrMagnitude > 0.001f))
+            .At(airMove,airIdle,new FuncPredicate(() => _moveInput.sqrMagnitude <= 0.001f))
             
             .Build(root);
     }

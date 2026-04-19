@@ -1,4 +1,5 @@
 using System;
+using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.PlayerLoop;
@@ -13,19 +14,24 @@ public class Inspection : MonoBehaviour,IActivity
     [SerializeField] private IActivityEvent m_onActivity;
     [SerializeField] private EventChannel m_popEvent;
     [SerializeField] private BoolEventChannel m_cursorEnable;
-
-    private float _currentZoom;
+    [SerializeField] private GameObject m_flashbackIndication;
+    [SerializeField] private BoolEventChannel enableFlashback;
+    [SerializeField] private BoolEventChannel m_updatePOI;
+    [SerializeField] private ItemEventChannel itemEvent;
 
     [Header("Zoom")]
     [SerializeField] private RawImage m_objectRawImage;
 
     [SerializeField,Range(0f,1f)] private float m_zoomScaleSensitive;
     [SerializeField] private float m_zoomScaleFactor = 100f;
-    [SerializeField] private float m_maxScale;
-    [SerializeField] private float m_minScale;
-    [SerializeField] private float m_planeRotationSpeed = 0.2f;
    
-   private Vector2 _lastDirectionFromCenter;
+    [SerializeField] private float m_planeRotationSpeed = 0.2f;
+    [SerializeField] private LayerMask m_layerMask;
+    private float _maxScale;
+    private float _minScale;
+    ItemReference _currentItem;
+    private float _currentZoom;
+    private Vector2 _lastDirectionFromCenter;
     private void Start()
     {
          m_onInspect.OnEventRaised += Inspect;
@@ -48,7 +54,6 @@ public class Inspection : MonoBehaviour,IActivity
         m_inspectRoot.Rotate(Vector3.right, rotation.y, Space.World);
     }
 
-
     private void PlaneRotation(Vector2 delta)
     {
         Vector2 mousePos = Mouse.current.position.ReadValue();
@@ -66,7 +71,7 @@ public class Inspection : MonoBehaviour,IActivity
         
         _lastDirectionFromCenter = currentDirectionFromCenter;
     }
-    ItemReference _currentItem;
+    
     private void Inspect(IInspectable inspectable)
     {
         foreach (Transform child in m_inspectRoot)
@@ -76,23 +81,43 @@ public class Inspection : MonoBehaviour,IActivity
         }
         _currentItem = inspectable.GetItemReference();
         Instantiate(_currentItem.GetInspectItem().gameObject,m_inspectRoot);
-        m_camera.orthographicSize = _currentItem.GetInspectItem().size;
+        var inspectItem = _currentItem.GetInspectItem();
+        _maxScale = inspectItem.renderCameraScaleMax;
+        _minScale = inspectItem.renderCameraScaleMin;
+        itemEvent.Raise(inspectItem);
+        bool has = NotebookManager.Instance.HasAllPois(inspectItem);
+        m_flashbackIndication.SetActive(has);
+        m_camera.orthographicSize = (_maxScale + _minScale) / 2;
         m_onActivity.Raise(this);
+    }
+
+    private void UpdatePoi(bool enable)
+    {
+        m_flashbackIndication.SetActive(enable);
+        _hasFlashback = enable;
     }
     private void Exit() 
     {
         m_popEvent?.Raise(); 
     }
-         private void Zoom(Vector2 zoom)
-     {
-         float delta = zoom.y * m_zoomScaleSensitive * m_zoomScaleFactor * 0.01f;
+    private bool _hasFlashback = false;
+    private void TryExitByFlashback()
+    {
+        if(!_hasFlashback) return;
+        enableFlashback.Raise(true);
+        Exit();
+    }
+    private void Zoom(Vector2 zoom)
+    {
+        m_camera.enabled = true;
+        float delta = zoom.y * m_zoomScaleSensitive * m_zoomScaleFactor * 0.01f;
+        _currentZoom -= delta;
 
-         _currentZoom -= delta;
+        _currentZoom = Mathf.Clamp(_currentZoom, _minScale, _maxScale);
 
-         _currentZoom = Mathf.Clamp(_currentZoom, m_minScale, m_maxScale);
-
-         m_camera.orthographicSize = _currentZoom;
-     }
+        m_camera.orthographicSize = _currentZoom;
+     
+    }
     
     private void BeginPlaneRotation()
     {
@@ -111,15 +136,13 @@ public class Inspection : MonoBehaviour,IActivity
         m_inputReader.SetEnable();
         m_inputReader.Rotate += Rotate;
         m_inputReader.DragPressed += RotateStart;
-
-        FlashbackManager.Instance.SetCurrentItem(_currentItem);
-        m_inputReader.SeeFlashback += FlashbackManager.Instance.SeeFlashback;
-        m_inputReader.SeeFlashback += FlashbackManager.Instance.Exit;
-
+        m_inputReader.SeeFlashback += TryExitByFlashback;
+        m_inputReader.Touch += ExecuteTouch;
+        m_updatePOI.OnEventRaised += UpdatePoi;
         m_inputReader.Scroll += Zoom;
         m_inputReader.Exit  += Exit;
         m_inputReader.PlaneRotate += PlaneRotation;
-        m_inputReader.PointerMoved += OnMouseMove;
+       
         gameObject.SetActive(true);
         m_cursorEnable.Raise(true);
     }
@@ -129,48 +152,51 @@ public class Inspection : MonoBehaviour,IActivity
         OnPause?.Invoke();
         m_inputReader.SetEnable(false);
         m_inputReader.Rotate -= Rotate;
-        m_inputReader.DragPressed -= RotateStart;
-
-        _currentItem = default;
-        m_inputReader.SeeFlashback -= FlashbackManager.Instance.SeeFlashback;
-        m_inputReader.SeeFlashback -= Exit;
-
+        m_inputReader.DragPressed -= RotateStart; 
+        m_inputReader.SeeFlashback -= TryExitByFlashback;
+        m_inputReader.Touch -= ExecuteTouch;
+        m_updatePOI.OnEventRaised -= UpdatePoi;
         m_inputReader.Scroll -= Zoom;
         m_inputReader.Exit  -= Exit;
         m_inputReader.PlaneRotate -= PlaneRotation;
-        m_inputReader.PointerMoved -= OnMouseMove;
         gameObject.SetActive(false);
         m_cursorEnable.Raise(false);
     }
     
-    private void OnMouseMove(Vector2 mousePos)
-     {
-         RectTransform rectTransform = m_objectRawImage.rectTransform;
 
-         if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, mousePos, null, out Vector2 localPoint)) return;
+    
+    private ITouch GetTouchAtScreenPos(Vector2 mousePos)
+    {
+        RectTransform rectTransform = m_objectRawImage.rectTransform;
+        Vector3[] corners = new Vector3[4];
+        rectTransform.GetWorldCorners(corners); 
 
-         Rect rect = rectTransform.rect;
+        float u = (mousePos.x - corners[0].x) / (corners[2].x - corners[0].x);
+        float v = (mousePos.y - corners[0].y) / (corners[1].y - corners[0].y);
 
-       
-         Vector2 size = rect.size;
+        if (u < 0 || u > 1 || v < 0 || v > 1) return null;
 
-         float u = (localPoint.x + size.x * rectTransform.pivot.x) / size.x;
-         float v = (localPoint.y + size.y * rectTransform.pivot.y) / size.y;
-   
-         if (u < 0 || u > 1 || v < 0 || v > 1) return;
-         
-         Vector2 texPos = new Vector2(
-             u * m_camera.pixelWidth,
-             v * m_camera.pixelHeight
-         );
+        Ray ray = m_camera.ViewportPointToRay(new Vector3(u, v, 0));
 
-         Ray ray = m_camera.ScreenPointToRay(texPos);
-
-         if (Physics.Raycast(ray, out RaycastHit hit, 1000f))
-         {
-             Debug.Log("Hit " + hit.transform.name);
-         }
-     }
+      
+        if (Physics.Raycast(ray, out RaycastHit hit, 1000f,m_layerMask))
+        {
+          
+            Debug.DrawLine(ray.origin, hit.point, Color.green, 2f);
+            Debug.DrawRay(hit.point, Vector3.up * 0.1f, Color.yellow, 2f);
+            Debug.DrawRay(hit.point, Vector3.right * 0.1f, Color.yellow, 2f);
+        
+            Debug.Log(hit.transform.name);
+            return hit.collider.TryGetComponent(out ITouch touch) ? touch : null;
+        }
+        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 2f);
+        
+        return null;
+    }
+    private void ExecuteTouch()
+    {
+        GetTouchAtScreenPos(Input.mousePosition)?.Touch();
+    }
 
     public void Stop()
     {

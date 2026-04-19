@@ -2,11 +2,12 @@ using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
 
-[System.Serializable]
-public struct FlashbackInfo
+[Serializable]
+public class FlashbackInfo
 {
     [TextArea(0,20)] public string info; //estaria bueno que esto se vea en escena sobre el personaje o algo asi.
     [PreviewField] public Interactable characterPrefab;
-    public Transform flashbackTransform;
+    public TransformKey key;
+    public Vector3 offset;
 
 }
