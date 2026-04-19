@@ -25,7 +25,7 @@ public class ItemReference : MonoBehaviour
     private void SpawnName()
     {
         _text = FlyweightFactory.Instance.Spawn<DynamicText>(m_nameTextSetting, m_textPositionOffset+transform.position,Quaternion.identity,transform);
-        _text.SetText(m_itemReference.Name,1,m_nameTextSetting.color);
+        _text.SetText(m_itemReference.Name,2,m_nameTextSetting.color);
         _ = _text.PlayTypeWriterEffect();
     }
 

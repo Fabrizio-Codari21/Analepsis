@@ -37,12 +37,14 @@ public class TheoryboardView : MonoBehaviour
 
     public void LoadMarkedClues()
     {
-        if (notebookManager.markedClues.Count <= 0) return;
-
         var markedLogs = notebookManager.markedClues.Where(x => x.Value.type == NoteType.Log);
-        // print("Marked logs: " + markedLogs.Count());
+        if(markedLogs.Count() <= 0)
+            CreateClueButton("No Logs marked \n(Click the star to mark)", markedLogsRoot, default, true);
         var markedItems = notebookManager.markedClues.Where(x => x.Value.type == NoteType.Objects);
-        // print("Marked items: " + markedItems.Count());
+        if (markedItems.Count() <= 0)
+            CreateClueButton("No Objects marked \n(Click the star to mark)", markedItemsRoot, default, true);
+
+        if (notebookManager.markedClues.Count <= 0) return;
 
         foreach (var log in markedLogs) 
         {
@@ -57,7 +59,7 @@ public class TheoryboardView : MonoBehaviour
 
     }
 
-    public ButtonFactoryObject CreateClueButton(string text, Transform parent, List<TheoryboardManager.Whodunnit> proof)
+    public ButtonFactoryObject CreateClueButton(string text, Transform parent, List<TheoryboardManager.Whodunnit> proof, bool placeholder = false)
     {
         var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
             clueButtonSetting,
@@ -66,13 +68,19 @@ public class TheoryboardView : MonoBehaviour
             parent
         );
 
+
         button.SetText(text);
+        if (placeholder) 
+        {
+            print("nop");
+            button.SetInteractable(false);
+            return button;
+        }
         button.SetInteractable(true);
         button.SetBoard(boardRoots);
         button.SetView(this);
         button.SetProof(proof);
         button.MoveToLast();
-
         return button;
     }
 

@@ -35,7 +35,8 @@ public class ButtonFactoryObject : FactoryUIObject
     }
 
     public void MoveToFirst() { transform.SetAsFirstSibling(); }
-    public void MoveSubToLast() => subButton?.transform.SetAsLastSibling();
+    public void DisableSub() => subButton?.gameObject.SetActive(false);
+    public void EnableSub() => subButton?.gameObject.SetActive(true);
     public void DisplayMark(bool marked) 
         => subButton.GetComponent<Image>().color = marked ? Color.yellow : Color.gray;
 

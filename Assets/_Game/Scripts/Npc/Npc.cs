@@ -133,7 +133,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
    private void SpawnName()
    {
       _text = FlyweightFactory.Instance.Spawn<DynamicText>(m_nameTextSetting, m_textPositionOffset+transform.position,Quaternion.identity,transform);
-      _text.SetText(m_npcIdentity.npcName,1,Color.white);
+      _text.SetText(m_npcIdentity.npcName,2,Color.white);
       _ = _text.PlayTypeWriterEffect();
    }
 

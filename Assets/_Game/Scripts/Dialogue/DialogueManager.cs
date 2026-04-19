@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
+using System.Linq;
 
 public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 {
@@ -71,7 +72,34 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         _currentDialoguer.Dialogue._hiddenProof.Clear();
         m_dialogueView.ClearDialogues();
         m_dialogueView.SetSpeakerName(dialogable.NpcName);
+        await UnfoldDialogue(true);
         await PlayDialogueNode(dialogable.Dialogue.startingNode);
+    }
+    private async UniTask UnfoldDialogue(bool isOpening)
+    {
+        print("dialogue");
+        
+        if (isOpening)
+        {
+            m_dialogueView.gameObject.transform.localScale -= new Vector3(0, m_dialogueView.gameObject.transform.localScale.y, 0);
+
+            while (m_dialogueView.gameObject.transform.localScale.y < 1)
+            {
+                m_dialogueView.gameObject.transform.localScale += new Vector3(0, 0.02f, 0);
+                await UniTask.Delay(20);
+            }
+        }
+        else
+        {
+            while (m_dialogueView.gameObject.transform.localScale.y > 1)
+            {
+                m_dialogueView.gameObject.transform.localScale -= new Vector3(0, 0.02f, 0);
+                await UniTask.Delay(20);
+            }
+
+            m_dialogueView.gameObject.transform.localScale -= new Vector3(0, m_dialogueView.gameObject.transform.localScale.y, 0);
+        }
+
     }
     
     private async UniTask PlayDialogueNode(DialogueNode node) 
@@ -129,6 +157,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         m_dialogueView.ClearResponses();
         if (response.nextNode == null)
         {
+            await UnfoldDialogue(false);
             EndDialogue();
             return;
         }
@@ -154,6 +183,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         }
         else
         {
+            await UnfoldDialogue(false);
             EndDialogue();
         }
     }
@@ -175,7 +205,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     private void EndDialogue()
     {
         m_recordNoteEvent.Raise(new LogNote(
-            $"Talked with {_currentDialoguer.NpcName} -\n Action {ActionTimer.Instance.CurrentAction()}"
+            $"{_currentDialoguer.NpcName}{(_currentDialoguer.NpcName.Last() == 's' ? "'" : "'s")} account -\n Action {ActionTimer.Instance.CurrentAction()}"
             ,_recordText
             ,_currentDialoguer.Dialogue.DoesItProveAnything()));
 

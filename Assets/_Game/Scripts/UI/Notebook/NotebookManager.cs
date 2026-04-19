@@ -75,6 +75,11 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         m_view.ClearDetail();
         m_view.ClearButton();
         m_view.SetTitle(type.ToString()); // si vamos a hacer localization ya deberia usar de esta forma , lo hago asi para ahorrarme tiempo
+        if(_notebookPages.Where(x => x.Value.type == type).Count() <= 0)
+        {
+            var button = m_view.CreateButton($"No {type} found yet."); 
+            button.DisableSub(); return;
+        }
         foreach (var note in _notebookPages.Values)
         {
             if(note.type != type) continue;
@@ -90,6 +95,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                 _ = SelectNote(cachedNote,_cts.Token);
             });
             //button.MoveSubToLast();
+            button.EnableSub();
             button.AddListenerToSub(() =>
             {
                 //_cts?.Cancel();
