@@ -17,8 +17,6 @@ public class CcInputHandler : MonoBehaviour
    public event Action InteractReleased = delegate { };
    private IActivity activity;
    
-   private bool _isActive = true;
-
    [SerializeField] private TransformEventChannel m_cameraTransformEvent;
 
 

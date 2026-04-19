@@ -1,12 +1,9 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-
 public class ItemPOI : POI
 {
     public string poiId;
-
-
     private Renderer _renderer;
     private ItemViewer _viewer;
     
