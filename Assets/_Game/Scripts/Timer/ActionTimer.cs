@@ -10,7 +10,7 @@ public class ActionTimer : MonoBehaviour
     [SerializeField] private CheckIntAmount m_consumeAction;
     
     [SerializeField] private CheckIntAmount m_checkActionAmount;
-    [SerializeField] private ActionTimerView m_view;
+    [SerializeField] public ActionTimerView m_view;
     public event Action OnActionFinish;
     public event Action<int> OnActionChanged;
 

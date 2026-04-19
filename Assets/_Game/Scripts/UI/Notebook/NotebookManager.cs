@@ -55,8 +55,8 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
     private void Open()
     {
-        pushEvent.Raise(this);     
-     
+        pushEvent.Raise(this);
+        _ = ActionTimer.Instance.m_view.DisplayUI();       
     }
 
     private void Close()
