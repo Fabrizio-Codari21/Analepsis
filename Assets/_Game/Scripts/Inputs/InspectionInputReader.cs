@@ -11,6 +11,9 @@ public class InspectionInputReader : InputReader, InputActions.IInspectionAction
     public event Action<bool> DragPressed = delegate { };
     
     public event Action<Vector2>  Scroll =  delegate { };
+
+
+    public event Action Touch = delegate { };
     
     public event Action Exit = delegate { };
     public event Action SeeFlashback = delegate { };
@@ -89,5 +92,10 @@ public class InspectionInputReader : InputReader, InputActions.IInspectionAction
         {
             SeeFlashback?.Invoke();
         }
+    }
+
+    public void OnTouch(InputAction.CallbackContext context)
+    {
+        if(context.started) Touch?.Invoke();
     }
 }

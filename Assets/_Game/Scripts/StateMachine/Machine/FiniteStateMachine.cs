@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class FiniteStateMachine<Tkey>
@@ -50,14 +51,14 @@ public class FiniteStateMachine<Tkey>
         currentNode = nextNode;
     }
     private void AddState(IState state) => GetOrAddNode(state);
-    private void AddTransition<T>(IState from, IState to, T condition) 
+    private void AddTransition<T>(IState from, IState to, T condition)  where T : IPredicate
     {
         GetOrAddNode(from).AddTransition(GetOrAddNode(to).State, condition);
     }
 
-    private void AddAnyTransition<T>(IState to, T condition)
+    private void AddAnyTransition(IState to, IPredicate condition)
     {
-        anyTransitions.Add(new Transition<T>(GetOrAddNode(to).State, condition));
+        anyTransitions.Add(new Transition<IPredicate>(GetOrAddNode(to).State, condition));
     }
 
     Transition GetTransition() 
@@ -90,7 +91,7 @@ public class FiniteStateMachine<Tkey>
             State = state;
             Transitions = new HashSet<Transition>();
         }
-        public void AddTransition<T>(IState to, T predicate)
+        public void AddTransition<T>(IState to, T predicate) where T : IPredicate
         {
             Transitions.Add(new Transition<T>(to, predicate));
         }
@@ -153,14 +154,14 @@ public class FiniteStateMachine<Tkey>
         /// <returns>
         /// The current <see cref="Builder"/> instance for fluent chaining.
         /// </returns>
-        public Builder At(Tkey from, Tkey to, Func<bool> condition)
+        public Builder At(Tkey from, Tkey to, IPredicate condition)
         {
             _machine.AddTransition(Get(from), Get(to), condition);
             return this;
         }
 
 
-        public Builder Bidirectional(Tkey a, Tkey b, Func<bool> forward, Func<bool> backward)
+        public Builder Bidirectional(Tkey a, Tkey b,IPredicate forward,IPredicate backward)
         {
             if (EqualityComparer<Tkey>.Default.Equals(a, b))
                 throw new ArgumentException("Keys cannot be the same.");
@@ -181,7 +182,7 @@ public class FiniteStateMachine<Tkey>
         /// </param>
         /// <returns>
         /// The current <see cref="Builder"/> instance for fluent chaining.
-        public Builder Any(Tkey to, Func<bool> condition)
+        public Builder Any(Tkey to, IPredicate condition)
         {
             _machine.AddAnyTransition(Get(to), condition);
             return this;
@@ -216,6 +217,5 @@ public class FiniteStateMachine<Tkey>
             return _machine;
         }
     }
-
 
 }

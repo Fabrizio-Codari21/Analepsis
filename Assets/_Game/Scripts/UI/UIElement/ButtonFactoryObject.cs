@@ -13,9 +13,9 @@ public class ButtonFactoryObject : FactoryUIObject
     [SerializeField]  protected TextMeshProUGUI m_text;
 
     // estas no habria que asignarlas en el inspector en teoria
-    [SerializeField, HideInInspector] protected Dictionary<TheoryboardManager.Whodunnit, TheoryPanel> _boardTransforms;
+    [SerializeField, HideInInspector] protected Dictionary<Whodunnit, TheoryPanel> _boardTransforms;
     [SerializeField, HideInInspector] protected TheoryboardView _view;
-    [SerializeField, ShowInInspector, ReadOnly] protected List<TheoryboardManager.Whodunnit> proof = new();
+    [SerializeField, ShowInInspector, ReadOnly] protected List<Whodunnit> proof = new();
 
     public override void Despawn()
     {
@@ -44,9 +44,9 @@ public class ButtonFactoryObject : FactoryUIObject
     public void AddListenerToSub(UnityAction listener) => subButton?.onClick.AddListener(listener);
     public void RemoveAllListeners() => m_button.onClick.RemoveAllListeners();
     public void RemoveAllListenersFromSub() => subButton?.onClick.RemoveAllListeners();
-    public void SetBoard(Dictionary<TheoryboardManager.Whodunnit, TheoryPanel> board) => _boardTransforms = board;
+    public void SetBoard(Dictionary<Whodunnit, TheoryPanel> board) => _boardTransforms = board;
     public void SetView(TheoryboardView view) => _view = view;
 
-    public void SetProof(List<TheoryboardManager.Whodunnit> isProof) => proof = isProof;
-    public List<TheoryboardManager.Whodunnit> GetProof() => proof;
+    public void SetProof(List<Whodunnit> isProof) => proof = isProof;
+    public List<Whodunnit> GetProof() => proof;
 }

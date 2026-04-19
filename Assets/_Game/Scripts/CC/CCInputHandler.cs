@@ -11,6 +11,7 @@ public class CcInputHandler : MonoBehaviour
    [SerializeField] private CinemachineCamera  m_camera;
    [SerializeField] private Transform m_cameraTransform;
    [SerializeField] private EventChannel m_openBook;
+   [SerializeField] private BoolEventChannel m_flashback;
    public event Action<Vector2> Move = delegate { };
    public event Action InteractPressed = delegate { };
    public event Action InteractReleased = delegate { };
@@ -21,11 +22,9 @@ public class CcInputHandler : MonoBehaviour
    [SerializeField] private TransformEventChannel m_cameraTransformEvent;
 
 
+   private bool _onFlashBack = false;
     private void Start()
    {
-
-
-
         foreach (var controller in m_cameraAxisController.Controllers)
         {
             controller.Input.InputAction = InputActionReference.Create(m_reader.InputAction.Player.Look); // agrego camera input action reference
@@ -34,14 +33,24 @@ public class CcInputHandler : MonoBehaviour
         activity.OnResume += Resume;
         activity.OnPause += Pause;
         activity.OnStop += Stop;
-        
+      
+        m_flashback.OnEventRaised += Flashback;
+        InitReader();
         m_cameraTransformEvent.OnEventRaised += SetCamera;
         m_readerEvent.Raise(activity); // BASE ACTIVITY EN TEORIA
-
       
    }
-   
 
+
+    private void Flashback(bool enable) => _onFlashBack = enable;
+
+   private void InitReader()
+   {
+      m_reader.Move += Movement;
+      m_reader.InteractPressed += InteractStart;
+      m_reader.InteractReleased += InteractStop;
+      m_reader.OpenNotebook += TryOpenNotebook;
+   }
 
 
    private void Movement(Vector2 dir)
@@ -60,27 +69,19 @@ public class CcInputHandler : MonoBehaviour
       InteractReleased?.Invoke();
    }
 
-   private void OpenNotebook()
+   private void TryOpenNotebook()
    {
+      if(_onFlashBack) return;
       m_openBook?.Raise();
    }
 
    private void Resume()
    {
-        print("vuelve el movimiento");
-      m_reader.Move += Movement;
-      m_reader.InteractPressed += InteractStart;
-      m_reader.InteractReleased += InteractStop;
-      m_reader.OpenNotebook += OpenNotebook;
       m_reader.SetEnable();
    }
 
    private void Pause()
    {
-      m_reader.Move -= Movement;
-      m_reader.InteractPressed -= InteractStart;
-      m_reader.InteractReleased -= InteractStop;
-      m_reader.OpenNotebook -= OpenNotebook;
       m_reader.SetEnable(false);
    }
 
@@ -100,5 +101,7 @@ public class CcInputHandler : MonoBehaviour
    private void OnDestroy()
    {
       m_cameraTransformEvent.OnEventRaised -= SetCamera;
+
+      m_flashback.OnEventRaised -= Flashback;
    }
 }

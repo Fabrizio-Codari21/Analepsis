@@ -17,10 +17,10 @@ public class ActionConsumer : MonoBehaviour,IAction
         _conditionCheck = GetComponent<IConditionCheck>();
         _interactable.OnStart += RequiredConsume;
         _conditionCheck?.Conditions.Add(new NotAction((() => m_haveAction.Request(cost))));
-        _conditionCheck?.Conditions.Add(new NotAction((
-            () => FlashbackManager.Instance.GetFlashbackObject() != _interactable 
-            ? !FlashbackManager.Instance.IsFlashbackOn()
-            : true), "Can't interact during a flashback; press 'F' to leave."));
+        // _conditionCheck?.Conditions.Add(new NotAction((
+        //     () => FlashbackManager.Instance.GetFlashbackObject() != _interactable 
+        //     ? !FlashbackManager.Instance.IsFlashbackOn()
+        //     : true), "Can't interact during a flashback; press 'F' to leave."));
     }
 
     private void Start()

@@ -52,12 +52,17 @@ MonoBehaviour:
   m_onActivity: {fileID: 11400000, guid: 3027f54723217b445909fe93945c6bd2, type: 2}
   m_popEvent: {fileID: 11400000, guid: 76cb339f73e2d5646ac0696838117b5e, type: 2}
   m_cursorEnable: {fileID: 11400000, guid: e691ca0bdc44b8f4cbd61759a64638cf, type: 2}
+  m_flashbackIndication: {fileID: 425498765254836062}
+  enableFlashback: {fileID: 11400000, guid: e865ba2e8caa6484ca4ebd26200eb8f2, type: 2}
+  m_updatePOI: {fileID: 11400000, guid: 721b20b70b166cb4bbf7cc18f62bcca3, type: 2}
+  itemEvent: {fileID: 11400000, guid: 07624e21598f3584c8e21fc9ae8ce6e2, type: 2}
   m_objectRawImage: {fileID: 4553551401521413682}
   m_zoomScaleSensitive: 0.5
   m_zoomScaleFactor: 100
-  m_maxScale: 2
-  m_minScale: 1
   m_planeRotationSpeed: 1
+  m_layerMask:
+    serializedVersion: 2
+    m_Bits: 32
 --- !u!1 &201804513920383026
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +313,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9158864185212977701
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1422,8 +1427,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 512, y: 512}
+  m_AnchoredPosition: {x: 0, y: 90}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3153209781043799966
 CanvasRenderer:
