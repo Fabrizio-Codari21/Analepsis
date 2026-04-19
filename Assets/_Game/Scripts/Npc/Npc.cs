@@ -23,13 +23,9 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
        OnUnfocus += DespawnName;
        OnStart += DespawnName;
        AddTip(m_tip);
-       //FlashbackManager.Instance.AddInteractable(gameObject);
+   
    }
 
-    //public void Update()
-    //{
-    //    FlashbackManager.Instance.ToggleByFlashback(gameObject);
-    //}
     #region IInteract
     public event Action OnFocus;
    public event Action OnUnfocus;
@@ -145,4 +141,5 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
    }
 
 }
+
 

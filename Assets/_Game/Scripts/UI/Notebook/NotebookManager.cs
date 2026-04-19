@@ -31,6 +31,8 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     
     private readonly Dictionary<SerializableGuid, HashSet<string>> _unlockedPoisByItem = new();
 
+    private readonly Dictionary<Item, string> _unlockedFlashbackNote = new();
+
     public bool HasAllPois(Item item)
     {
         if (!_unlockedPoisByItem.TryGetValue(item.guid, out var unlockedIds)) return false;
@@ -64,8 +66,8 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
     private void MarkClue(Note note)
     {
-        if(!markedClues.ContainsKey(note.guid)) markedClues.TryAdd(note.guid, note);
-        else markedClues.Remove(note.guid);
+        if(!markedClues.Remove(note.guid)) markedClues.TryAdd(note.guid, note);
+
         print("Marked clue: " + note.displayName);
     }
 
@@ -109,6 +111,16 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
             }
         }
         return descriptions;
+    }
+
+    public void UpdateFlashbackInfo(Item item, string info)
+    {
+        if (!_unlockedFlashbackNote.TryAdd(item, info))return;
+    }
+
+    public string GetItemFlashbackInfo(Item item)
+    {
+        return !_unlockedFlashbackNote.TryGetValue(item, out var flashback) ? string.Empty : flashback;
     }
 
     private void OpenNotebookByType(NoteType type)
@@ -294,16 +306,10 @@ public class ItemNote : Note
         {
             fullContent.Add($"POI :  {desc}"); 
         }
-        
-        if (_item.itemClues != null)
-        {
-            fullContent.AddRange(_item.itemClues);
-        }
-        
-        if (!string.IsNullOrEmpty(_item.flashbackClue))
-        {
-            fullContent.Add($"<i>- FLASHBACK: {_item.flashbackClue}</i>");
-        }
+
+        var unlockedFlash = NotebookManager.Instance.GetItemFlashbackInfo(_item);
+        if(unlockedFlash != string.Empty) fullContent.Add($"FLASH :  {unlockedFlash}");
+    
         
         await view.PlayText(fullContent, token);
     }

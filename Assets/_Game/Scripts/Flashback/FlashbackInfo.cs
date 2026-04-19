@@ -9,5 +9,5 @@ public class FlashbackInfo
     [PreviewField] public Interactable characterPrefab;
     public TransformKey key;
     public Vector3 offset;
-
+    
 }

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
+
 public class FlashbackManager : MonoBehaviour
 {
  
@@ -16,7 +17,7 @@ public class FlashbackManager : MonoBehaviour
     
     [SerializeField] private DynamicTextSetting displaySetting;
     [SerializeField] private ItemEventChannel itemEvent;
-    
+    [SerializeField] private RecordNoteEvent m_recordNote;
     private Interactable _flashbackObject;
     private Item _currentItem;
     DynamicText flashbackClueDisplay;
@@ -60,9 +61,9 @@ public class FlashbackManager : MonoBehaviour
     {
         if(!_currentItem) return;
         if (_flashbackObject) return;
-
+        
         var fb = _currentItem.flashbackInfo;
-
+        NotebookManager.Instance.UpdateFlashbackInfo(_currentItem,fb.info);
         var t = TransformKeyManager.Instance.GetTransform(fb.key);
 
         if (!t)
@@ -72,12 +73,21 @@ public class FlashbackManager : MonoBehaviour
         }
         var position = t.position + fb.offset;
         var rotation = t.rotation;
+
         _flashbackObject = Instantiate(fb.characterPrefab,position,rotation);
+
+        if (_flashbackObject.TryGetComponent<TextComponent>(out var textComponent))
+        {
+            textComponent.Init(fb.info);
+        }
     }
+
 
     private void Despawn()
     {
         Debug.Log("Despawn");
+        
+        
         Destroy(_flashbackObject.gameObject);
         _flashbackObject = null;
         _currentItem = null;
@@ -111,6 +121,7 @@ public class FlashbackContext
     public float lerpDuration;
     
     public BoolEventChannel enableFlashback;
+ 
 
 }
 
@@ -173,6 +184,7 @@ public class FlashbackActiveState : IAsyncState  // Enter flashback
         _context.flashbackInputReader.SetEnable(false);
   
         _despawn?.Invoke();
+    
         var fadeTask = _context.transitionEffect.FadeOut();
         var matTask =LerpMaterialFloat(
             _context.flashbackMaterial,
@@ -181,6 +193,7 @@ public class FlashbackActiveState : IAsyncState  // Enter flashback
             0f,
             _context.lerpDuration
         );
+        
         await UniTask.WhenAll(matTask,fadeTask);
      
     }
