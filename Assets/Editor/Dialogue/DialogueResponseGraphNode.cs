@@ -122,7 +122,12 @@ public sealed class DialogueResponseGraphNode : Node
                     objectType = typeof(Dialogue),
                     value = nodeCond.targetDialogue,
                 };
-                
+
+                Toggle unlockIfTrueField = new Toggle("Unlock if True")
+                {
+                    value = nodeCond.unlockIfTrue,
+                };
+
                 Func<DialogueNode, string> formatLabel = n => {
                     if (n == null) return "Select a Node";
                     string preview = string.IsNullOrEmpty(n.dialogueText) ? "Empty" : n.dialogueText;
@@ -168,9 +173,16 @@ public sealed class DialogueResponseGraphNode : Node
                     EditorUtility.SetDirty(Selection.activeObject);
                 });
 
+                unlockIfTrueField.RegisterValueChangedCallback(evt =>
+                {
+                    nodeCond.unlockIfTrue = evt.newValue;
+                    EditorUtility.SetDirty(Selection.activeObject);
+                });
+
                 UpdatePopupOptions();
                 row.Add(dialogueAssetField);
                 row.Add(nodeSelector);
+                row.Add(unlockIfTrueField);
             }
             
             if (condition is ItemNodeCondition itemCond)
@@ -181,13 +193,25 @@ public sealed class DialogueResponseGraphNode : Node
                     value = itemCond.item,
                     style = { flexGrow = 1 }
                 };
-                
+
+                Toggle unlockIfTrueField = new Toggle("Unlock if True")
+                {
+                    value = itemCond.unlockIfTrue,
+                };
+
                 itemAssetField.RegisterValueChangedCallback(evt => {
                     itemCond.item = (Item)evt.newValue;
                     EditorUtility.SetDirty(Selection.activeObject);
                 });
-                
+
+                unlockIfTrueField.RegisterValueChangedCallback(evt =>
+                {
+                    itemCond.unlockIfTrue = evt.newValue;
+                    EditorUtility.SetDirty(Selection.activeObject);
+                });
+
                 row.Add(itemAssetField);
+                row.Add(unlockIfTrueField);
             }
         
             Button removeBtn = new Button(() => {

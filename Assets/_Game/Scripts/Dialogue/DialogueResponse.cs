@@ -18,7 +18,7 @@ public class DialogueResponse
 
         foreach (DialogueCondition condition in m_conditions)
         {
-            if (condition != null && !condition.Evaluate())
+            if (condition != null && condition.Evaluate() != condition.unlockIfTrue)
             {
                 Debug.LogWarning("Condition Evaluate failed");
                 return false;
@@ -35,6 +35,7 @@ public class DialogueResponse
 public abstract class DialogueCondition
 {
     [SerializeField] public string conditionName;
+    [SerializeField] public bool unlockIfTrue = true;
     public abstract bool Evaluate();
 }
 
