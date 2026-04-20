@@ -1,5 +1,6 @@
 using System;
 using System.Net.NetworkInformation;
+using PrimeTween;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,7 +20,9 @@ public class Inspection : MonoBehaviour,IActivity
     [SerializeField] private BoolEventChannel enableFlashback;
     [SerializeField] private BoolEventChannel m_updatePOI;
     [SerializeField] private ItemEventChannel itemEvent;
-
+    [SerializeField] private StringEventChannel poiInfo;
+    [SerializeField] private TMP_Text m_poiText;
+    
     [Header("Zoom")]
     [SerializeField] private RawImage m_objectRawImage;
 
@@ -33,11 +36,15 @@ public class Inspection : MonoBehaviour,IActivity
     ItemReference _currentItem;
     private float _currentZoom;
     private Vector2 _lastDirectionFromCenter;
+    
+    private Sequence _poiSequence;
     private void Start()
     {
          m_onInspect.OnEventRaised += Inspect;
 
+         m_poiText.alpha = 0f;
         gameObject.SetActive(false);
+        
     }
     private void OnDestroy()
     {
@@ -107,6 +114,27 @@ public class Inspection : MonoBehaviour,IActivity
         m_flashbackIndication.SetActive(enable);
         _hasFlashback = enable;
     }
+
+    private void ShowPoi(string info)
+    {
+        if (_poiSequence.isAlive)
+        {
+            _poiSequence.Stop();
+        }
+        if (m_poiText == null) return;
+        
+        
+        m_poiText.text = info;
+        m_poiText.alpha = 0f; 
+        _poiSequence =Sequence.Create()
+          
+            .Group(Tween.Alpha(m_poiText, endValue: 1f, duration: 0.5f))
+        
+            .ChainDelay(2f)
+            
+            .Chain(Tween.Alpha(m_poiText, endValue: 0f, duration: 1f))
+            .OnComplete(() => m_poiText.text = string.Empty);
+    }
     private void Exit() 
     {
         m_popEvent?.Raise(); 
@@ -144,6 +172,7 @@ public class Inspection : MonoBehaviour,IActivity
     public void Resume()
     {
         OnResume?.Invoke();
+        m_camera.enabled = true;
         m_inputReader.SetEnable();
         m_inputReader.Rotate += Rotate;
         m_inputReader.DragPressed += RotateStart;
@@ -153,7 +182,7 @@ public class Inspection : MonoBehaviour,IActivity
         m_inputReader.Scroll += Zoom;
         m_inputReader.Exit  += Exit;
         m_inputReader.PlaneRotate += PlaneRotation;
-       
+        poiInfo.OnEventRaised += ShowPoi;
         gameObject.SetActive(true);
         m_cursorEnable.Raise(true);
     }
@@ -161,6 +190,7 @@ public class Inspection : MonoBehaviour,IActivity
     public void Pause()
     {
         OnPause?.Invoke();
+        m_camera.enabled = false;
         m_inputReader.SetEnable(false);
         m_inputReader.Rotate -= Rotate;
         m_inputReader.DragPressed -= RotateStart; 
@@ -170,6 +200,7 @@ public class Inspection : MonoBehaviour,IActivity
         m_inputReader.Scroll -= Zoom;
         m_inputReader.Exit  -= Exit;
         m_inputReader.PlaneRotate -= PlaneRotation;
+        poiInfo.OnEventRaised -= ShowPoi;
         gameObject.SetActive(false);
         m_cursorEnable.Raise(false);
     }
