@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using PrimeTween;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -17,6 +18,8 @@ public class DialogueView : MonoBehaviour
     [SerializeField] private Transform m_responseButtonRoot;
     [Header("Scroll")]
     [SerializeField] private ScrollRect m_scrollRect;
+
+    [SerializeField] private Transform m_root;
 
     private void Start()
     {
@@ -46,6 +49,29 @@ public class DialogueView : MonoBehaviour
         Despawn(m_conversationRoot);
     }
    
+    public async UniTask UnfoldDialogue(bool isOpening)
+    {
+        if (m_root == null) return;
+        Tween.StopAll(m_root.gameObject.transform);
+        
+        var seq = Sequence.Create();
+
+        if (isOpening)
+        {
+            m_root.gameObject.transform.localScale = new Vector3(1, 0, 1);
+            seq.Group(Tween.ScaleY(m_root.gameObject.transform, 1f, 0.3f, Ease.OutBack));
+        }
+        else
+        {
+            seq.Group(Tween.ScaleY(m_root.gameObject.transform, 0f, 0.2f, Ease.InQuad));
+        }
+
+    
+        await seq;
+
+    }
+    
+    
     public async UniTask PlayDialogueText(string content, CancellationToken token, Color color = default) // view
     {
         token.ThrowIfCancellationRequested();
