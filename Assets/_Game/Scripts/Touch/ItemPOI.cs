@@ -6,8 +6,8 @@ public class ItemPOI : POI
     public string poiId;
     private Renderer _renderer;
     private ItemViewer _viewer;
-    
-    
+ 
+
     private void Start()
     {
         _viewer = GetComponentInParent<ItemViewer>();
@@ -20,6 +20,7 @@ public class ItemPOI : POI
     {
         base.Touch();
         _viewer?.PoiReceived(poiId);
+
         _renderer.material.color = Random.ColorHSV(); // for debug
 
     }

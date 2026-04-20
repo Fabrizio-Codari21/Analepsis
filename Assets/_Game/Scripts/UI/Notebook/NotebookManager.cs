@@ -17,7 +17,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private NoteBookInputReader inputReaderNoteBook;
     [SerializeField] private IActivityEvent pushEvent;
     [SerializeField] private EventChannel popEvent;
-    [SerializeField] private StringEventChannel poiEventChannel;
+ 
     #endregion
     [SerializeField] private EventChannel takeOutNotebookChannel;
     [SerializeField] private EventChannel putInNotebookChannel;
@@ -99,7 +99,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         if (!set.Add(poiId)) return;
         
         var poiData = item.pois.Find(x => x.poiId == poiId);
-        poiEventChannel.Raise(poiData.description);
+       
         bool isCompleteNow = HasAllPois(item);
         if (wasCompleteBefore != isCompleteNow)
         {
