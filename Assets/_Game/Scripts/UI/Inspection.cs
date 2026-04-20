@@ -94,9 +94,7 @@ public class Inspection : MonoBehaviour,IActivity
         
         _hasFlashback = NotebookManager.Instance.HasAllPois(inspectItem);
         m_flashbackIndication.SetActive(_hasFlashback);
-        
         _lastDirectionFromCenter = Vector2.zero;
-
         itemEvent.Raise(inspectItem);
         m_onActivity.Raise(this);
     }
@@ -143,6 +141,7 @@ public class Inspection : MonoBehaviour,IActivity
     public void Resume()
     {
         OnResume?.Invoke();
+        m_camera.enabled = true;
         m_inputReader.SetEnable();
         m_inputReader.Rotate += Rotate;
         m_inputReader.DragPressed += RotateStart;
@@ -152,7 +151,6 @@ public class Inspection : MonoBehaviour,IActivity
         m_inputReader.Scroll += Zoom;
         m_inputReader.Exit  += Exit;
         m_inputReader.PlaneRotate += PlaneRotation;
-       
         gameObject.SetActive(true);
         m_cursorEnable.Raise(true);
     }
@@ -160,6 +158,7 @@ public class Inspection : MonoBehaviour,IActivity
     public void Pause()
     {
         OnPause?.Invoke();
+        m_camera.enabled = false;
         m_inputReader.SetEnable(false);
         m_inputReader.Rotate -= Rotate;
         m_inputReader.DragPressed -= RotateStart; 
