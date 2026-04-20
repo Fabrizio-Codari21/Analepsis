@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf765b1b1104798829942b575348486, type: 3}
   m_Name: Jar Item
   m_EditorClassIdentifier: 
-  gameObject: {fileID: 5776527120522008317, guid: bf52bbd8c29d46f49b85cde29f0a4efe, type: 3}
+  gameObject: {fileID: 6558592760339052017, guid: bf52bbd8c29d46f49b85cde29f0a4efe, type: 3}
   guid:
     Part1: 748026241
     Part2: 1248393235
     Part3: 3445422725
     Part4: 1744855737
-  size: 1
+  renderCameraScaleMax: 1
+  renderCameraScaleMin: 1
   Name: Jar
   sprite: {fileID: 21300000, guid: cd6457665355be84eb3a80a437f245eb, type: 3}
-  itemClues:
-  - "A brand-less jar of \"dulce de leche\" with Mrs. Vaamorir's name on it. \nMr.
-    O'Missida seems to be looking at it, and he doesn't seem happy about it..."
-  flashbackClue: 
+  baseClue: 
   flashbackInfo:
     info: "Someone placed their dulce de leche \nin this room without thinking..."
     characterPrefab: {fileID: -7788030297154945564, guid: cab142ae67d2f034db6770213d50edf6, type: 3}
-    flashbackTransform: {fileID: 6100494739117012469, guid: e88d1f80478c6dd4d86f1e6d33bbe026, type: 3}
+    key: {fileID: 0}
+    offset: {x: 0, y: 0, z: 0}
   doesItProveAnything: 03000000
+  pois: []
