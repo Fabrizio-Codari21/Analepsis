@@ -1,9 +1,10 @@
 using System;
-using System.Net.NetworkInformation;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.PlayerLoop;
+
 using UnityEngine.UI;
+using PrimeTween;
 
 public class Inspection : MonoBehaviour,IActivity
 {
@@ -18,13 +19,15 @@ public class Inspection : MonoBehaviour,IActivity
     [SerializeField] private BoolEventChannel enableFlashback;
     [SerializeField] private BoolEventChannel m_updatePOI;
     [SerializeField] private ItemEventChannel itemEvent;
+    [SerializeField] private StringEventChannel m_poiChannel;
 
     [Header("Zoom")]
     [SerializeField] private RawImage m_objectRawImage;
 
     [SerializeField,Range(0f,1f)] private float m_zoomScaleSensitive;
     [SerializeField] private float m_zoomScaleFactor = 100f;
-   
+
+    [SerializeField] private TMP_Text m_poiText;
     [SerializeField] private float m_planeRotationSpeed = 0.2f;
     [SerializeField] private LayerMask m_layerMask;
     private float _maxScale;
@@ -37,6 +40,7 @@ public class Inspection : MonoBehaviour,IActivity
          m_onInspect.OnEventRaised += Inspect;
 
         gameObject.SetActive(false);
+        m_poiText.alpha = 0f;
     }
     private void OnDestroy()
     {
@@ -104,6 +108,30 @@ public class Inspection : MonoBehaviour,IActivity
         m_flashbackIndication.SetActive(enable);
         _hasFlashback = enable;
     }
+
+
+    private void ShowPoi(string info)
+    {
+        if (m_poiText == null) return;
+
+     
+        Tween.StopAll(m_poiText);
+        
+        m_poiText.text = info;
+        m_poiText.alpha = 0f;
+    
+     
+
+        
+        Sequence.Create()
+         
+            .Group(Tween.Alpha(m_poiText, endValue: 1f, duration: 0.5f)) // fade in
+            .ChainDelay(2f)
+           
+            .Chain(Tween.Alpha(m_poiText, endValue: 0f, duration: 1f))  // fade out
+           
+            .OnComplete(() => m_poiText.text = string.Empty);
+    }
     private void Exit() 
     {
         m_popEvent?.Raise(); 
@@ -144,6 +172,7 @@ public class Inspection : MonoBehaviour,IActivity
         m_camera.enabled = true;
         m_inputReader.SetEnable();
         m_inputReader.Rotate += Rotate;
+        m_poiChannel.OnEventRaised += ShowPoi;
         m_inputReader.DragPressed += RotateStart;
         m_inputReader.SeeFlashback += TryExitByFlashback;
         m_inputReader.Touch += ExecuteTouch;
@@ -160,6 +189,7 @@ public class Inspection : MonoBehaviour,IActivity
         OnPause?.Invoke();
         m_camera.enabled = false;
         m_inputReader.SetEnable(false);
+        m_poiChannel.OnEventRaised -= ShowPoi;
         m_inputReader.Rotate -= Rotate;
         m_inputReader.DragPressed -= RotateStart; 
         m_inputReader.SeeFlashback -= TryExitByFlashback;
@@ -172,7 +202,6 @@ public class Inspection : MonoBehaviour,IActivity
         m_cursorEnable.Raise(false);
     }
     
-
     
     private ITouch GetTouchAtScreenPos(Vector2 mousePos)
     {
