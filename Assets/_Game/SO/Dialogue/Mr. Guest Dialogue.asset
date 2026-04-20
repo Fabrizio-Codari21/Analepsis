@@ -1,0 +1,222 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
+  m_Name: Mr. Guest Dialogue
+  m_EditorClassIdentifier: 
+  dialogueColor: {r: 0, g: 0, b: 0, a: 0}
+  startingNode:
+    dialogueText: "Don't... get any closer... \nIdentify yourself."
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017924
+    - rid: 5324356914828017925
+    - rid: 5324356914828017933
+    isRootNode: 1
+    editorPosition: {x: 300, y: 200}
+    guid:
+      Part1: 2187425879
+      Part2: 1303396138
+      Part3: 822268818
+      Part4: 3030757262
+    tag: 
+  allNodes:
+  - dialogueText: "Don't... get any closer... \nIdentify yourself."
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017924
+    - rid: 5324356914828017925
+    - rid: 5324356914828017933
+    isRootNode: 1
+    editorPosition: {x: 300, y: 200}
+    guid:
+      Part1: 2187425879
+      Part2: 1303396138
+      Part3: 822268818
+      Part4: 3030757262
+    tag: 
+  - dialogueText: "...You do seem reliable. \nPlease, forgive my manners, but a man
+      can't lower his guard at times like this, what with those... yankees hiding
+      everywhere... "
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017927
+    - rid: 5324356914828017928
+    isRootNode: 0
+    editorPosition: {x: 1033, y: 92}
+    guid:
+      Part1: 2581309536
+      Part2: 1215088153
+      Part3: 3417071789
+      Part4: 2136760882
+    tag: 
+  - dialogueText: 'Which is why you can''t go places unless you''re properly equipped.
+
+      I''ve
+      recently purchased a new weapon and I''ve been waiting for a chance to use
+      it on some of those pigs.
+
+      If you happen to know anything about that...
+      Whistle and I''ll do what a good comrade must.'
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017930
+    isRootNode: 0
+    editorPosition: {x: 2363, y: 173}
+    guid:
+      Part1: 3427183337
+      Part2: 1112303659
+      Part3: 3191303844
+      Part4: 499014773
+    tag: 
+  - dialogueText: '...Not what a real comrade would say.
+
+      I think you have
+      yet to experience what this world has to offer, and I envy you for that.
+
+      Then
+      again, I don''t think we have much in common if that''s the case.'
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017932
+    isRootNode: 0
+    editorPosition: {x: 2363, y: -25.999987}
+    guid:
+      Part1: 3584792841
+      Part2: 1107239334
+      Part3: 3147153559
+      Part4: 527083217
+    tag: 
+  _hiddenProof: 
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 5324356914828017924
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I''m just a humble comrade]'
+        nextNode:
+          rid: 5324356914828017926
+        m_conditions: []
+        editorPosition: {x: 649, y: 124}
+    - rid: 5324356914828017925
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Sorry, I made a mistake (leave)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 692.355, y: 492.88287}
+    - rid: 5324356914828017926
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "...You do seem reliable. \nPlease, forgive my manners, but
+          a man can't lower his guard at times like this, what with those... yankees
+          hiding everywhere... "
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828017927
+        - rid: 5324356914828017928
+        isRootNode: 0
+        editorPosition: {x: 1033, y: 92}
+        guid:
+          Part1: 2581309536
+          Part2: 1215088153
+          Part3: 3417071789
+          Part4: 2136760882
+        tag: 
+    - rid: 5324356914828017927
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Never seen one so far.]'
+        nextNode:
+          rid: 5324356914828017931
+        m_conditions: []
+        editorPosition: {x: 2006, y: 19}
+    - rid: 5324356914828017928
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I know, right? There''s so many...]'
+        nextNode:
+          rid: 5324356914828017929
+        m_conditions: []
+        editorPosition: {x: 1950.6876, y: 158.32251}
+    - rid: 5324356914828017929
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Which is why you can''t go places unless you''re properly
+          equipped.
+
+          I''ve recently purchased a new weapon and I''ve been
+          waiting for a chance to use it on some of those pigs.
+
+          If you
+          happen to know anything about that... Whistle and I''ll do what a good
+          comrade must.'
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828017930
+        isRootNode: 0
+        editorPosition: {x: 2363, y: 173}
+        guid:
+          Part1: 3427183337
+          Part2: 1112303659
+          Part3: 3191303844
+          Part4: 499014773
+        tag: 
+    - rid: 5324356914828017930
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Rest assured, comrade.]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 3113.179, y: 134.99998}
+    - rid: 5324356914828017931
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...Not what a real comrade would say.
+
+          I think you
+          have yet to experience what this world has to offer, and I envy you for
+          that.
+
+          Then again, I don''t think we have much in common if that''s
+          the case.'
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828017932
+        isRootNode: 0
+        editorPosition: {x: 2363, y: -25.999987}
+        guid:
+          Part1: 3584792841
+          Part2: 1107239334
+          Part3: 3147153559
+          Part4: 527083217
+        tag: 
+    - rid: 5324356914828017932
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I guess not (leave)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 3056, y: -55}
+    - rid: 5324356914828017933
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[What''s up with the maid?]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 692, y: 308.51505}

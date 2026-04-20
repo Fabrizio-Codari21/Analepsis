@@ -1,0 +1,166 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
+  m_Name: Boss Dialogue
+  m_EditorClassIdentifier: 
+  dialogueColor: {r: 0, g: 0, b: 0, a: 0}
+  startingNode:
+    dialogueText: "Welcome to the Trivyag Hotel. I'm the owner and boss of this establishment.
+      \nCould I interest you in renting a room, perhaps?"
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017934
+    - rid: 5324356914828017935
+    - rid: 5324356914828017936
+    isRootNode: 1
+    editorPosition: {x: 300, y: 200}
+    guid:
+      Part1: 2187425879
+      Part2: 1303396138
+      Part3: 822268818
+      Part4: 3030757262
+    tag: 
+  allNodes:
+  - dialogueText: "Welcome to the Trivyag Hotel. I'm the owner and boss of this establishment.
+      \nCould I interest you in renting a room, perhaps?"
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017934
+    - rid: 5324356914828017935
+    - rid: 5324356914828017936
+    isRootNode: 1
+    editorPosition: {x: 300, y: 200}
+    guid:
+      Part1: 2187425879
+      Part2: 1303396138
+      Part3: 822268818
+      Part4: 3030757262
+    tag: 
+  - dialogueText: "Oh... Nothing that you should worry about, really. \nIt's just...
+      I seem to have lost the keys to my car. It's a fancy new model and I've barely
+      had a chance to drive it yet.\nI doubt you're gonna find them around here,
+      but if you find out something... please let me know."
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017937
+    isRootNode: 0
+    editorPosition: {x: 1400.5004, y: 280.49997}
+    guid:
+      Part1: 1756710703
+      Part2: 1229670118
+      Part3: 834325127
+      Part4: 1991192220
+    tag: 
+  - dialogueText: '...Well, if that''s the case, I should ask you to leave.
+
+      However,
+      it would be uncouth to leave you out there, with such a terrible storm going
+      on.
+
+      You may stay, but please, don''t go anywhere past this reception.'
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017938
+    isRootNode: 0
+    editorPosition: {x: 1401, y: 49.449997}
+    guid:
+      Part1: 1703566582
+      Part2: 1202352971
+      Part3: 3294678954
+      Part4: 865554740
+    tag: 
+  _hiddenProof: 
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 5324356914828017934
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[You seem nervous... Is everything OK?]'
+        nextNode:
+          rid: 5324356914828017939
+        m_conditions: []
+        editorPosition: {x: 938.0002, y: 290.00003}
+    - rid: 5324356914828017935
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I can''t afford one, I''m afraid]'
+        nextNode:
+          rid: 5324356914828017940
+        m_conditions: []
+        editorPosition: {x: 950, y: 116}
+    - rid: 5324356914828017936
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[What''s up with the maid?]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 959.9502, y: 472.55005}
+    - rid: 5324356914828017937
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Sure! (Missing <b>keys</b>, huh?)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 2283.135, y: 250.93501}
+    - rid: 5324356914828017938
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Thank you for your kindness.]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 2094.05, y: 29.69999}
+    - rid: 5324356914828017939
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "Oh... Nothing that you should worry about, really. \nIt's
+          just... I seem to have lost the keys to my car. It's a fancy new model
+          and I've barely had a chance to drive it yet.\nI doubt you're gonna find
+          them around here, but if you find out something... please let me know."
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828017937
+        isRootNode: 0
+        editorPosition: {x: 1400.5004, y: 280.49997}
+        guid:
+          Part1: 1756710703
+          Part2: 1229670118
+          Part3: 834325127
+          Part4: 1991192220
+        tag: 
+    - rid: 5324356914828017940
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...Well, if that''s the case, I should ask you to leave.
+
+          However,
+          it would be uncouth to leave you out there, with such a terrible storm
+          going on.
+
+          You may stay, but please, don''t go anywhere past
+          this reception.'
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828017938
+        isRootNode: 0
+        editorPosition: {x: 1401, y: 49.449997}
+        guid:
+          Part1: 1703566582
+          Part2: 1202352971
+          Part3: 3294678954
+          Part4: 865554740
+        tag: 
