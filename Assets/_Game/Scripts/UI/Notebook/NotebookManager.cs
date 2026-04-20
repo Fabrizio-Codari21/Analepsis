@@ -312,11 +312,11 @@ public class ItemNote : Note
         
         foreach (var desc in unlockedDescriptions)
         {
-            fullContent.Add($"POI :  {desc}"); 
+            fullContent.Add($"{unlockedDescriptions.IndexOf(desc) + 1})  {desc}"); 
         }
 
         var unlockedFlash = NotebookManager.Instance.GetItemFlashbackInfo(_item);
-        if(unlockedFlash != string.Empty) fullContent.Add($"FLASH :  {unlockedFlash}");
+        if(unlockedFlash != string.Empty) fullContent.Add($"FLASHBACK :  {unlockedFlash}");
     
         
         await view.PlayText(fullContent, token);
