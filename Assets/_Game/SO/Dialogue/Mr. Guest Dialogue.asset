@@ -95,6 +95,25 @@ MonoBehaviour:
       Part3: 3147153559
       Part4: 527083217
     tag: 
+  - dialogueText: '...Oh, you fool. You see a face of fear and intrigue and you assume
+      they are a menace.
+
+      No, no... that''s no spy, comrade. That''s a woman
+      who''s under the threat of something greater than she is.
+
+      Believe me...
+      I know that face... The mirror has shown it to me multiple times. '
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828018020
+    isRootNode: 0
+    editorPosition: {x: 1083, y: 297}
+    guid:
+      Part1: 2821513536
+      Part2: 1112106946
+      Part3: 34110648
+      Part4: 3409610157
+    tag: 
   _hiddenProof: 
   references:
     version: 2
@@ -104,7 +123,7 @@ MonoBehaviour:
     - rid: 5324356914828017924
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[I''m just a humble comrade]'
+        responseText: '[I''m just a humble comrade.]'
         nextNode:
           rid: 5324356914828017926
         m_conditions: []
@@ -112,7 +131,7 @@ MonoBehaviour:
     - rid: 5324356914828017925
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[Sorry, I made a mistake (leave)]'
+        responseText: '[Sorry, I made a mistake. (leave)]'
         nextNode:
           rid: -2
         m_conditions: []
@@ -207,7 +226,7 @@ MonoBehaviour:
     - rid: 5324356914828017932
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[I guess not (leave)]'
+        responseText: '[I guess not. (leave)]'
         nextNode:
           rid: -2
         m_conditions: []
@@ -215,8 +234,132 @@ MonoBehaviour:
     - rid: 5324356914828017933
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[What''s up with the maid?]'
+        responseText: '[I think the maid is a spy.]'
+        nextNode:
+          rid: 5324356914828018019
+        m_conditions:
+        - rid: 5324356914828017986
+        editorPosition: {x: 692, y: 308.51505}
+    - rid: 5324356914828017986
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: 5e6d5ea638b02b4489ba789f296d81bb, type: 2}
+        isTalkDialogueNode:
+          dialogueText: 'Oh... nothing, it''s just... um... I was thinking about
+            my family, who live in the West, and sometimes when I do that my old
+            accent comes back.
+
+            I shouldn''t be so self-conscious about
+            it, but people can get very sensitive when it comes to those things.'
+          doesItProveAnything: 0
+          responses:
+          - rid: 5324356914828018008
+          - rid: 5324356914828018009
+          isRootNode: 0
+          editorPosition: {x: 3217, y: -476}
+          guid:
+            Part1: 3971381098
+            Part2: 1202704735
+            Part3: 4006691485
+            Part4: 2818646251
+          tag: 
+    - rid: 5324356914828018008
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Wait, when you say West...]'
+        nextNode:
+          rid: 5324356914828018011
+        m_conditions: []
+        editorPosition: {x: 4072, y: -518}
+    - rid: 5324356914828018009
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Don''t worry, I don''t mind]'
+        nextNode:
+          rid: 5324356914828018012
+        m_conditions: []
+        editorPosition: {x: 4072, y: -687}
+    - rid: 5324356914828018011
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: ...n-no, i DON'T mean... you know... "that" West, I mean...
+          um... Sorry, I have things to do.
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018013
+        isRootNode: 0
+        editorPosition: {x: 4479, y: -518}
+        guid:
+          Part1: 2653160003
+          Part2: 1118949611
+          Part3: 3135390394
+          Part4: 3955660051
+        tag: 
+    - rid: 5324356914828018012
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'After a war like that, it shocks me that anyone could still
+          care about something so insignificant.
+
+          All I want now is to
+          be able to rest without anyone thinking I''m a menace... I mean... Excuse
+          me, I have to go.'
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018014
+        isRootNode: 0
+        editorPosition: {x: 4447, y: -735}
+        guid:
+          Part1: 3008374608
+          Part2: 1171127585
+          Part3: 2291297185
+          Part4: 217656539
+        tag: 
+    - rid: 5324356914828018013
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Uh-oh, I think I screwed it.]'
         nextNode:
           rid: -2
         m_conditions: []
-        editorPosition: {x: 692, y: 308.51505}
+        editorPosition: {x: 5153, y: -536}
+    - rid: 5324356914828018014
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Someone''s calling her a <b>menace</b>...]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 5269, y: -735}
+    - rid: 5324356914828018019
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...Oh, you fool. You see a face of fear and intrigue and you
+          assume they are a menace.
+
+          No, no... that''s no spy, comrade.
+          That''s a woman who''s under the threat of something greater than she is.
+
+          Believe
+          me... I know that face... The mirror has shown it to me multiple times. '
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018020
+        isRootNode: 0
+        editorPosition: {x: 1083, y: 297}
+        guid:
+          Part1: 2821513536
+          Part2: 1112106946
+          Part3: 34110648
+          Part4: 3409610157
+        tag: 
+    - rid: 5324356914828018020
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[<b>Threatened</b>, you say? I see...]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 1839, y: 311}

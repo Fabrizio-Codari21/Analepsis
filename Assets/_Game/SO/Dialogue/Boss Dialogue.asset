@@ -78,6 +78,22 @@ MonoBehaviour:
       Part3: 3294678954
       Part4: 865554740
     tag: 
+  - dialogueText: 'Oh, please ignore her. She has the tendency to become... histerical...
+      at the least convenient moments.
+
+      She can make up stories, accuse people
+      of unproper behaviour... I highly advice you remain from trusting her.'
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828018100
+    isRootNode: 0
+    editorPosition: {x: 1355.668, y: 509.25046}
+    guid:
+      Part1: 2547384374
+      Part2: 1283484775
+      Part3: 3713609364
+      Part4: 931363781
+    tag: 
   _hiddenProof: 
   references:
     version: 2
@@ -105,9 +121,10 @@ MonoBehaviour:
       data:
         responseText: '[What''s up with the maid?]'
         nextNode:
-          rid: -2
-        m_conditions: []
-        editorPosition: {x: 959.9502, y: 472.55005}
+          rid: 5324356914828018099
+        m_conditions:
+        - rid: 5324356914828018070
+        editorPosition: {x: 961.99994, y: 491}
     - rid: 5324356914828017937
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -141,14 +158,14 @@ MonoBehaviour:
           Part2: 1229670118
           Part3: 834325127
           Part4: 1991192220
-        tag: 
+        tag: About keys
     - rid: 5324356914828017940
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: '...Well, if that''s the case, I should ask you to leave.
 
           However,
-          it would be uncouth to leave you out there, with such a terrible storm
+          it would be uncouth to let you go out there, with such a terrible storm
           going on.
 
           You may stay, but please, don''t go anywhere past
@@ -164,3 +181,124 @@ MonoBehaviour:
           Part3: 3294678954
           Part4: 865554740
         tag: 
+    - rid: 5324356914828018070
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: 5e6d5ea638b02b4489ba789f296d81bb, type: 2}
+        isTalkDialogueNode:
+          dialogueText: 'Oh... nothing, it''s just... um... I was thinking about
+            my family, who live in the West, and sometimes when I do that my old
+            accent comes back.
+
+            I shouldn''t be so self-conscious about
+            it, but people can get very sensitive when it comes to those things.'
+          doesItProveAnything: 0
+          responses:
+          - rid: 5324356914828018092
+          - rid: 5324356914828018093
+          isRootNode: 0
+          editorPosition: {x: 3217, y: -476}
+          guid:
+            Part1: 3971381098
+            Part2: 1202704735
+            Part3: 4006691485
+            Part4: 2818646251
+          tag: 
+    - rid: 5324356914828018092
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Wait, when you say West...]'
+        nextNode:
+          rid: 5324356914828018095
+        m_conditions: []
+        editorPosition: {x: 4072, y: -518}
+    - rid: 5324356914828018093
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Don''t worry, I don''t mind.]'
+        nextNode:
+          rid: 5324356914828018096
+        m_conditions: []
+        editorPosition: {x: 4072, y: -687}
+    - rid: 5324356914828018095
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: ...n-no, i DON'T mean... you know... "that" West, I mean...
+          um... Sorry, I have things to do.
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018097
+        isRootNode: 0
+        editorPosition: {x: 4479, y: -518}
+        guid:
+          Part1: 2653160003
+          Part2: 1118949611
+          Part3: 3135390394
+          Part4: 3955660051
+        tag: 
+    - rid: 5324356914828018096
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'After a war like that, it shocks me that anyone could still
+          care about something so insignificant.
+
+          All I want now is to
+          be able to rest without anyone thinking I''m a menace... I mean... Excuse
+          me, I have to go.'
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018098
+        isRootNode: 0
+        editorPosition: {x: 4447, y: -735}
+        guid:
+          Part1: 3008374608
+          Part2: 1171127585
+          Part3: 2291297185
+          Part4: 217656539
+        tag: 
+    - rid: 5324356914828018097
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Uh-oh, I think I screwed it.]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 5153, y: -536}
+    - rid: 5324356914828018098
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Someone''s calling her a <b>menace</b>...]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 5269, y: -735}
+    - rid: 5324356914828018099
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Oh, please ignore her. She has the tendency to become... histerical...
+          at the least convenient moments.
+
+          She can make up stories, accuse
+          people of unproper behaviour... I highly advice you remain from trusting
+          her.'
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018100
+        isRootNode: 0
+        editorPosition: {x: 1355.668, y: 509.25046}
+        guid:
+          Part1: 2547384374
+          Part2: 1283484775
+          Part3: 3713609364
+          Part4: 931363781
+        tag: 
+    - rid: 5324356914828018100
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(That''s... weirdly dismissive.)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 2121, y: 509}

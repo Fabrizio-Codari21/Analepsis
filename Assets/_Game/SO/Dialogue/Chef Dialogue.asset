@@ -14,19 +14,473 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueColor: {r: 0, g: 0, b: 0, a: 0}
   startingNode:
-    dialogueText: 
+    dialogueText: Please, take a seat, sir. Your food will be served very soon.
     doesItProveAnything: 0
-    responses: []
+    responses:
+    - rid: 5324356914828018021
+    - rid: 5324356914828018026
+    - rid: 5324356914828018038
     isRootNode: 1
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 300, y: 200}
     guid:
       Part1: 2187425879
       Part2: 1303396138
       Part3: 822268818
       Part4: 3030757262
     tag: 
-  allNodes: []
+  allNodes:
+  - dialogueText: 
+    doesItProveAnything: 0
+    responses: []
+    isRootNode: 1
+    editorPosition: {x: 300, y: 200}
+    guid:
+      Part1: 2187425879
+      Part2: 1303396138
+      Part3: 822268818
+      Part4: 3030757262
+    tag: 
+  - dialogueText: 'Emphasis on "the", I would say. I doubt you''re going to find
+      anyone who''s even remotely at my level in these parts.
+
+      Which, to be
+      fair, is less of a compliment to myself and more of an insult to this barren
+      wasteland of a tundra.'
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828018023
+    - rid: 5324356914828018024
+    isRootNode: 0
+    editorPosition: {x: 1187, y: -184.87875}
+    guid:
+      Part1: 3602120331
+      Part2: 1166060994
+      Part3: 911281044
+      Part4: 2523521365
+    tag: 
+  - dialogueText: Oh... why, yes, it is. I guess I must have left it here when I...
+      saw her...
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828018029
+    isRootNode: 0
+    editorPosition: {x: 1123.8, y: 242.00002}
+    guid:
+      Part1: 2281328821
+      Part2: 1083067839
+      Part3: 430758297
+      Part4: 2381979112
+    tag: 
+  - dialogueText: 'My...*sigh*... ex-wife... the guest sitting over there.
+
+      It''s
+      been years since I last saw her, and we didn''t really... end in good terms,
+      if you get me.'
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828018031
+    - rid: 5324356914828018032
+    isRootNode: 0
+    editorPosition: {x: 2000, y: 270}
+    guid:
+      Part1: 3527085235
+      Part2: 1194001365
+      Part3: 4028895926
+      Part4: 1884205132
+    tag: 
+  - dialogueText: '...yes. And, unlike what people seem to believe, it''s not because
+      of her fortune or my debt with her for allowing me to follow my career.
+
+      I
+      genuinely do still love her, and though I know she might not reciprocate, I
+      am unable to forget how I was when i was with her... *sigh* '
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828018034
+    isRootNode: 0
+    editorPosition: {x: 3009.2275, y: 115.00003}
+    guid:
+      Part1: 1137026615
+      Part2: 1229502098
+      Part3: 998843818
+      Part4: 3463862481
+    tag: 
+  - dialogueText: 'Resent her? She single-handedly financed my career as a chef and
+      gave me years of unconditional love.
+
+      Even if I didn''t still love her
+      (which I do), I have a debt with her that i doubt I''ll ever be able to pay...
+      *sigh*'
+    doesItProveAnything: 0
+    responses: []
+    isRootNode: 0
+    editorPosition: {x: 3071.3, y: 320.00006}
+    guid:
+      Part1: 2235048724
+      Part2: 1328629158
+      Part3: 2450035843
+      Part4: 3288955765
+    tag: 
+  - dialogueText: "WHAT? Of course I wouldn't, what makes you say that?\nEver since
+      <b>that incident</b> with our boss, its use has been strictly forbidden...
+      \nin fact, only hotel workers should be able to access it, so, where did you
+      find it?"
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828018037
+    isRootNode: 0
+    editorPosition: {x: 2619, y: -176}
+    guid:
+      Part1: 1832242742
+      Part2: 1121443926
+      Part3: 2250865802
+      Part4: 3781854202
+    tag: 
+  - dialogueText: "Oh, I feel so sorry for her. \nShe seems to have found an ill-intended
+      <b>note</b> on a room threatening her.\nWhoever felt the need to do something
+      so cruel wasn't even brave enough to sign..."
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828018040
+    isRootNode: 0
+    editorPosition: {x: 1381.0895, y: 525}
+    guid:
+      Part1: 2099377356
+      Part2: 1175523789
+      Part3: 1618177925
+      Part4: 73563290
+    tag: 
   _hiddenProof: 
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 5324356914828018021
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So you''re the chef, I assume?]'
+        nextNode:
+          rid: 5324356914828018022
+        m_conditions: []
+        editorPosition: {x: 797, y: -52.878784}
+    - rid: 5324356914828018022
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Emphasis on "the", I would say. I doubt you''re going to find
+          anyone who''s even remotely at my level in these parts.
+
+          Which,
+          to be fair, is less of a compliment to myself and more of an insult to
+          this barren wasteland of a tundra.'
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018023
+        - rid: 5324356914828018024
+        isRootNode: 0
+        editorPosition: {x: 1187, y: -184.87875}
+        guid:
+          Part1: 3602120331
+          Part2: 1166060994
+          Part3: 911281044
+          Part4: 2523521365
+        tag: 
+    - rid: 5324356914828018023
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[And you use peanut butter, right?]'
+        nextNode:
+          rid: 5324356914828018036
+        m_conditions:
+        - rid: 5324356914828018025
+        editorPosition: {x: 1999, y: -125.878784}
+    - rid: 5324356914828018024
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Yeah, I guess that''s fair...]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 2021, y: -300.87875}
+    - rid: 5324356914828018025
+      type: {class: ItemNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        item: {fileID: 11400000, guid: 173ad9da7e8c29c4dbe387eae1450770, type: 2}
+    - rid: 5324356914828018026
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Is this your knife, sir?]'
+        nextNode:
+          rid: 5324356914828018028
+        m_conditions:
+        - rid: 5324356914828018027
+        editorPosition: {x: 831, y: 242}
+    - rid: 5324356914828018027
+      type: {class: ItemNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        item: {fileID: 11400000, guid: 38078761dd0663346bad54d2f88251b9, type: 2}
+    - rid: 5324356914828018028
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Oh... why, yes, it is. I guess I must have left it here when
+          I... saw her...
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018029
+        isRootNode: 0
+        editorPosition: {x: 1123.8, y: 242.00002}
+        guid:
+          Part1: 2281328821
+          Part2: 1083067839
+          Part3: 430758297
+          Part4: 2381979112
+        tag: 
+    - rid: 5324356914828018029
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Saw who?]'
+        nextNode:
+          rid: 5324356914828018030
+        m_conditions: []
+        editorPosition: {x: 1715.25, y: 261.00003}
+    - rid: 5324356914828018030
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'My...*sigh*... ex-wife... the guest sitting over there.
+
+          It''s
+          been years since I last saw her, and we didn''t really... end in good terms,
+          if you get me.'
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018031
+        - rid: 5324356914828018032
+        isRootNode: 0
+        editorPosition: {x: 2000, y: 270}
+        guid:
+          Part1: 3527085235
+          Part2: 1194001365
+          Part3: 4028895926
+          Part4: 1884205132
+        tag: 
+    - rid: 5324356914828018031
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So you resent her, then?]'
+        nextNode:
+          rid: 5324356914828018035
+        m_conditions: []
+        editorPosition: {x: 2665, y: 339}
+    - rid: 5324356914828018032
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Do you miss her?]'
+        nextNode:
+          rid: 5324356914828018033
+        m_conditions: []
+        editorPosition: {x: 2680.8804, y: 169.48999}
+    - rid: 5324356914828018033
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...yes. And, unlike what people seem to believe, it''s not
+          because of her fortune or my debt with her for allowing me to follow my
+          career.
+
+          I genuinely do still love her, and though I know she
+          might not reciprocate, I am unable to forget how I was when i was with
+          her... *sigh* '
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018034
+        isRootNode: 0
+        editorPosition: {x: 3009.2275, y: 115.00003}
+        guid:
+          Part1: 1137026615
+          Part2: 1229502098
+          Part3: 998843818
+          Part4: 3463862481
+        tag: 
+    - rid: 5324356914828018034
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(That seems sincere... and sad...)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 3965, y: 189}
+    - rid: 5324356914828018035
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Resent her? She single-handedly financed my career as a chef
+          and gave me years of unconditional love.
+
+          Even if I didn''t still
+          love her (which I do), I have a debt with her that i doubt I''ll ever be
+          able to pay... *sigh*'
+        doesItProveAnything: 0
+        responses: []
+        isRootNode: 0
+        editorPosition: {x: 3071.3, y: 320.00006}
+        guid:
+          Part1: 2235048724
+          Part2: 1328629158
+          Part3: 2450035843
+          Part4: 3288955765
+        tag: 
+    - rid: 5324356914828018036
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "WHAT? Of course I wouldn't, what makes you say that?\nEver
+          since <b>that incident</b> with our boss, its use has been strictly forbidden...
+          \nin fact, only hotel workers should be able to access it, so, where did
+          you find it?"
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018037
+        isRootNode: 0
+        editorPosition: {x: 2619, y: -176}
+        guid:
+          Part1: 1832242742
+          Part2: 1121443926
+          Part3: 2250865802
+          Part4: 3781854202
+        tag: 
+    - rid: 5324356914828018037
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Oh, I didn''t. (<b>That incident</b>...)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 3263, y: -176}
+    - rid: 5324356914828018038
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[What''s up with the maid?]'
+        nextNode:
+          rid: 5324356914828018039
+        m_conditions:
+        - rid: 5324356914828018041
+        editorPosition: {x: 952.50006, y: 493}
+    - rid: 5324356914828018039
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "Oh, I feel so sorry for her. \nShe seems to have found an
+          ill-intended <b>note</b> on a room threatening her.\nWhoever felt the need
+          to do something so cruel wasn't even brave enough to sign..."
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018040
+        isRootNode: 0
+        editorPosition: {x: 1381.0895, y: 525}
+        guid:
+          Part1: 2099377356
+          Part2: 1175523789
+          Part3: 1618177925
+          Part4: 73563290
+        tag: 
+    - rid: 5324356914828018040
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So she''s been <b>threatened</b>...]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 2028.0895, y: 566}
+    - rid: 5324356914828018041
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: 5e6d5ea638b02b4489ba789f296d81bb, type: 2}
+        isTalkDialogueNode:
+          dialogueText: 'Oh... nothing, it''s just... um... I was thinking about
+            my family, who live in the West, and sometimes when I do that my old
+            accent comes back.
+
+            I shouldn''t be so self-conscious about
+            it, but people can get very sensitive when it comes to those things.'
+          doesItProveAnything: 0
+          responses:
+          - rid: 5324356914828018063
+          - rid: 5324356914828018064
+          isRootNode: 0
+          editorPosition: {x: 3217, y: -476}
+          guid:
+            Part1: 3971381098
+            Part2: 1202704735
+            Part3: 4006691485
+            Part4: 2818646251
+          tag: 
+    - rid: 5324356914828018063
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Wait, when you say West...]'
+        nextNode:
+          rid: 5324356914828018066
+        m_conditions: []
+        editorPosition: {x: 4072, y: -518}
+    - rid: 5324356914828018064
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Don''t worry, I don''t mind.]'
+        nextNode:
+          rid: 5324356914828018067
+        m_conditions: []
+        editorPosition: {x: 4072, y: -687}
+    - rid: 5324356914828018066
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: ...n-no, i DON'T mean... you know... "that" West, I mean...
+          um... Sorry, I have things to do.
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018068
+        isRootNode: 0
+        editorPosition: {x: 4479, y: -518}
+        guid:
+          Part1: 2653160003
+          Part2: 1118949611
+          Part3: 3135390394
+          Part4: 3955660051
+        tag: 
+    - rid: 5324356914828018067
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'After a war like that, it shocks me that anyone could still
+          care about something so insignificant.
+
+          All I want now is to
+          be able to rest without anyone thinking I''m a menace... I mean... Excuse
+          me, I have to go.'
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018069
+        isRootNode: 0
+        editorPosition: {x: 4447, y: -735}
+        guid:
+          Part1: 3008374608
+          Part2: 1171127585
+          Part3: 2291297185
+          Part4: 217656539
+        tag: 
+    - rid: 5324356914828018068
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Uh-oh, I think I screwed it.]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 5153, y: -536}
+    - rid: 5324356914828018069
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Someone''s calling her a <b>menace</b>...]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 5269, y: -735}

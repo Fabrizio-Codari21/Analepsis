@@ -24,9 +24,22 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: cd6457665355be84eb3a80a437f245eb, type: 3}
   baseClue: 
   flashbackInfo:
-    info: "Someone placed their dulce de leche \nin this room without thinking..."
+    info: "Someone placed their peanut butter in this room \nconsciously and used
+      it, even though it was forbidden. \nI wonder why..."
     characterPrefab: {fileID: -7788030297154945564, guid: cab142ae67d2f034db6770213d50edf6, type: 3}
     key: {fileID: 0}
     offset: {x: 0, y: 0, z: 0}
   doesItProveAnything: 03000000
-  pois: []
+  pois:
+  - poiId: Label
+    description: 'The label simply says "Peanut Butter". '
+  - poiId: Lid
+    description: 'The lid seems to have been opened recently.
+
+      Through the
+      jar, you see that about half its content has been used.'
+  - poiId: Warning
+    description: 'A handwritten label that says "DO NOT USE!!".
+
+      A little hand-drawn
+      skull can be seen under the text.'

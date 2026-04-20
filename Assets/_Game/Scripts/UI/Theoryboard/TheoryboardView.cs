@@ -72,7 +72,6 @@ public class TheoryboardView : MonoBehaviour
         button.SetText(text);
         if (placeholder) 
         {
-            print("nop");
             button.SetInteractable(false);
             return button;
         }

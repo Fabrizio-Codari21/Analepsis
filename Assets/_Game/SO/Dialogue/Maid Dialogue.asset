@@ -14,19 +14,494 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueColor: {r: 0, g: 0, b: 0, a: 0}
   startingNode:
-    dialogueText: 
+    dialogueText: ...
     doesItProveAnything: 0
-    responses: []
+    responses:
+    - rid: 5324356914828017944
+    - rid: 5324356914828017946
+    - rid: 5324356914828017968
     isRootNode: 1
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 300, y: 200}
     guid:
       Part1: 2187425879
       Part2: 1303396138
       Part3: 822268818
       Part4: 3030757262
     tag: 
-  allNodes: []
+  allNodes:
+  - dialogueText: ...
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017944
+    - rid: 5324356914828017946
+    - rid: 5324356914828017968
+    isRootNode: 1
+    editorPosition: {x: 300, y: 200}
+    guid:
+      Part1: 2187425879
+      Part2: 1303396138
+      Part3: 822268818
+      Part4: 3030757262
+    tag: 
+  - dialogueText: ...
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017948
+    - rid: 5324356914828017949
+    isRootNode: 0
+    editorPosition: {x: 922, y: 65}
+    guid:
+      Part1: 4144209383
+      Part2: 1107291046
+      Part3: 855838643
+      Part4: 801761233
+    tag: 
+  - dialogueText: ...yeah.
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017952
+    - rid: 5324356914828017953
+    isRootNode: 0
+    editorPosition: {x: 1658, y: -41}
+    guid:
+      Part1: 2118563063
+      Part2: 1177793399
+      Part3: 1214224302
+      Part4: 244814565
+    tag: 
+  - dialogueText: ...no.
+    doesItProveAnything: 0
+    responses: []
+    isRootNode: 0
+    editorPosition: {x: 1658, y: 132.5}
+    guid:
+      Part1: 69642619
+      Part2: 1074310951
+      Part3: 3329747378
+      Part4: 2843433252
+    tag: 
+  - dialogueText: ...yeah ...why wouldn't I? My accent's not that bad, is it?
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017955
+    - rid: 5324356914828017958
+    isRootNode: 0
+    editorPosition: {x: 2381, y: -214.68}
+    guid:
+      Part1: 365205872
+      Part2: 1260607082
+      Part3: 483524784
+      Part4: 1044298053
+    tag: 
+  - dialogueText: ...yeah.
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017957
+    isRootNode: 0
+    editorPosition: {x: 2296.0198, y: 26.500025}
+    guid:
+      Part1: 3738737354
+      Part2: 1165723657
+      Part3: 1568583865
+      Part4: 2768871137
+    tag: 
+  - dialogueText: ...
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017960
+    isRootNode: 0
+    editorPosition: {x: 3217.1506, y: -176.00008}
+    guid:
+      Part1: 3463547412
+      Part2: 1146070968
+      Part3: 758432645
+      Part4: 3381485250
+    tag: 
+  - dialogueText: 'Oh... nothing, it''s just... um... I was thinking about my family,
+      who live in the West, and sometimes when I do that my old accent comes back.
+
+      I
+      shouldn''t be so self-conscious about it, but people can get very sensitive
+      when it comes to those things.'
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017962
+    - rid: 5324356914828017963
+    isRootNode: 0
+    editorPosition: {x: 3217, y: -476}
+    guid:
+      Part1: 3971381098
+      Part2: 1202704735
+      Part3: 4006691485
+      Part4: 2818646251
+    tag: 
+  - dialogueText: ...n-no, i DON'T mean... you know... "that" West, I mean... um...
+      Sorry, I have things to do.
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017966
+    isRootNode: 0
+    editorPosition: {x: 4587, y: -386}
+    guid:
+      Part1: 2653160003
+      Part2: 1118949611
+      Part3: 3135390394
+      Part4: 3955660051
+    tag: 
+  - dialogueText: 'After a war like that, it shocks me that anyone could still care
+      about something so insignificant.
+
+      All I want now is to be able to rest
+      without anyone thinking I''m a menace... I mean... Excuse me, I have to go.'
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828017967
+    isRootNode: 0
+    editorPosition: {x: 4555, y: -603}
+    guid:
+      Part1: 3008374608
+      Part2: 1171127585
+      Part3: 2291297185
+      Part4: 217656539
+    tag: 
+  - dialogueText: ... Idon'tknowwhatyou'retalkingaboutokbye
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828018015
+    isRootNode: 0
+    editorPosition: {x: 1006, y: 300}
+    guid:
+      Part1: 1499644942
+      Part2: 1101465520
+      Part3: 3719844746
+      Part4: 465460738
+    tag: 
   _hiddenProof: 
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 5324356914828017944
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Um... Hello?]'
+        nextNode:
+          rid: 5324356914828017947
+        m_conditions: []
+        editorPosition: {x: 492, y: -10}
+    - rid: 5324356914828017946
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Alright, got the message (Leave)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 575, y: 509}
+    - rid: 5324356914828017947
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: ...
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828017948
+        - rid: 5324356914828017949
+        isRootNode: 0
+        editorPosition: {x: 814, y: -67}
+        guid:
+          Part1: 4144209383
+          Part2: 1107291046
+          Part3: 855838643
+          Part4: 801761233
+        tag: 
+    - rid: 5324356914828017948
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Are you the maid, perhaps?]'
+        nextNode:
+          rid: 5324356914828017950
+        m_conditions: []
+        editorPosition: {x: 1154, y: -154}
+    - rid: 5324356914828017949
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Can I help you, somehow?]'
+        nextNode:
+          rid: 5324356914828017951
+        m_conditions: []
+        editorPosition: {x: 1161, y: 10}
+    - rid: 5324356914828017950
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: ...yeah.
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828017952
+        - rid: 5324356914828017953
+        isRootNode: 0
+        editorPosition: {x: 1550, y: -173}
+        guid:
+          Part1: 2118563063
+          Part2: 1177793399
+          Part3: 1214224302
+          Part4: 244814565
+        tag: 
+    - rid: 5324356914828017951
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: ...no.
+        doesItProveAnything: 0
+        responses: []
+        isRootNode: 0
+        editorPosition: {x: 1521, y: 10}
+        guid:
+          Part1: 69642619
+          Part2: 1074310951
+          Part3: 3329747378
+          Part4: 2843433252
+        tag: 
+    - rid: 5324356914828017952
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Can you... understand me?]'
+        nextNode:
+          rid: 5324356914828017954
+        m_conditions: []
+        editorPosition: {x: 1857, y: -289}
+    - rid: 5324356914828017953
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Are you alright?]'
+        nextNode:
+          rid: 5324356914828017956
+        m_conditions: []
+        editorPosition: {x: 1884, y: -115}
+    - rid: 5324356914828017954
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: ...yeah ...why wouldn't I? My accent's not that bad, is it?
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828017955
+        - rid: 5324356914828017958
+        isRootNode: 0
+        editorPosition: {x: 2273, y: -347}
+        guid:
+          Part1: 365205872
+          Part2: 1260607082
+          Part3: 483524784
+          Part4: 1044298053
+        tag: 
+    - rid: 5324356914828017955
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[What accent?]'
+        nextNode:
+          rid: 5324356914828017961
+        m_conditions: []
+        editorPosition: {x: 2805, y: -463}
+    - rid: 5324356914828017956
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: ...yeah.
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828017957
+        isRootNode: 0
+        editorPosition: {x: 2188, y: -105}
+        guid:
+          Part1: 3738737354
+          Part2: 1165723657
+          Part3: 1568583865
+          Part4: 2768871137
+        tag: 
+    - rid: 5324356914828017957
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(This is going nowhere...)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 2492, y: -86}
+    - rid: 5324356914828017958
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[It is, actually.]'
+        nextNode:
+          rid: 5324356914828017959
+        m_conditions: []
+        editorPosition: {x: 2807, y: -308}
+    - rid: 5324356914828017959
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: ...
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828017960
+        isRootNode: 0
+        editorPosition: {x: 3109, y: -308}
+        guid:
+          Part1: 3463547412
+          Part2: 1146070968
+          Part3: 758432645
+          Part4: 3381485250
+        tag: 
+    - rid: 5324356914828017960
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Maybe I shouldn''t have said that...)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 3418, y: -308}
+    - rid: 5324356914828017961
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Oh... nothing, it''s just... um... I was thinking about my
+          family, who live in the West, and sometimes when I do that my old accent
+          comes back.
+
+          I shouldn''t be so self-conscious about it, but
+          people can get very sensitive when it comes to those things.'
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828017962
+        - rid: 5324356914828017963
+        isRootNode: 0
+        editorPosition: {x: 3109, y: -608}
+        guid:
+          Part1: 3971381098
+          Part2: 1202704735
+          Part3: 4006691485
+          Part4: 2818646251
+        tag: 
+    - rid: 5324356914828017962
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Wait, when you say West...]'
+        nextNode:
+          rid: 5324356914828017964
+        m_conditions: []
+        editorPosition: {x: 4072, y: -518}
+    - rid: 5324356914828017963
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Don''t worry, I don''t mind.]'
+        nextNode:
+          rid: 5324356914828017965
+        m_conditions: []
+        editorPosition: {x: 4072, y: -687}
+    - rid: 5324356914828017964
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: ...n-no, i DON'T mean... you know... "that" West, I mean...
+          um... Sorry, I have things to do.
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828017966
+        isRootNode: 0
+        editorPosition: {x: 4479, y: -518}
+        guid:
+          Part1: 2653160003
+          Part2: 1118949611
+          Part3: 3135390394
+          Part4: 3955660051
+        tag: 
+    - rid: 5324356914828017965
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'After a war like that, it shocks me that anyone could still
+          care about something so insignificant.
+
+          All I want now is to
+          be able to rest without anyone thinking I''m a menace... I mean... Excuse
+          me, I have to go.'
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828017967
+        isRootNode: 0
+        editorPosition: {x: 4447, y: -735}
+        guid:
+          Part1: 3008374608
+          Part2: 1171127585
+          Part3: 2291297185
+          Part4: 217656539
+        tag: 
+    - rid: 5324356914828017966
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Uh-oh, I think I screwed it.]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 5153, y: -536}
+    - rid: 5324356914828017967
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Someone''s calling her a <b>menace</b>...]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 5269, y: -735}
+    - rid: 5324356914828017968
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Have you seen some keys?]'
+        nextNode:
+          rid: 5324356914828018016
+        m_conditions:
+        - rid: 5324356914828017977
+        editorPosition: {x: 604, y: 319}
+    - rid: 5324356914828017977
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: eef33a1ddd5346145893f06f28b6477c, type: 2}
+        isTalkDialogueNode:
+          dialogueText: "Oh... Nothing that you should worry about, really. \nIt's
+            just... I seem to have lost the keys to my car. It's a fancy new model
+            and I've barely had a chance to drive it yet.\nI doubt you're gonna find
+            them around here, but if you find out something... please let me know."
+          doesItProveAnything: 0
+          responses:
+          - rid: 5324356914828017983
+          isRootNode: 0
+          editorPosition: {x: 1400.5004, y: 280.49997}
+          guid:
+            Part1: 1756710703
+            Part2: 1229670118
+            Part3: 834325127
+            Part4: 1991192220
+          tag: 
+    - rid: 5324356914828017983
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Sure! (Missing <b>keys</b>, huh?)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 2283.135, y: 250.93501}
+    - rid: 5324356914828018015
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Well, that''s odd...)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 1493, y: 300}
+    - rid: 5324356914828018016
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: ... Idon'tknowwhatyou'retalkingaboutokbye.
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018015
+        isRootNode: 0
+        editorPosition: {x: 1006, y: 300}
+        guid:
+          Part1: 1499644942
+          Part2: 1101465520
+          Part3: 3719844746
+          Part4: 465460738
+        tag: 

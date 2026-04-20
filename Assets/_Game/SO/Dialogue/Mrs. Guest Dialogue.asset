@@ -1,0 +1,198 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
+  m_Name: Mrs. Guest Dialogue
+  m_EditorClassIdentifier: 
+  dialogueColor: {r: 0, g: 0, b: 0, a: 0}
+  startingNode:
+    dialogueText: 'Well, hello there, darling. You seem like someone who likes a
+      good chat.
+
+      How about you sit down so we can talk about important stuff...?'
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828018101
+    - rid: 5324356914828018102
+    - rid: 5324356914828018106
+    isRootNode: 1
+    editorPosition: {x: 300, y: 200}
+    guid:
+      Part1: 2187425879
+      Part2: 1303396138
+      Part3: 822268818
+      Part4: 3030757262
+    tag: 
+  allNodes:
+  - dialogueText: 
+    doesItProveAnything: 0
+    responses: []
+    isRootNode: 1
+    editorPosition: {x: 300, y: 200}
+    guid:
+      Part1: 2187425879
+      Part2: 1303396138
+      Part3: 822268818
+      Part4: 3030757262
+    tag: 
+  - dialogueText: OMG YES I WAS HOPING YOU WOULD ASK THAT! Have you heard the news
+      about...
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828018104
+    isRootNode: 0
+    editorPosition: {x: 1301.8975, y: 373.46564}
+    guid:
+      Part1: 2998628211
+      Part2: 1161274915
+      Part3: 3824780930
+      Part4: 2435732279
+    tag: 
+  - dialogueText: "And what an interesting bunch they are! \nYou see, the boss over
+      there at the counter seems to be the least interesting of them, all grumpy
+      and stone-faced.\nBetween him and the other guest, who looks like he swats
+      flies with a revolver, I can't decide which one looks the most like they would
+      kill me..."
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828018107
+    isRootNode: 0
+    editorPosition: {x: 1421.0004, y: -26.99998}
+    guid:
+      Part1: 3567248338
+      Part2: 1222346820
+      Part3: 1553846463
+      Part4: 3527411740
+    tag: 
+  - dialogueText: "Then, there's the help, which concerns me in a different fashion...\nThat
+      girl over there, the maid... she seems so nervous, poor thing... I wonder what
+      happened to her.\nAnd the chef back there... good lord, he looks like my ex-husband!
+      *shivers* \nSorry, I had a very unpleasant memory just now. Anyways, where
+      was I..."
+    doesItProveAnything: 0
+    responses:
+    - rid: 5324356914828018108
+    isRootNode: 0
+    editorPosition: {x: 2917, y: -159}
+    guid:
+      Part1: 3056741555
+      Part2: 1220067658
+      Part3: 3246485148
+      Part4: 3596794833
+    tag: 
+  _hiddenProof: 
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 5324356914828018101
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[How about the people here?]'
+        nextNode:
+          rid: 5324356914828018105
+        m_conditions: []
+        editorPosition: {x: 907, y: 108}
+    - rid: 5324356914828018102
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[How about celebrities?]'
+        nextNode:
+          rid: 5324356914828018103
+        m_conditions: []
+        editorPosition: {x: 933.99994, y: 315.00003}
+    - rid: 5324356914828018103
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: OMG YES I WAS HOPING YOU WOULD ASK THAT! Have you heard the
+          news about...
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018104
+        isRootNode: 0
+        editorPosition: {x: 1301.8975, y: 373.46564}
+        guid:
+          Part1: 2998628211
+          Part2: 1161274915
+          Part3: 3824780930
+          Part4: 2435732279
+        tag: 
+    - rid: 5324356914828018104
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(This went on for too long...)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 2002.8975, y: 373.46564}
+    - rid: 5324356914828018105
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "And what an interesting bunch they are! \nYou see, the boss
+          over there at the counter seems to be the least interesting of them, all
+          grumpy and stone-faced.\nBetween him and the other guest, who looks like
+          he swats flies with a revolver, I can't decide which one looks the most
+          like they would kill me..."
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018107
+        isRootNode: 0
+        editorPosition: {x: 1421.0004, y: -26.99998}
+        guid:
+          Part1: 3567248338
+          Part2: 1222346820
+          Part3: 1553846463
+          Part4: 3527411740
+        tag: 
+    - rid: 5324356914828018106
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I hate chatting. (leave)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 936.9999, y: 527.5209}
+    - rid: 5324356914828018107
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[<b>Kill you</b>, huh? (Keep listening)]'
+        nextNode:
+          rid: 5324356914828018109
+        m_conditions: []
+        editorPosition: {x: 2408, y: -51}
+    - rid: 5324356914828018108
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Leave before it derails)]'
+        nextNode:
+          rid: -2
+        m_conditions: []
+        editorPosition: {x: 3660, y: -192}
+    - rid: 5324356914828018109
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "Then, there's the help, which concerns me in a different fashion...\nThat
+          girl over there, the maid... she seems so nervous, poor thing... I wonder
+          what happened to her.\nAnd the chef back there... good lord, he looks like
+          my ex-husband! *shivers* \nSorry, I had a very unpleasant memory just now.
+          Anyways, where was I..."
+        doesItProveAnything: 0
+        responses:
+        - rid: 5324356914828018108
+        isRootNode: 0
+        editorPosition: {x: 2917, y: -159}
+        guid:
+          Part1: 3056741555
+          Part2: 1220067658
+          Part3: 3246485148
+          Part4: 3596794833
+        tag: 

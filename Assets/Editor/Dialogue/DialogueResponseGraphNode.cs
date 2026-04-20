@@ -44,7 +44,7 @@ public sealed class DialogueResponseGraphNode : Node
         #region Condition Area
         Foldout conditionFoldout = new Foldout()
         {
-            text = "Conditions",
+            text = $"Conditions ({responseData.m_conditions.Count})",
             value = false ,
             
         };
@@ -230,6 +230,7 @@ public sealed class DialogueResponseGraphNode : Node
     {
         Vector2 mousePos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);
         _graphView.OpenConditionSearchWindow(this, mousePos);
+        //extensionContainer.GetFirstOfType<Foldout>().text = $"Conditions ({ResponseData.m_conditions.Count})";
     }
     public override void SetPosition(Rect newPos)
     {
