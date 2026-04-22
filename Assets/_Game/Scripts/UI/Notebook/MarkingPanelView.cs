@@ -6,8 +6,12 @@ using Cysharp.Threading.Tasks;
 using PrimeTween;
 using Unity.VisualScripting;
 
-public class MarkingPanelView : MonoBehaviour
+public class MarkingPanelView : MonoBehaviour, IActivity
 {
+    [SerializeField] IActivityEvent pushEvent;
+    [SerializeField] EventChannel popEvent;
+    [SerializeField] BoolEventChannel enableCursor;
+
     [SerializeField] GameObject mainUI;
     [SerializeField] TMP_InputField inputField;
     [SerializeField] TextMeshProUGUI tipText;
@@ -39,6 +43,7 @@ public class MarkingPanelView : MonoBehaviour
 
 
     string _newClueName;
+
     public async UniTask RenameAndMarkClue(Note clue)
     {
         _newClueName = default;
@@ -49,6 +54,8 @@ public class MarkingPanelView : MonoBehaviour
         }
 
         //markableClues[clue.guid]?.DisplayMark(true);
+        pushEvent.Raise(this);
+        enableCursor.Raise(true);
         tipText.text = _tips[clue.type][Random.Range(0, _tips[clue.type].Count - 1)];
         await UnfoldPanel(true);
 
@@ -65,6 +72,12 @@ public class MarkingPanelView : MonoBehaviour
             
             _newClueName = default;
             print("Marked clue: " + newClue.displayName);
+
+            inputField.text = "Sending to the Theory Board...";
+            markClueButton.interactable = false; cancelButton.interactable = false; inputField.interactable = false;
+            await UniTask.Delay(500);
+
+            popEvent.Raise();
             await UnfoldPanel(false);
             Destroy(gameObject);
         });
@@ -72,6 +85,8 @@ public class MarkingPanelView : MonoBehaviour
         cancelButton.onClick.AddListener(async () =>
         {
             _newClueName = default;
+
+            popEvent.Raise();
             await UnfoldPanel(false);
             Destroy(gameObject);
         });
@@ -104,4 +119,29 @@ public class MarkingPanelView : MonoBehaviour
 
     }
 
+
+    public event System.Action OnResume;
+    public event System.Action OnPause;
+    public event System.Action OnStop;
+
+    public void Resume()
+    {
+        OnResume?.Invoke();
+    }
+
+    public void Pause()
+    {
+        OnPause?.Invoke();
+    }
+
+    public void Stop()
+    {
+        OnStop?.Invoke();
+        Pause();
+    }
+
+    public bool CanPopWithKey()
+    {
+        return true;
+    }
 }

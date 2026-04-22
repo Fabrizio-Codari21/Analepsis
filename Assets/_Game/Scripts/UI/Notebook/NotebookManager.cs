@@ -170,7 +170,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                 //_cts?.Dispose();
                 //_cts = new CancellationTokenSource();
                 //button.DisplayMark(markedClues.ContainsKey(note.guid));
-                markedClueEvent.Raise(note);               
+                markedClueEvent.Raise(cachedNote);               
             });
         }
         print("markable clues: " + m_markingPanel.markableClues.Count);
