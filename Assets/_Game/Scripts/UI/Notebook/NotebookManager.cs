@@ -23,6 +23,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private EventChannel putInNotebookChannel;
     [SerializeField] private NotebookView m_view;
     [SerializeField] private RecordNoteEvent m_recordNote;
+    [SerializeField] private MarkingPanelView m_markingPanel;
     [SerializeField] private BoolEventChannel m_udpatePoi;
     private CancellationTokenSource _cts;
     private readonly Dictionary<SerializableGuid,Note> _notebookPages = new();
@@ -52,7 +53,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         m_view = Instantiate(m_view,transform);
         inputReaderNoteBook.Close += Close;
         m_recordNote.OnEventRaised += Record;
-        markedClueEvent.OnEventRaised += MarkClue;
+        markedClueEvent.OnEventRaised += async (note) => await TryToMarkClue(note);
         m_openNotebookChannel.OnEventRaised += Open;
     }
 
@@ -66,11 +67,10 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         //MarkClue(note); //esto es temporal
     }
 
-    private void MarkClue(Note note)
+    private async UniTask TryToMarkClue(Note note)
     {
-        if(!markedClues.Remove(note.guid)) markedClues.TryAdd(note.guid, note);
-
-        print("Marked clue: " + note.displayName);
+        var panel = Instantiate(m_markingPanel,transform);
+        await panel.RenameAndMarkClue(note);
     }
 
     private void Open()
@@ -140,6 +140,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         
         m_view.ClearDetail();
         m_view.ClearButton();
+        m_markingPanel.markableClues.Clear();
         m_view.SetTitle(type.ToString()); // si vamos a hacer localization ya deberia usar de esta forma , lo hago asi para ahorrarme tiempo
         if(_notebookPages.Where(x => x.Value.type == type).Count() <= 0)
         {
@@ -152,6 +153,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
             var cachedNote = note;
             
             var button = m_view.CreateButton(cachedNote.GetButtonText());
+            m_markingPanel.markableClues.Add(cachedNote.guid, button);
             button.AddListener(() =>
             {
                 _cts?.Cancel();
@@ -167,10 +169,11 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                 //_cts?.Cancel();
                 //_cts?.Dispose();
                 //_cts = new CancellationTokenSource();
-                markedClueEvent.Raise(note);
-                button.DisplayMark(markedClues.ContainsKey(note.guid));
+                //button.DisplayMark(markedClues.ContainsKey(note.guid));
+                markedClueEvent.Raise(note);               
             });
         }
+        print("markable clues: " + m_markingPanel.markableClues.Count);
     }
     private async UniTask SelectNote(Note note, CancellationToken token)
     {
