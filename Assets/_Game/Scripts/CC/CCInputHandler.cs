@@ -11,6 +11,7 @@ public class CcInputHandler : MonoBehaviour
    [SerializeField] private CinemachineCamera  m_camera;
    [SerializeField] private Transform m_cameraTransform;
    [SerializeField] private EventChannel m_openBook;
+   [SerializeField] private EventChannel m_openTheoryBoard;
    [SerializeField] private BoolEventChannel m_flashback;
    public event Action<Vector2> Move = delegate { };
    public event Action InteractPressed = delegate { };
@@ -48,6 +49,7 @@ public class CcInputHandler : MonoBehaviour
       m_reader.InteractPressed += InteractStart;
       m_reader.InteractReleased += InteractStop;
       m_reader.OpenNotebook += TryOpenNotebook;
+      m_reader.OpenTheoryBoard += TryOpenTheoryBoard;
    }
 
 
@@ -71,6 +73,13 @@ public class CcInputHandler : MonoBehaviour
    {
       if(_onFlashBack) return;
       m_openBook?.Raise();
+   }
+
+
+   private void TryOpenTheoryBoard()
+   {
+      if(_onFlashBack) return;
+      m_openTheoryBoard?.Raise();
    }
 
    private void Resume()

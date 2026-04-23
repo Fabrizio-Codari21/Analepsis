@@ -8,7 +8,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
 {
     [SerializeField] TheoryboardView view;
 
-    [SerializeField] private CCInputReader inputReader;
+    [SerializeField] private EventChannel m_openTheoryBoardChannel;
     [SerializeField] private BoolEventChannel enableCursor;
     [SerializeField] private BoardInputReader inputReaderBoard;
     [SerializeField] private IActivityEvent pushEvent;
@@ -80,8 +80,8 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     {
         //boardView.renderMode = RenderMode.WorldSpace;
         //boardView.worldCamera = Camera.current;
-        inputReader.OpenTheoryBoard += Open;
-        inputReader.OpenTheoryBoard += view.LoadMarkedClues;
+        m_openTheoryBoardChannel.OnEventRaised += Open;
+        m_openTheoryBoardChannel.OnEventRaised += view.LoadMarkedClues;
         inputReaderBoard.Close += Close;
 
     }

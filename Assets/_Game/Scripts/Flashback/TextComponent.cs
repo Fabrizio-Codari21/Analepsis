@@ -10,8 +10,6 @@ public class TextComponent : MonoBehaviour
     
     private string _currentText = "";
     private DynamicText _text; 
-    private DynamicUIText _exitText;
-
     private IFocus _focus;
 
  
@@ -28,8 +26,7 @@ public class TextComponent : MonoBehaviour
 
     private void OnDestroy()
     {
-        _exitText.transform.parent = null;
-        FlyweightFactory.Instance.Return(_exitText);
+       
         _focus.OnFocus -= TryToSpawnText;
         _focus.OnUnfocus -= DespawnText;
     }
@@ -45,14 +42,14 @@ public class TextComponent : MonoBehaviour
 
         _text.SetText(_currentText,2f,Color.cyan);
         await _text.PlayTypeWriterEffect();
-
-        if(!_exitText) _exitText = FlyweightFactory.Instance.Spawn<DynamicUIText>(
-            m_textSetting,
-            new Vector3(0,-400,0),
-            Quaternion.identity);
-
-        _exitText.SetText("[Press 'F' to leave the flashback.]", 2f, Color.cyan);
-        await _exitText.PlayTypeWriterEffect();
+        //
+        // if(!_exitText) _exitText = FlyweightFactory.Instance.Spawn<DynamicUIText>(
+        //     m_textSetting,
+        //     new Vector3(0,-400,0),
+        //     Quaternion.identity);
+        //
+        // _exitText.SetText("[Press 'F' to leave the flashback.]", 2f, Color.cyan);
+        // await _exitText.PlayTypeWriterEffect();
     }
 
     private void DespawnText()
