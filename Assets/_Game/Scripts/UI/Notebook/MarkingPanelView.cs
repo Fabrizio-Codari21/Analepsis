@@ -43,7 +43,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
 
 
     string _newClueName;
-
+    [HideInInspector] public bool isMarkingClue = false;
     public async UniTask RenameAndMarkClue(Note clue)
     {
         _newClueName = default;
@@ -79,6 +79,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
 
             popEvent.Raise();
             await UnfoldPanel(false);
+            isMarkingClue = false;
             Destroy(gameObject);
         });
 
@@ -88,6 +89,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
 
             popEvent.Raise();
             await UnfoldPanel(false);
+            isMarkingClue = false;
             Destroy(gameObject);
         });
 

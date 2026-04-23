@@ -175,6 +175,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                     markedClues.Remove(note.guid);
                     return;
                 }
+                m_markingPanel.isMarkingClue = true;
                 button.DisplayMark(true);
                 markedClueEvent.Raise(cachedNote);               
             });
@@ -222,6 +223,8 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         OnResume?.Invoke();
         inputReaderNoteBook.SetEnable();
+        if (m_markingPanel.isMarkingClue) return;
+
         m_view.gameObject.SetActive(true);
         m_view.NextButtonAdd(()=> ChangeType(1));
         m_view.PreviousButtonAdd(()=>ChangeType(-1));
@@ -235,6 +238,8 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         OnPause?.Invoke();
         inputReaderNoteBook.SetEnable(false);
+        if (m_markingPanel.isMarkingClue) return;
+
         m_view.gameObject.SetActive(false);
         m_view.RemoveNext();
         m_view.RemovePrevious();
