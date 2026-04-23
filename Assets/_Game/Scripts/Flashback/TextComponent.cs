@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 
@@ -8,7 +9,8 @@ public class TextComponent : MonoBehaviour
     [SerializeField] private Vector3 m_offset = new Vector3(0,1.5f,0f) ;
     
     private string _currentText = "";
-    private DynamicText _text;
+    private DynamicText _text; 
+    private DynamicUIText _exitText;
 
     private IFocus _focus;
 
@@ -16,7 +18,7 @@ public class TextComponent : MonoBehaviour
     private void Start()
     {
         _focus = GetComponent<IFocus>();
-        _focus.OnFocus += SpawnText;
+        _focus.OnFocus += TryToSpawnText;
         _focus.OnUnfocus += DespawnText;
     }
     public void Init(string text)
@@ -26,15 +28,31 @@ public class TextComponent : MonoBehaviour
 
     private void OnDestroy()
     {
-        _focus.OnFocus -= SpawnText;
+        _exitText.transform.parent = null;
+        FlyweightFactory.Instance.Return(_exitText);
+        _focus.OnFocus -= TryToSpawnText;
         _focus.OnUnfocus -= DespawnText;
     }
 
-    private void SpawnText()
+    private void TryToSpawnText() => _ = SpawnText(); 
+    private async UniTask SpawnText()
     {
-        _text = FlyweightFactory.Instance.Spawn<DynamicText>(m_textSetting, m_offset + transform.position,Quaternion.identity,transform);
+        _text = FlyweightFactory.Instance.Spawn<DynamicText>(
+            m_textSetting, 
+            m_offset + transform.position,
+            Quaternion.identity,
+            transform);
+
         _text.SetText(_currentText,2f,Color.cyan);
-        _ = _text.PlayTypeWriterEffect();
+        await _text.PlayTypeWriterEffect();
+
+        if(!_exitText) _exitText = FlyweightFactory.Instance.Spawn<DynamicUIText>(
+            m_textSetting,
+            new Vector3(0,-400,0),
+            Quaternion.identity);
+
+        _exitText.SetText("[Press 'F' to leave the flashback.]", 2f, Color.cyan);
+        await _exitText.PlayTypeWriterEffect();
     }
 
     private void DespawnText()

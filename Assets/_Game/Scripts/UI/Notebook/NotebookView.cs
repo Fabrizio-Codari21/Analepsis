@@ -22,7 +22,7 @@ public class NotebookView : MonoBehaviour
     [SerializeField] private Button m_previous;
 
     private IActivity _activity;
-    [Range(200f,700f)][SerializeField] private float m_textWidth = 200f;
+    [Range(200f,700f)][SerializeField] private float m_textWidth = 600f;
     private void Start()
     { 
         _activity = GetComponentInParent<IActivity>();
@@ -97,7 +97,7 @@ public class NotebookView : MonoBehaviour
             Quaternion.identity,
             m_detailRoot);
 
-            t.SetText(item, m_dynamicTextSetting.size, m_dynamicTextSetting.color, m_textWidth);
+            t.SetText(item, m_dynamicTextSetting.size, m_dynamicTextSetting.color, m_textWidth, true);
             t.ToLast();
             await UniTask.NextFrame(token);
             token.ThrowIfCancellationRequested();

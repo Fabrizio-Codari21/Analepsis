@@ -53,7 +53,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         m_view = Instantiate(m_view,transform);
         inputReaderNoteBook.Close += Close;
         m_recordNote.OnEventRaised += Record;
-        m_markingPanel.isMarkingClue = false;
+        ResetMarkingPanel();
         markedClueEvent.OnEventRaised += async (note) => await TryToMarkClue(note);
         m_openNotebookChannel.OnEventRaised += Open;
     }

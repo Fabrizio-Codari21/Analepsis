@@ -61,7 +61,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
         ////markableClues[clue.guid]?.DisplayMark(true);
         pushEvent.Raise(this);
         enableCursor.Raise(true);
-        tipText.text = _tips[clue.type][Random.Range(0, _tips[clue.type].Count - 1)];
+        tipText.text = RandomTip(clue.type);
         await UnfoldPanel(true);
 
         markClueButton.onClick.AddListener(async () =>
@@ -104,8 +104,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
         });
         inputField.onValueChanged.AddListener(newValue =>
         {
-            if (newValue == "") 
-                tipText.text = _tips[clue.type][Random.Range(0, _tips[clue.type].Count - 1)];
+            if (newValue == "") tipText.text = RandomTip(clue.type);
         });
     }
 
@@ -130,6 +129,8 @@ public class MarkingPanelView : MonoBehaviour, IActivity
         await seq;
 
     }
+
+    public string RandomTip(NoteType type) => _tips[type][Random.Range(0, _tips[type].Count - 1)];
 
 
     public event System.Action OnResume;

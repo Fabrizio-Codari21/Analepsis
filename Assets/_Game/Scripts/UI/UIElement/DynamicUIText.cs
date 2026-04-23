@@ -10,6 +10,7 @@ public class DynamicUIText : FactoryUIObject
     [SerializeField] private TMP_Text m_text;
     [SerializeField] private float m_charsPerSecond = 30f;
      private float m_maxWidth = 500f;
+    bool _setToMaxWidth = false;
     private CancellationTokenSource _cts;
 
     [Button]
@@ -20,7 +21,7 @@ public class DynamicUIText : FactoryUIObject
         float finalWidth;
         float finalHeight;
 
-        if (prefSize.x > m_maxWidth)
+        if (prefSize.x > m_maxWidth || _setToMaxWidth)
         {
             finalWidth = m_maxWidth;
             finalHeight = m_text.GetPreferredValues(m_text.text, m_maxWidth, 0).y;
@@ -38,13 +39,14 @@ public class DynamicUIText : FactoryUIObject
        base.OnSpawn();
        Cancel();
     }
-    public void SetText(string text,float size, Color color,float maxWidth = 500f)
+    public void SetText(string text,float size, Color color,float maxWidth = 500f, bool setToMaxWidth = false)
     {
         m_text.text = text;
         m_text.color = color;
         m_text.fontSize = size;
         m_text.maxVisibleCharacters = 0; 
         m_maxWidth =  maxWidth;
+        _setToMaxWidth = setToMaxWidth;
         CalculateWidthAndHeight();
     }
 
