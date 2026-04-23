@@ -41,8 +41,13 @@ public class MarkingPanelView : MonoBehaviour, IActivity
 
     //[HideInInspector] public Dictionary<SerializableGuid, ButtonFactoryObject> markableClues = new();
 
+    private void OnDestroy()
+    {
+        _newClueName = default;
+        isMarkingClue = false;
+    }
 
-    string _newClueName;
+    string _newClueName = default;
     [HideInInspector] public bool isMarkingClue = false;
     public async UniTask RenameAndMarkClue(Note clue)
     {
@@ -79,7 +84,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
 
             popEvent.Raise();
             await UnfoldPanel(false);
-            isMarkingClue = false;
+            NotebookManager.Instance.ResetMarkingPanel();
             Destroy(gameObject);
         });
 
@@ -89,7 +94,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
 
             popEvent.Raise();
             await UnfoldPanel(false);
-            isMarkingClue = false;
+            NotebookManager.Instance.ResetMarkingPanel();
             Destroy(gameObject);
         });
 
