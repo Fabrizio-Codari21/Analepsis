@@ -39,7 +39,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
         }},
     };
 
-    [HideInInspector] public Dictionary<SerializableGuid, ButtonFactoryObject> markableClues = new();
+    //[HideInInspector] public Dictionary<SerializableGuid, ButtonFactoryObject> markableClues = new();
 
 
     string _newClueName;
@@ -47,13 +47,13 @@ public class MarkingPanelView : MonoBehaviour, IActivity
     public async UniTask RenameAndMarkClue(Note clue)
     {
         _newClueName = default;
-        if (NotebookManager.Instance.markedClues.ContainsKey(clue.guid))
-        {
-            //markableClues[clue.guid]?.DisplayMark(false);
-            return;
-        }
+        //if (NotebookManager.Instance.markedClues.ContainsKey(clue.guid))
+        //{
+        //    //markableClues[clue.guid]?.DisplayMark(false);
+        //    return;
+        //}
 
-        //markableClues[clue.guid]?.DisplayMark(true);
+        ////markableClues[clue.guid]?.DisplayMark(true);
         pushEvent.Raise(this);
         enableCursor.Raise(true);
         tipText.text = _tips[clue.type][Random.Range(0, _tips[clue.type].Count - 1)];
@@ -67,8 +67,8 @@ public class MarkingPanelView : MonoBehaviour, IActivity
 
             newClue.displayName = _newClueName != default ? _newClueName : newClue.displayName;
 
-            if (!NotebookManager.Instance.markedClues.Remove(newClue.guid))
-                NotebookManager.Instance.markedClues.TryAdd(newClue.guid, newClue);
+            if (!NotebookManager.Instance.markedClues.Remove(clue.guid))
+                NotebookManager.Instance.markedClues.TryAdd(clue.guid, newClue);
             
             _newClueName = default;
             print("Marked clue: " + newClue.displayName);

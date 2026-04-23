@@ -140,7 +140,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         
         m_view.ClearDetail();
         m_view.ClearButton();
-        m_markingPanel.markableClues.Clear();
+        //m_markingPanel.markableClues.Clear();
         m_view.SetTitle(type.ToString()); // si vamos a hacer localization ya deberia usar de esta forma , lo hago asi para ahorrarme tiempo
         if(_notebookPages.Where(x => x.Value.type == type).Count() <= 0)
         {
@@ -153,7 +153,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
             var cachedNote = note;
             
             var button = m_view.CreateButton(cachedNote.GetButtonText());
-            m_markingPanel.markableClues.Add(cachedNote.guid, button);
+            //m_markingPanel.markableClues.Add(cachedNote.guid, button);
             button.AddListener(() =>
             {
                 _cts?.Cancel();
@@ -169,11 +169,17 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                 //_cts?.Cancel();
                 //_cts?.Dispose();
                 //_cts = new CancellationTokenSource();
-                //button.DisplayMark(markedClues.ContainsKey(note.guid));
+                if (markedClues.ContainsKey(note.guid))
+                {
+                    button.DisplayMark(false);
+                    markedClues.Remove(note.guid);
+                    return;
+                }
+                button.DisplayMark(true);
                 markedClueEvent.Raise(cachedNote);               
             });
         }
-        print("markable clues: " + m_markingPanel.markableClues.Count);
+        //print("markable clues: " + m_markingPanel.markableClues.Count);
     }
     private async UniTask SelectNote(Note note, CancellationToken token)
     {
