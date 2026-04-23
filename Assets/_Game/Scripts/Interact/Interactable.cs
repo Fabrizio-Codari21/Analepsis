@@ -96,11 +96,6 @@ public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
     }
 }
 
-public interface IFocusStrategy<in T>
-{
-    void Focus(T ctx);
-    void Unfocus(T ctx);
-}
 
 
 public struct InteractionState
@@ -110,11 +105,6 @@ public struct InteractionState
     public Color tipColor;      
 }
 
-public interface IInteractableStrategy : IFocusStrategy<Interactable>
-{
-    void InteractStart(Interactable interactable);
-    void InteractEnd(Interactable interactable);
-}
 
 
 public interface IInspectable
