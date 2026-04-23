@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Npc : MonoBehaviour,INpc, IConditionCheck
 {
    [SerializeField] private NpcIdentity m_npcIdentity;
+   public DecalProjector faceProjector;
    [SerializeField] private Dialogue m_defaultDialogue;
    [SerializeField] private DialoguerEvent m_dialogueEvent;
    
@@ -23,7 +25,8 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
        OnUnfocus += DespawnName;
        OnStart += DespawnName;
        AddTip(m_tip);
-   
+
+       SetFace();
    }
 
     #region IInteract
@@ -139,6 +142,13 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
       FlyweightFactory.Instance.Return(_text);
       _text =  null;
    }
+
+    public void SetFace(Emotion newEmotion = Emotion.Idle)
+    {
+        if(faceProjector) faceProjector.material.SetTexture(
+            "Base_Map",
+            m_npcIdentity.allFaces[newEmotion].texture);
+    }
 
 }
 

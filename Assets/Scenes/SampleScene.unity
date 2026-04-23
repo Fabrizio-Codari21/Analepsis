@@ -5407,6 +5407,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_npcIdentity: {fileID: 11400000, guid: 5970429f820be0949b4a13f5ec25a788, type: 2}
+  faceProjector: {fileID: 0}
   m_defaultDialogue: {fileID: 11400000, guid: c8ca820684b0ceb469b6c8e341de9ea7, type: 2}
   m_dialogueEvent: {fileID: 11400000, guid: 07b85288ccaec794a97830de8622f55a, type: 2}
   m_nameTextSetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
@@ -10867,6 +10868,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_npcIdentity: {fileID: 11400000, guid: ce3accbbccd08a144afced4196228296, type: 2}
+  faceProjector: {fileID: 848749188}
   m_defaultDialogue: {fileID: 11400000, guid: 3575384ca7f973347be9472f56d4b223, type: 2}
   m_dialogueEvent: {fileID: 11400000, guid: 07b85288ccaec794a97830de8622f55a, type: 2}
   m_nameTextSetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
@@ -11323,6 +11325,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3b19af1da1ea4c4459325296fe59920a, type: 3}
   m_PrefabInstance: {fileID: 809486400}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &848749188 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5384279818771224007, guid: 4135679853b5013439c1e04c115ef0b7, type: 3}
+  m_PrefabInstance: {fileID: 299351357}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &856940525
 GameObject:
   m_ObjectHideFlags: 0
@@ -13264,7 +13277,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2426456352758145271, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0023887346
+      value: 0.0029533668
       objectReference: {fileID: 0}
     - target: {fileID: 2500570954000331165, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_Name
@@ -16815,6 +16828,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_npcIdentity: {fileID: 11400000, guid: c09c834f14819bd48a8ef6c636a9342d, type: 2}
+  faceProjector: {fileID: 0}
   m_defaultDialogue: {fileID: 11400000, guid: 5e6d5ea638b02b4489ba789f296d81bb, type: 2}
   m_dialogueEvent: {fileID: 11400000, guid: 07b85288ccaec794a97830de8622f55a, type: 2}
   m_nameTextSetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
@@ -23974,7 +23988,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1230517532}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.9999983
+  m_Size: 0.9999978
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -25749,6 +25763,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_npcIdentity: {fileID: 11400000, guid: bde567ce90b36ef4ea3ed002cbe02bd1, type: 2}
+  faceProjector: {fileID: 0}
   m_defaultDialogue: {fileID: 11400000, guid: eef33a1ddd5346145893f06f28b6477c, type: 2}
   m_dialogueEvent: {fileID: 11400000, guid: 07b85288ccaec794a97830de8622f55a, type: 2}
   m_nameTextSetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
@@ -27670,6 +27685,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_npcIdentity: {fileID: 11400000, guid: d8fb7da84b74d234c8fe9a1d59baa950, type: 2}
+  faceProjector: {fileID: 0}
   m_defaultDialogue: {fileID: 11400000, guid: 667f5a6f0a53c3147ab8e08095d08bdc, type: 2}
   m_dialogueEvent: {fileID: 11400000, guid: 07b85288ccaec794a97830de8622f55a, type: 2}
   m_nameTextSetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
@@ -27895,7 +27911,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0023845278}
+  m_AnchoredPosition: {x: 0, y: 0.0028080589}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2008411248

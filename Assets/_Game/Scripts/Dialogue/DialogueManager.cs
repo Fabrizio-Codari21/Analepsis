@@ -91,6 +91,8 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         
         try 
         {
+            _currentDialoguer.SetFace(node.characterEmotion);
+
             await m_dialogueView.PlayDialogueText(node.dialogueText, token, _currentDialoguer.Dialogue.dialogueColor);
         }
         catch (OperationCanceledException) 
@@ -184,6 +186,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
             ,_recordText
             ,_currentDialoguer.Dialogue.DoesItProveAnything()));
 
+        _currentDialoguer.SetFace();
         _currentDialoguer = null;
         _recordText = String.Empty;
         m_popActivity.Raise();

@@ -50,9 +50,37 @@ public sealed class DialogueGraphNode : Node
 
         extensionContainer.Add(tagField);
 
+        Foldout emotionFoldOut = new Foldout()
+        {
+            text = "How should they emote?",
+            value = false,
+        };
+
+        PopupField<Emotion> emotionField =
+        new PopupField<Emotion>("Pick an emotion")
+        {
+            value = nodeData.characterEmotion,
+            choices = new List<Emotion>
+            {
+                Emotion.Idle,
+                Emotion.Worried,
+                Emotion.Angry,
+                Emotion.Happy,
+                Emotion.Sad,
+            }
+        };
+
+        emotionField.RegisterValueChangedCallback(evt =>
+        {
+            NodeData.characterEmotion = evt.newValue;
+        });
+
+        emotionFoldOut.Add(emotionField);
+        extensionContainer.Add(emotionFoldOut);
+
         Foldout proofFoldOut = new Foldout()
         {
-            text = "Does it prove anything?",
+            text = "What does it prove?",
             value = false,
         };
 

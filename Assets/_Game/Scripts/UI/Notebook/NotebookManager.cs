@@ -273,6 +273,14 @@ public enum NoteType
     Log,
     Objects,
 }
+public enum Emotion
+{
+    Idle,
+    Worried,
+    Angry,
+    Happy,
+    Sad
+}
 
 [Serializable]
 public abstract class Note
