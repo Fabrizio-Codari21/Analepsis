@@ -21,21 +21,21 @@ public class MarkingPanelView : MonoBehaviour, IActivity
     {
         { NoteType.Log, new List<string>()
         {
-            "e.g. 'X claims Y hates Z'.",
-            "e.g. 'X heard Y talking with Z'.",
-            "e.g. 'X thinks Y is hiding something'.",
-            "e.g. 'X said they know about Y'.",
-            "e.g. 'X avoided talking about Y'.",
-            "e.g. 'X saw Y carrying Z'.",
+            "e.g. 'X claims Y hates Z.'",
+            "e.g. 'X heard Y talking with Z.'",
+            "e.g. 'X thinks Y is hiding something.'",
+            "e.g. 'X said they know about Y.'",
+            "e.g. 'X avoided talking about Y.'",
+            "e.g. 'X saw Y carrying Z.'",
         }},
         { NoteType.Objects, new List<string>()
         {
-            "e.g. 'X was used by Y'.",
-            "e.g. 'X thinks this is dangerous'.",
-            "e.g. 'X knows about this Y'.",
-            "e.g. 'X might belong to Y'.",
-            "e.g. 'X was given to Y by Z'.",
-            "e.g. 'X gonna give it to Y'.",
+            "e.g. 'X was used by Y.'",
+            "e.g. 'X thinks this is dangerous.'",
+            "e.g. 'X knows about this Y.'",
+            "e.g. 'X might belong to Y.'",
+            "e.g. 'X was given to Y by Z.'",
+            "e.g. 'X gonna give it to Y.'",
         }},
     };
 
@@ -94,6 +94,11 @@ public class MarkingPanelView : MonoBehaviour, IActivity
         inputField.onEndEdit.AddListener(newName =>
         {
             _newClueName = newName;
+        });
+        inputField.onValueChanged.AddListener(newValue =>
+        {
+            if (newValue == "") 
+                tipText.text = _tips[clue.type][Random.Range(0, _tips[clue.type].Count - 1)];
         });
     }
 
