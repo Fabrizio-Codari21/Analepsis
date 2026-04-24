@@ -66,10 +66,8 @@ public class MarkingPanelView : MonoBehaviour, IActivity
 
         markClueButton.onClick.AddListener(async () =>
         {
-            Note newClue = clue.type == NoteType.Log
-            ? new LogNote(clue.displayName, "", clue.isProof)
-            : new ItemNote(clue.displayName, null, clue.isProof);
-
+            Note newClue = new Note(clue.displayName);
+            newClue.type = clue.type;
             newClue.displayName = _newClueName != default ? _newClueName : newClue.displayName;
 
             if (!NotebookManager.Instance.markedClues.Remove(clue.guid))

@@ -33,6 +33,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private readonly Dictionary<SerializableGuid, HashSet<string>> _unlockedPoisByItem = new();
 
     private readonly Dictionary<Item, string> _unlockedFlashbackNote = new();
+    [SerializeField] MarkClueEvent markedClueEvent;
 
     public bool HasAllPois(Item item)
     {
@@ -47,7 +48,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
         return true;
     }
-    [SerializeField] MarkClueEvent markedClueEvent;
+   
     private void Start()
     {
         m_view = Instantiate(m_view,transform);
@@ -127,6 +128,8 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         return descriptions;
     }
 
+
+
     public void UpdateFlashbackInfo(Item item, string info)
     {
         if (!_unlockedFlashbackNote.TryAdd(item, info))return;
@@ -184,6 +187,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                     return;
                 }                
                 m_markingPanel.isMarkingClue = true;
+             
                 button.DisplayMark(true);
                 enableMarkEvent = button.DisplayMark;
                 EnableButtons(false);
@@ -292,25 +296,33 @@ public enum Emotion
 }
 
 [Serializable]
-public abstract class Note
+public  class Note
 {
     public SerializableGuid guid = SerializableGuid.NewGuid();
     public NoteType type;
     public string displayName;
     public List<Whodunnit> isProof;
 
-    protected Note(string displayName, List<Whodunnit> proof = null)
+    public Note(string displayName,  List<Whodunnit> proof = null)
     {
         this.displayName = displayName;
         this.isProof = proof;
+
+
     }
 
     public virtual string GetButtonText()
     {
         return displayName;
     }
-    public abstract UniTask Show(NotebookView view, CancellationToken token);
+    public virtual UniTask Show(NotebookView view, CancellationToken token)
+    {
+        return UniTask.CompletedTask;
+    }
 }
+
+
+
 
 public class LogNote : Note
 {
@@ -332,8 +344,9 @@ public class ItemNote : Note
     private readonly Item _item;
     public ItemNote(string displayName,Item item, List<Whodunnit> proof = null) : base(displayName, proof)
     {
-        _item =  item;
         type = NoteType.Objects;
+        if (item == null) return;
+        _item =  item;
         guid = _item.guid;  // para usa el guid de item para que solamente anota el item y no se repite, pero el clue se puede ir desbloqueando de a poco
     }
 
@@ -342,7 +355,7 @@ public class ItemNote : Note
         view.CreateImage(_item.sprite);
         List<string> fullContent = new List<string>();
         var unlockedDescriptions = NotebookManager.Instance.GetUnlockedPoiDescriptions(_item);
-        
+       
         foreach (var desc in unlockedDescriptions)
         {
             fullContent.Add($"{unlockedDescriptions.IndexOf(desc) + 1})  {desc}"); 
