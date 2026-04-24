@@ -186,7 +186,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
             ,_recordText
             ,_currentDialoguer.Dialogue.DoesItProveAnything()));
 
-        _currentDialoguer.SetFace();
+        _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
         _currentDialoguer = null;
         _recordText = String.Empty;
         m_popActivity.Raise();

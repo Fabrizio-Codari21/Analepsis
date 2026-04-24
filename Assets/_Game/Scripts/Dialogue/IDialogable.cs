@@ -5,5 +5,6 @@ public interface IDialogable : IInteractable
     public NpcIdentity ID { get; set; }
     public Dialogue NewDialogue(Dialogue dialogue);
     public void SetFace(Emotion newEmotion = Emotion.Idle);
+    public Emotion DefaultEmotion { get; set; }
 
 }

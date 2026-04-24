@@ -7,6 +7,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
 {
    [SerializeField] private NpcIdentity m_npcIdentity;
    public DecalProjector faceProjector;
+   public Emotion defaultEmotion = Emotion.Idle;
    [SerializeField] private Dialogue m_defaultDialogue;
    [SerializeField] private DialoguerEvent m_dialogueEvent;
    
@@ -26,7 +27,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
        OnStart += DespawnName;
        AddTip(m_tip);
 
-       SetFace();
+       SetFace(DefaultEmotion);
    }
 
     #region IInteract
@@ -98,8 +99,9 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
       get => m_npcIdentity;
       set => m_npcIdentity = value;
    }
+    public Emotion DefaultEmotion { get => defaultEmotion; set => defaultEmotion = value; }
 
-   public string GetTip()
+    public string GetTip()
    {
       if (tips.Count == 0) return string.Empty;
 
