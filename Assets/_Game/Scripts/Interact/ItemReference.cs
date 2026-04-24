@@ -20,7 +20,7 @@ public class ItemReference : MonoBehaviour
         _interact.OnStart += DespawnName;
         _interact.OnStart += RecordItem;
         _tipProvider = GetComponent<ITipProvider>();
-        _tipProvider.AddTip(new Tip("(INTERACTION)",TipOrder.InteractionType)); 
+        _tipProvider.AddTip(new Tip($"Inspect the {m_itemReference.Name}? ", TipOrder.InteractionType)); 
     }
     private void SpawnName()
     {

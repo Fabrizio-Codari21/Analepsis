@@ -3,6 +3,7 @@ using UnityEngine.Rendering;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Cinemachine;
 
 public class TheoryboardManager : MonoBehaviour, IActivity
 {
@@ -22,6 +23,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     [SerializeField] Transform boardTransform;
     [SerializeField] GameObject player;
     [SerializeField] GameObject cam;
+    [SerializeField] CinemachinePanTilt camData;
     Tuple<Vector3, Quaternion> _playerTransform;
     //Transform _oldLookAt;
 
@@ -50,6 +52,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         print("llamado");
         player.transform.position = _playerTransform.Item1;
         player.transform.localEulerAngles = Vector3.zero;
+        //camData.PanAxis.CancelRecentering(); camData.TiltAxis.CancelRecentering();
         cam.transform.rotation = _playerTransform.Item2;
         m_cameraRotationEventChannel.Raise(player.transform);
         //Destroy(newTransform.gameObject, 0.5f);

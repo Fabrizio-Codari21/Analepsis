@@ -84,6 +84,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
 
             popEvent.Raise();
             await UnfoldPanel(false);
+            NotebookManager.Instance.EnableButtons(true);
             NotebookManager.Instance.ResetMarkingPanel();
             Destroy(gameObject);
         });
@@ -91,9 +92,10 @@ public class MarkingPanelView : MonoBehaviour, IActivity
         cancelButton.onClick.AddListener(async () =>
         {
             _newClueName = default;
-
-            popEvent.Raise();
+            NotebookManager.Instance.EnableMark(false);
             await UnfoldPanel(false);
+            popEvent.Raise();
+            NotebookManager.Instance.EnableButtons(true);
             NotebookManager.Instance.ResetMarkingPanel();
             Destroy(gameObject);
         });

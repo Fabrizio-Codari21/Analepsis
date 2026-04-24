@@ -14,7 +14,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
    [SerializeField] private DynamicTextSetting m_nameTextSetting;
    [SerializeField] private Vector3 m_textPositionOffset;
 
-   [SerializeField] private Tip m_tip;
+   [SerializeField] private Tip m_tip; //Por ahora no uso el texto que le asignamos en el inspector
    
    public List<ICondition> Conditions { get; } = new();
    private DynamicText _text;
@@ -25,6 +25,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
        OnFocus += SpawnName;
        OnUnfocus += DespawnName;
        OnStart += DespawnName;
+       m_tip.tip = $"Should I talk to {m_npcIdentity.npcName}? ";
        AddTip(m_tip);
 
        SetFace(DefaultEmotion);
@@ -147,6 +148,11 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
 
     public void SetFace(Emotion newEmotion = Emotion.Idle)
     {
+        if(!m_npcIdentity.allFaces.ContainsKey(newEmotion))
+        {
+            print($"No {newEmotion} sprite assigned to {m_npcIdentity.npcName}.");
+            return;
+        }
         if(faceProjector) faceProjector.material.SetTexture(
             "Base_Map",
             m_npcIdentity.allFaces[newEmotion].texture);

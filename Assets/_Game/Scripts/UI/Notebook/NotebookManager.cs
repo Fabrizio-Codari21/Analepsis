@@ -74,6 +74,10 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         await panel.RenameAndMarkClue(note);
     }
     public void ResetMarkingPanel() => m_markingPanel.isMarkingClue = false;
+    public event Action<bool> enableButtonsEvent = delegate { };
+    public event Action<bool> enableMarkEvent = delegate { };
+    public void EnableButtons(bool enable) => enableButtonsEvent?.Invoke(enable);
+    public void EnableMark(bool enable) => enableMarkEvent?.Invoke(enable);
 
     private void Open()
     {
@@ -142,12 +146,13 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         
         m_view.ClearDetail();
         m_view.ClearButton();
+        enableButtonsEvent = default; enableMarkEvent = default;
         //m_markingPanel.markableClues.Clear();
         m_view.SetTitle(type.ToString()); // si vamos a hacer localization ya deberia usar de esta forma , lo hago asi para ahorrarme tiempo
         if(_notebookPages.Where(x => x.Value.type == type).Count() <= 0)
         {
             var button = m_view.CreateButton($"No {type} found yet."); 
-            button.DisableSub(); return;
+            button.EnableSub(false); return;
         }
         foreach (var note in _notebookPages.Values)
         {
@@ -166,6 +171,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
             });
             //button.MoveSubToLast();
             button.EnableSub();
+            enableButtonsEvent += button.EnableSub;
             button.AddListenerToSub(() =>
             {
                 //_cts?.Cancel();
@@ -176,9 +182,11 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                     button.DisplayMark(false);
                     markedClues.Remove(note.guid);
                     return;
-                }
+                }                
                 m_markingPanel.isMarkingClue = true;
                 button.DisplayMark(true);
+                enableMarkEvent = button.DisplayMark;
+                EnableButtons(false);
                 markedClueEvent.Raise(cachedNote);               
             });
         }
@@ -275,6 +283,7 @@ public enum NoteType
 }
 public enum Emotion
 {
+    None,
     Idle,
     Worried,
     Angry,

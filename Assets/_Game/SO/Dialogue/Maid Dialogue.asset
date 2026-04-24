@@ -15,13 +15,14 @@ MonoBehaviour:
   dialogueColor: {r: 0.31042442, g: 0.27450982, b: 0.35686275, a: 1}
   startingNode:
     dialogueText: ...
+    characterEmotion: 2
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017944
     - rid: 5324356914828017946
     - rid: 5324356914828017968
     isRootNode: 1
-    editorPosition: {x: 300, y: 200}
+    editorPosition: {x: 147, y: 184}
     guid:
       Part1: 2187425879
       Part2: 1303396138
@@ -30,6 +31,7 @@ MonoBehaviour:
     tag: 
   allNodes:
   - dialogueText: ...
+    characterEmotion: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017944
@@ -44,6 +46,7 @@ MonoBehaviour:
       Part4: 3030757262
     tag: 
   - dialogueText: ...
+    characterEmotion: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017948
@@ -57,6 +60,7 @@ MonoBehaviour:
       Part4: 801761233
     tag: 
   - dialogueText: ...yeah.
+    characterEmotion: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017952
@@ -70,6 +74,7 @@ MonoBehaviour:
       Part4: 244814565
     tag: 
   - dialogueText: ...no.
+    characterEmotion: 0
     doesItProveAnything: 0
     responses: []
     isRootNode: 0
@@ -81,6 +86,7 @@ MonoBehaviour:
       Part4: 2843433252
     tag: 
   - dialogueText: ...yeah ...why wouldn't I? My accent's not that bad, is it?
+    characterEmotion: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017955
@@ -94,6 +100,7 @@ MonoBehaviour:
       Part4: 1044298053
     tag: 
   - dialogueText: ...yeah.
+    characterEmotion: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017957
@@ -106,6 +113,7 @@ MonoBehaviour:
       Part4: 2768871137
     tag: 
   - dialogueText: ...
+    characterEmotion: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017960
@@ -123,6 +131,7 @@ MonoBehaviour:
       I
       shouldn''t be so self-conscious about it, but people can get very sensitive
       when it comes to those things.'
+    characterEmotion: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017962
@@ -137,6 +146,7 @@ MonoBehaviour:
     tag: 
   - dialogueText: ...n-no, i DON'T mean... you know... "that" West, I mean... um...
       Sorry, I have things to do.
+    characterEmotion: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017966
@@ -153,6 +163,7 @@ MonoBehaviour:
 
       All I want now is to be able to rest
       without anyone thinking I''m a menace... I mean... Excuse me, I have to go.'
+    characterEmotion: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017967
@@ -165,6 +176,7 @@ MonoBehaviour:
       Part4: 217656539
     tag: 
   - dialogueText: ... Idon'tknowwhatyou'retalkingaboutokbye
+    characterEmotion: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828018015
@@ -202,6 +214,7 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: ...
+        characterEmotion: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828017948
@@ -234,6 +247,7 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: ...yeah.
+        characterEmotion: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828017952
@@ -250,6 +264,7 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: ...no.
+        characterEmotion: 0
         doesItProveAnything: 0
         responses: []
         isRootNode: 0
@@ -280,6 +295,7 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: ...yeah ...why wouldn't I? My accent's not that bad, is it?
+        characterEmotion: 1
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828017955
@@ -304,6 +320,7 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: ...yeah.
+        characterEmotion: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828017957
@@ -335,6 +352,7 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: ...
+        characterEmotion: 2
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828017960
@@ -363,6 +381,7 @@ MonoBehaviour:
 
           I shouldn''t be so self-conscious about it, but
           people can get very sensitive when it comes to those things.'
+        characterEmotion: 4
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828017962
@@ -396,6 +415,7 @@ MonoBehaviour:
       data:
         dialogueText: ...n-no, i DON'T mean... you know... "that" West, I mean...
           um... Sorry, I have things to do.
+        characterEmotion: 2
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828017966
@@ -416,6 +436,7 @@ MonoBehaviour:
           All I want now is to
           be able to rest without anyone thinking I''m a menace... I mean... Excuse
           me, I have to go.'
+        characterEmotion: 1
         doesItProveAnything: 2
         responses:
         - rid: 5324356914828017967
@@ -463,6 +484,7 @@ MonoBehaviour:
             just... I seem to have lost the keys to my car. It's a fancy new model
             and I've barely had a chance to drive it yet.\nI doubt you're gonna find
             them around here, but if you find out something... please let me know."
+          characterEmotion: 0
           doesItProveAnything: 0
           responses:
           - rid: 5324356914828017983
@@ -494,6 +516,7 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: ... Idon'tknowwhatyou'retalkingaboutokbye.
+        characterEmotion: 2
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828018015

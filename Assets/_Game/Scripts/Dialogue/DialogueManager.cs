@@ -91,7 +91,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         
         try 
         {
-            _currentDialoguer.SetFace(node.characterEmotion);
+            if(node.characterEmotion != Emotion.None) _currentDialoguer.SetFace(node.characterEmotion);
 
             await m_dialogueView.PlayDialogueText(node.dialogueText, token, _currentDialoguer.Dialogue.dialogueColor);
         }

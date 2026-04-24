@@ -62,6 +62,7 @@ public sealed class DialogueGraphNode : Node
             value = nodeData.characterEmotion,
             choices = new List<Emotion>
             {
+                Emotion.None,
                 Emotion.Idle,
                 Emotion.Worried,
                 Emotion.Angry,
