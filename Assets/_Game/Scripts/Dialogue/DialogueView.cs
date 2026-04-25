@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using PrimeTween;
@@ -16,10 +17,14 @@ public class DialogueView : MonoBehaviour
     [Header("Response Button")]
     [SerializeField] private ButtonSetting m_responseButton;
     [SerializeField] private Transform m_responseButtonRoot;
+    
+    [SerializeField] private ButtonSetting m_recordButton;
     [Header("Scroll")]
     [SerializeField] private ScrollRect m_scrollRect;
 
     [SerializeField] private Transform m_root;
+    
+    public Action<string>  RecordRequested;
 
     private void Start()
     {
@@ -59,23 +64,20 @@ public class DialogueView : MonoBehaviour
         if (isOpening)
         {
             m_root.gameObject.transform.localScale = new Vector3(1, 0, 1);
-            seq.Group(Tween.ScaleY(m_root.gameObject.transform, 1f, 0.3f, Ease.OutBack));
+            _ = seq.Group(Tween.ScaleY(m_root.gameObject.transform, 1f, 0.3f, Ease.OutBack));
         }
         else
         {
-            seq.Group(Tween.ScaleY(m_root.gameObject.transform, 0f, 0.2f, Ease.InQuad));
+            _ = seq.Group(Tween.ScaleY(m_root.gameObject.transform, 0f, 0.2f, Ease.InQuad));
         }
-
-    
         await seq;
 
     }
     
     
-    public async UniTask PlayDialogueText(string content, CancellationToken token, Color color = default) // view
+    public async UniTask PlayDialogueText(string content, CancellationToken token, Color color = default) // view  
     {
         token.ThrowIfCancellationRequested();
-
         var t = FlyweightFactory.Instance.Spawn<DynamicUIText>(
             m_dialogueTextSetting,
             Vector3.zero,
@@ -88,13 +90,20 @@ public class DialogueView : MonoBehaviour
         token.ThrowIfCancellationRequested();
         m_scrollRect.verticalNormalizedPosition = 0;
         await t.PlayTypeWriterEffect(externalToken: token);
+        var b = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(m_recordButton, Vector3.zero, Quaternion.identity, t.transform);
+        b.SetFill(0f);
+        b.AddListener(() =>
+        {
+            b.PlayImageFill(1f).Forget();
+            RecordRequested?.Invoke(content);
+           
+        });
+        
+        
     }
     
-    
-    
-
    
-
+    
     private void Despawn(Transform root) 
     {
         foreach (var f in root.GetComponentsInChildren<IFlyweight>())
@@ -103,7 +112,16 @@ public class DialogueView : MonoBehaviour
         }
     }
     
+}
 
-    
-   
+public class DialogueMarkClueButton : MonoBehaviour
+{
+    [SerializeField] private ButtonSetting m_button;
+    [SerializeField] private RecordNoteEvent m_recordNoteEvent;
+    private IDialogable _dialoguer;
+
+    private void Record(DialogueNode node)
+    {
+        
+    }
 }

@@ -4,7 +4,6 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
-using UnityEngine.PlayerLoop;
 using System.Linq;
 using Unity.VisualScripting;
 
@@ -27,12 +26,10 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private MarkingPanelView m_markingPanel;
     [SerializeField] private BoolEventChannel m_udpatePoi;
     private CancellationTokenSource _cts;
-    private readonly Dictionary<SerializableGuid,Note> _notebookPages = new();
     [ReadOnly,ShowInInspector] private NoteType _currentNoteType;
     [ReadOnly, ShowInInspector] public Dictionary<SerializableGuid, Note> markedClues = new();
-    
-    private readonly Dictionary<SerializableGuid, HashSet<string>> _unlockedPoisByItem = new();
-
+    private readonly Dictionary<SerializableGuid, HashSet<string>> _unlockedPoisByItem = new(); // punto de interes
+    private readonly Dictionary<SerializableGuid,Note> _notebookPages = new();
     private readonly Dictionary<Item, string> _unlockedFlashbackNote = new();
     private Dictionary<NpcIdentity, List<LogNote>> _characterLogs = new();
     public Dictionary<NpcIdentity, List<LogNote>> FoundCharacters => _characterLogs;
@@ -90,7 +87,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         if (!_notebookPages.TryAdd(note.guid, note))
         {
-            Debug.Log("Has Note");
+           
         }
   
         //MarkClue(note); //esto es temporal
@@ -180,9 +177,9 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         enableButtonsEvent = default; enableMarkEvent = default;
         //m_markingPanel.markableClues.Clear();
         m_view.SetTitle(type.ToString()); // si vamos a hacer localization ya deberia usar de esta forma , lo hago asi para ahorrarme tiempo
-        
         // no es muy solid que digamos pero para probar por ahora sirve
         if(type == NoteType.Log && _characterLogs.Count > 0)
+            if(_notebookPages.Count(x => x.Value.type == type) <= 0)
         {
             foreach(var character in _characterLogs)
             {

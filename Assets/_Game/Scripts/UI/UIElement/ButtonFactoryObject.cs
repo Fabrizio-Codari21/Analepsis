@@ -1,11 +1,11 @@
 using TMPro;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using System;
-//using System.ComponentModel;
+using PrimeTween; 
 
 public class ButtonFactoryObject : FactoryUIObject
 {
@@ -20,7 +20,7 @@ public class ButtonFactoryObject : FactoryUIObject
     [SerializeField, HideInInspector] protected Dictionary<Whodunnit, TheoryPanel> _boardTransforms;
     [SerializeField, HideInInspector] protected TheoryboardView _view;
     [SerializeField, ShowInInspector, ReadOnly] protected List<Whodunnit> proof = new();
-
+    [SerializeField] protected Image m_buttonImage;
     public override void Despawn()
     {
        base.Despawn();
@@ -28,6 +28,19 @@ public class ButtonFactoryObject : FactoryUIObject
        if(subButton) subButton.onClick.RemoveAllListeners();
        if(_parent != null) RemoveFromParent(); 
        ClearChildren();
+    }
+
+    public void SetFill(float fill)
+    {
+        if(m_buttonImage) m_buttonImage.fillAmount = fill; 
+    } 
+    public async UniTask PlayImageFill(float fill,float duration = 0.5f)
+    {
+        if (m_buttonImage == null) return;
+        Tween.StopAll(m_buttonImage.gameObject);
+        var seq = Sequence.Create();
+        _ = seq.Group(Tween.UIFillAmount(m_buttonImage, fill, duration, Ease.OutQuint));
+        await seq;
     }
 
     public void SetText(string text)
@@ -45,10 +58,12 @@ public class ButtonFactoryObject : FactoryUIObject
     public int GetPosition() { return transform.GetSiblingIndex(); }
 
     public void DisableSub() => subButton?.gameObject.SetActive(false);
+
     public void EnableSub(bool enabled = true) => subButton?.gameObject.SetActive(enabled);
     public void DisplayMark(bool marked) 
         => subButton.GetComponent<Image>().color = marked ? Color.yellow : Color.gray;
 
+    
     public void SetInteractable(bool interactable) => m_button.interactable = interactable;
     public void AddListener(UnityAction listener) => m_button.onClick.AddListener(listener);
     public void AddListenerToSub(UnityAction listener) => subButton?.onClick.AddListener(listener);
@@ -59,6 +74,7 @@ public class ButtonFactoryObject : FactoryUIObject
 
     public void SetProof(List<Whodunnit> isProof) => proof = isProof;
     public List<Whodunnit> GetProof() => proof;
+
 
     protected ButtonFactoryObject _parent;  
     public bool IsOpen() => m_isOpen;
@@ -76,3 +92,5 @@ public class ButtonFactoryObject : FactoryUIObject
         m_childrenButtons.Clear();
     } 
 }
+
+

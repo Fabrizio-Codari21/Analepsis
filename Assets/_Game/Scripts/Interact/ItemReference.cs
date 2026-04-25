@@ -10,7 +10,6 @@ public class ItemReference : MonoBehaviour
     private DynamicText _text;
     [SerializeField] private RecordNoteEvent  m_recordNoteEvent;
     
-    
     private void Start()
     {
         // m_itemReference.flashbackClue = null;

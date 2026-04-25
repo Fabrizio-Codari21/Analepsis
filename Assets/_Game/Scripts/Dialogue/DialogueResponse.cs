@@ -18,11 +18,8 @@ public class DialogueResponse
 
         foreach (DialogueCondition condition in m_conditions)
         {
-            if (condition != null && condition.Evaluate() != condition.unlockIfTrue)
-            {
-                Debug.LogWarning("Condition Evaluate failed");
-                return false;
-            }
+            if (condition == null || condition.Evaluate() == condition.unlockIfTrue) continue;
+            return false;
         }
         return true;
     }
@@ -45,7 +42,6 @@ public class DialogueNodeCondition : DialogueCondition
     [SerializeField] public DialogueNode isTalkDialogueNode;
     public override bool Evaluate()
     {
-        Debug.Log(isTalkDialogueNode.dialogueText);
         return targetDialogue && isTalkDialogueNode != null && 
                DialogueManager.Instance.CheckDialogue(isTalkDialogueNode.guid);
     }
