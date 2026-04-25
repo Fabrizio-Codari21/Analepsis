@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
-using System.Linq;
-using PrimeTween;
+
 public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 {
     [SerializeField] private DialoguerEvent m_dialogueEvent;
@@ -19,7 +18,9 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     [SerializeField] private RecordNoteEvent m_recordNoteEvent;
     private CancellationTokenSource  _dialogueCts;
     private IDialogable _currentDialoguer;
-    // private string _recordText = string.Empty;
+    
+    private string _manualRecords = string.Empty;
+    private string _recordText = string.Empty;
     [ShowInInspector, ReadOnly] private HashSet<SerializableGuid> _dialogueNodesTalked = new HashSet<SerializableGuid>();
     #region  IActivity
     public event Action OnResume;
@@ -63,11 +64,12 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     private void Start()
     {
         m_dialogueView = Instantiate(m_dialogueView,transform);
+        
         m_dialogueView.RecordRequested += content =>
         {
-            if(_currentDialoguer == null) return;
-            string speakerTitle = $"{_currentDialoguer.NpcName}'s account";
-            m_recordNoteEvent.Raise(new LogNote(speakerTitle, content, _currentDialoguer.Dialogue.DoesItProveAnything()));
+            if (_currentDialoguer == null) return;
+            AppendToText(ref _manualRecords, "... ... \n\n "+content);
+            
         };
         m_dialogueEvent.OnEventRaised += dialogable => _ = Speak(dialogable);
     }
@@ -95,7 +97,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         m_dialogueView.ClearResponses();
         if (node.doesItProveAnything != 0) _currentDialoguer.Dialogue.DiscoverProof(node.doesItProveAnything);
         
-        // AppendToRecord(node.dialogueText);
+        AppendToRecord(node.dialogueText);
         try 
         {
             if(node.characterEmotion != Emotion.None) _currentDialoguer.SetFace(node.characterEmotion);
@@ -145,7 +147,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
             EndDialogue();
             return;
         }
-        // AppendToRecord($"[Player]: {response.responseText}");
+        AppendToRecord($"[Player]: {response.responseText}");
     
         try 
         {
@@ -171,13 +173,21 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
             EndDialogue();
         }
     }
+    
+    
+    private void AppendToText(ref string target, string text)
+    {
+        if (string.IsNullOrEmpty(text)) return;
+        if (target != string.Empty) target += "\n\n";
+        target += "- " + text;
+    }
 
-    // private void AppendToRecord(string text)
-    // {
-    //     if (string.IsNullOrEmpty(text)) return;
-    //     if (_recordText != string.Empty) _recordText += "\n\n";
-    //     _recordText += "- " + text;
-    // }
+    private void AppendToRecord(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return;
+        if (_recordText != string.Empty) _recordText += "\n\n";
+        _recordText += "- " + text;
+    }
     private void ResetCancellationToken()
     {
         _dialogueCts?.Cancel();
@@ -187,21 +197,20 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 
     private void EndDialogue()
     {
-        //m_recordNoteEvent.Raise(new LogNote(
-        //    $"{_currentDialoguer.NpcName}{(_currentDialoguer.NpcName.Last() == 's' ? "'" : "'s")} account -\n Action {ActionTimer.Instance.CurrentAction()}"
-        //    ,_recordText
-        //    ,_currentDialoguer.Dialogue.DoesItProveAnything()));
+        string title = $"{_currentDialoguer.NpcName}'s account";
+        var finalLog = new LogNote(
+            title, 
+            _recordText, 
+            _manualRecords, 
+            _currentDialoguer.Dialogue.DoesItProveAnything()
+        );
 
-     
-
-        // NotebookManager.Instance.AddLogToCharacter(_currentDialoguer.ID, new LogNote(
-        //     $"{_currentDialoguer.NpcName}{(_currentDialoguer.NpcName.Last() == 's' ? "'" : "'s")} account -\n Action {ActionTimer.Instance.CurrentAction()}"
-        //     , _recordText
-        //     , _currentDialoguer.Dialogue.DoesItProveAnything()));
+        NotebookManager.Instance.AddLogToCharacter(_currentDialoguer.ID, finalLog);
 
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
         _currentDialoguer = null;
-        // _recordText = String.Empty;
+        _recordText = string.Empty;
+        _manualRecords =string.Empty;
         m_popActivity.Raise();
         
     }
@@ -209,3 +218,4 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     
     public bool CheckDialogue(SerializableGuid guid) => _dialogueNodesTalked.Contains(guid);
 }
+

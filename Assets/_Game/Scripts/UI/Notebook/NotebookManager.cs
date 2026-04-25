@@ -434,18 +434,39 @@ public  class Note
 
 public class LogNote : Note
 {
-    private readonly string _info;
-    
-    public LogNote(string displayName, string info, List<Whodunnit> proof = null) : base(displayName, proof)
+ 
+    private readonly string _fullInfo;   
+    private readonly string _recordInfo;
+    private bool _showingFull  = false;
+    public LogNote(string displayName,string fullInfo, string recordInfo,List<Whodunnit> proof = null) : base(displayName, proof)
     {
-        _info = info;
-        type =  NoteType.Log;
+        _fullInfo = fullInfo;
+        _recordInfo = recordInfo;
+        type = NoteType.Log;
     }
-    public override async UniTask Show(NotebookView view, CancellationToken token)
-    { 
-       await view.PlayText(new(){_info}, token);
+   public override async UniTask Show(NotebookView view, CancellationToken token)
+    {
+        _showingFull = false; 
+        await RefreshDisplay(view, token);
     }
-    public string GetInfo() => _info;
+
+    private async UniTask RefreshDisplay(NotebookView view, CancellationToken token)
+    {
+        view.ClearDetail(); 
+        string contentToShow = _showingFull ? _fullInfo : _recordInfo;
+        string header = _showingFull ? "[Full Transcript]\n" : "[Manual Records]\n";
+        await view.PlayText(new() { header + contentToShow }, token);
+        if (token.IsCancellationRequested) return;
+        
+        string buttonLabel = _showingFull ? "Switch to Record" : "Switch to Full Content";
+        var toggleBtn = view.CreateDetailButton(buttonLabel);
+        toggleBtn.AddListener(() =>
+        {
+            _showingFull = !_showingFull;
+            _ = RefreshDisplay(view, token);
+        });
+    }
+    public string GetInfo() => _recordInfo;
 }
 
 public class ItemNote : Note
