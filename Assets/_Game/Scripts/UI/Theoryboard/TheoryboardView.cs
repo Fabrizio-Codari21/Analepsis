@@ -44,6 +44,15 @@ public class TheoryboardView : MonoBehaviour
         if (markedItems.Count() <= 0)
             CreateClueButton("No Objects marked \n(Click the star to mark)", markedItemsRoot, default, true);
 
+        foreach(var character in NotebookManager.Instance.FoundCharacters)
+        {
+            //placeholder, despues hago que sea mas adecuado y no solo los personajes que tienen pistas descubiertas.
+            if(character.Value.Where(x => x.isProof.Count > 0).Count() > 0)
+            {
+                var button = CreateClueButton(character.Key.npcName, markedLogsRoot, new(){character.Key.role});
+            }
+        }
+
         if (notebookManager.markedClues.Count <= 0) return;
 
         foreach (var log in markedLogs) 

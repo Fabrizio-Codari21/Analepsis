@@ -6,6 +6,7 @@ using UnityEngine.Rendering.Universal;
 public class NpcIdentity : ScriptableObject
 {
     public string npcName;
+    public Whodunnit role;
     
     public SerializableGuid  npcGuid = SerializableGuid.NewGuid();
     public SerializedDictionary<Emotion, Sprite> allFaces = new();

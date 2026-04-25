@@ -35,6 +35,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
     private readonly Dictionary<Item, string> _unlockedFlashbackNote = new();
     private Dictionary<NpcIdentity, List<LogNote>> _characterLogs = new();
+    public Dictionary<NpcIdentity, List<LogNote>> FoundCharacters => _characterLogs;
     [SerializeField] MarkClueEvent markedClueEvent;
 
     public bool HasAllPois(Item item)
