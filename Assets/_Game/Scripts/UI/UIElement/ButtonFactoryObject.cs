@@ -69,7 +69,7 @@ public class ButtonFactoryObject : FactoryUIObject
         m_childrenButtons.Add(child);
         child._parent = this;
     }
-    public void RemoveFromParent() => _parent.m_childrenButtons.Remove(this);
+    public void RemoveFromParent() => _parent?.m_childrenButtons?.Remove(this);
     public void ClearChildren()
     {
         foreach(var child in m_childrenButtons) Destroy(child.gameObject);

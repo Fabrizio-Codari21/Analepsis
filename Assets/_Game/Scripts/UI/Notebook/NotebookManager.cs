@@ -236,6 +236,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                 if (note.type != type) continue;
                 var cachedNote = note;
                 var button = SpawnClueButton(cachedNote);
+                button.EnableSub();
                 button.gameObject.transform.localScale *= 1.1f;
             }
         }
