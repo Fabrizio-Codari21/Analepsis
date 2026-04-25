@@ -4,6 +4,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using System;
 //using System.ComponentModel;
 
 public class ButtonFactoryObject : FactoryUIObject
@@ -11,6 +12,9 @@ public class ButtonFactoryObject : FactoryUIObject
     [SerializeField]  protected Button m_button;
     [SerializeField]  protected Button subButton;
     [SerializeField]  protected TextMeshProUGUI m_text;
+
+    protected bool m_isOpen;
+    protected List<ButtonFactoryObject> m_childrenButtons = new();
 
     // estas no habria que asignarlas en el inspector en teoria
     [SerializeField, HideInInspector] protected Dictionary<Whodunnit, TheoryPanel> _boardTransforms;
@@ -22,6 +26,8 @@ public class ButtonFactoryObject : FactoryUIObject
        base.Despawn();
        m_button.onClick.RemoveAllListeners();
        if(subButton) subButton.onClick.RemoveAllListeners();
+       if(_parent != null) RemoveFromParent(); 
+       ClearChildren();
     }
 
     public void SetText(string text)
@@ -35,6 +41,9 @@ public class ButtonFactoryObject : FactoryUIObject
     }
 
     public void MoveToFirst() { transform.SetAsFirstSibling(); }
+    public void MoveToPosition(int position) { transform.SetSiblingIndex(position); }
+    public int GetPosition() { return transform.GetSiblingIndex(); }
+
     public void DisableSub() => subButton?.gameObject.SetActive(false);
     public void EnableSub(bool enabled = true) => subButton?.gameObject.SetActive(enabled);
     public void DisplayMark(bool marked) 
@@ -50,4 +59,20 @@ public class ButtonFactoryObject : FactoryUIObject
 
     public void SetProof(List<Whodunnit> isProof) => proof = isProof;
     public List<Whodunnit> GetProof() => proof;
+
+    protected ButtonFactoryObject _parent;  
+    public bool IsOpen() => m_isOpen;
+    public void MakeOpen(bool open) => m_isOpen = open;
+    public ButtonFactoryObject GetParent() => _parent;
+    public void AddToChildren(ButtonFactoryObject child)
+    {
+        m_childrenButtons.Add(child);
+        child._parent = this;
+    }
+    public void RemoveFromParent() => _parent.m_childrenButtons.Remove(this);
+    public void ClearChildren()
+    {
+        foreach(var child in m_childrenButtons) Destroy(child.gameObject);
+        m_childrenButtons.Clear();
+    } 
 }

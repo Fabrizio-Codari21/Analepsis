@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine.PlayerLoop;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class NotebookManager : Singleton<NotebookManager>, IActivity
 {
@@ -33,6 +34,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private readonly Dictionary<SerializableGuid, HashSet<string>> _unlockedPoisByItem = new();
 
     private readonly Dictionary<Item, string> _unlockedFlashbackNote = new();
+    private Dictionary<NpcIdentity, List<LogNote>> _characterLogs = new();
     [SerializeField] MarkClueEvent markedClueEvent;
 
     public bool HasAllPois(Item item)
@@ -47,6 +49,30 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         }
 
         return true;
+    }
+
+    public void AddCharacter(NpcIdentity npc)
+    {
+        if (!_characterLogs.ContainsKey(npc)) _characterLogs.Add(npc, new List<LogNote>());
+    }
+    public void AddLogToCharacter(NpcIdentity chara, LogNote log)
+    {
+        foreach (var character in _characterLogs)
+        {
+            if (character.Value.Contains(UniqueLog(log))) return;
+        }
+
+        if (_characterLogs.ContainsKey(chara)) _characterLogs[chara].Add(log);
+        else _characterLogs.Add(chara,new(){log});
+    }
+
+    public LogNote UniqueLog(LogNote log)
+    {
+        foreach(LogNote note in _notebookPages.Values)
+        {
+            if(log.GetInfo() == note.GetInfo()) return note;
+        }
+        return log;
     }
    
     private void Start()
@@ -77,6 +103,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     public void ResetMarkingPanel() => m_markingPanel.isMarkingClue = false;
     public event Action<bool> enableButtonsEvent = delegate { };
     public event Action<bool> enableMarkEvent = delegate { };
+    public event Action<bool> closeAllButtonsEvent = delegate { };
     public void EnableButtons(bool enable) => enableButtonsEvent?.Invoke(enable);
     public void EnableMark(bool enable) => enableMarkEvent?.Invoke(enable);
 
@@ -89,7 +116,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private void Close()
     {
         popEvent.Raise();
-     
+        closeAllButtonsEvent?.Invoke(false); closeAllButtonsEvent = default;
     }
     
     public void UnlockPoi(Item item, string poiId)
@@ -152,61 +179,143 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         enableButtonsEvent = default; enableMarkEvent = default;
         //m_markingPanel.markableClues.Clear();
         m_view.SetTitle(type.ToString()); // si vamos a hacer localization ya deberia usar de esta forma , lo hago asi para ahorrarme tiempo
-        if(_notebookPages.Where(x => x.Value.type == type).Count() <= 0)
+        
+        // no es muy solid que digamos pero para probar por ahora sirve
+        if(type == NoteType.Log && _characterLogs.Count > 0)
         {
-            var button = m_view.CreateButton($"No {type} found yet."); 
-            button.EnableSub(false); return;
-        }
-        foreach (var note in _notebookPages.Values)
-        {
-            if(note.type != type) continue;
-            var cachedNote = note;
-            
-            var button = m_view.CreateButton(cachedNote.GetButtonText());
-            //m_markingPanel.markableClues.Add(cachedNote.guid, button);
-            button.AddListener(() =>
+            foreach(var character in _characterLogs)
             {
-                _cts?.Cancel();
-                _cts?.Dispose();
-                _cts = new CancellationTokenSource();
-                m_view.ClearDetail();
-                _ = SelectNote(cachedNote,_cts.Token);
-            });
-            //button.MoveSubToLast();
-            button.EnableSub();
-            enableButtonsEvent += button.EnableSub;
-            button.AddListenerToSub(() =>
-            {
-                //_cts?.Cancel();
-                //_cts?.Dispose();
-                //_cts = new CancellationTokenSource();
-                if (markedClues.ContainsKey(note.guid))
+                var charButton = m_view.CreateButton(character.Key.npcName + " Logs");
+                charButton.gameObject.transform.localScale *= 1.1f;
+                charButton.DisableSub();
+                closeAllButtonsEvent += charButton.MakeOpen;
+
+                charButton.AddListener(() =>
                 {
-                    button.DisplayMark(false);
-                    markedClues.Remove(note.guid);
-                    return;
-                }                
-                m_markingPanel.isMarkingClue = true;
-             
-                button.DisplayMark(true);
-                enableMarkEvent = button.DisplayMark;
-                EnableButtons(false);
-                markedClueEvent.Raise(cachedNote);               
-            });
+                    if (!charButton.IsOpen())
+                    {
+                        if (character.Value.Count > 0)
+                        {
+                            foreach (var item in character.Value)
+                            {
+                                var button = SpawnClueButton(item);
+                                button.MoveToPosition(charButton.GetPosition() + (character.Value.IndexOf(item) + 1));
+                                button.gameObject.transform.localScale *= 0.9f;
+                                charButton.AddToChildren(button);
+                            }
+                            charButton.MakeOpen(true);
+                        }
+                        else
+                        {
+                            var button = m_view.CreateButton($"No saved conversations.");
+                            button.DisableSub();
+                            button.SetInteractable(false);
+                            button.MoveToPosition(charButton.GetPosition() + 1);
+                            button.gameObject.transform.localScale *= 0.9f;
+                            charButton.AddToChildren(button);
+                            charButton.MakeOpen(true);
+                        }
+                    }
+                    else
+                    {
+                        charButton.ClearChildren();
+                        charButton.MakeOpen(false);
+                    }
+                });
+            }
         }
+        else
+        {
+            if (_notebookPages.Where(x => x.Value.type == type).Count() <= 0)
+            {
+                var button = m_view.CreateButton($"No {type} found yet.");
+                button.EnableSub(false); button.SetInteractable(false); return;
+            }
+            foreach (var note in _notebookPages.Values)
+            {
+                if (note.type != type) continue;
+                var cachedNote = note;
+                var button = SpawnClueButton(cachedNote);
+                button.gameObject.transform.localScale *= 1.1f;
+            }
+        }
+
         //print("markable clues: " + m_markingPanel.markableClues.Count);
     }
-    private async UniTask SelectNote(Note note, CancellationToken token)
+
+    public ButtonFactoryObject SpawnClueButton(Note cachedNote)
+    {
+        var button = m_view.CreateButton(cachedNote.GetButtonText());
+        //m_markingPanel.markableClues.Add(cachedNote.guid, button);
+        button.AddListener(() =>
+        {
+            _cts?.Cancel();
+            _cts?.Dispose();
+            _cts = new CancellationTokenSource();
+            m_view.ClearDetail();
+            _ = SelectNote(button, cachedNote, _cts.Token);
+        });
+        //button.MoveSubToLast();
+        button.EnableSub();
+        enableButtonsEvent += button.EnableSub;
+        button.AddListenerToSub(() =>
+        {
+            //_cts?.Cancel();
+            //_cts?.Dispose();
+            //_cts = new CancellationTokenSource();
+            if (markedClues.ContainsKey(cachedNote.guid))
+            {
+                button.DisplayMark(false);
+                markedClues.Remove(cachedNote.guid);
+                return;
+            }
+            m_markingPanel.isMarkingClue = true;
+
+            button.DisplayMark(true);
+            enableMarkEvent = button.DisplayMark;
+            EnableButtons(false);
+            markedClueEvent.Raise(cachedNote);
+        });
+
+        return button;
+    }
+
+    private async UniTask SelectNote(ButtonFactoryObject parent, Note note, CancellationToken token)
     {
         try
         {
             m_view.ClearDetail();
             await note.Show(m_view, token);
             token.ThrowIfCancellationRequested();
-            var button = m_view.CreateDetailButton("Clear");
-            button.AddListener(() =>
+            var clearButton = m_view.CreateDetailButton("Clear");
+            clearButton.AddListener(() =>
             {
                m_view.ClearDetail();
+            });
+            var deleteButton = m_view.CreateDetailButton("Delete Log");
+            deleteButton.AddListener(() =>
+            {
+                m_view.ClearDetail();
+                if(note.type == NoteType.Log)
+                {
+                    foreach (var character in _characterLogs)
+                    {
+                        if (character.Value.Contains(note)) character.Value.Remove((LogNote)note);
+                    }
+
+                    var button = m_view.CreateButton($"No saved conversations.");
+                    button.transform.parent = parent.transform.parent;
+                    button.DisableSub();
+                    button.SetInteractable(false);
+                    button.MoveToPosition(parent.GetPosition());
+                    button.gameObject.transform.localScale *= 0.9f;
+                    parent.GetParent().AddToChildren(button);
+                }
+                else _notebookPages.Remove(note.guid);
+
+                parent.RemoveFromParent();
+                Destroy(parent.gameObject);
+
             });
         }
         catch (OperationCanceledException)
@@ -337,6 +446,7 @@ public class LogNote : Note
     { 
        await view.PlayText(new(){_info}, token);
     }
+    public string GetInfo() => _info;
 }
 
 public class ItemNote : Note

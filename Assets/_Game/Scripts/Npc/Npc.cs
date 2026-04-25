@@ -9,6 +9,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
    public DecalProjector faceProjector;
    public Emotion defaultEmotion = Emotion.Idle;
    [SerializeField] private Dialogue m_defaultDialogue;
+    private bool _firstTimeSpeaking = true;
    [SerializeField] private DialoguerEvent m_dialogueEvent;
    
    [SerializeField] private DynamicTextSetting m_nameTextSetting;
@@ -88,7 +89,8 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
    private void Speck()
    {
       m_dialogueEvent.Raise(this);
-   }
+      FirstTimeSpeaking = false;
+    }
    public string NpcName
    {
       get => m_npcIdentity.npcName;
@@ -101,6 +103,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
       set => m_npcIdentity = value;
    }
     public Emotion DefaultEmotion { get => defaultEmotion; set => defaultEmotion = value; }
+    public bool FirstTimeSpeaking { get => _firstTimeSpeaking; set => _firstTimeSpeaking = value; }
 
     public string GetTip()
    {

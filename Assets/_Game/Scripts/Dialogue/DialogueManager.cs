@@ -71,6 +71,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         _currentDialoguer = dialogable;
         _currentDialoguer.Dialogue._hiddenProof.Clear();
         m_dialogueView.ClearDialogues();
+        if(_currentDialoguer.FirstTimeSpeaking) NotebookManager.Instance.AddCharacter(_currentDialoguer.ID);
         m_dialogueView.SetSpeakerName(dialogable.NpcName);
         await m_dialogueView.UnfoldDialogue(true);
         await PlayDialogueNode(dialogable.Dialogue.startingNode);
@@ -181,10 +182,15 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 
     private void EndDialogue()
     {
-        m_recordNoteEvent.Raise(new LogNote(
+        //m_recordNoteEvent.Raise(new LogNote(
+        //    $"{_currentDialoguer.NpcName}{(_currentDialoguer.NpcName.Last() == 's' ? "'" : "'s")} account -\n Action {ActionTimer.Instance.CurrentAction()}"
+        //    ,_recordText
+        //    ,_currentDialoguer.Dialogue.DoesItProveAnything()));
+
+        NotebookManager.Instance.AddLogToCharacter(_currentDialoguer.ID, new LogNote(
             $"{_currentDialoguer.NpcName}{(_currentDialoguer.NpcName.Last() == 's' ? "'" : "'s")} account -\n Action {ActionTimer.Instance.CurrentAction()}"
-            ,_recordText
-            ,_currentDialoguer.Dialogue.DoesItProveAnything()));
+            , _recordText
+            , _currentDialoguer.Dialogue.DoesItProveAnything()));
 
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
         _currentDialoguer = null;
