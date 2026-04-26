@@ -207,6 +207,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                             {
                                 var button = SpawnClueButton(item);
                                 button.EnableSub();
+                                //if (markedClues.ContainsKey(item.guid)) button.DisplayMark(true); // no termino de funcionar
                                 button.MoveToPosition(charButton.GetPosition() + (character.Value.IndexOf(item) + 1));
                                 button.gameObject.transform.localScale *= 0.9f;
                                 charButton.AddToChildren(button);

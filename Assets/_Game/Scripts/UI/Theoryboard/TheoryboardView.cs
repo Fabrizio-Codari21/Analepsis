@@ -11,6 +11,7 @@ public class TheoryboardView : MonoBehaviour
     [SerializeField] TheoryboardManager manager;
     public Transform markedLogsRoot;
     public Transform markedItemsRoot;
+    public Transform markedCharactersRoot;
     public ButtonSetting clueButtonSetting;
     public Button solveButton;
     public TextMeshProUGUI solveText;
@@ -47,10 +48,7 @@ public class TheoryboardView : MonoBehaviour
         foreach(var character in NotebookManager.Instance.FoundCharacters)
         {
             //placeholder, despues hago que sea mas adecuado y no solo los personajes que tienen pistas descubiertas.
-            if(character.Value.Where(x => x.isProof.Count > 0).Count() > 0)
-            {
-                var button = CreateClueButton(character.Key.npcName, markedLogsRoot, new(){character.Key.role});
-            }
+            var button = CreateClueButton(character.Key.npcName, markedCharactersRoot, new() { character.Key.role }, isCharacter: true);
         }
 
         if (notebookManager.markedClues.Count <= 0) return;
@@ -68,7 +66,7 @@ public class TheoryboardView : MonoBehaviour
 
     }
 
-    public ButtonFactoryObject CreateClueButton(string text, Transform parent, List<Whodunnit> proof, bool placeholder = false)
+    public ButtonFactoryObject CreateClueButton(string text, Transform parent, List<Whodunnit> proof, bool placeholder = false, bool isCharacter = false)
     {
         var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
             clueButtonSetting,
@@ -88,6 +86,7 @@ public class TheoryboardView : MonoBehaviour
         button.SetBoard(boardRoots);
         button.SetView(this);
         button.SetProof(proof);
+        button.SetCharacter(isCharacter);
         button.MoveToLast();
         return button;
     }

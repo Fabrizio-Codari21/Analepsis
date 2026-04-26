@@ -14,6 +14,7 @@ public class ButtonFactoryObject : FactoryUIObject
     [SerializeField]  protected TextMeshProUGUI m_text;
 
     protected bool m_isOpen;
+    protected bool m_isCharacter;
     protected List<ButtonFactoryObject> m_childrenButtons = new();
 
     // estas no habria que asignarlas en el inspector en teoria
@@ -75,7 +76,8 @@ public class ButtonFactoryObject : FactoryUIObject
 
     public void SetProof(List<Whodunnit> isProof) => proof = isProof;
     public List<Whodunnit> GetProof() => proof;
-
+    public bool IsCharacter() => m_isCharacter;
+    public void SetCharacter(bool isCharacter) => m_isCharacter = isCharacter;
 
     protected ButtonFactoryObject _parent;  
     public bool IsOpen() => m_isOpen;

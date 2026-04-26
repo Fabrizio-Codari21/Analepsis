@@ -68,7 +68,10 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
         var panel = _boardTransforms.FirstOrDefault(x => x.Value == droppedOn);
         //if (panel.Value == default) print("no hay pruebas en " + m_text.text);
 
-        if (droppedOn != null && _boardTransforms.ContainsValue(droppedOn) && (proof != null && proof.Contains(panel.Key)))
+        if (droppedOn != null 
+            && _boardTransforms.ContainsValue(droppedOn) 
+            && (proof != null && proof.Contains(panel.Key))
+            && droppedOn.acceptCharactersAsProof == m_isCharacter)
         {
             if (droppedOn.droppedClue != null) Destroy(droppedOn.droppedClue.gameObject);
             var button = _view.CreateClueButton(m_text.text, panel.Value.transform, proof);
