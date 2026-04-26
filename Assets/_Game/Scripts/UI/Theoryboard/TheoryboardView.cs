@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.Rendering;
 using Cysharp.Threading.Tasks;
 using TMPro;
+using UnityEngine.TextCore.Text;
 public class TheoryboardView : MonoBehaviour
 {
     [SerializeField] NotebookManager notebookManager;
@@ -12,6 +13,7 @@ public class TheoryboardView : MonoBehaviour
     public Transform markedLogsRoot;
     public Transform markedItemsRoot;
     public Transform markedCharactersRoot;
+    public Button previousCharacterButton, nextCharacterButton;
     public ButtonSetting clueButtonSetting;
     public Button solveButton;
     public TextMeshProUGUI solveText;
@@ -24,6 +26,8 @@ public class TheoryboardView : MonoBehaviour
     void Start()
     {
         solveButton.onClick.AddListener(() => _ = TryToSolveCase(solveText));
+        previousCharacterButton.onClick.AddListener(() => SwitchCharacter(-1));
+        nextCharacterButton.onClick.AddListener(() => SwitchCharacter(1));
         
         _activity = manager.GetComponent<IActivity>();
 
@@ -33,9 +37,9 @@ public class TheoryboardView : MonoBehaviour
             Despawn(markedItemsRoot);
         };
     }
-    
-    
 
+
+    int _currentCharacter = 0;
     public void LoadMarkedClues()
     {
         var markedLogs = notebookManager.markedClues.Where(x => x.Value.type == NoteType.Log);
@@ -45,12 +49,8 @@ public class TheoryboardView : MonoBehaviour
         if (markedItems.Count() <= 0)
             CreateClueButton("No Objects marked \n(Click the star to mark)", markedItemsRoot, default, true);
 
-        foreach(var character in NotebookManager.Instance.FoundCharacters)
-        {
-            //placeholder, despues hago que sea mas adecuado y no solo los personajes que tienen pistas descubiertas.
-            var button = CreateClueButton(character.Key.npcName, markedCharactersRoot, new() { character.Key.role }, isCharacter: true);
-        }
-
+        SwitchCharacter();
+        
         if (notebookManager.markedClues.Count <= 0) return;
 
         foreach (var log in markedLogs) 
@@ -64,6 +64,23 @@ public class TheoryboardView : MonoBehaviour
             var button = CreateClueButton(item.Value.displayName, markedItemsRoot, item.Value.isProof);
         }
 
+    }
+
+    public void SwitchCharacter(int nextOrPrevious = 0)
+    {
+        Despawn(markedCharactersRoot);
+        var character = NotebookManager.Instance.FoundCharacters.Keys.ToList()[_currentCharacter];
+        if (nextOrPrevious > 0)
+        {
+            _currentCharacter++;
+            if (_currentCharacter > NotebookManager.Instance.FoundCharacters.Count - 1) _currentCharacter = 0;
+        }
+        else if (nextOrPrevious < 0)
+        {
+            _currentCharacter--;
+            if (_currentCharacter < 0) _currentCharacter = NotebookManager.Instance.FoundCharacters.Count - 1;
+        }
+        var charButton = CreateClueButton(character.npcName, markedCharactersRoot, new() { character.role }, isCharacter: true);
     }
 
     public ButtonFactoryObject CreateClueButton(string text, Transform parent, List<Whodunnit> proof, bool placeholder = false, bool isCharacter = false)
