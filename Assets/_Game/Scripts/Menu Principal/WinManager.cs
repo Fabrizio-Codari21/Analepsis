@@ -7,4 +7,9 @@ public class WinManager : MonoBehaviour
     {
         print("termino"); Application.Quit();
     }
+
+    public void Retry()
+    {
+        this.AsyncLoader("SampleScene");
+    }
 }

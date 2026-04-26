@@ -8,6 +8,8 @@ using Unity.Cinemachine;
 public class TheoryboardManager : MonoBehaviour, IActivity
 {
     [SerializeField] TheoryboardView view;
+    [SerializeField] int maxSolveAttempts;
+    public int attemptsLeft { get; private set; }
 
     [SerializeField] private EventChannel m_openTheoryBoardChannel;
     [SerializeField] private BoolEventChannel enableCursor;
@@ -86,6 +88,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         m_openTheoryBoardChannel.OnEventRaised += Open;
         m_openTheoryBoardChannel.OnEventRaised += view.LoadMarkedClues;
         inputReaderBoard.Close += Close;
+        attemptsLeft = maxSolveAttempts;
 
     }
 
@@ -97,6 +100,13 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         print("Case solved");
         this.AsyncLoader("WinScene");
     }
+    public void FailCase()
+    {
+        print("Case failed");
+        this.AsyncLoader("LoseScene");
+    }
+
+    public void ConsumeAttempt() => attemptsLeft--;
 
   
 }

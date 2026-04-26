@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine.TextCore.Text;
+using UnityEditor;
 public class TheoryboardView : MonoBehaviour
 {
     [SerializeField] NotebookManager notebookManager;
@@ -17,6 +18,7 @@ public class TheoryboardView : MonoBehaviour
     public ButtonSetting clueButtonSetting;
     public Button solveButton;
     public TextMeshProUGUI solveText;
+    public Image solveCanvas;
 
     public SerializedDictionary<Whodunnit, TheoryPanel> boardRoots = new();
 
@@ -25,7 +27,8 @@ public class TheoryboardView : MonoBehaviour
     
     void Start()
     {
-        solveButton.onClick.AddListener(() => _ = TryToSolveCase(solveText));
+        solveButton.onClick.AddListener(async () => await TryToSolveCase(solveText));
+        solveCanvas.transform.parent.gameObject.SetActive(false);
         previousCharacterButton.onClick.AddListener(() => SwitchCharacter(-1));
         nextCharacterButton.onClick.AddListener(() => SwitchCharacter(1));
         
@@ -69,6 +72,10 @@ public class TheoryboardView : MonoBehaviour
     public void SwitchCharacter(int nextOrPrevious = 0)
     {
         Despawn(markedCharactersRoot);
+        if(NotebookManager.Instance.FoundCharacters.Count <= 0)
+        {
+            CreateClueButton("No characters discovered.", markedCharactersRoot, default, true); return;
+        }
         var character = NotebookManager.Instance.FoundCharacters.Keys.ToList()[_currentCharacter];
         if (nextOrPrevious > 0)
         {
@@ -126,7 +133,10 @@ public class TheoryboardView : MonoBehaviour
 
             if (choice != null && choice.GetProof().Contains(item.Key)) continue; else
             {
-                await ShowError(solveText); return;
+                manager.ConsumeAttempt();
+                if (manager.attemptsLeft > 0) await ShowError(solveText);
+                else manager.FailCase();
+                return;
             }
         }
         
@@ -138,11 +148,38 @@ public class TheoryboardView : MonoBehaviour
         var oldText = solveText.text;
 
         print("unsolved");
-        solveText.text = "Not quite";
-        await UniTask.Delay(700);
+        //solveText.text = "Not quite";
+        solveText.text = $"Wait... this doesn't make enough sense. " +
+                         $"\n I need to find a better theory, quickly... " +
+                         $"\n [{manager.attemptsLeft} attempts left]";
+        await DisplayErrorUI();
         solveText.text = oldText;
     }
 
-  
+    public async UniTask DisplayErrorUI()
+    {
+        solveCanvas.transform.parent.gameObject.SetActive(true);
+        while (solveCanvas.color.a < 0.8f)
+        {
+            solveCanvas.color += new Color(0, 0, 0, 0.06f);
+            solveText.color += new Color(0, 0, 0, 0.06f);
+            //shadeUI.color += new Color(0, 0, 0, 0.02f * timeToFadeUI / 5);
+            await UniTask.Delay(20);
+        }
+
+        await UniTask.Delay(2000);
+
+        while (solveCanvas.color.a > 0)
+        {
+            solveCanvas.color -= new Color(0, 0, 0, 0.03f);
+            solveText.color -= new Color(0, 0, 0, 0.03f);
+            //shadeUI.color -= new Color(0, 0, 0, 0.015f * timeToFadeUI / 5);
+            await UniTask.Delay(20);
+        }
+        solveCanvas.transform.parent.gameObject.SetActive(false);
+
+    }
+
+
 
 }
