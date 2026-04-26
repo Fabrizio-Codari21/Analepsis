@@ -27,9 +27,9 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     Tuple<Vector3, Quaternion> _playerTransform;
     //Transform _oldLookAt;
 
-    [Space(20), Header("WHAT'S THE RIGHT ANSWER?")]
-    //[DictionaryDrawerSettings(KeyLabel = "Role", ValueLabel = "Proof")] 
-    public SerializedDictionary<Whodunnit, IClue> correctAnswer = new();
+    //[Space(20), Header("WHAT'S THE RIGHT ANSWER?")]
+    ////[DictionaryDrawerSettings(KeyLabel = "Role", ValueLabel = "Proof")] 
+    //public SerializedDictionary<Whodunnit, IClue> correctAnswer = new();
 
     #region IActivity
     public event Action OnResume;
