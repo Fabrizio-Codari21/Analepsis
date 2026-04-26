@@ -368,8 +368,8 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         OnResume?.Invoke();
         inputReaderNoteBook.SetEnable();
        
-        if (m_markingPanel.isMarkingClue) return;
         _virtualMouse.enabled = true;
+        if (m_markingPanel.isMarkingClue) return;
         m_view.gameObject.SetActive(true);
         m_view.NextButtonAdd(()=> ChangeType(1));
         m_view.PreviousButtonAdd(()=>ChangeType(-1));
