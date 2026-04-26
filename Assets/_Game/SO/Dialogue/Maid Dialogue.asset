@@ -200,6 +200,7 @@ MonoBehaviour:
         responseText: '[Um... Hello?]'
         nextNode:
           rid: 5324356914828017947
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 492, y: -10}
     - rid: 5324356914828017946
@@ -208,6 +209,7 @@ MonoBehaviour:
         responseText: '[Alright, got the message (Leave)]'
         nextNode:
           rid: -2
+        dialogueTopic: literally nothing
         m_conditions: []
         editorPosition: {x: 575, y: 509}
     - rid: 5324356914828017947
@@ -233,6 +235,7 @@ MonoBehaviour:
         responseText: '[Are you the maid, perhaps?]'
         nextNode:
           rid: 5324356914828017950
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 1154, y: -154}
     - rid: 5324356914828017949
@@ -241,6 +244,7 @@ MonoBehaviour:
         responseText: '[Can I help you, somehow?]'
         nextNode:
           rid: 5324356914828017951
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 1161, y: 10}
     - rid: 5324356914828017950
@@ -281,14 +285,16 @@ MonoBehaviour:
         responseText: '[Can you... understand me?]'
         nextNode:
           rid: 5324356914828017954
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 1857, y: -289}
     - rid: 5324356914828017953
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[Are you alright?]'
+        responseText: '[I give up. (Leave)]'
         nextNode:
-          rid: 5324356914828017956
+          rid: -2
+        dialogueTopic: the Maid's weirdness
         m_conditions: []
         editorPosition: {x: 1884, y: -115}
     - rid: 5324356914828017954
@@ -314,30 +320,16 @@ MonoBehaviour:
         responseText: '[What accent?]'
         nextNode:
           rid: 5324356914828017961
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 2805, y: -463}
-    - rid: 5324356914828017956
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: ...yeah.
-        characterEmotion: 0
-        doesItProveAnything: 0
-        responses:
-        - rid: 5324356914828017957
-        isRootNode: 0
-        editorPosition: {x: 2188, y: -105}
-        guid:
-          Part1: 3738737354
-          Part2: 1165723657
-          Part3: 1568583865
-          Part4: 2768871137
-        tag: 
     - rid: 5324356914828017957
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
         responseText: '[(This is going nowhere...)]'
         nextNode:
-          rid: 5324356914828017954
+          rid: -2
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 2492, y: -86}
     - rid: 5324356914828017958
@@ -346,6 +338,7 @@ MonoBehaviour:
         responseText: '[It is, actually.]'
         nextNode:
           rid: 5324356914828017959
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 2807, y: -308}
     - rid: 5324356914828017959
@@ -370,6 +363,7 @@ MonoBehaviour:
         responseText: '[(Maybe I shouldn''t have said that...)]'
         nextNode:
           rid: -2
+        dialogueTopic: offending the maid
         m_conditions: []
         editorPosition: {x: 3418, y: -308}
     - rid: 5324356914828017961
@@ -400,6 +394,7 @@ MonoBehaviour:
         responseText: '[Wait, when you say West...]'
         nextNode:
           rid: 5324356914828017964
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 4072, y: -518}
     - rid: 5324356914828017963
@@ -408,6 +403,7 @@ MonoBehaviour:
         responseText: '[Don''t worry, I don''t mind.]'
         nextNode:
           rid: 5324356914828017965
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 4072, y: -687}
     - rid: 5324356914828017964
@@ -454,6 +450,7 @@ MonoBehaviour:
         responseText: '[Uh-oh, I think I screwed it.]'
         nextNode:
           rid: -2
+        dialogueTopic: the maid's past
         m_conditions: []
         editorPosition: {x: 5153, y: -536}
     - rid: 5324356914828017967
@@ -462,6 +459,7 @@ MonoBehaviour:
         responseText: '[Someone''s calling her a <b>menace</b>...]'
         nextNode:
           rid: -2
+        dialogueTopic: the maid's concerns
         m_conditions: []
         editorPosition: {x: 5269, y: -735}
     - rid: 5324356914828017968
@@ -470,6 +468,7 @@ MonoBehaviour:
         responseText: '[Have you seen some keys?]'
         nextNode:
           rid: 5324356914828018016
+        dialogueTopic: 
         m_conditions:
         - rid: 5324356914828017977
         editorPosition: {x: 604, y: 319}
@@ -502,6 +501,7 @@ MonoBehaviour:
         responseText: '[Sure! (Missing <b>keys</b>, huh?)]'
         nextNode:
           rid: -2
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 2283.135, y: 250.93501}
     - rid: 5324356914828018015
@@ -510,6 +510,7 @@ MonoBehaviour:
         responseText: '[(Well, that''s odd...)]'
         nextNode:
           rid: -2
+        dialogueTopic: the boss' keys
         m_conditions: []
         editorPosition: {x: 1493, y: 300}
     - rid: 5324356914828018016

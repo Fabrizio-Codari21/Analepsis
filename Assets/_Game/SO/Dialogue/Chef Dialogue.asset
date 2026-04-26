@@ -171,6 +171,7 @@ MonoBehaviour:
         responseText: '[So you''re the chef, I assume?]'
         nextNode:
           rid: 5324356914828018022
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 797, y: -52.878784}
     - rid: 5324356914828018022
@@ -201,6 +202,7 @@ MonoBehaviour:
         responseText: '[And you use peanut butter, right?]'
         nextNode:
           rid: 5324356914828018036
+        dialogueTopic: 
         m_conditions:
         - rid: 5324356914828018025
         editorPosition: {x: 1999, y: -125.878784}
@@ -210,8 +212,9 @@ MonoBehaviour:
         responseText: '[Yeah, I guess that''s fair...]'
         nextNode:
           rid: -2
+        dialogueTopic: the Chef's identity
         m_conditions: []
-        editorPosition: {x: 2021, y: -300.87875}
+        editorPosition: {x: 1999, y: -375}
     - rid: 5324356914828018025
       type: {class: ItemNodeCondition, ns: , asm: Assembly-CSharp}
       data:
@@ -224,6 +227,7 @@ MonoBehaviour:
         responseText: '[Is this your knife, sir?]'
         nextNode:
           rid: 5324356914828018028
+        dialogueTopic: 
         m_conditions:
         - rid: 5324356914828018027
         editorPosition: {x: 831, y: 242}
@@ -256,6 +260,7 @@ MonoBehaviour:
         responseText: '[Saw who?]'
         nextNode:
           rid: 5324356914828018030
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 1715.25, y: 261.00003}
     - rid: 5324356914828018030
@@ -285,6 +290,7 @@ MonoBehaviour:
         responseText: '[So you resent her, then?]'
         nextNode:
           rid: 5324356914828018035
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 2665, y: 339}
     - rid: 5324356914828018032
@@ -293,6 +299,7 @@ MonoBehaviour:
         responseText: '[Do you miss her?]'
         nextNode:
           rid: 5324356914828018033
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 2680.8804, y: 169.48999}
     - rid: 5324356914828018033
@@ -323,6 +330,7 @@ MonoBehaviour:
         responseText: '[(That seems sincere... and sad...)]'
         nextNode:
           rid: -2
+        dialogueTopic: the Chef's ex-wife
         m_conditions: []
         editorPosition: {x: 3965, y: 189}
     - rid: 5324356914828018035
@@ -370,6 +378,7 @@ MonoBehaviour:
         responseText: '[Oh, I didn''t. (<b>That incident</b>...)]'
         nextNode:
           rid: -2
+        dialogueTopic: the Boss' PB problem
         m_conditions: []
         editorPosition: {x: 3263, y: -176}
     - rid: 5324356914828018038
@@ -378,6 +387,7 @@ MonoBehaviour:
         responseText: '[What''s up with the maid?]'
         nextNode:
           rid: 5324356914828018039
+        dialogueTopic: 
         m_conditions:
         - rid: 5324356914828018041
         editorPosition: {x: 952.50006, y: 493}
@@ -405,6 +415,7 @@ MonoBehaviour:
         responseText: '[So she''s been <b>threatened</b>...]'
         nextNode:
           rid: -2
+        dialogueTopic: the Maid's problem
         m_conditions: []
         editorPosition: {x: 2028.0895, y: 566}
     - rid: 5324356914828018041
@@ -439,6 +450,7 @@ MonoBehaviour:
         responseText: '[Wait, when you say West...]'
         nextNode:
           rid: 5324356914828018066
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 4072, y: -518}
     - rid: 5324356914828018064
@@ -447,6 +459,7 @@ MonoBehaviour:
         responseText: '[Don''t worry, I don''t mind.]'
         nextNode:
           rid: 5324356914828018067
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 4072, y: -687}
     - rid: 5324356914828018066
@@ -493,6 +506,7 @@ MonoBehaviour:
         responseText: '[Uh-oh, I think I screwed it.]'
         nextNode:
           rid: -2
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 5153, y: -536}
     - rid: 5324356914828018069
@@ -501,5 +515,6 @@ MonoBehaviour:
         responseText: '[Someone''s calling her a <b>menace</b>...]'
         nextNode:
           rid: -2
+        dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 5269, y: -735}

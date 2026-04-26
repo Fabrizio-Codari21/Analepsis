@@ -82,6 +82,12 @@ public class NotebookView : MonoBehaviour
 
     public void ClearButton()  
     {
+        var buttons = m_buttonRoot.GetComponentsInChildren<ButtonFactoryObject>();
+        foreach (ButtonFactoryObject obj in buttons)
+        {
+            obj.ClearChildren();
+            obj.Despawn();
+        }
         Despawn(m_buttonRoot);
     }
     public async UniTask PlayText(List<string> text, CancellationToken token) 

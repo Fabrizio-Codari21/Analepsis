@@ -99,6 +99,18 @@ MonoBehaviour:
       Part3: 3713609364
       Part4: 931363781
     tag: 
+  - dialogueText: 
+    characterEmotion: 0
+    doesItProveAnything: 0
+    responses: []
+    isRootNode: 0
+    editorPosition: {x: 873, y: 192}
+    guid:
+      Part1: 683588782
+      Part2: 1333579791
+      Part3: 3661331897
+      Part4: 2589768789
+    tag: 
   _hiddenProof: 
   references:
     version: 2
@@ -139,7 +151,7 @@ MonoBehaviour:
         responseText: '[Sure! (Missing <b>keys</b>, huh?)]'
         nextNode:
           rid: -2
-        dialogueTopic: 
+        dialogueTopic: Lost car keys
         m_conditions: []
         editorPosition: {x: 2283.135, y: 250.93501}
     - rid: 5324356914828017938
@@ -150,7 +162,7 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: The storm outside
         m_conditions: []
-        editorPosition: {x: 2094.05, y: 29.69999}
+        editorPosition: {x: 2101, y: 24}
     - rid: 5324356914828017939
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -320,6 +332,6 @@ MonoBehaviour:
         responseText: '[(That''s... weirdly dismissive.)]'
         nextNode:
           rid: -2
-        dialogueTopic: 
+        dialogueTopic: dismissing the Maid
         m_conditions: []
         editorPosition: {x: 2121, y: 509}

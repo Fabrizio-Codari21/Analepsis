@@ -201,6 +201,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                             foreach (var item in character.Value)
                             {
                                 var button = SpawnClueButton(item);
+                                button.EnableSub();
                                 button.MoveToPosition(charButton.GetPosition() + (character.Value.IndexOf(item) + 1));
                                 button.gameObject.transform.localScale *= 0.9f;
                                 charButton.AddToChildren(button);

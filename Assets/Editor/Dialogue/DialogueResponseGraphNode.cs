@@ -66,23 +66,38 @@ public sealed class DialogueResponseGraphNode : Node
         extensionContainer.Add(conditionFoldout);
         #endregion
 
-        Foldout topicFoldout = new Foldout()
-        {
-            text = $"Is this the Last Node?",
-            value = false,
-        };
         TextField topicField = new TextField("What was the <b>Topic</b> of\n this line of dialogue?")
         {
             multiline = false,
             maxLength = 20,
             value = responseData.dialogueTopic,
         };
+        Foldout topicFoldout = new Foldout()
+        {
+            text = $"If this is the Last Node...",
+            visible = responseData.nextNode == null,
+            value = true,
+        };
+        _graphView.OnAddingNextNode += () =>
+        {
+            UpdateTopic(); return ResponseData.nextNode != null;
+        };
         topicField.RegisterValueChangedCallback(evt =>
         {
             ResponseData.dialogueTopic = evt.newValue;
+            UpdateTopic();
         });
         topicFoldout.Add(topicField);
         extensionContainer.Add(topicFoldout);
+
+        void UpdateTopic()
+        {
+            topicFoldout.visible = ResponseData.nextNode == null;
+            topicField.value = topicFoldout.visible ? topicField.value : "";
+            conditionFoldout.text = $"Conditions ({responseData.m_conditions.Count})";
+            RefreshExpandedState(); RefreshPorts();
+        }
+
 
         InputPort = InstantiatePort(
             Orientation.Horizontal,

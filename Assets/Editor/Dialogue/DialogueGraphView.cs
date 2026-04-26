@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using System;
 
 public sealed class DialogueGraphView : GraphView
 {
@@ -13,7 +14,8 @@ public sealed class DialogueGraphView : GraphView
     private ConditionSearchWindow _sharedConditionSearchWindow;
     private EditorWindow editorWindow;
     private bool isLoadingGraph;
-    
+    public event Func<bool> OnAddingNextNode = delegate { return default; };
+
     private Dialogue currentDialogue;
     public Dialogue CurrentDialogue => currentDialogue;
     public DialogueGraphView(EditorWindow window)
@@ -98,6 +100,7 @@ public sealed class DialogueGraphView : GraphView
             }
         }
         DeleteElements(elementsToDelete);
+        OnAddingNextNode?.Invoke();
     }
 
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
@@ -114,7 +117,7 @@ public sealed class DialogueGraphView : GraphView
     {
         nodeData ??= new DialogueNode();
         nodeData.isRootNode = isRoot;
-        
+
         if (currentDialogue != null)
         {
             bool exists = currentDialogue.allNodes.Any(n => n.guid == nodeData.guid);
@@ -135,6 +138,7 @@ public sealed class DialogueGraphView : GraphView
         AddElement(node);
 
         dialogueNodeMap[nodeData] = node;
+        OnAddingNextNode?.Invoke();
 
         return node;
     }
@@ -152,6 +156,7 @@ public sealed class DialogueGraphView : GraphView
         AddElement(responseNode);
 
         responseNodeMap[response] = responseNode;
+        OnAddingNextNode?.Invoke();
 
         return responseNode;
     }
@@ -207,9 +212,10 @@ public sealed class DialogueGraphView : GraphView
                 if (edge.output.node is DialogueResponseGraphNode responseNode &&
                     edge.input.node is DialogueGraphNode dialogueNode)
                 {
-                    responseNode.ResponseData.nextNode = dialogueNode.NodeData;
+                    responseNode.ResponseData.nextNode = dialogueNode.NodeData;                    
                 }
             }
+            OnAddingNextNode?.Invoke();
         }
 
         if (change.elementsToRemove != null)
@@ -226,7 +232,7 @@ public sealed class DialogueGraphView : GraphView
                         if (edge.output is { node: DialogueResponseGraphNode responseNode })
                         {
                             responseNode.ResponseData.nextNode = null;
-                        }
+                            }
 
                         break;
                     }
@@ -238,6 +244,7 @@ public sealed class DialogueGraphView : GraphView
                         break;
                 }
             }
+            OnAddingNextNode?.Invoke();
         }
 
         return change;
@@ -278,12 +285,13 @@ public sealed class DialogueGraphView : GraphView
             }
         }
         responseNodeMap.Remove(responseData);
+        OnAddingNextNode?.Invoke();
     }
     
     private void RemoveDialogueNodeData(DialogueGraphNode dialogueGraphNode)
     {
         DialogueNode nodeData = dialogueGraphNode.NodeData;
-        
+
         if (currentDialogue != null && currentDialogue.allNodes.Contains(nodeData))
         {
             currentDialogue.allNodes.Remove(nodeData);
@@ -316,6 +324,7 @@ public sealed class DialogueGraphView : GraphView
         }
 
         dialogueNodeMap.Remove(nodeData);
+        OnAddingNextNode?.Invoke();
     }
     
     public void LoadDialogue(Dialogue dialogue)
