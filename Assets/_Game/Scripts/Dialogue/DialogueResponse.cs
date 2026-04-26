@@ -35,7 +35,40 @@ public class DialogueResponse
             topic = default; return false;
         }
     }
+    
+    public bool HasConditions() => m_conditions is { Count: > 0 };
+    public bool IsNewResponse()
+    {
+        if (nextNode == null) return false;
+        if (!HasConditions()) return false; 
+        
+        return !DialogueManager.Instance.CheckDialogue(nextNode.guid);
+    }
 
+    public bool ShouldShowNewPath()
+    {
+        return HasConditions() && ScanForUnreadNodes(new HashSet<DialogueNode>());
+    }
+    // dfs busqueda
+    private bool ScanForUnreadNodes(HashSet<DialogueNode> visited)
+    {
+        if (nextNode == null) return false;
+
+     
+        if (!visited.Add(nextNode)) return false;
+
+
+        if (!DialogueManager.Instance.CheckDialogue(nextNode.guid)) return true;
+
+        if (nextNode.responses == null) return false;
+        foreach (var res in nextNode.responses)
+        {
+            if (!res.IsAvailable()) continue;
+            if (res.ScanForUnreadNodes(visited)) return true;
+        }
+
+        return false;
+    }
     #if UNITY_EDITOR
     [HideInInspector]public Vector2 editorPosition;
     #endif

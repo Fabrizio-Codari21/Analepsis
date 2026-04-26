@@ -28,4 +28,6 @@ public class Dialogue : ScriptableObject, IClue
         return new List<Whodunnit>(_hiddenProof);
 
     }
+    
+
 }

@@ -129,7 +129,17 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         
         foreach (var response in availableResponses)
         {
-            var button = m_dialogueView.CreateResponseButton(response.responseText);
+            string tagToDisplay = String.Empty;
+            if (response.IsNewResponse())
+            {
+                tagToDisplay = "New";
+            }
+            else if (response.ShouldShowNewPath())
+            {
+                tagToDisplay = "HAS NEW RESPONSE IN THIS PATH";
+            }
+            
+            var button = m_dialogueView.CreateResponseButton(response.responseText,tagToDisplay);
             button.AddListener(() => {
                 button.SetInteractable(false);
                 PlayResponseProcess(response).Forget();

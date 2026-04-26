@@ -93,5 +93,3 @@ public class ButtonFactoryObject : FactoryUIObject
         m_childrenButtons.Clear();
     } 
 }
-
-

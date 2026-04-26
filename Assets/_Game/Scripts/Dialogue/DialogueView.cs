@@ -36,12 +36,13 @@ public class DialogueView : MonoBehaviour
         m_dialoguerName.text = newName;
     }
     
-    public ButtonFactoryObject CreateResponseButton(string text)
+    public ButtonFactoryObject CreateResponseButton(string text,string tip = "")
     {
-        var b = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(m_responseButton, Vector3.zero, Quaternion.identity, m_responseButtonRoot);
+        var b = FlyweightFactory.Instance.Spawn<ResponseDialogueButton>(m_responseButton, Vector3.zero, Quaternion.identity, m_responseButtonRoot);
         b.SetText(text);
         b.SetInteractable(true);
         b.MoveToLast();
+        b.SetTag(tip);
         return b;
     }
     public void ClearResponses()
