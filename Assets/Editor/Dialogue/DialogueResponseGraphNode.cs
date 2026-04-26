@@ -45,8 +45,7 @@ public sealed class DialogueResponseGraphNode : Node
         Foldout conditionFoldout = new Foldout()
         {
             text = $"Conditions ({responseData.m_conditions.Count})",
-            value = false ,
-            
+            value = false ,            
         };
         conditionContainer = new VisualElement
         {
@@ -66,6 +65,24 @@ public sealed class DialogueResponseGraphNode : Node
         conditionFoldout.Add(addConditionButton);
         extensionContainer.Add(conditionFoldout);
         #endregion
+
+        Foldout topicFoldout = new Foldout()
+        {
+            text = $"Is this the Last Node?",
+            value = false,
+        };
+        TextField topicField = new TextField("What was the <b>Topic</b> of\n this line of dialogue?")
+        {
+            multiline = false,
+            maxLength = 20,
+            value = responseData.dialogueTopic,
+        };
+        topicField.RegisterValueChangedCallback(evt =>
+        {
+            ResponseData.dialogueTopic = evt.newValue;
+        });
+        topicFoldout.Add(topicField);
+        extensionContainer.Add(topicFoldout);
 
         InputPort = InstantiatePort(
             Orientation.Horizontal,

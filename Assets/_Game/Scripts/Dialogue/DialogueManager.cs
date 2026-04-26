@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting.Dependencies.Sqlite;
 
 public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 {
@@ -21,6 +22,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     
     private string _manualRecords = string.Empty;
     private string _recordText = string.Empty;
+    private string _topic = string.Empty;
     [ShowInInspector, ReadOnly] private HashSet<SerializableGuid> _dialogueNodesTalked = new HashSet<SerializableGuid>();
     #region  IActivity
     public event Action OnResume;
@@ -144,7 +146,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         if (response.nextNode == null)
         {
             await m_dialogueView.UnfoldDialogue(false);
-            EndDialogue();
+            EndDialogue(response.HasTopic(out _topic));
             return;
         }
         AppendToRecord($"[Player]: {response.responseText}");
@@ -170,7 +172,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         else
         {
             await m_dialogueView.UnfoldDialogue(false);
-            EndDialogue();
+            EndDialogue(response.HasTopic(out _topic));
         }
     }
     
@@ -195,9 +197,12 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         _dialogueCts = new CancellationTokenSource();
     }
 
-    private void EndDialogue()
+    private void EndDialogue(bool withTopic = false)
     {
-        string title = $"{_currentDialoguer.NpcName}'s account";
+        string title = $"{_currentDialoguer.NpcName}'s account" + (withTopic
+        ? $" -\n About {_topic.ToLower()}"
+        : " -\n No clear topic");
+
         var finalLog = new LogNote(
             title, 
             _recordText, 
@@ -213,7 +218,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
         _currentDialoguer = null;
         _recordText = string.Empty;
-        _manualRecords =string.Empty;
+        _manualRecords = string.Empty;
         m_popActivity.Raise();
         
     }

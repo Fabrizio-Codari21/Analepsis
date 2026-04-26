@@ -7,6 +7,7 @@ public class DialogueResponse
 {
     [TextArea] public string responseText;
     [SerializeReference] public DialogueNode nextNode;
+    [SerializeReference] public string dialogueTopic;
     [SerializeReference] public List<DialogueCondition> m_conditions= new List<DialogueCondition>();
     
     public bool IsAvailable()
@@ -23,6 +24,18 @@ public class DialogueResponse
         }
         return true;
     }
+    public bool HasTopic(out string topic) 
+    {
+        if (nextNode == null && dialogueTopic != "")
+        {
+            topic = dialogueTopic; return true;
+        }
+        else
+        {
+            topic = default; return false;
+        }
+    }
+
     #if UNITY_EDITOR
     [HideInInspector]public Vector2 editorPosition;
     #endif
