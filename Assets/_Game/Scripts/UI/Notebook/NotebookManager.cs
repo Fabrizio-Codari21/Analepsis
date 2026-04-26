@@ -5,7 +5,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using System.Linq;
-using Unity.VisualScripting;
+
 
 public class NotebookManager : Singleton<NotebookManager>, IActivity
 {
@@ -32,6 +32,9 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private readonly Dictionary<SerializableGuid,Note> _notebookPages = new();
     private readonly Dictionary<Item, string> _unlockedFlashbackNote = new();
     private Dictionary<NpcIdentity, List<LogNote>> _characterLogs = new();
+
+
+    private UVVirtualMouse _virtualMouse;
     public Dictionary<NpcIdentity, List<LogNote>> FoundCharacters => _characterLogs;
     [SerializeField] MarkClueEvent markedClueEvent;
 
@@ -86,6 +89,8 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         ResetMarkingPanel();
         markedClueEvent.OnEventRaised += async (note) => await TryToMarkClue(note);
         m_openNotebookChannel.OnEventRaised += Open;
+        
+        _virtualMouse = GetComponentInChildren<UVVirtualMouse>();
     }
 
     private void Record(Note note)
@@ -361,8 +366,9 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         OnResume?.Invoke();
         inputReaderNoteBook.SetEnable();
+       
         if (m_markingPanel.isMarkingClue) return;
-
+        _virtualMouse.enabled = true;
         m_view.gameObject.SetActive(true);
         m_view.NextButtonAdd(()=> ChangeType(1));
         m_view.PreviousButtonAdd(()=>ChangeType(-1));
@@ -376,6 +382,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         OnPause?.Invoke();
         inputReaderNoteBook.SetEnable(false);
+        _virtualMouse.enabled = false;
         if (m_markingPanel.isMarkingClue) return;
 
         m_view.gameObject.SetActive(false);
