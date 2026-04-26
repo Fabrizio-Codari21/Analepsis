@@ -68,7 +68,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         m_dialogueView.RecordRequested += content =>
         {
             if (_currentDialoguer == null) return;
-            AppendToText(ref _manualRecords, "... ... \n\n "+content);
+            AppendToText(ref _manualRecords, content);
             
         };
         m_dialogueEvent.OnEventRaised += dialogable => _ = Speak(dialogable);
@@ -205,7 +205,10 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
             _currentDialoguer.Dialogue.DoesItProveAnything()
         );
 
-        NotebookManager.Instance.AddLogToCharacter(_currentDialoguer.ID, finalLog);
+        var identicalLog = NotebookManager.Instance.ReturnIfUnique(_currentDialoguer.ID, finalLog);
+        if (finalLog == identicalLog)
+            NotebookManager.Instance.AddLogToCharacter(_currentDialoguer.ID, finalLog);
+        else identicalLog.UpdateLog(finalLog);
 
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
         _currentDialoguer = null;

@@ -57,16 +57,17 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         foreach (var character in _characterLogs)
         {
-            if (character.Value.Contains(UniqueLog(log))) return;
+            if (character.Value.Contains(ReturnIfUnique(chara, log))) return;
         }
 
         if (_characterLogs.ContainsKey(chara)) _characterLogs[chara].Add(log);
         else _characterLogs.Add(chara,new(){log});
     }
 
-    public LogNote UniqueLog(LogNote log)
+    // Devuelve la nota original si es unica o la ya existente si su conversacion es igual.
+    public LogNote ReturnIfUnique(NpcIdentity character, LogNote log)
     {
-        foreach(LogNote note in _notebookPages.Values)
+        if(_characterLogs.ContainsKey(character)) foreach(LogNote note in _characterLogs[character])
         {
             if(log.GetInfo() == note.GetInfo()) return note;
         }
@@ -219,6 +220,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                         {
                             charButton.ClearChildren();
                             charButton.MakeOpen(false);
+                            m_view.ClearDetail();
                         }
                     });
                 }
@@ -445,8 +447,8 @@ public  class Note
 public class LogNote : Note
 {
  
-    private readonly string _fullInfo;   
-    private readonly string _recordInfo;
+    private string _fullInfo;   
+    private string _recordInfo;
     private bool _showingFull  = false;
     public ButtonFactoryObject parentButton;
     public LogNote(string displayName,string fullInfo, string recordInfo,List<Whodunnit> proof = null) : base(displayName, proof)
@@ -454,6 +456,12 @@ public class LogNote : Note
         _fullInfo = fullInfo;
         _recordInfo = recordInfo;
         type = NoteType.Log;
+    }
+    public void UpdateLog(LogNote log)
+    {
+        // aca agregamos todo lo que queramos actualizar cuando la conversacion
+        // se repite (si marcaste cosas distintas, etc).
+        _recordInfo = log._recordInfo;
     }
    public override async UniTask Show(NotebookView view, CancellationToken token)
     {
@@ -464,12 +472,16 @@ public class LogNote : Note
     private async UniTask RefreshDisplay(NotebookView view, CancellationToken token, bool firstTime = false)
     {
         view.ClearDetail(); 
-        string contentToShow = _showingFull ? _fullInfo : _recordInfo;
-        string header = _showingFull ? "[Full Transcript]\n" : "[Manual Records]\n";
+        string contentToShow = _showingFull ? _fullInfo : 
+            (_recordInfo == "" 
+            ? "\n[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n"
+            : _recordInfo);
+
+        string header = _showingFull ? "<b>[FULL TRANSCRIPT]</b>\n\n" : "<b>[HIGHLIGHTS]</b>\n";
         await view.PlayText(new() { header + contentToShow }, token);
         if (token.IsCancellationRequested) return;
         
-        string buttonLabel = _showingFull ? "Switch to Record" : "Switch to Full Content";
+        string buttonLabel = _showingFull ? "See Highlights" : "See Full Transcript";
         var toggleBtn = view.CreateDetailButton(buttonLabel);
         toggleBtn.AddListener(() =>
         {
@@ -479,7 +491,7 @@ public class LogNote : Note
         if(!firstTime) NotebookManager.Instance.AddDetailButtons(parentButton, view, this);
 
     }
-    public string GetInfo() => _recordInfo;
+    public string GetInfo() => _fullInfo;
 }
 
 public class ItemNote : Note
