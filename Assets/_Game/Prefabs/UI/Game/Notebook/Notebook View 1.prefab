@@ -641,7 +641,7 @@ GameObject:
   - component: {fileID: 2584882172293690301}
   - component: {fileID: 95866616172426501}
   - component: {fileID: 3136178514606582952}
-  - component: {fileID: 5626590750287542707}
+  - component: {fileID: 5099757988445144684}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -657,8 +657,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1651573926576387161}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 100}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3177654083876519013}
@@ -669,8 +669,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 2048, y: 2048}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!223 &2584882172293690301
 Canvas:
   m_ObjectHideFlags: 0
@@ -680,7 +680,7 @@ Canvas:
   m_GameObject: {fileID: 1651573926576387161}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 2
+  m_RenderMode: 1
   m_Camera: {fileID: 6436726853816665742}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -716,7 +716,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &3136178514606582952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -724,7 +724,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1651573926576387161}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
@@ -734,7 +734,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
---- !u!114 &5626590750287542707
+--- !u!114 &5099757988445144684
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -743,13 +743,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1651573926576387161}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c994295a28cd67148af85fb02b517bdc, type: 3}
+  m_Script: {fileID: 11500000, guid: a77e8870ab32467ab18871be27d0fe02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasRect: {fileID: 8710262363174158912}
-  raycaster: {fileID: 3136178514606582952}
-  uvPositionChannel: {fileID: 11400000, guid: a36b27fc98dc8a64c9a715aa389c7546, type: 2}
   uiCamera: {fileID: 6436726853816665742}
+  useUV: 0
+  uv: {x: 0, y: 0}
+  uvPositionChannel: {fileID: 11400000, guid: a36b27fc98dc8a64c9a715aa389c7546, type: 2}
 --- !u!1 &1856262335017521919
 GameObject:
   m_ObjectHideFlags: 0
@@ -2578,7 +2578,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -532, z: 0}
-  m_LocalScale: {x: 1.3, y: 1.2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8710262363174158912}
