@@ -14,6 +14,7 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
     public void OnBeginDrag(PointerEventData eventData)
     {
         var canvas = GetComponentInParent<Canvas>(); if(!canvas) return;
+        if (!m_button.interactable) return;
 
         if(!_boardTransforms.ContainsValue(m_button.transform.parent.GetComponent<TheoryPanel>())) 
         {
@@ -27,12 +28,12 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
 
     public void OnDrag(PointerEventData eventData)
     {
-       if(m_button != null) SetDraggedPosition(eventData);
+       if(m_button != null && m_button.interactable) SetDraggedPosition(eventData);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (m_button != null && eventData.pointerDrag != null)
+        if (m_button != null && m_button.interactable && eventData.pointerDrag != null)
         {
             InsertClue(eventData);
         }
