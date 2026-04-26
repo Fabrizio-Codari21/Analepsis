@@ -205,10 +205,10 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
             _currentDialoguer.Dialogue.DoesItProveAnything()
         );
 
-        var identicalLog = NotebookManager.Instance.ReturnIfUnique(_currentDialoguer.ID, finalLog);
-        if (finalLog == identicalLog)
+        LogNote sameLogIfUnique = (LogNote)NotebookManager.Instance.ReturnIfUnique(finalLog, _currentDialoguer.ID);
+        if (finalLog == sameLogIfUnique)
             NotebookManager.Instance.AddLogToCharacter(_currentDialoguer.ID, finalLog);
-        else identicalLog.UpdateLog(finalLog);
+        else sameLogIfUnique.UpdateLog(finalLog);
 
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
         _currentDialoguer = null;

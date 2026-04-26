@@ -57,21 +57,25 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         foreach (var character in _characterLogs)
         {
-            if (character.Value.Contains(ReturnIfUnique(chara, log))) return;
+            if (character.Value.Contains(ReturnIfUnique(log, chara))) return;
         }
 
         if (_characterLogs.ContainsKey(chara)) _characterLogs[chara].Add(log);
         else _characterLogs.Add(chara,new(){log});
     }
 
-    // Devuelve la nota original si es unica o la ya existente si su conversacion es igual.
-    public LogNote ReturnIfUnique(NpcIdentity character, LogNote log)
+    // Devuelve la nota original si es unica o la ya existente si su informacion es igual.
+    public Note ReturnIfUnique(Note note, NpcIdentity character = default)
     {
-        if(_characterLogs.ContainsKey(character)) foreach(LogNote note in _characterLogs[character])
+        List<Note> otherNotes = note.type == NoteType.Log
+        ? (_characterLogs.ContainsKey(character) ? new(_characterLogs[character]) : new())
+        : _notebookPages.Values.ToList();
+
+        foreach(Note existingNote in otherNotes)
         {
-            if(log.GetInfo() == note.GetInfo()) return note;
+            if(note.GetInfo() == existingNote.GetInfo()) return existingNote;
         }
-        return log;
+        return note;
     }
    
     private void Start()
@@ -180,67 +184,66 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         m_view.SetTitle(type.ToString()); // si vamos a hacer localization ya deberia usar de esta forma , lo hago asi para ahorrarme tiempo
         // no es muy solid que digamos pero para probar por ahora sirve
         if(type == NoteType.Log && _characterLogs.Count > 0)
-            if(_notebookPages.Count(x => x.Value.type == type) <= 0)
+        {
+            foreach(var character in _characterLogs)
             {
-                foreach(var character in _characterLogs)
-                {
-                    var charButton = m_view.CreateButton(character.Key.npcName + " Logs");
-                    charButton.gameObject.transform.localScale *= 1.1f;
-                    charButton.DisableSub();
-                    closeAllButtonsEvent += charButton.MakeOpen;
+                var charButton = m_view.CreateButton(character.Key.npcName + " Logs");
+                charButton.gameObject.transform.localScale *= 1.1f;
+                charButton.DisableSub();
+                closeAllButtonsEvent += charButton.MakeOpen;
 
-                    charButton.AddListener(() =>
+                charButton.AddListener(() =>
+                {
+                    if (!charButton.IsOpen())
                     {
-                        if (!charButton.IsOpen())
+                        if (character.Value.Count > 0)
                         {
-                            if (character.Value.Count > 0)
+                            foreach (var item in character.Value)
                             {
-                                foreach (var item in character.Value)
-                                {
-                                    var button = SpawnClueButton(item);
-                                    button.MoveToPosition(charButton.GetPosition() + (character.Value.IndexOf(item) + 1));
-                                    button.gameObject.transform.localScale *= 0.9f;
-                                    charButton.AddToChildren(button);
-                                    item.parentButton = button;
-                                }
-                                charButton.MakeOpen(true);
-                            }
-                            else
-                            {
-                                var button = m_view.CreateButton($"No saved conversations.");
-                                button.DisableSub();
-                                button.SetInteractable(false);
-                                button.MoveToPosition(charButton.GetPosition() + 1);
+                                var button = SpawnClueButton(item);
+                                button.MoveToPosition(charButton.GetPosition() + (character.Value.IndexOf(item) + 1));
                                 button.gameObject.transform.localScale *= 0.9f;
                                 charButton.AddToChildren(button);
-                                charButton.MakeOpen(true);
+                                item.parentButton = button;
                             }
+                            charButton.MakeOpen(true);
                         }
                         else
                         {
-                            charButton.ClearChildren();
-                            charButton.MakeOpen(false);
-                            m_view.ClearDetail();
+                            var button = m_view.CreateButton($"No saved conversations.");
+                            button.DisableSub();
+                            button.SetInteractable(false);
+                            button.MoveToPosition(charButton.GetPosition() + 1);
+                            button.gameObject.transform.localScale *= 0.9f;
+                            charButton.AddToChildren(button);
+                            charButton.MakeOpen(true);
                         }
-                    });
-                }
+                    }
+                    else
+                    {
+                        charButton.ClearChildren();
+                        charButton.MakeOpen(false);
+                        m_view.ClearDetail();
+                    }
+                });
             }
-            else
+        }
+        else
+        {
+            if (_notebookPages.Where(x => x.Value.type == type).Count() <= 0)
             {
-                if (_notebookPages.Where(x => x.Value.type == type).Count() <= 0)
-                {
-                    var button = m_view.CreateButton($"No {type} found yet.");
-                    button.EnableSub(false); button.SetInteractable(false); return;
-                }
-                foreach (var note in _notebookPages.Values)
-                {
-                    if (note.type != type) continue;
-                    var cachedNote = note;
-                    var button = SpawnClueButton(cachedNote);
-                    button.EnableSub();
-                    button.gameObject.transform.localScale *= 1.1f;
-                }
+                var button = m_view.CreateButton($"No {type} found yet.");
+                button.EnableSub(false); button.SetInteractable(false); return;
             }
+            foreach (var note in _notebookPages.Values)
+            {
+                if (note.type != type) continue;
+                var cachedNote = note;
+                var button = SpawnClueButton(cachedNote);
+                button.EnableSub();
+                button.gameObject.transform.localScale *= 1.1f;
+            }
+        }
 
         //print("markable clues: " + m_markingPanel.markableClues.Count);
     }
@@ -439,6 +442,7 @@ public  class Note
     {
         return UniTask.CompletedTask;
     }
+    public virtual string GetInfo() => default;
 }
 
 
@@ -474,10 +478,10 @@ public class LogNote : Note
         view.ClearDetail(); 
         string contentToShow = _showingFull ? _fullInfo : 
             (_recordInfo == "" 
-            ? "\n[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n"
+            ? "[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n"
             : _recordInfo);
 
-        string header = _showingFull ? "<b>[FULL TRANSCRIPT]</b>\n\n" : "<b>[HIGHLIGHTS]</b>\n";
+        string header = _showingFull ? "<b>[FULL TRANSCRIPT]</b>\n\n" : "<b>[HIGHLIGHTS]</b>\n\n";
         await view.PlayText(new() { header + contentToShow }, token);
         if (token.IsCancellationRequested) return;
         
@@ -491,7 +495,7 @@ public class LogNote : Note
         if(!firstTime) NotebookManager.Instance.AddDetailButtons(parentButton, view, this);
 
     }
-    public string GetInfo() => _fullInfo;
+    public override string GetInfo() => _fullInfo;
 }
 
 public class ItemNote : Note
@@ -505,21 +509,33 @@ public class ItemNote : Note
         guid = _item.guid;  // para usa el guid de item para que solamente anota el item y no se repite, pero el clue se puede ir desbloqueando de a poco
     }
 
-    public override async UniTask Show(NotebookView view, CancellationToken token)
+    public List<string> FullInfo()
     {
-        view.CreateImage(_item.sprite);
         List<string> fullContent = new List<string>();
         var unlockedDescriptions = NotebookManager.Instance.GetUnlockedPoiDescriptions(_item);
-       
+
         foreach (var desc in unlockedDescriptions)
         {
-            fullContent.Add($"{unlockedDescriptions.IndexOf(desc) + 1})  {desc}"); 
+            fullContent.Add($"{unlockedDescriptions.IndexOf(desc) + 1})  {desc}");
         }
 
         var unlockedFlash = NotebookManager.Instance.GetItemFlashbackInfo(_item);
-        if(unlockedFlash != string.Empty) fullContent.Add($"FLASHBACK :  {unlockedFlash}");
+        if (unlockedFlash != string.Empty) fullContent.Add($"FLASHBACK :  {unlockedFlash}");
+        return fullContent;
+    }
+
+    public override async UniTask Show(NotebookView view, CancellationToken token)
+    {
+        view.CreateImage(_item.sprite);
     
         
-        await view.PlayText(fullContent, token);
+        await view.PlayText(FullInfo(), token);
+    }
+    public override string GetInfo()
+    {
+        string str = string.Empty;
+        var info = FullInfo();
+        foreach (var desc in info) str += desc;
+        return str;
     }
 }
