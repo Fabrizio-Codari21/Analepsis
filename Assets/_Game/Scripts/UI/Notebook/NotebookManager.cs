@@ -180,64 +180,65 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         // no es muy solid que digamos pero para probar por ahora sirve
         if(type == NoteType.Log && _characterLogs.Count > 0)
             if(_notebookPages.Count(x => x.Value.type == type) <= 0)
-        {
-            foreach(var character in _characterLogs)
             {
-                var charButton = m_view.CreateButton(character.Key.npcName + " Logs");
-                charButton.gameObject.transform.localScale *= 1.1f;
-                charButton.DisableSub();
-                closeAllButtonsEvent += charButton.MakeOpen;
-
-                charButton.AddListener(() =>
+                foreach(var character in _characterLogs)
                 {
-                    if (!charButton.IsOpen())
+                    var charButton = m_view.CreateButton(character.Key.npcName + " Logs");
+                    charButton.gameObject.transform.localScale *= 1.1f;
+                    charButton.DisableSub();
+                    closeAllButtonsEvent += charButton.MakeOpen;
+
+                    charButton.AddListener(() =>
                     {
-                        if (character.Value.Count > 0)
+                        if (!charButton.IsOpen())
                         {
-                            foreach (var item in character.Value)
+                            if (character.Value.Count > 0)
                             {
-                                var button = SpawnClueButton(item);
-                                button.MoveToPosition(charButton.GetPosition() + (character.Value.IndexOf(item) + 1));
+                                foreach (var item in character.Value)
+                                {
+                                    var button = SpawnClueButton(item);
+                                    button.MoveToPosition(charButton.GetPosition() + (character.Value.IndexOf(item) + 1));
+                                    button.gameObject.transform.localScale *= 0.9f;
+                                    charButton.AddToChildren(button);
+                                    item.parentButton = button;
+                                }
+                                charButton.MakeOpen(true);
+                            }
+                            else
+                            {
+                                var button = m_view.CreateButton($"No saved conversations.");
+                                button.DisableSub();
+                                button.SetInteractable(false);
+                                button.MoveToPosition(charButton.GetPosition() + 1);
                                 button.gameObject.transform.localScale *= 0.9f;
                                 charButton.AddToChildren(button);
+                                charButton.MakeOpen(true);
                             }
-                            charButton.MakeOpen(true);
                         }
                         else
                         {
-                            var button = m_view.CreateButton($"No saved conversations.");
-                            button.DisableSub();
-                            button.SetInteractable(false);
-                            button.MoveToPosition(charButton.GetPosition() + 1);
-                            button.gameObject.transform.localScale *= 0.9f;
-                            charButton.AddToChildren(button);
-                            charButton.MakeOpen(true);
+                            charButton.ClearChildren();
+                            charButton.MakeOpen(false);
                         }
-                    }
-                    else
-                    {
-                        charButton.ClearChildren();
-                        charButton.MakeOpen(false);
-                    }
-                });
+                    });
+                }
             }
-        }
-        else
-        {
-            if (_notebookPages.Where(x => x.Value.type == type).Count() <= 0)
+            else
             {
-                var button = m_view.CreateButton($"No {type} found yet.");
-                button.EnableSub(false); button.SetInteractable(false); return;
+                if (_notebookPages.Where(x => x.Value.type == type).Count() <= 0)
+                {
+                    var button = m_view.CreateButton($"No {type} found yet.");
+                    button.EnableSub(false); button.SetInteractable(false); return;
+                }
+                foreach (var note in _notebookPages.Values)
+                {
+                    if (note.type != type) continue;
+                    var cachedNote = note;
+                    var button = SpawnClueButton(cachedNote);
+                    button.EnableSub();
+                    button.gameObject.transform.localScale *= 1.1f;
+                }
             }
-            foreach (var note in _notebookPages.Values)
-            {
-                if (note.type != type) continue;
-                var cachedNote = note;
-                var button = SpawnClueButton(cachedNote);
-                button.EnableSub();
-                button.gameObject.transform.localScale *= 1.1f;
-            }
-        }
 
         //print("markable clues: " + m_markingPanel.markableClues.Count);
     }
@@ -286,40 +287,49 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
             m_view.ClearDetail();
             await note.Show(m_view, token);
             token.ThrowIfCancellationRequested();
-            var clearButton = m_view.CreateDetailButton("Clear");
-            clearButton.AddListener(() =>
-            {
-               m_view.ClearDetail();
-            });
-            var deleteButton = m_view.CreateDetailButton("Delete Log");
-            deleteButton.AddListener(() =>
-            {
-                m_view.ClearDetail();
-                if(note.type == NoteType.Log)
-                {
-                    foreach (var character in _characterLogs)
-                    {
-                        if (character.Value.Contains(note)) character.Value.Remove((LogNote)note);
-                    }
+            AddDetailButtons(parent, m_view, note);
 
-                    var button = m_view.CreateButton($"No saved conversations.");
-                    button.transform.parent = parent.transform.parent;
-                    button.DisableSub();
-                    button.SetInteractable(false);
-                    button.MoveToPosition(parent.GetPosition());
-                    button.gameObject.transform.localScale *= 0.9f;
-                    parent.GetParent().AddToChildren(button);
-                }
-                else _notebookPages.Remove(note.guid);
-
-                parent.RemoveFromParent();
-                Destroy(parent.gameObject);
-
-            });
         }
         catch (OperationCanceledException)
         {
         }
+    }
+
+    public void AddDetailButtons(ButtonFactoryObject parent, NotebookView view, Note note)
+    {
+        var clearButton = view.CreateDetailButton("Clear");
+        clearButton.AddListener(() =>
+        {
+            view.ClearDetail();
+        });
+        var deleteButton = m_view.CreateDetailButton("Delete Log");
+        deleteButton.AddListener(() =>
+        {
+            m_view.ClearDetail();
+            if (note.type == NoteType.Log)
+            {
+                foreach (var character in _characterLogs)
+                {
+                    if (character.Value.Contains(note))
+                    {
+                        character.Value.Remove((LogNote)note);
+                    }
+                }
+
+                var button = m_view.CreateButton($"No saved conversations.");
+                button.transform.parent = parent.transform.parent;
+                button.DisableSub();
+                button.SetInteractable(false);
+                button.MoveToPosition(parent.GetPosition());
+                button.gameObject.transform.localScale *= 0.9f;
+                parent.GetParent().AddToChildren(button);
+            }
+            else _notebookPages.Remove(note.guid);
+
+            parent.RemoveFromParent();
+            Destroy(parent.gameObject);
+
+        });
     }
 
     private void ChangeType(float direction)
@@ -438,6 +448,7 @@ public class LogNote : Note
     private readonly string _fullInfo;   
     private readonly string _recordInfo;
     private bool _showingFull  = false;
+    public ButtonFactoryObject parentButton;
     public LogNote(string displayName,string fullInfo, string recordInfo,List<Whodunnit> proof = null) : base(displayName, proof)
     {
         _fullInfo = fullInfo;
@@ -447,10 +458,10 @@ public class LogNote : Note
    public override async UniTask Show(NotebookView view, CancellationToken token)
     {
         _showingFull = false; 
-        await RefreshDisplay(view, token);
+        await RefreshDisplay(view, token, true);
     }
 
-    private async UniTask RefreshDisplay(NotebookView view, CancellationToken token)
+    private async UniTask RefreshDisplay(NotebookView view, CancellationToken token, bool firstTime = false)
     {
         view.ClearDetail(); 
         string contentToShow = _showingFull ? _fullInfo : _recordInfo;
@@ -463,8 +474,10 @@ public class LogNote : Note
         toggleBtn.AddListener(() =>
         {
             _showingFull = !_showingFull;
-            _ = RefreshDisplay(view, token);
+            _ = RefreshDisplay(view, token, false);
         });
+        if(!firstTime) NotebookManager.Instance.AddDetailButtons(parentButton, view, this);
+
     }
     public string GetInfo() => _recordInfo;
 }
