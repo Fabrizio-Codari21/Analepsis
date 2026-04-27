@@ -59,13 +59,13 @@ public class TheoryboardView : MonoBehaviour
         foreach (var log in markedLogs) 
         {
             var button = CreateClueButton(log.Value.displayName, markedLogsRoot, log.Value.isProof);
-            print(log.Value.isProof);
+            //print(log.Value.isProof);
            
         }
         foreach (var item in markedItems)
         {
             var button = CreateClueButton(item.Value.displayName, markedItemsRoot, item.Value.isProof);
-            print(item.Value.isProof);
+            //print(item.Value.isProof);
         }
 
     }
@@ -132,7 +132,7 @@ public class TheoryboardView : MonoBehaviour
             var choice = item.Value.droppedClue;
             //var rightChoice = manager.correctAnswer.FirstOrDefault(x => x.Key == item.Key);
 
-            print(choice.GetProof());
+            //print(choice.GetProof());
             if (choice != null && choice.GetProof().Contains(item.Key)) continue; else
             {
                 manager.ConsumeAttempt();

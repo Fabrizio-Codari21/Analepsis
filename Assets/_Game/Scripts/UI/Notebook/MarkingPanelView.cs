@@ -68,7 +68,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
         {
             Note newClue = new Note(clue.displayName, clue.isProof);
             newClue.type = clue.type;
-            newClue.displayName = _newClueName != default ? _newClueName : newClue.displayName;
+            newClue.displayName = _newClueName != "" ? _newClueName : newClue.displayName;
 
             if (!NotebookManager.Instance.markedClues.Remove(clue.guid))
                 NotebookManager.Instance.markedClues.TryAdd(clue.guid, newClue);
