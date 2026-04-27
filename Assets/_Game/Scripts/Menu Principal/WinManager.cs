@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class WinManager : MonoBehaviour
 {
     //que buen script la puta madre
@@ -10,6 +10,6 @@ public class WinManager : MonoBehaviour
 
     public void Retry()
     {
-        this.AsyncLoader("SampleScene");
+       SceneManager.LoadScene("SampleScene");
     }
 }
