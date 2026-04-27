@@ -62,8 +62,7 @@ public class ButtonFactoryObject : FactoryUIObject
 
     public void EnableSub(bool enabled = true) => subButton?.gameObject.SetActive(enabled);
     public void MoveSubToLast() => subButton?.gameObject.transform.SetAsLastSibling();
-    public void DisplayMark(bool marked) 
-        => subButton.GetComponent<Image>().color = marked ? Color.yellow : Color.gray;
+    public void DisplayMark(bool marked) => subButton.GetComponent<Image>().color = marked ? Color.yellow : Color.gray;
 
     
     public void SetInteractable(bool interactable) => m_button.interactable = interactable;

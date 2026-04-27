@@ -259,6 +259,11 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         var button = m_view.CreateButton(cachedNote.GetButtonText());
         //m_markingPanel.markableClues.Add(cachedNote.guid, button);
+        
+        if (markedClues.ContainsKey(cachedNote.guid))
+        {
+            button.DisplayMark(true);
+        }
         button.AddListener(() =>
         {
             _cts?.Cancel();
