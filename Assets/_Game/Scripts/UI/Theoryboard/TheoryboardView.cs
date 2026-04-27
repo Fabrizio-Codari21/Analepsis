@@ -59,12 +59,13 @@ public class TheoryboardView : MonoBehaviour
         foreach (var log in markedLogs) 
         {
             var button = CreateClueButton(log.Value.displayName, markedLogsRoot, log.Value.isProof);
-            
+            print(log.Value.isProof);
            
         }
         foreach (var item in markedItems)
         {
             var button = CreateClueButton(item.Value.displayName, markedItemsRoot, item.Value.isProof);
+            print(item.Value.isProof);
         }
 
     }
@@ -87,7 +88,7 @@ public class TheoryboardView : MonoBehaviour
             _currentCharacter--;
             if (_currentCharacter < 0) _currentCharacter = NotebookManager.Instance.FoundCharacters.Count - 1;
         }
-        var charButton = CreateClueButton(character.npcName, markedCharactersRoot, new() { character.role }, isCharacter: true);
+        var charButton = CreateClueButton(character.npcName, markedCharactersRoot, new List<Whodunnit>(){character.role}, isCharacter: true);
     }
 
     public ButtonFactoryObject CreateClueButton(string text, Transform parent, List<Whodunnit> proof, bool placeholder = false, bool isCharacter = false)
@@ -131,6 +132,7 @@ public class TheoryboardView : MonoBehaviour
             var choice = item.Value.droppedClue;
             //var rightChoice = manager.correctAnswer.FirstOrDefault(x => x.Key == item.Key);
 
+            print(choice.GetProof());
             if (choice != null && choice.GetProof().Contains(item.Key)) continue; else
             {
                 manager.ConsumeAttempt();

@@ -159,7 +159,7 @@ MonoBehaviour:
       Part3: 1618177925
       Part4: 73563290
     tag: 
-  _hiddenProof: 04000000
+  _hiddenProof: 03000000
   references:
     version: 2
     RefIds:
@@ -332,7 +332,7 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: the Chef's ex-wife
         m_conditions: []
-        editorPosition: {x: 3965, y: 189}
+        editorPosition: {x: 3990.3, y: 64.80001}
     - rid: 5324356914828018035
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -344,7 +344,8 @@ MonoBehaviour:
           able to pay... *sigh*'
         characterEmotion: 2
         doesItProveAnything: 0
-        responses: []
+        responses:
+        - rid: 5324357072761127229
         isRootNode: 0
         editorPosition: {x: 3071.3, y: 320.00006}
         guid:
@@ -518,3 +519,12 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         editorPosition: {x: 5269, y: -735}
+    - rid: 5324357072761127229
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(That seems sincere... and sad...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: the Chef's ex-wife
+        m_conditions: []
+        editorPosition: {x: 3927, y: 320}

@@ -75,7 +75,7 @@ public class ButtonFactoryObject : FactoryUIObject
     public void SetView(TheoryboardView view) => _view = view;
 
     public void SetProof(List<Whodunnit> isProof) => proof = isProof;
-    public List<Whodunnit> GetProof() => proof;
+    public List<Whodunnit> GetProof() => proof; //!= null ? proof : new List<Whodunnit>();
     public bool IsCharacter() => m_isCharacter;
     public void SetCharacter(bool isCharacter) => m_isCharacter = isCharacter;
 

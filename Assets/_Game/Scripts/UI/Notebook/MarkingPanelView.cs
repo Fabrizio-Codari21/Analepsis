@@ -66,7 +66,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
 
         markClueButton.onClick.AddListener(async () =>
         {
-            Note newClue = new Note(clue.displayName);
+            Note newClue = new Note(clue.displayName, clue.isProof);
             newClue.type = clue.type;
             newClue.displayName = _newClueName != default ? _newClueName : newClue.displayName;
 

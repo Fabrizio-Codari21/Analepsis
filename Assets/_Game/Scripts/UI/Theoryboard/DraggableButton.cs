@@ -70,7 +70,7 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
 
         if (droppedOn != null 
             && _boardTransforms.ContainsValue(droppedOn) 
-            && (proof != null && proof.Contains(panel.Key))
+            //&& (proof != null && proof.Contains(panel.Key))
             && droppedOn.acceptCharactersAsProof == m_isCharacter)
         {
             if (droppedOn.droppedClue != null) Destroy(droppedOn.droppedClue.gameObject);
