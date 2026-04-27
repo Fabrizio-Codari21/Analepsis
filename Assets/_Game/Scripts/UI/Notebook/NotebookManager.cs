@@ -274,7 +274,10 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         });
         //button.MoveSubToLast();
         button.EnableSub();
-        enableButtonsEvent += button.EnableSub;
+        enableButtonsEvent += (x) => 
+        {
+            if (button != null) button.EnableSub();
+        };
         button.AddListenerToSub(() =>
         {
             //_cts?.Cancel();

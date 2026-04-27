@@ -51,7 +51,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         inputReaderBoard.SetEnable(false);
         enableCursor.Raise(false);
         //playerCamera.Camera.LookAt = _oldLookAt;
-        print("llamado");
+        //print("llamado");
         player.transform.position = _playerTransform.Item1;
         player.transform.localEulerAngles = Vector3.zero;
         //camData.PanAxis.CancelRecentering(); camData.TiltAxis.CancelRecentering();
