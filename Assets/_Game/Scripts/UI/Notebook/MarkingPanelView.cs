@@ -51,7 +51,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
     [HideInInspector] public bool isMarkingClue = false;
     public async UniTask RenameAndMarkClue(Note clue)
     {
-        _newClueName = default;
+        _newClueName = "";
         //if (NotebookManager.Instance.markedClues.ContainsKey(clue.guid))
         //{
         //    //markableClues[clue.guid]?.DisplayMark(false);

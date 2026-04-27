@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting.Dependencies.Sqlite;
+//using Unity.VisualScripting.Dependencies.Sqlite;
 
 public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 {
