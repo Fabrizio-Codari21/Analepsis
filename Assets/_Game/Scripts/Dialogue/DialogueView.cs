@@ -87,7 +87,7 @@ public class DialogueView : MonoBehaviour
     }
     
     public event Func<string, bool> IsAlreadyRecorded = delegate { return false; };
-    public async UniTask PlayDialogueText(string content, CancellationToken token, Color color = default) // view  
+    public async UniTask PlayDialogueText(string content, CancellationToken token, Color color = default, bool isResponse = false) // view  
     {
         token.ThrowIfCancellationRequested();
         var t = FlyweightFactory.Instance.Spawn<DynamicUIText>(
@@ -102,9 +102,10 @@ public class DialogueView : MonoBehaviour
         token.ThrowIfCancellationRequested();
         m_scrollRect.verticalNormalizedPosition = 0;
         await t.PlayTypeWriterEffect(externalToken: token);
+        if (isResponse) return;
         var b = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(m_recordButton, Vector3.zero, Quaternion.identity, t.transform);
         b.SetFill(0f);
-        if (IsAlreadyRecorded.Invoke(content)) b.PlayImageFill(1f, color: new(0.8f,0.6f,0.7f,1)).Forget();
+        if (IsAlreadyRecorded.Invoke(content)) b.PlayImageFill(1f, color: new(0.55f,0.4f,0.5f,0.7f)).Forget();
         b.AddListener(() =>
         {            
             RecordRequested?.Invoke(content, b);           

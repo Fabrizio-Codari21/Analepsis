@@ -85,7 +85,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
                 return; 
             }
 
-            button.PlayImageFill(1f, color: new(0,0,0.1f,1)).Forget();
+            button.PlayImageFill(1f, color: new(0.1f,0,0.4f,1)).Forget();
             AppendToText(ref _manualRecords, content);
             
         };
