@@ -14,6 +14,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
    
    [SerializeField] private DynamicTextSetting m_nameTextSetting;
    [SerializeField] private Vector3 m_textPositionOffset;
+   [SerializeField] private Transform m_neckBone;
 
    [SerializeField] private Tip m_tip; //Por ahora no uso el texto que le asignamos en el inspector
    
@@ -95,6 +96,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
       get => m_npcIdentity.npcName;
       set => m_npcIdentity.npcName = value;
    }
+   public Transform NeckBone {  get => m_neckBone; set => m_neckBone = value; } 
    public Dialogue Dialogue { get; private set; }
    public Dialogue NewDialogue(Dialogue dialogue) => Dialogue = dialogue;
    public NpcIdentity ID  {

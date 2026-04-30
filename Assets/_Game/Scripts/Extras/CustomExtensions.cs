@@ -221,6 +221,14 @@ public static class CustomExtensions
         return default;
     }
 
+    public static Transform WhenLookingAt(this Transform x, Transform target = default, Vector3 targetPos = default)
+    {
+        Transform transform = x.transform;
+        if(target) transform.LookAt(target.position);
+        else transform.LookAt(targetPos);
+        return transform;
+    }
+
     #endregion
 
     #region UI UTILITIES
