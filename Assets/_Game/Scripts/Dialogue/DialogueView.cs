@@ -104,7 +104,7 @@ public class DialogueView : MonoBehaviour
         await t.PlayTypeWriterEffect(externalToken: token);
         var b = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(m_recordButton, Vector3.zero, Quaternion.identity, t.transform);
         b.SetFill(0f);
-        if (IsAlreadyRecorded.Invoke(content)) b.PlayImageFill(1f).Forget();
+        if (IsAlreadyRecorded.Invoke(content)) b.PlayImageFill(1f, color: new(0.8f,0.6f,0.7f,1)).Forget();
         b.AddListener(() =>
         {            
             RecordRequested?.Invoke(content, b);           

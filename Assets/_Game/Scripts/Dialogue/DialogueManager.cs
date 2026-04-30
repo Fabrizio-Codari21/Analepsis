@@ -76,15 +76,16 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         m_dialogueView.RecordRequested += (content, button) =>
         {
             if (_currentDialoguer == null) return;
-            if (!_recordedContentInSession.Add(content)) 
+            if (!_recordedContentInSession.Add(content) || _previousRecords.Contains("- " + content)) 
             {
                 button.PlayImageFill(0f).Forget();
                 RemoveFromText(ref _manualRecords, content);
                 _recordedContentInSession.Remove(content);
+                _previousRecords.Remove("- " + content);
                 return; 
             }
 
-            button.PlayImageFill(1f).Forget();
+            button.PlayImageFill(1f, color: new(0,0,0.1f,1)).Forget();
             AppendToText(ref _manualRecords, content);
             
         };

@@ -495,7 +495,7 @@ public class LogNote : Note
         view.ClearDetail(); 
         string contentToShow = _showingFull ? _fullInfo : 
             (_recordInfo == "" 
-            ? "[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n"
+            ? "\n\n[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n"
             : _recordInfo);
 
         string header = _showingFull ? "<b>[FULL TRANSCRIPT]</b>\n" : "<b>[HIGHLIGHTS]</b>";
