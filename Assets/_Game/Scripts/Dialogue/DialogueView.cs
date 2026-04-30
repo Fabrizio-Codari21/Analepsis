@@ -23,6 +23,7 @@ public class DialogueView : MonoBehaviour
     [SerializeField] private ScrollRect m_scrollRect;
 
     [SerializeField] private Transform m_root;
+    [HideInInspector] public Transform m_player;
     
     public Action<string>  RecordRequested;
 
@@ -55,7 +56,7 @@ public class DialogueView : MonoBehaviour
         Despawn(m_conversationRoot);
     }
    
-    public async UniTask UnfoldDialogue(bool isOpening)
+    public async UniTask UnfoldDialogue(bool isOpening, Transform neckBone = default)
     {
         if (m_root == null) return;
         Tween.StopAll(m_root.gameObject.transform);
@@ -66,10 +67,20 @@ public class DialogueView : MonoBehaviour
         {
             m_root.gameObject.transform.localScale = new Vector3(1, 0, 1);
             _ = seq.Group(Tween.ScaleY(m_root.gameObject.transform, 1f, 0.3f, Ease.OutBack));
+            if(neckBone != default) 
+                _ = seq.Group(Tween.Rotation(
+                    neckBone, 
+                    neckBone.WhenLookingAt(m_player).eulerAngles, 
+                    0.5f));
         }
         else
         {
             _ = seq.Group(Tween.ScaleY(m_root.gameObject.transform, 0f, 0.2f, Ease.InQuad));
+            if (neckBone != default)
+                _ = seq.Group(Tween.Rotation(
+                    neckBone,
+                    neckBone.WhenLookingAt(targetPos: neckBone.position + Vector3.forward).eulerAngles,
+                    0.5f));
         }
         await seq;
 

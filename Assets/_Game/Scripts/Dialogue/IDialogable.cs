@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public interface IDialogable : IInteractable
 {
     public string NpcName { get; set; }
@@ -7,5 +9,6 @@ public interface IDialogable : IInteractable
     public Dialogue NewDialogue(Dialogue dialogue);
     public void SetFace(Emotion newEmotion = Emotion.Idle);
     public Emotion DefaultEmotion { get; set; }
+    public Transform NeckBone { get; set; }
 
 }

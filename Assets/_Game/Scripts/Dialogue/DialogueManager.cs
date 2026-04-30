@@ -11,6 +11,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     [SerializeField] private DialoguerEvent m_dialogueEvent;
     [SerializeField] private DialogueInputReader m_inputReader;
     [SerializeField] private DialogueView m_dialogueView;
+    [SerializeField] private Transform m_player;
 
     [SerializeField] private IActivityEvent m_pushActivity;
     [SerializeField] private EventChannel m_popActivity;
@@ -66,6 +67,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     private void Start()
     {
         m_dialogueView = Instantiate(m_dialogueView,transform);
+        m_dialogueView.m_player = m_player;
         
         m_dialogueView.RecordRequested += content =>
         {
@@ -83,7 +85,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         m_dialogueView.ClearDialogues();
         if(_currentDialoguer.FirstTimeSpeaking) NotebookManager.Instance.AddCharacter(_currentDialoguer.ID);
         m_dialogueView.SetSpeakerName(dialogable.NpcName);
-        await m_dialogueView.UnfoldDialogue(true);
+        await m_dialogueView.UnfoldDialogue(true, _currentDialoguer.NeckBone);
         await PlayDialogueNode(dialogable.Dialogue.startingNode);
     }
     
@@ -155,7 +157,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         m_dialogueView.ClearResponses();
         if (response.nextNode == null)
         {
-            await m_dialogueView.UnfoldDialogue(false);
+            await m_dialogueView.UnfoldDialogue(false, _currentDialoguer.NeckBone);
             EndDialogue(response.HasTopic(out _topic));
             return;
         }
@@ -181,7 +183,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         }
         else
         {
-            await m_dialogueView.UnfoldDialogue(false);
+            await m_dialogueView.UnfoldDialogue(false, _currentDialoguer.NeckBone);
             EndDialogue(response.HasTopic(out _topic));
         }
     }
