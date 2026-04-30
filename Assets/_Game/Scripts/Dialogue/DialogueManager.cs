@@ -21,6 +21,8 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     private CancellationTokenSource  _dialogueCts;
     private IDialogable _currentDialoguer;
     
+    
+    private HashSet<string> _recordedContentInSession = new HashSet<string>();
     private string _manualRecords = string.Empty;
     private string _recordText = string.Empty;
     private string _topic = string.Empty;
@@ -72,6 +74,11 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         m_dialogueView.RecordRequested += content =>
         {
             if (_currentDialoguer == null) return;
+            if (!_recordedContentInSession.Add(content)) 
+            {
+                return; 
+            }
+
             AppendToText(ref _manualRecords, content);
             
         };
@@ -231,6 +238,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         _currentDialoguer = null;
         _recordText = string.Empty;
         _manualRecords = string.Empty;
+        _recordedContentInSession.Clear();
         m_popActivity.Raise();
         
     }
