@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.Rendering.Universal;
 
 public class Npc : MonoBehaviour,INpc, IConditionCheck
@@ -14,7 +15,9 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
    
    [SerializeField] private DynamicTextSetting m_nameTextSetting;
    [SerializeField] private Vector3 m_textPositionOffset;
-   [SerializeField] private Transform m_neckBone;
+   //[SerializeField] private Transform m_neckBone;
+   [SerializeField] private MultiAimConstraint m_lookAt;
+    private MultiAimConstraint m_player;
 
    [SerializeField] private Tip m_tip; //Por ahora no uso el texto que le asignamos en el inspector
    
@@ -31,6 +34,16 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
        AddTip(m_tip);
 
        SetFace(DefaultEmotion);
+       if(m_lookAt)
+       {
+           m_lookAt.weight = 0f;
+           m_player = m_lookAt.data.sourceObjects[0].transform.GetComponent<MultiAimConstraint>();
+           if(m_player != null)
+           {
+                m_player.weight = 0f;
+                m_player.data.sourceObjects.Clear();
+           }
+       }
    }
 
     #region IInteract
@@ -97,7 +110,9 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
       get => m_npcIdentity.npcName;
       set => m_npcIdentity.npcName = value;
    }
-   public Transform NeckBone {  get => m_neckBone; set => m_neckBone = value; } 
+   //public Transform NeckBone {  get => m_neckBone; set => m_neckBone = value; } 
+   public MultiAimConstraint LookAt {  get => m_lookAt; set => m_lookAt = value; } 
+   public MultiAimConstraint Player {  get => m_player; set => m_player = value; } 
    public Dialogue Dialogue { get; private set; }
    public Dialogue NewDialogue(Dialogue dialogue) => Dialogue = dialogue;
    public NpcIdentity ID  {

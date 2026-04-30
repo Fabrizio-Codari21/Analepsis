@@ -103,7 +103,11 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         m_dialogueView.ClearDialogues();
         if(_currentDialoguer.FirstTimeSpeaking) NotebookManager.Instance.AddCharacter(_currentDialoguer.ID);
         m_dialogueView.SetSpeakerName(dialogable.NpcName);
-        await m_dialogueView.UnfoldDialogue(true, _currentDialoguer.NeckBone);
+        await m_dialogueView.UnfoldDialogue(
+            true, 
+            _currentDialoguer.ID.makesEyeContact,
+            _currentDialoguer.LookAt, 
+            _currentDialoguer.Player);
         await PlayDialogueNode(dialogable.Dialogue.startingNode);
     }
     
@@ -175,7 +179,12 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         m_dialogueView.ClearResponses();
         if (response.nextNode == null)
         {
-            await m_dialogueView.UnfoldDialogue(false, _currentDialoguer.NeckBone);
+            await m_dialogueView.UnfoldDialogue(
+                false, 
+                _currentDialoguer.ID.makesEyeContact,
+                _currentDialoguer.LookAt, 
+                _currentDialoguer.Player);
+
             EndDialogue(response.HasTopic(out _topic));
             return;
         }
@@ -183,7 +192,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     
         try 
         {
-            await m_dialogueView.PlayDialogueText(response.responseText, token);
+            await m_dialogueView.PlayDialogueText(response.responseText, token, isResponse: true);
         }
         catch (OperationCanceledException) { }
 
@@ -201,7 +210,12 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         }
         else
         {
-            await m_dialogueView.UnfoldDialogue(false, _currentDialoguer.NeckBone);
+            await m_dialogueView.UnfoldDialogue(
+                           false,
+                           _currentDialoguer.ID.makesEyeContact,
+                           _currentDialoguer.LookAt,
+                           _currentDialoguer.Player);
+
             EndDialogue(response.HasTopic(out _topic));
         }
     }

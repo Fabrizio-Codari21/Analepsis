@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -221,6 +222,7 @@ public static class CustomExtensions
         return default;
     }
 
+    // Devuelve una referencia al mismo transform rotado para mirar a un target.
     public static Transform WhenLookingAt(this Transform x, Transform target = default, Vector3 targetPos = default)
     {
         Transform transform = x.transform;
@@ -229,7 +231,8 @@ public static class CustomExtensions
         return transform;
     }
 
-    public static string AsString(this List<string> strings, bool segmented = false)
+    // Convierte una lista de strings en un string largo, segmentado o no.
+    public static string AsString(this ICollection<string> strings, bool segmented = false)
     {
         var str = string.Empty;
         foreach(string s in strings) str += (segmented ? "\n\n" : "") + s;

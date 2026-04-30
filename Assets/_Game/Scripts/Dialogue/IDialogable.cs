@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public interface IDialogable : IInteractable
 {
@@ -9,6 +10,7 @@ public interface IDialogable : IInteractable
     public Dialogue NewDialogue(Dialogue dialogue);
     public void SetFace(Emotion newEmotion = Emotion.Idle);
     public Emotion DefaultEmotion { get; set; }
-    public Transform NeckBone { get; set; }
+    public MultiAimConstraint LookAt { get; set; }
+    public MultiAimConstraint Player { get; set; }
 
 }
