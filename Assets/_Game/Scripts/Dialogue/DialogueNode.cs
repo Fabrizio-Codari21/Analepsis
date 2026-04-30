@@ -6,7 +6,7 @@ public class DialogueNode
 {
     [TextArea(0,20)] public string dialogueText;
     public Emotion characterEmotion;
-    public Whodunnit doesItProveAnything;
+    public Proof doesItProveAnything;
 
     [SerializeReference] public List<DialogueResponse> responses;
     public bool isRootNode = true;

@@ -9,10 +9,10 @@ public class ItemReference : MonoBehaviour
     private ITipProvider _tipProvider;
     private DynamicText _text;
     [SerializeField] private RecordNoteEvent  m_recordNoteEvent;
+    private ItemNote _itemNote;
     
     private void Start()
     {
-        // m_itemReference.flashbackClue = null;
         _interact = GetComponent<IInteractable>();
         _interact.OnFocus += SpawnName;
         _interact.OnUnfocus  += DespawnName;
@@ -20,6 +20,7 @@ public class ItemReference : MonoBehaviour
         _interact.OnStart += RecordItem;
         _tipProvider = GetComponent<ITipProvider>();
         _tipProvider.AddTip(new Tip($"Inspect the {m_itemReference.Name}? ", TipOrder.InteractionType)); 
+        _itemNote = new ItemNote($"Inspected {m_itemReference.Name}", m_itemReference, m_itemReference.DoesItProveAnything());
     }
     private void SpawnName()
     {
@@ -36,10 +37,7 @@ public class ItemReference : MonoBehaviour
 
     private void RecordItem()
     {
-        m_recordNoteEvent.Raise(new ItemNote
-            ($"Inspected {m_itemReference.Name}",
-            m_itemReference,
-            m_itemReference.DoesItProveAnything()));
+        m_recordNoteEvent.Raise(_itemNote);
     }
     
     

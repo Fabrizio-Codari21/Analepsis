@@ -1,36 +1,46 @@
+using System;
 using System.Threading;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 using TMPro;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class NotebookView : MonoBehaviour
 {
-    [SerializeField] private TMP_Text m_titleText;
-    [SerializeField] private Transform m_buttonRoot;
-    [SerializeField] private Transform m_detailRoot;
+    [Header("Camera")]
     [SerializeField] private Camera m_renderCamera;
+    
+    [Header("Notebook Tiltle")]
+    [SerializeField] private TMP_Text m_titleText;
+    [Header("Clue Button")]
+    [SerializeField] private Transform m_buttonRoot;
     [SerializeField] private ButtonSetting m_buttonSetting;
-    [SerializeField] private ButtonSetting m_detailButtonSetting;
-    [SerializeField] private DynamicTextSetting  m_dynamicTextSetting;
-    [SerializeField] private ImageSetting  m_imageSetting;
+    
+    [Header("Detail Setting")]
+    [SerializeField] private Transform m_detailRoot;
+    [SerializeField,InfoBox("Los botones que este en los detalles")] private ButtonSetting m_detailButtonSetting;
+    [SerializeField,InfoBox("Texto Description de clue")] private DynamicTextSetting  m_dynamicTextSetting;
+    [SerializeField,InfoBox("Si Clue necesita un imagen")] private ImageSetting  m_imageSetting;
+    
+    [Header("Base UI")]
     [SerializeField] private ScrollRect m_scrollRect;
     [SerializeField] private Button m_next;
+    [InfoBox("El width maxima que puede tener el texto")][Range(200f,700f)][SerializeField] private float m_textWidth = 600f;
     [SerializeField] private Button m_previous;
-
+    
+    
     private IActivity _activity;
-    [Range(200f,700f)][SerializeField] private float m_textWidth = 600f;
     private void Start()
     { 
         _activity = GetComponentInParent<IActivity>();
         _activity.OnResume += () => { m_renderCamera.enabled = true; };
         _activity.OnPause += () => { m_renderCamera.enabled = false; };
-        
         gameObject.SetActive(false);
     }
+    
 
     public void SetTitle(string title)
     {
@@ -41,8 +51,7 @@ public class NotebookView : MonoBehaviour
     public void PreviousButtonAdd(UnityAction action) => ButtonAddListener(m_previous, action);
     public void RemoveNext() => ButtonRemoveListener(m_next);
     public void RemovePrevious() => ButtonRemoveListener(m_previous);
-
-
+    
     private void ButtonAddListener(Button button,UnityAction action)
     {
         button.onClick.AddListener(action);
@@ -59,6 +68,17 @@ public class NotebookView : MonoBehaviour
     {
         return CreateButtonInternal(text, m_detailRoot, m_detailButtonSetting);
     }
+
+
+    public ButtonFactoryObject CreateToggleButton(string text,Action doAction, Action undoAction,bool toggle = false)
+    {
+        var button = FlyweightFactory.Instance.Spawn<ToggleButtons>(m_buttonSetting,Vector3.zero,Quaternion.identity,m_buttonRoot);
+        button.SetText(text);
+        button.AddToggleButton(doAction, undoAction,toggle);
+        return button;
+    }
+
+    
     
     private ButtonFactoryObject CreateButtonInternal(string text, Transform parent, ButtonSetting setting)  
     {
@@ -68,10 +88,8 @@ public class NotebookView : MonoBehaviour
             Quaternion.identity,
             parent
         );
-
         button.SetText(text);
         button.SetInteractable(true);
-        button.MoveToLast();
         return button;
     }
 
@@ -85,7 +103,6 @@ public class NotebookView : MonoBehaviour
         var buttons = m_buttonRoot.GetComponentsInChildren<ButtonFactoryObject>();
         foreach (ButtonFactoryObject obj in buttons)
         {
-            obj.ClearChildren();
             obj.Despawn();
         }
         Despawn(m_buttonRoot);

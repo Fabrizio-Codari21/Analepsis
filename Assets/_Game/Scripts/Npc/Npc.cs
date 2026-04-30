@@ -89,7 +89,6 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
    private void Speck()
    {
       m_dialogueEvent.Raise(this);
-      FirstTimeSpeaking = false;
     }
    public string NpcName
    {
@@ -103,7 +102,6 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
       set => m_npcIdentity = value;
    }
     public Emotion DefaultEmotion { get => defaultEmotion; set => defaultEmotion = value; }
-    public bool FirstTimeSpeaking { get => _firstTimeSpeaking; set => _firstTimeSpeaking = value; }
 
     public string GetTip()
    {

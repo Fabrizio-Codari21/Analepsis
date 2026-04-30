@@ -28,12 +28,13 @@ public class DialogueResponse
     {
         if (nextNode == null && dialogueTopic != "")
         {
-            topic = dialogueTopic; return true;
+            topic = dialogueTopic; 
+            return true;
         }
-        else
-        {
-            topic = default; return false;
-        }
+     
+        topic = null; 
+        return false;
+        
     }
     
     public bool HasConditions() => m_conditions is { Count: > 0 };
@@ -41,7 +42,6 @@ public class DialogueResponse
     {
         if (nextNode == null) return false;
         if (!HasConditions()) return false; 
-        
         return !DialogueManager.Instance.CheckDialogue(nextNode.guid);
     }
 

@@ -58,4 +58,12 @@ public class FlyweightFactory : Singleton<FlyweightFactory>
     }
 
     
+    public void Despawn(Transform root) 
+    {
+        foreach (var f in root.GetComponentsInChildren<IFlyweight>())
+        {
+           Instance.Return(f);
+        }
+    }
+    
 }

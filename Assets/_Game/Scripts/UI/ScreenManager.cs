@@ -2,7 +2,7 @@ using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class ScreenManager : RegulatorSingleton<ScreenManager>
+public class ScreenManager : Singleton<ScreenManager>
 {
     [ShowInInspector, ReadOnly] private StackManager<IActivity> _activities = new StackManager<IActivity>();
     
@@ -45,9 +45,9 @@ public class ScreenManager : RegulatorSingleton<ScreenManager>
     private void OnDestroy()
     {
         if(!HasInstance || instance != this) return;
-        
+        _activities.Clear();
+        m_globalReader.EscapePressed -= Escape;
         m_pushEvent.OnEventRaised -= Push;
         m_popInputEvent.OnEventRaised -= Pop;
-        m_globalReader.EscapePressed -= Escape;
     }
 }

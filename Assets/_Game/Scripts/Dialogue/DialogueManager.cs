@@ -8,22 +8,40 @@ using Sirenix.OdinInspector;
 
 public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 {
+    #region Event
+ 
     [SerializeField] private DialoguerEvent m_dialogueEvent;
     [SerializeField] private DialogueInputReader m_inputReader;
+    [SerializeField] private RecordNoteEvent m_recordNoteEvent;
+    #endregion
     [SerializeField] private DialogueView m_dialogueView;
-
+    
+    #region Screen
     [SerializeField] private IActivityEvent m_pushActivity;
     [SerializeField] private EventChannel m_popActivity;
-    [SerializeField] private BoolEventChannel m_cursorEnable;
-    [SerializeField] private float timeToOutDialogue; // se usa cuando la última palabra se la da el npc
-    [SerializeField] private RecordNoteEvent m_recordNoteEvent;
-    private CancellationTokenSource  _dialogueCts;
-    private IDialogable _currentDialoguer;
+    #endregion
     
-    private string _manualRecords = string.Empty;
+    #region Cursor
+    [SerializeField] private BoolEventChannel m_cursorEnable;
+    #endregion
+   
+    #region Setting
+    [SerializeField] private float timeToOutDialogue; // se usa cuando la última palabra se la da el npc
+    [ShowInInspector, ReadOnly] private HashSet<SerializableGuid> _dialogueNodesTalked = new();
+    private IDialogable _currentDialoguer;
+    private CancellationTokenSource  _dialogueCts;
     private string _recordText = string.Empty;
+    private string _manualRecords = string.Empty;
     private string _topic = string.Empty;
-    [ShowInInspector, ReadOnly] private HashSet<SerializableGuid> _dialogueNodesTalked = new HashSet<SerializableGuid>();
+    #endregion
+
+    #region Data
+
+    private HashSet<int> _recordedPathHashes = new();
+    private int _currentPathHash = 17; // PRIMER NUMERO PRIMO
+    
+    #endregion
+    
     #region  IActivity
     public event Action OnResume;
     public event Action OnPause;
@@ -81,17 +99,19 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         _currentDialoguer = dialogable;
         _currentDialoguer.Dialogue._hiddenProof.Clear();
         m_dialogueView.ClearDialogues();
-        if(_currentDialoguer.FirstTimeSpeaking) NotebookManager.Instance.AddCharacter(_currentDialoguer.ID);
         m_dialogueView.SetSpeakerName(dialogable.NpcName);
         await m_dialogueView.UnfoldDialogue(true);
         await PlayDialogueNode(dialogable.Dialogue.startingNode);
     }
     
-    
     private async UniTask PlayDialogueNode(DialogueNode node) 
     {
         if(node == null) return;
 
+        unchecked 
+        {
+            _currentPathHash = _currentPathHash * 31 + node.guid.GetHashCode();
+        }
         _dialogueNodesTalked.Add(node.guid);
         ResetCancellationToken();
         var token = _dialogueCts.Token;
@@ -186,7 +206,6 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         }
     }
     
-    
     private void AppendToText(ref string target, string text)
     {
         if (string.IsNullOrEmpty(text)) return;
@@ -209,22 +228,16 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 
     private void EndDialogue(bool withTopic = false)
     {
-        string title = $"{_currentDialoguer.NpcName}'s account" + (withTopic
-        ? $" -\n About {_topic.ToLower()}"
-        : " -\n No clear topic");
-
-        var finalLog = new LogNote(
-            title, 
-            _recordText, 
-            _manualRecords, 
-            _currentDialoguer.Dialogue.DoesItProveAnything()
-        );
-
-        LogNote sameLogIfUnique = (LogNote)NotebookManager.Instance.ReturnIfUnique(finalLog, _currentDialoguer.ID);
-        if (finalLog == sameLogIfUnique)
-            NotebookManager.Instance.AddLogToCharacter(_currentDialoguer.ID, finalLog);
-        else sameLogIfUnique.UpdateLog(finalLog);
-
+      
+        if (!_recordedPathHashes.Contains(_currentPathHash))
+        {
+            string title = $"{_currentDialoguer.NpcName}'s account" + (withTopic ? $" -\n About {_topic.ToLower()}" : " -\n No clear topic");
+            var log = new LogNote(title, _recordText, _manualRecords, _currentDialoguer.ID);
+            m_recordNoteEvent.Raise(log);
+            _recordedPathHashes.Add(_currentPathHash);
+        }
+        
+        _currentPathHash =  17;
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
         _currentDialoguer = null;
         _recordText = string.Empty;

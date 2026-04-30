@@ -5,7 +5,7 @@ using UnityEngine;
 
 [Serializable]
 [CreateAssetMenu(menuName = "Game/Item",fileName = "Item")]
-public class Item : ScriptableObject, IClue
+public class Item : SerializedScriptableObject, IClue,IProof
 {
     public ItemViewer gameObject;
     public SerializableGuid guid = SerializableGuid.NewGuid();
@@ -25,14 +25,22 @@ public class Item : ScriptableObject, IClue
     public FlashbackInfo flashbackInfo ;
 
     [Space(15), Header("WHAT DOES IT PROVE?")]
-    [SerializeField] List<Whodunnit> doesItProveAnything;
+    [SerializeField] List<Proof> doesItProveAnything;
 
-    public List<Whodunnit> DoesItProveAnything()
+    public List<Proof> DoesItProveAnything()
     {
-        return new List<Whodunnit>(doesItProveAnything);
+        return new List<Proof>(doesItProveAnything);
     }
     
+    
+    #region Proof
+    public List<ProofConnection> DefaultConnections;
+    #endregion
+    
+    #region Point of Intere
+    [Header("Punto De Intere")]
     public List<ItemPOIData> pois = new();
+    #endregion
 }
 
 [Serializable]
@@ -42,12 +50,15 @@ public class ItemPOIData
     [TextArea]
     public string description;
     
+}
+public interface IProof
+{
     
 }
 
 
 public interface IClue
 {
-    public List<Whodunnit> DoesItProveAnything();
+    public List<Proof> DoesItProveAnything();
 }
 

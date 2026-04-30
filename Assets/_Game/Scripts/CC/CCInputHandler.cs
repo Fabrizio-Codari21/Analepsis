@@ -34,7 +34,11 @@ public class CcInputHandler : MonoBehaviour
         activity.OnStop += Stop;
       
         m_flashback.OnEventRaised += Flashback;
-        InitReader();
+        m_reader.Move += Movement;
+        m_reader.InteractPressed += InteractStart;
+        m_reader.InteractReleased += InteractStop;
+        m_reader.OpenNotebook += TryOpenNotebook;
+        m_reader.OpenTheoryBoard += TryOpenTheoryBoard;
         m_cameraTransformEvent.OnEventRaised += SetCamera;
         m_readerEvent.Raise(activity); // BASE ACTIVITY EN TEORIA
       
@@ -42,15 +46,6 @@ public class CcInputHandler : MonoBehaviour
 
 
     private void Flashback(bool enable) => _onFlashBack = enable;
-
-   private void InitReader()
-   {
-      m_reader.Move += Movement;
-      m_reader.InteractPressed += InteractStart;
-      m_reader.InteractReleased += InteractStop;
-      m_reader.OpenNotebook += TryOpenNotebook;
-      m_reader.OpenTheoryBoard += TryOpenTheoryBoard;
-   }
 
 
    private void Movement(Vector2 dir)
@@ -110,5 +105,11 @@ public class CcInputHandler : MonoBehaviour
       m_cameraTransformEvent.OnEventRaised -= SetCamera;
 
       m_flashback.OnEventRaised -= Flashback;
+      
+      m_reader.Move -= Movement;
+      m_reader.InteractPressed -= InteractStart;
+      m_reader.InteractReleased -= InteractStop;
+      m_reader.OpenNotebook -= TryOpenNotebook;
+      m_reader.OpenTheoryBoard -= TryOpenTheoryBoard;
    }
 }

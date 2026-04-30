@@ -7,37 +7,214 @@ using Sirenix.OdinInspector;
 using System.Linq;
 
 
-public class NotebookManager : Singleton<NotebookManager>, IActivity
+public class NotebookManager : Singleton<NotebookManager>, IActivity,IMark
 {
     
     #region  Inputs & Cursor
     
+    [Header("Event")]
+    [Header("Open Notebook")]
     [SerializeField] private EventChannel m_openNotebookChannel;
+    
+    [Header("Cursor")]
     [SerializeField] private BoolEventChannel enableCursor;
+    [Header("Input")]
     [SerializeField] private NoteBookInputReader inputReaderNoteBook;
+    [Header("Screen")]
     [SerializeField] private IActivityEvent pushEvent;
     [SerializeField] private EventChannel popEvent;
- 
     #endregion
+    
+    #region Events
+    [Header("Hand Event")]
     [SerializeField] private EventChannel takeOutNotebookChannel;
     [SerializeField] private EventChannel putInNotebookChannel;
-    [SerializeField] private NotebookView m_view;
+    [Header("Note ")]
     [SerializeField] private RecordNoteEvent m_recordNote;
-    [SerializeField] private MarkingPanelView m_markingPanel;
+    [Header("Poi")]
     [SerializeField] private BoolEventChannel m_udpatePoi;
-    private CancellationTokenSource _cts;
+    
+    [Header("Mark Event")]
+    [SerializeField,InfoBox("Sen to Theory board")] private MarkClueEvent markedClueEvent;
+    #endregion
+    
+    [Header("Setting")]
+    [SerializeField] private NotebookView m_view;
+    [SerializeField] private MarkingPanel m_markingPanel;
+    
     [ReadOnly,ShowInInspector] private NoteType _currentNoteType;
-    [ReadOnly, ShowInInspector] public Dictionary<SerializableGuid, Note> markedClues = new();
-    private readonly Dictionary<SerializableGuid, HashSet<string>> _unlockedPoisByItem = new(); // punto de interes
-    private readonly Dictionary<SerializableGuid,Note> _notebookPages = new();
-    private readonly Dictionary<Item, string> _unlockedFlashbackNote = new();
-    private Dictionary<NpcIdentity, List<LogNote>> _characterLogs = new();
+ 
+    #region Data
+    #region Clue Mark
+    private readonly Dictionary<SerializableGuid, Note> _markedClues = new();
 
+    private bool _isMarking = false;
+    public async void MarkClue(SerializableGuid guid)
+    {
+        if (_isMarking || IsMarked(guid)) return;
+        if (!_allNotes.TryGetValue(guid, out var note)) return;
+        
+        _isMarking = true;
+        inputReaderNoteBook.SetEnable(false);
+        _virtualMouse.enabled = false;
+        enableCursor.Raise(true);
+        string resultName = await m_markingPanel.RenameAndMarkClue(note);
+        
+        if (!string.IsNullOrEmpty(resultName))
+        {
+            if (_markedClues.TryAdd(guid, note))
+            {
+                note.displayName = resultName; 
+                markedClueEvent.Raise(note);
+            }
+        }
+       
+        _isMarking = false;
+        inputReaderNoteBook.SetEnable();
+        _virtualMouse.enabled = true;
+        enableCursor.Raise(true);
+    }
+
+   
+
+    public void RemoveClue(SerializableGuid guid)
+    {
+        if (_markedClues.Remove(guid))
+        {
+         
+        }
+    }
+    public bool IsMarked(SerializableGuid guid) => _markedClues.ContainsKey(guid);
+    #endregion
+    
+    private readonly Dictionary<SerializableGuid,Note> _allNotes = new();
+    
+    private readonly Dictionary<NoteType, List<SerializableGuid>> _notesByTypeIndex = new()
+    {
+        { NoteType.Log, new List<SerializableGuid>() },
+        { NoteType.Objects, new List<SerializableGuid>()}
+    };
+    
+    public List<SerializableGuid> GetGuidsByType(NoteType type) => _notesByTypeIndex[type];
+    
+    #region Log
+    private readonly Dictionary<NpcIdentity, List<SerializableGuid>> _npcLogIndex = new();
+    public void AddToNpcIndex(NpcIdentity speaker, SerializableGuid guid)
+    {
+        if (!_npcLogIndex.TryGetValue(speaker, out var list))
+        {
+            list = new List<SerializableGuid>();
+            _npcLogIndex.Add(speaker, list);
+        }
+        list.Add(guid);
+    }
+    public void RemoveFromNpcIndex(NpcIdentity speaker, SerializableGuid guid)
+    {
+        if (!_npcLogIndex.TryGetValue(speaker, out var list)) return;
+        list.Remove(guid);
+        if (list.Count == 0) _npcLogIndex.Remove(speaker);
+    }
+    public Dictionary<NpcIdentity, List<SerializableGuid>> GetNpcLogIndex() => _npcLogIndex;
+    
+    #endregion
+    
+    #region  Item
+
+    
+    private readonly Dictionary<SerializableGuid, HashSet<string>> _unlockedPoisByItem = new(); // punto de interes
+    private readonly Dictionary<Item, string> _unlockedFlashbackNote = new();
+    #endregion
+    
+    #endregion
+
+    #region Component
 
     private UVVirtualMouse _virtualMouse;
-    public Dictionary<NpcIdentity, List<LogNote>> FoundCharacters => _characterLogs;
-    [SerializeField] MarkClueEvent markedClueEvent;
+    private CancellationTokenSource _cts;
 
+    #endregion
+
+    #region Button Strategies
+    private Dictionary<NoteType, INoteButtonStrategy> _strategies;
+
+    private void InitStrategies()
+    {
+        _strategies = new Dictionary<NoteType, INoteButtonStrategy>
+        {
+            { NoteType.Objects, new SingleNoteStrategy(NoteType.Objects, this) },
+            { NoteType.Log, new NpcGroupNoteStrategy(this) } 
+        };
+    }
+    
+    #endregion
+
+    private void Start()
+    {
+        m_view = Instantiate(m_view,transform);
+        m_markingPanel = Instantiate(m_markingPanel,transform);
+        inputReaderNoteBook.Close += Close;
+        m_recordNote.OnEventRaised += Record;
+        m_openNotebookChannel.OnEventRaised += Open;
+        
+        InitStrategies();
+        _virtualMouse = GetComponentInChildren<UVVirtualMouse>();
+    }
+
+    private void Record(Note note)
+    {
+        if (!_allNotes.TryAdd(note.guid, note)) return;
+        if (!_notesByTypeIndex.ContainsKey(note.type)) _notesByTypeIndex[note.type] = new List<SerializableGuid>();
+        _notesByTypeIndex[note.type].Add(note.guid);
+        
+        note.OnRecord(this);
+    }
+
+    private void Remove(Note note)
+    {
+        if (note == null) return;
+        if (_notesByTypeIndex.TryGetValue(note.type, out var guidList))
+        {
+            guidList.Remove(note.guid);
+        }
+    }
+    
+    
+
+    private void Open()
+    {
+        pushEvent.Raise(this);
+        _ = ActionTimer.Instance.m_view.DisplayUI();       
+    }
+
+    private void Close()
+    {
+        popEvent.Raise();
+      
+    }
+
+
+    #region POI
+
+    public void UnlockPoi(Item item, string poiId)
+    {
+        if (!_unlockedPoisByItem.ContainsKey(item.guid))
+        {
+            _unlockedPoisByItem[item.guid] = new HashSet<string>();
+        }
+        
+       
+        var set = _unlockedPoisByItem[item.guid];
+        
+        bool wasCompleteBefore = HasAllPois(item);
+        if (!set.Add(poiId)) return;
+       
+        bool isCompleteNow = HasAllPois(item);
+        if (wasCompleteBefore != isCompleteNow)
+        {
+            m_udpatePoi.Raise(isCompleteNow);
+        }
+    }
+    
     public bool HasAllPois(Item item)
     {
         if (!_unlockedPoisByItem.TryGetValue(item.guid, out var unlockedIds)) return false;
@@ -51,104 +228,6 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
         return true;
     }
-
-    public void AddCharacter(NpcIdentity npc)
-    {
-        if (!_characterLogs.ContainsKey(npc)) _characterLogs.Add(npc, new List<LogNote>());
-    }
-    public void AddLogToCharacter(NpcIdentity chara, LogNote log)
-    {
-        foreach (var character in _characterLogs)
-        {
-            if (character.Value.Contains(ReturnIfUnique(log, chara))) return;
-        }
-
-        if (_characterLogs.ContainsKey(chara)) _characterLogs[chara].Add(log);
-        else _characterLogs.Add(chara,new(){log});
-    }
-
-    // Devuelve la nota original si es unica o la ya existente si su informacion es igual.
-    public Note ReturnIfUnique(Note note, NpcIdentity character = default)
-    {
-        List<Note> otherNotes = note.type == NoteType.Log
-        ? (_characterLogs.ContainsKey(character) ? new(_characterLogs[character]) : new())
-        : _notebookPages.Values.ToList();
-
-        foreach(Note existingNote in otherNotes)
-        {
-            if(note.GetInfo() == existingNote.GetInfo()) return existingNote;
-        }
-        return note;
-    }
-   
-    private void Start()
-    {
-        m_view = Instantiate(m_view,transform);
-        inputReaderNoteBook.Close += Close;
-        m_recordNote.OnEventRaised += Record;
-        ResetMarkingPanel();
-        markedClueEvent.OnEventRaised += async (note) => await TryToMarkClue(note);
-        m_openNotebookChannel.OnEventRaised += Open;
-        
-        _virtualMouse = GetComponentInChildren<UVVirtualMouse>();
-    }
-
-    private void Record(Note note)
-    {
-        if (!_notebookPages.TryAdd(note.guid, note))
-        {
-           
-        }
-  
-        //MarkClue(note); //esto es temporal
-    }
-
-    private async UniTask TryToMarkClue(Note note)
-    {
-        var panel = Instantiate(m_markingPanel,transform);
-        await panel.RenameAndMarkClue(note);
-    }
-    public void ResetMarkingPanel() => m_markingPanel.isMarkingClue = false;
-    public event Action<bool> enableButtonsEvent = delegate { };
-    public event Action<bool> enableMarkEvent = delegate { };
-    public event Action<bool> closeAllButtonsEvent = delegate { };
-    public void EnableButtons(bool enable) => enableButtonsEvent?.Invoke(enable);
-    public void EnableMark(bool enable) => enableMarkEvent?.Invoke(enable);
-
-    private void Open()
-    {
-        pushEvent.Raise(this);
-        _ = ActionTimer.Instance.m_view.DisplayUI();       
-    }
-
-    private void Close()
-    {
-        popEvent.Raise();
-        closeAllButtonsEvent?.Invoke(false); closeAllButtonsEvent = default;
-    }
-    
-    public void UnlockPoi(Item item, string poiId)
-    {
-        if (!_unlockedPoisByItem.ContainsKey(item.guid))
-        {
-            _unlockedPoisByItem[item.guid] = new HashSet<string>();
-        }
-        
-       
-        var set = _unlockedPoisByItem[item.guid];
-        
-        bool wasCompleteBefore = HasAllPois(item);
-        if (!set.Add(poiId)) return;
-        
-        var poiData = item.pois.Find(x => x.poiId == poiId);
-       
-        bool isCompleteNow = HasAllPois(item);
-        if (wasCompleteBefore != isCompleteNow)
-        {
-            m_udpatePoi.Raise(isCompleteNow);
-        }
-    }
-    
     public List<string> GetUnlockedPoiDescriptions(Item item)
     {
         List<string> descriptions = new();
@@ -162,12 +241,14 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         }
         return descriptions;
     }
+    
+    #endregion
 
 
-
+    #region Flashback
     public void UpdateFlashbackInfo(Item item, string info)
     {
-        if (!_unlockedFlashbackNote.TryAdd(item, info))return;
+        if (!_unlockedFlashbackNote.TryAdd(item, info)) return;
     }
 
     public string GetItemFlashbackInfo(Item item)
@@ -175,131 +256,52 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         return !_unlockedFlashbackNote.TryGetValue(item, out var flashback) ? string.Empty : flashback;
     }
 
+    #endregion
+
+
+    #region Core Logic
+    
     private void OpenNotebookByType(NoteType type)
     {
         _currentNoteType = type;
-        _cts?.Cancel();
-        _cts?.Dispose();
-        _cts = null;
+        ResetCts();
         
         m_view.ClearDetail();
         m_view.ClearButton();
-        enableButtonsEvent = default; enableMarkEvent = default;
-        //m_markingPanel.markableClues.Clear();
-        m_view.SetTitle(type.ToString()); // si vamos a hacer localization ya deberia usar de esta forma , lo hago asi para ahorrarme tiempo
-        // no es muy solid que digamos pero para probar por ahora sirve
-        if(type == NoteType.Log && _characterLogs.Count > 0)
-        {
-            foreach(var character in _characterLogs)
-            {
-                var charButton = m_view.CreateButton(character.Key.npcName + " Logs");
-                charButton.gameObject.transform.localScale *= 1.1f;
-                charButton.DisableSub();
-                closeAllButtonsEvent += charButton.MakeOpen;
+        m_view.SetTitle(type.ToString()); // si vamos a hacer localization ya no deberia usar de esta forma , lo hago asi para ahorrarme tiempo
 
-                charButton.AddListener(() =>
-                {
-                    if (!charButton.IsOpen())
-                    {
-                        if (character.Value.Count > 0)
-                        {
-                            foreach (var item in character.Value)
-                            {
-                                var button = SpawnClueButton(item);
-                                button.EnableSub();
-                                //if (markedClues.ContainsKey(item.guid)) button.DisplayMark(true); // no termino de funcionar
-                                button.MoveToPosition(charButton.GetPosition() + (character.Value.IndexOf(item) + 1));
-                                button.gameObject.transform.localScale *= 0.9f;
-                                charButton.AddToChildren(button);
-                                item.parentButton = button;
-                            }
-                            charButton.MakeOpen(true);
-                        }
-                        else
-                        {
-                            var button = m_view.CreateButton($"No saved conversations.");
-                            button.DisableSub();
-                            button.SetInteractable(false);
-                            button.MoveToPosition(charButton.GetPosition() + 1);
-                            button.gameObject.transform.localScale *= 0.9f;
-                            charButton.AddToChildren(button);
-                            charButton.MakeOpen(true);
-                        }
-                    }
-                    else
-                    {
-                        charButton.ClearChildren();
-                        charButton.MakeOpen(false);
-                        m_view.ClearDetail();
-                    }
-                });
-            }
-        }
-        else
+        if (_strategies.TryGetValue(type, out var strategy))
         {
-            if (_notebookPages.Where(x => x.Value.type == type).Count() <= 0)
+            strategy.Render(m_view, _allNotes, (button, note) => 
             {
-                var button = m_view.CreateButton($"No {type} found yet.");
-                button.EnableSub(false); button.SetInteractable(false); return;
-            }
-            foreach (var note in _notebookPages.Values)
-            {
-                if (note.type != type) continue;
-                var cachedNote = note;
-                var button = SpawnClueButton(cachedNote);
-                button.EnableSub();
-                button.gameObject.transform.localScale *= 1.1f;
-            }
+                ResetCts();
+                _ = SelectNote(button, note, _cts.Token);
+            });
         }
-
-        //print("markable clues: " + m_markingPanel.markableClues.Count);
     }
-
-    public ButtonFactoryObject SpawnClueButton(Note cachedNote)
+    
+    #region Button
+    private void ChangeType(float direction)
     {
-        var button = m_view.CreateButton(cachedNote.GetButtonText());
-        //m_markingPanel.markableClues.Add(cachedNote.guid, button);
+        if(direction == 0 ) return;
+        var values = (NoteType[])Enum.GetValues(typeof(NoteType));
+        var currentIndex = (int)_currentNoteType;
         
-        if (markedClues.ContainsKey(cachedNote.guid))
-        {
-            button.DisplayMark(true);
-        }
-        button.AddListener(() =>
-        {
-            _cts?.Cancel();
-            _cts?.Dispose();
-            _cts = new CancellationTokenSource();
-            m_view.ClearDetail();
-            _ = SelectNote(button, cachedNote, _cts.Token);
-        });
-        //button.MoveSubToLast();
-        button.EnableSub();
-        enableButtonsEvent += (x) => 
-        {
-            if (button != null) button.EnableSub();
-        };
-        button.AddListenerToSub(() =>
-        {
-            //_cts?.Cancel();
-            //_cts?.Dispose();
-            //_cts = new CancellationTokenSource();
-            if (markedClues.ContainsKey(cachedNote.guid))
-            {
-                button.DisplayMark(false);
-                markedClues.Remove(cachedNote.guid);
-                return;
-            }
-            m_markingPanel.isMarkingClue = true;
-
-            button.DisplayMark(true);
-            enableMarkEvent = button.DisplayMark;
-            EnableButtons(false);
-            markedClueEvent.Raise(cachedNote);
-        });
-
-        return button;
+        currentIndex += direction > 0 ? 1 : -1;
+        
+        if (currentIndex >= values.Length) currentIndex = 0;
+        else if (currentIndex < 0) currentIndex = values.Length - 1;
+        
+        OpenNotebookByType(values[currentIndex]);
     }
 
+    
+    private void ResetCts()
+    {
+        _cts?.Cancel();
+        _cts?.Dispose();
+        _cts = new CancellationTokenSource();
+    }
     private async UniTask SelectNote(ButtonFactoryObject parent, Note note, CancellationToken token)
     {
         try
@@ -314,8 +316,14 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         {
         }
     }
+    #endregion
 
-    public void AddDetailButtons(ButtonFactoryObject parent, NotebookView view, Note note)
+    #endregion
+    
+    
+
+
+    private void AddDetailButtons(ButtonFactoryObject parent, NotebookView view, Note note)
     {
         var clearButton = view.CreateDetailButton("Clear");
         clearButton.AddListener(() =>
@@ -328,45 +336,21 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
             m_view.ClearDetail();
             if (note.type == NoteType.Log)
             {
-                foreach (var character in _characterLogs)
-                {
-                    if (character.Value.Contains(note))
-                    {
-                        character.Value.Remove((LogNote)note);
-                    }
-                }
 
                 var button = m_view.CreateButton($"No saved conversations.");
                 button.transform.parent = parent.transform.parent;
-                button.DisableSub();
+              
                 button.SetInteractable(false);
                 button.MoveToPosition(parent.GetPosition());
                 button.gameObject.transform.localScale *= 0.9f;
-                parent.GetParent().AddToChildren(button);
+             
             }
-            else _notebookPages.Remove(note.guid);
-
-            parent.RemoveFromParent();
-            Destroy(parent.gameObject);
-
+            else _allNotes.Remove(note.guid);
+            
         });
     }
 
-    private void ChangeType(float direction)
-    {
-        if(direction == 0 ) return;
-        var values = (NoteType[])Enum.GetValues(typeof(NoteType));
-        var currentIndex = (int)_currentNoteType;
-        
-        currentIndex += direction > 0 ? 1 : -1;
-        
-        if (currentIndex >= values.Length) currentIndex = 0;
-        else if (currentIndex < 0) currentIndex = values.Length - 1;
-        
-        OpenNotebookByType(values[currentIndex]);
-    }
-    
-    #region Interface
+    #region IActivity
     public event Action OnResume;
     public event Action OnPause;
     public event Action OnStop;
@@ -377,7 +361,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         inputReaderNoteBook.SetEnable();
        
         _virtualMouse.enabled = true;
-        if (m_markingPanel.isMarkingClue) return;
+       
         m_view.gameObject.SetActive(true);
         m_view.NextButtonAdd(()=> ChangeType(1));
         m_view.PreviousButtonAdd(()=>ChangeType(-1));
@@ -392,13 +376,10 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         OnPause?.Invoke();
         inputReaderNoteBook.SetEnable(false);
         _virtualMouse.enabled = false;
-        if (m_markingPanel.isMarkingClue) return;
-
         m_view.gameObject.SetActive(false);
         m_view.RemoveNext();
         m_view.RemovePrevious();
-        enableCursor.Raise(false);
-          putInNotebookChannel.Raise();
+        enableCursor.Raise(false); putInNotebookChannel.Raise();
         inputReaderNoteBook.Flip -= ChangeType;
     }
 
@@ -414,11 +395,115 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     }
     #endregion
      
-    public bool CheckNote(SerializableGuid guid) => _notebookPages.ContainsKey(guid);
-    
+    public bool CheckNote(SerializableGuid guid) => _allNotes.ContainsKey(guid);
+
+   
 }
 
+public interface IMark
+{
+    void MarkClue(SerializableGuid guid);
+    void RemoveClue(SerializableGuid guid);
+    bool IsMarked(SerializableGuid guid);
+}
 
+public interface INoteButtonStrategy
+{
+    void Render(NotebookView view, Dictionary<SerializableGuid, Note> allNotes, Action<ButtonFactoryObject, Note> onSelect);
+}
+
+public class NpcGroupNoteStrategy: INoteButtonStrategy
+{
+    private readonly IMark _markHandler;
+
+    public NpcGroupNoteStrategy(IMark markHandler)
+    {
+        _markHandler = markHandler;
+    }
+    public void Render(NotebookView view, Dictionary<SerializableGuid, Note> allNotes, Action<ButtonFactoryObject, Note> onSelect)
+    {
+        var npcIndex = NotebookManager.Instance.GetNpcLogIndex();
+
+        foreach (var entry in npcIndex)
+        {
+            NpcIdentity npc = entry.Key;
+            List<SerializableGuid> logs = entry.Value;
+            if(logs.Count == 0) continue;
+            
+            var npcFolder = view.CreateButton($"{npc.npcName} ({logs.Count})");
+
+            
+            bool isOpen = false;
+            List<ButtonFactoryObject> currentSubButtons = new();
+         
+            npcFolder.AddListener(() =>
+            {
+                if (isOpen)
+                {
+                    foreach (var subBtn in currentSubButtons) FlyweightFactory.Instance.Return(subBtn); 
+                    
+                    currentSubButtons.Clear();
+                    isOpen = false;
+                }
+                else
+                {
+                    foreach (var logId in logs)
+                    {
+                        if (!allNotes.TryGetValue(logId, out var note)) continue;
+                        
+                        bool markedStatus = _markHandler.IsMarked(note.guid);
+
+                        var button = view.CreateToggleButton(
+                            note.GetButtonText(),
+                            doAction: () => _markHandler.MarkClue(note.guid),
+                            undoAction: () => _markHandler.RemoveClue(note.guid),
+                            toggle: markedStatus
+                        );
+                        
+                        button.AddListener(() => onSelect(button, note));
+                        button.MoveToPosition(npcFolder.GetPosition() + 1);
+                        currentSubButtons.Add(button);
+                    }
+                    
+                    isOpen = true;
+                }
+            });
+
+        }
+    }
+}
+
+public class SingleNoteStrategy : INoteButtonStrategy
+{
+    
+    private readonly NoteType _targetType;
+    private readonly IMark _markHandler;
+    public SingleNoteStrategy(NoteType type, IMark markHandler)
+    {
+        _targetType = type;
+        _markHandler = markHandler;
+    }
+    
+    public void Render(NotebookView view, Dictionary<SerializableGuid, Note> allNotes, Action<ButtonFactoryObject, Note> onSelect)
+    {
+        var guids = NotebookManager.Instance.GetGuidsByType(_targetType);
+
+        foreach (var guid in guids)
+        {
+            if (!allNotes.TryGetValue(guid, out var note)) continue;
+            bool isAlreadyMarked = _markHandler.IsMarked(guid);
+            var button = view.CreateToggleButton(
+                note.GetButtonText(),
+                doAction: () => _markHandler.MarkClue(guid),
+                undoAction: () => _markHandler.RemoveClue(guid),
+                toggle: isAlreadyMarked
+            );
+            
+            
+            button.AddListener(()=> onSelect(button, note));
+        }
+    }
+}
 
 public enum NoteType
 {
@@ -441,14 +526,13 @@ public  class Note
     public SerializableGuid guid = SerializableGuid.NewGuid();
     public NoteType type;
     public string displayName;
-    public List<Whodunnit> isProof;
+    public List<Proof> isProof;
 
-    public Note(string displayName,  List<Whodunnit> proof = null)
+    public Note(string displayName,  List<Proof> proof = null)
     {
         this.displayName = displayName;
         this.isProof = proof;
-
-
+        
     }
 
     public virtual string GetButtonText()
@@ -459,25 +543,25 @@ public  class Note
     {
         return UniTask.CompletedTask;
     }
-    public virtual string GetInfo() => default;
+    public virtual string GetInfo() => null;
+    public virtual void OnRecord(NotebookManager manager) { }
+    public virtual void OnRemove(NotebookManager manager) { }
 }
-
-
-
 
 public class LogNote : Note
 {
- 
-    private string _fullInfo;   
+    private readonly string _fullInfo;   
     private string _recordInfo;
     private bool _showingFull  = false;
-    public ButtonFactoryObject parentButton;
-    public LogNote(string displayName,string fullInfo, string recordInfo,List<Whodunnit> proof = null) : base(displayName, proof)
+    public NpcIdentity Speaker;
+    public LogNote(string displayName,string fullInfo, string recordInfo, NpcIdentity speaker,List<Proof> proof = null) : base(displayName, proof)
     {
         _fullInfo = fullInfo;
         _recordInfo = recordInfo;
+        Speaker = speaker;
         type = NoteType.Log;
     }
+    
     public void UpdateLog(LogNote log)
     {
         // aca agregamos todo lo que queramos actualizar cuando la conversacion
@@ -487,10 +571,19 @@ public class LogNote : Note
    public override async UniTask Show(NotebookView view, CancellationToken token)
     {
         _showingFull = false; 
-        await RefreshDisplay(view, token, true);
+        await RefreshDisplay(view, token);
     }
 
-    private async UniTask RefreshDisplay(NotebookView view, CancellationToken token, bool firstTime = false)
+    public override void OnRecord(NotebookManager manager)
+    {
+        manager.AddToNpcIndex(Speaker, guid);
+    }
+
+    public override void OnRemove(NotebookManager manager)
+    {
+        manager.RemoveFromNpcIndex(Speaker,guid);
+    }
+    private async UniTask RefreshDisplay(NotebookView view, CancellationToken token)
     {
         view.ClearDetail(); 
         string contentToShow = _showingFull ? _fullInfo : 
@@ -507,18 +600,18 @@ public class LogNote : Note
         toggleBtn.AddListener(() =>
         {
             _showingFull = !_showingFull;
-            _ = RefreshDisplay(view, token, false);
+            _ = RefreshDisplay(view, token);
         });
-        if(!firstTime) NotebookManager.Instance.AddDetailButtons(parentButton, view, this);
 
     }
     public override string GetInfo() => _fullInfo;
+    
 }
 
 public class ItemNote : Note
 {
     private readonly Item _item;
-    public ItemNote(string displayName,Item item, List<Whodunnit> proof = null) : base(displayName, proof)
+    public ItemNote(string displayName,Item item, List<Proof> proof = null) : base(displayName, proof)
     {
         type = NoteType.Objects;
         if (item == null) return;

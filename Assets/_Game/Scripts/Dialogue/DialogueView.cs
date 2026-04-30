@@ -97,13 +97,9 @@ public class DialogueView : MonoBehaviour
         {
             b.PlayImageFill(1f).Forget();
             RecordRequested?.Invoke(content);
-           
         });
         
-        
     }
-    
-   
     
     private void Despawn(Transform root) 
     {
@@ -112,17 +108,5 @@ public class DialogueView : MonoBehaviour
             FlyweightFactory.Instance.Return(f);
         }
     }
-    
 }
 
-public class DialogueMarkClueButton : MonoBehaviour
-{
-    [SerializeField] private ButtonSetting m_button;
-    [SerializeField] private RecordNoteEvent m_recordNoteEvent;
-    private IDialogable _dialoguer;
-
-    private void Record(DialogueNode node)
-    {
-        
-    }
-}
