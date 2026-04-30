@@ -229,6 +229,13 @@ public static class CustomExtensions
         return transform;
     }
 
+    public static string AsString(this List<string> strings, bool segmented = false)
+    {
+        var str = string.Empty;
+        foreach(string s in strings) str += (segmented ? "\n\n" : "") + s;
+        return str;
+    }
+
     #endregion
 
     #region UI UTILITIES

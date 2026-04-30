@@ -23,7 +23,9 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     
     
     private HashSet<string> _recordedContentInSession = new HashSet<string>();
-    private string _manualRecords = string.Empty;
+
+    private List<string> _manualRecords = new();
+    private List<string> _previousRecords = new();
     private string _recordText = string.Empty;
     private string _topic = string.Empty;
     [ShowInInspector, ReadOnly] private HashSet<SerializableGuid> _dialogueNodesTalked = new HashSet<SerializableGuid>();
@@ -71,16 +73,24 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         m_dialogueView = Instantiate(m_dialogueView,transform);
         m_dialogueView.m_player = m_player;
         
-        m_dialogueView.RecordRequested += content =>
+        m_dialogueView.RecordRequested += (content, button) =>
         {
             if (_currentDialoguer == null) return;
             if (!_recordedContentInSession.Add(content)) 
             {
+                button.PlayImageFill(0f).Forget();
+                RemoveFromText(ref _manualRecords, content);
+                _recordedContentInSession.Remove(content);
                 return; 
             }
 
+            button.PlayImageFill(1f).Forget();
             AppendToText(ref _manualRecords, content);
             
+        };
+        m_dialogueView.IsAlreadyRecorded += (content) =>
+        {
+            return _previousRecords.Contains("- " + content);
         };
         m_dialogueEvent.OnEventRaised += dialogable => _ = Speak(dialogable);
     }
@@ -195,12 +205,19 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         }
     }
     
-    
-    private void AppendToText(ref string target, string text)
+    bool _recordChanged = false;
+    private void AppendToText(ref List<string> target, string text)
     {
         if (string.IsNullOrEmpty(text)) return;
-        if (target != string.Empty) target += "\n\n";
-        target += "- " + text;
+        target.Add("- " + text);
+        _recordChanged = true;
+    }
+
+    private void RemoveFromText(ref List<string> target, string text)
+    {
+        if (string.IsNullOrEmpty(text)) return;
+        target.Remove("- " + text);
+        _recordChanged = true;
     }
 
     private void AppendToRecord(string text)
@@ -222,10 +239,12 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         ? $" -\n About {_topic.ToLower()}"
         : " -\n No clear topic");
 
+        if (_manualRecords.Count <= 0 && !_recordChanged) _manualRecords = _previousRecords;
+
         var finalLog = new LogNote(
             title, 
             _recordText, 
-            _manualRecords, 
+            _manualRecords.AsString(segmented: true), 
             _currentDialoguer.Dialogue.DoesItProveAnything()
         );
 
@@ -237,7 +256,10 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
         _currentDialoguer = null;
         _recordText = string.Empty;
-        _manualRecords = string.Empty;
+
+        _previousRecords = _manualRecords;
+        _manualRecords = new();
+        _recordChanged = false;
         _recordedContentInSession.Clear();
         m_popActivity.Raise();
         

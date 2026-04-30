@@ -498,7 +498,7 @@ public class LogNote : Note
             ? "[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n"
             : _recordInfo);
 
-        string header = _showingFull ? "<b>[FULL TRANSCRIPT]</b>\n\n" : "<b>[HIGHLIGHTS]</b>\n\n";
+        string header = _showingFull ? "<b>[FULL TRANSCRIPT]</b>\n" : "<b>[HIGHLIGHTS]</b>";
         await view.PlayText(new() { header + contentToShow }, token);
         if (token.IsCancellationRequested) return;
         

@@ -25,7 +25,7 @@ public class DialogueView : MonoBehaviour
     [SerializeField] private Transform m_root;
     [HideInInspector] public Transform m_player;
     
-    public Action<string>  RecordRequested;
+    public Action<string, ButtonFactoryObject>  RecordRequested;
 
     private void Start()
     {
@@ -86,7 +86,7 @@ public class DialogueView : MonoBehaviour
 
     }
     
-    
+    public event Func<string, bool> IsAlreadyRecorded = delegate { return false; };
     public async UniTask PlayDialogueText(string content, CancellationToken token, Color color = default) // view  
     {
         token.ThrowIfCancellationRequested();
@@ -104,11 +104,10 @@ public class DialogueView : MonoBehaviour
         await t.PlayTypeWriterEffect(externalToken: token);
         var b = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(m_recordButton, Vector3.zero, Quaternion.identity, t.transform);
         b.SetFill(0f);
+        if (IsAlreadyRecorded.Invoke(content)) b.PlayImageFill(1f).Forget();
         b.AddListener(() =>
-        {
-            b.PlayImageFill(1f).Forget();
-            RecordRequested?.Invoke(content);
-           
+        {            
+            RecordRequested?.Invoke(content, b);           
         });
         
         
