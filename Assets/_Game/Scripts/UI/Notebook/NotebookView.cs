@@ -57,10 +57,10 @@ public class NotebookView : MonoBehaviour
 
     public ButtonFactoryObject CreateDetailButton(string text)
     {
-        return CreateButtonInternal(text, m_detailRoot, m_detailButtonSetting);
+        return CreateButtonInternal(text, m_detailRoot, m_detailButtonSetting, true);
     }
     
-    private ButtonFactoryObject CreateButtonInternal(string text, Transform parent, ButtonSetting setting)  
+    private ButtonFactoryObject CreateButtonInternal(string text, Transform parent, ButtonSetting setting, bool updateScroll = false)  
     {
         var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
             setting,
@@ -71,7 +71,9 @@ public class NotebookView : MonoBehaviour
 
         button.SetText(text);
         button.SetInteractable(true);
+        if (updateScroll) button.UpdateScroll(); //idealmente que en ese metodo se resetee el scroll
         button.MoveToLast();
+        m_scrollRect.verticalNormalizedPosition = 0;
         return button;
     }
 

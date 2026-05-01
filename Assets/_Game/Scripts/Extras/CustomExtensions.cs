@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -231,11 +232,35 @@ public static class CustomExtensions
         return transform;
     }
 
+    #endregion
+
+    #region STRING UTILITIES
+
     // Convierte una lista de strings en un string largo, segmentado o no.
-    public static string AsString(this ICollection<string> strings, bool segmented = false)
+    public static string AsString(this ICollection<string> strings, bool segmented = false, int segmentSpace = 1)
     {
         var str = string.Empty;
-        foreach(string s in strings) str += (segmented ? "\n\n" : "") + s;
+        foreach (string s in strings) str += (segmented ? "\n".Times(segmentSpace) : "") + s;
+        return str;
+    }
+
+    // Devuelve tu lista de strings segmentada si se cumple X condicion.
+    public static List<string> Segmented(this ICollection<string> list, Func<bool> segmentIf = default, int segmentSpace = 1)
+    {
+        if (segmentIf == default) segmentIf = () => true;
+        List<string> result = new List<string>();
+        foreach (string s in list)
+        {
+            result.Add((segmentIf() ? "\n".Times(segmentSpace) : "") + s);
+        }
+        return result;
+    }
+
+    //Devuelve un texto duplicado X cantidad de veces.
+    public static string Times(this string s, int timesToCopy = 1)
+    {
+        string str = string.Empty;
+        for (int i = 0; i < timesToCopy; i++) str += s;
         return str;
     }
 

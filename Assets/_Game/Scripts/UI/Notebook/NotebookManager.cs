@@ -468,11 +468,11 @@ public  class Note
 public class LogNote : Note
 {
  
-    private string _fullInfo;   
-    private string _recordInfo;
+    private List<string> _fullInfo;   
+    private List<string> _recordInfo;
     private bool _showingFull  = false;
     public ButtonFactoryObject parentButton;
-    public LogNote(string displayName,string fullInfo, string recordInfo,List<Whodunnit> proof = null) : base(displayName, proof)
+    public LogNote(string displayName,List<string> fullInfo, List<string> recordInfo,List<Whodunnit> proof = null) : base(displayName, proof)
     {
         _fullInfo = fullInfo;
         _recordInfo = recordInfo;
@@ -493,13 +493,13 @@ public class LogNote : Note
     private async UniTask RefreshDisplay(NotebookView view, CancellationToken token, bool firstTime = false)
     {
         view.ClearDetail(); 
-        string contentToShow = _showingFull ? _fullInfo : 
-            (_recordInfo == "" 
-            ? "\n\n[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n"
-            : _recordInfo);
+        List<string> contentToShow = new(_showingFull ? _fullInfo : 
+            (_recordInfo.Count <= 0 
+            ? new(){"\n\n[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n" }
+            : _recordInfo));
 
-        string header = _showingFull ? "<b>[FULL TRANSCRIPT]</b>\n" : "<b>[HIGHLIGHTS]</b>";
-        await view.PlayText(new() { header + contentToShow }, token);
+        contentToShow.Insert(0, _showingFull ? "<b>[FULL TRANSCRIPT]</b>" : "<b>[HIGHLIGHTS]</b>");
+        await view.PlayText(contentToShow, token);
         if (token.IsCancellationRequested) return;
         
         string buttonLabel = _showingFull ? "See Highlights" : "See Full Transcript";
@@ -512,7 +512,7 @@ public class LogNote : Note
         if(!firstTime) NotebookManager.Instance.AddDetailButtons(parentButton, view, this);
 
     }
-    public override string GetInfo() => _fullInfo;
+    public override string GetInfo() => _fullInfo.AsString();
 }
 
 public class ItemNote : Note
@@ -548,11 +548,5 @@ public class ItemNote : Note
         
         await view.PlayText(FullInfo(), token);
     }
-    public override string GetInfo()
-    {
-        string str = string.Empty;
-        var info = FullInfo();
-        foreach (var desc in info) str += desc;
-        return str;
-    }
+    public override string GetInfo() => FullInfo().AsString();
 }

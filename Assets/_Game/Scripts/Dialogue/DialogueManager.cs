@@ -26,7 +26,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 
     private List<string> _manualRecords = new();
     private List<string> _previousRecords = new();
-    private string _recordText = string.Empty;
+    private List<string> _recordText = new();
     private string _topic = string.Empty;
     [ShowInInspector, ReadOnly] private HashSet<SerializableGuid> _dialogueNodesTalked = new HashSet<SerializableGuid>();
     #region  IActivity
@@ -238,8 +238,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     private void AppendToRecord(string text)
     {
         if (string.IsNullOrEmpty(text)) return;
-        if (_recordText != string.Empty) _recordText += "\n\n";
-        _recordText += "- " + text;
+        _recordText.Add("- " + text);
     }
     private void ResetCancellationToken()
     {
@@ -258,8 +257,8 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 
         var finalLog = new LogNote(
             title, 
-            _recordText, 
-            _manualRecords.AsString(segmented: true), 
+            _recordText.Segmented(), 
+            _manualRecords.Segmented(), 
             _currentDialoguer.Dialogue.DoesItProveAnything()
         );
 
@@ -270,7 +269,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
         _currentDialoguer = null;
-        _recordText = string.Empty;
+        _recordText = new();
 
         _previousRecords = _manualRecords;
         _manualRecords = new();

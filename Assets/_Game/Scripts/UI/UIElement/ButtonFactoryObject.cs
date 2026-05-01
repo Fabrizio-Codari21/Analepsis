@@ -49,6 +49,11 @@ public class ButtonFactoryObject : FactoryUIObject
     {
         m_text.text = text;
     }
+    public void UpdateScroll()
+    {
+        m_rectTransform.sizeDelta.Scale(new(1,1));
+        m_rectTransform.anchoredPosition = Vector2.zero;
+    }
 
     public void MoveToLast()
     {
