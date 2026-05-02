@@ -163,7 +163,6 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
                 {
                     //tagToDisplay = "NEW";
                     wasUnlocked = true;
-                    print(wasUnlocked);
                     //response.alreadyDisplayed = true;
                 }
                 else if (response.ShouldShowNewPath())

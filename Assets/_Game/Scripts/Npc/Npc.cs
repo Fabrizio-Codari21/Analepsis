@@ -120,6 +120,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
    }
     public Emotion DefaultEmotion { get => defaultEmotion; set => defaultEmotion = value; }
     public bool FirstTimeSpeaking { get => _firstTimeSpeaking; set => _firstTimeSpeaking = value; }
+    public bool Override { get; set; }
 
     public string GetTip()
    {

@@ -5,6 +5,9 @@ using UnityEngine;
 public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
 {
     public List<ICondition> Conditions { get; } = new();
+    bool ITipProvider.Override { get => _override; set => _override = value; }
+    bool _override = false;
+
     public event Action OnStart;
     public event Action OnEnd;
     public event Action OnFocus;
@@ -23,22 +26,24 @@ public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
     public virtual void InteractStart()
     {
         var state = GetCurrentState();
-        if(!state.canInteract) return;
+        if(!state.canInteract || _override) return;
         OnStart?.Invoke();
     }
     public virtual void InteractEnd()
     {
         var state = GetCurrentState();
-        if(!state.canInteract) return;
+        if(!state.canInteract || _override) return;
         OnEnd?.Invoke();
     }
     public virtual void Focus()
-    {   
+    {
+        if (_override) return;
         OnFocus?.Invoke();
     }
 
     public virtual void Unfocus()
     {
+        if (_override) return;
         OnUnfocus?.Invoke();
     }
 

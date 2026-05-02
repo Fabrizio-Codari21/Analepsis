@@ -12,4 +12,5 @@ public interface IInteractable : IFocus,ITipProvider
 
     public InteractionState GetCurrentState();
 
+
 }
