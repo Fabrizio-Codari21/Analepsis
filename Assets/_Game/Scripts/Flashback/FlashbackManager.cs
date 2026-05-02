@@ -13,7 +13,7 @@ public class FlashbackManager : MonoBehaviour
     [Header("Transition")]
     [SerializeField] private FlashbackContext m_ctx;
     public BoolEventChannel enableFlashback;
-    
+    [SerializeField] private GameObject[] m_GoInFlashback;
     
     [SerializeField] private DynamicTextSetting displaySetting;
     [SerializeField] private ItemEventChannel itemEvent;
@@ -80,6 +80,12 @@ public class FlashbackManager : MonoBehaviour
         {
             textComponent.Init(fb.info);
         }
+
+
+        foreach (var item in m_GoInFlashback)
+        {
+            item.SetActive(true);
+        }
     }
 
 
@@ -91,6 +97,11 @@ public class FlashbackManager : MonoBehaviour
         Destroy(_flashbackObject.gameObject);
         _flashbackObject = null;
         _currentItem = null;
+        
+        foreach (var item in m_GoInFlashback)
+        {
+            item.SetActive(false);
+        }
     }
     private void FsmSetup()
     {

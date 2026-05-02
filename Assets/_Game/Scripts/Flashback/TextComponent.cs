@@ -12,12 +12,17 @@ public class TextComponent : MonoBehaviour
     private DynamicText _text; 
     private IFocus _focus;
 
+    [SerializeField] private bool despawnOnUnFocus = true;
  
     private void Start()
     {
         _focus = GetComponent<IFocus>();
         _focus.OnFocus += TryToSpawnText;
-        _focus.OnUnfocus += DespawnText;
+        
+        if (despawnOnUnFocus)
+        {
+            _focus.OnUnfocus += DespawnText;
+        }
     }
     public void Init(string text)
     {
@@ -26,7 +31,7 @@ public class TextComponent : MonoBehaviour
 
     private void OnDestroy()
     {
-       
+        if (_focus == null) return;
         _focus.OnFocus -= TryToSpawnText;
         _focus.OnUnfocus -= DespawnText;
     }
@@ -34,13 +39,15 @@ public class TextComponent : MonoBehaviour
     private void TryToSpawnText() => _ = SpawnText(); 
     private async UniTask SpawnText()
     {
+        if (_text != null) return;
+
         _text = FlyweightFactory.Instance.Spawn<DynamicText>(
             m_textSetting, 
             m_offset + transform.position,
             Quaternion.identity,
             transform);
 
-        _text.SetText(_currentText,2f,Color.cyan);
+        _text.SetText(_currentText, 2f, Color.cyan);
         await _text.PlayTypeWriterEffect();
         //
         // if(!_exitText) _exitText = FlyweightFactory.Instance.Spawn<DynamicUIText>(

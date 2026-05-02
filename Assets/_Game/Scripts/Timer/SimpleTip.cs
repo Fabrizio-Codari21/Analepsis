@@ -14,11 +14,7 @@ public class SimpleTip : MonoBehaviour
         _tipProvider = GetComponent<IInteractable>();
         _tip  = new Tip(m_myTip,m_tipOrder);
         _tipProvider.AddTip(_tip);
-        if (_overrideFocus)
-        {
-            _tipProvider.Focus();
-            _tipProvider.Override = _overrideFocus;
-        }
+ 
     }
     
     private void OnDestroy()
