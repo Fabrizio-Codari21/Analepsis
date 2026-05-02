@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,17 +16,11 @@ public class ItemPOI : POI
      
     }
 
-  
     public override void Touch()
     {
         base.Touch();
         _viewer?.PoiReceived(poiId);
-
         _renderer.material.color = Random.ColorHSV(); // for debug
 
     }
 }
-
-
-
-

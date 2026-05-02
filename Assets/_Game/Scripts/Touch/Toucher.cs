@@ -52,25 +52,37 @@ public class Toucher : MonoBehaviour
         if (!_cam) return;
 
         Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
-        bool hasHit = Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_layer);
-        
-        
 
-        
-        if (!hasHit || !hit.collider.TryGetComponent(out ITouch currentTouch))
+        bool hasHit = Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_layer);
+
+        if (!hasHit)
         {
             ResetTouch();
             return;
         }
 
-        float distanceToHit = Vector3.Distance(transform.position, hit.collider.ClosestPoint(transform.position));
+        ITouch currentTouch = hit.collider.GetComponentInParent<ITouch>();
+
+        if (currentTouch == null)
+        {
+            ResetTouch();
+            return;
+        }
+
+        float distanceToHit =
+            Vector3.Distance(transform.position,
+                hit.collider.ClosestPoint(transform.position));
+
         if (distanceToHit > m_range)
         {
             ResetTouch();
             return;
         }
 
-        if (currentTouch == _last) return;
+        if (currentTouch == _last)
+            return;
+
+        _last?.Unfocus();
 
         _last = currentTouch;
         _last.Focus();

@@ -2,7 +2,7 @@ using System;
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class UIManager : RegulatorSingleton<UIManager>
+public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private GameObject[] m_uIObjects;
     private void Start()
