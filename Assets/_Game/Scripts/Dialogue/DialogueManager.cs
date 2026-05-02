@@ -153,26 +153,28 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         
         foreach (var response in availableResponses)
         {
-            if (_currentDialoguer.FirstTimeSpeaking) response.alreadyDisplayed = false;
+            // esto lo descomentamos si queremos que solo se vean la primera vez, igual no funciona todavia.
+            //if (_currentDialoguer.FirstTimeSpeaking) response.alreadyDisplayed = false;
             string tagToDisplay = string.Empty;
             bool wasUnlocked = false;
-            //// esto lo descomentamos si queremos que no se vean desde el principio, igual tengo que mejorarlo.
-            //if(NotebookManager.Instance.FoundCharacters.ContainsKey(_currentDialoguer.ID))
-            //{
+            if (NotebookManager.Instance.FoundCharacters.ContainsKey(_currentDialoguer.ID))
+            {
                 if (response.IsNewResponse())
                 {
                     //tagToDisplay = "NEW";
                     wasUnlocked = true;
+                    print(wasUnlocked);
+                    //response.alreadyDisplayed = true;
                 }
                 else if (response.ShouldShowNewPath())
                 {
-                    tagToDisplay = "PATH EXPANDED";
+                    //tagToDisplay = "PATH EXPANDED";
+                    //response.alreadyDisplayed = true;
                 }
-                response.alreadyDisplayed = true;
                 //print(tagToDisplay);
-            //}
-            //else if(response.IsNewResponse()) response.alreadyDisplayed = false;
-            
+            }
+            //else if (response.IsNewResponse()) response.alreadyDisplayed = false;
+
             ResponseDialogueButton button = 
                 (ResponseDialogueButton)m_dialogueView.CreateResponseButton(response.responseText, tagToDisplay);
 
@@ -181,7 +183,6 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
                 PlayResponseProcess(response).Forget();
             });
             button.MarkAsLinked(wasUnlocked);
-            print(wasUnlocked);
         }
         await UniTask.NextFrame();
     }

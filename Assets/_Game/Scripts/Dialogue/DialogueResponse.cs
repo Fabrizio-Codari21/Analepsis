@@ -40,14 +40,14 @@ public class DialogueResponse
     public bool HasConditions() => m_conditions is { Count: > 0 };
     public bool IsNewResponse()
     {
-        if (nextNode == null || !HasConditions() || alreadyDisplayed) return false; 
+        if (nextNode == null || !HasConditions() /*|| alreadyDisplayed*/) return false; 
         
         return !DialogueManager.Instance.CheckDialogue(nextNode.guid);
     }
 
     public bool ShouldShowNewPath()
     {
-        return HasConditions() && !alreadyDisplayed && ScanForUnreadNodes(new HashSet<DialogueNode>());
+        return HasConditions() /*&& !alreadyDisplayed*/ && ScanForUnreadNodes(new HashSet<DialogueNode>());
     }
     // dfs busqueda
     private bool ScanForUnreadNodes(HashSet<DialogueNode> visited)
