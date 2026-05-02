@@ -15,4 +15,9 @@ public class ResponseDialogueButton : ButtonFactoryObject
         isNewText.gameObject.SetActive(true);
         isNewText.text = tip;
     }
+
+    public void MarkAsLinked(bool wasUnlocked)
+    {
+        m_buttonImage.gameObject.SetActive(wasUnlocked);
+    }
 }

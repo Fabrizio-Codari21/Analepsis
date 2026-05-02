@@ -9,6 +9,7 @@ public class DialogueResponse
     [SerializeReference] public DialogueNode nextNode;
     [SerializeReference] public string dialogueTopic;
     [SerializeReference] public List<DialogueCondition> m_conditions= new List<DialogueCondition>();
+    [HideInInspector] public bool alreadyDisplayed = false;
     
     public bool IsAvailable()
     {
@@ -39,15 +40,14 @@ public class DialogueResponse
     public bool HasConditions() => m_conditions is { Count: > 0 };
     public bool IsNewResponse()
     {
-        if (nextNode == null) return false;
-        if (!HasConditions()) return false; 
+        if (nextNode == null || !HasConditions() || alreadyDisplayed) return false; 
         
         return !DialogueManager.Instance.CheckDialogue(nextNode.guid);
     }
 
     public bool ShouldShowNewPath()
     {
-        return HasConditions() && ScanForUnreadNodes(new HashSet<DialogueNode>());
+        return HasConditions() && !alreadyDisplayed && ScanForUnreadNodes(new HashSet<DialogueNode>());
     }
     // dfs busqueda
     private bool ScanForUnreadNodes(HashSet<DialogueNode> visited)

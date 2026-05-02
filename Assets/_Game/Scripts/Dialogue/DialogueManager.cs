@@ -101,7 +101,6 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         _currentDialoguer = dialogable;
         _currentDialoguer.Dialogue._hiddenProof.Clear();
         m_dialogueView.ClearDialogues();
-        if(_currentDialoguer.FirstTimeSpeaking) NotebookManager.Instance.AddCharacter(_currentDialoguer.ID);
         m_dialogueView.SetSpeakerName(dialogable.NpcName);
         await m_dialogueView.UnfoldDialogue(
             true, 
@@ -109,9 +108,10 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
             _currentDialoguer.LookAt, 
             _currentDialoguer.Player);
         await PlayDialogueNode(dialogable.Dialogue.startingNode);
+
     }
-    
-    
+
+
     private async UniTask PlayDialogueNode(DialogueNode node) 
     {
         if(node == null) return;
@@ -153,22 +153,37 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         
         foreach (var response in availableResponses)
         {
-            string tagToDisplay = String.Empty;
-            if (response.IsNewResponse())
-            {
-                tagToDisplay = "New";
-            }
-            else if (response.ShouldShowNewPath())
-            {
-                tagToDisplay = "HAS NEW RESPONSE IN THIS PATH";
-            }
+            if (_currentDialoguer.FirstTimeSpeaking) response.alreadyDisplayed = false;
+            string tagToDisplay = string.Empty;
+            bool wasUnlocked = false;
+            //// esto lo descomentamos si queremos que no se vean desde el principio, igual tengo que mejorarlo.
+            //if(NotebookManager.Instance.FoundCharacters.ContainsKey(_currentDialoguer.ID))
+            //{
+                if (response.IsNewResponse())
+                {
+                    //tagToDisplay = "NEW";
+                    wasUnlocked = true;
+                }
+                else if (response.ShouldShowNewPath())
+                {
+                    tagToDisplay = "PATH EXPANDED";
+                }
+                response.alreadyDisplayed = true;
+                //print(tagToDisplay);
+            //}
+            //else if(response.IsNewResponse()) response.alreadyDisplayed = false;
             
-            var button = m_dialogueView.CreateResponseButton(response.responseText,tagToDisplay);
+            ResponseDialogueButton button = 
+                (ResponseDialogueButton)m_dialogueView.CreateResponseButton(response.responseText, tagToDisplay);
+
             button.AddListener(() => {
                 button.SetInteractable(false);
                 PlayResponseProcess(response).Forget();
             });
+            button.MarkAsLinked(wasUnlocked);
+            print(wasUnlocked);
         }
+        await UniTask.NextFrame();
     }
 
     private async UniTaskVoid PlayResponseProcess(DialogueResponse response)
@@ -249,7 +264,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 
     private void EndDialogue(bool withTopic = false)
     {
-        string title = $"{_currentDialoguer.NpcName}'s account" + (withTopic
+        string title = $"{_currentDialoguer.NpcName.Possessive()} account" + (withTopic
         ? $" -\n About {_topic.ToLower()}"
         : " -\n No clear topic");
 
@@ -268,6 +283,11 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         else sameLogIfUnique.UpdateLog(finalLog);
 
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
+        if (_currentDialoguer.FirstTimeSpeaking)
+        {
+            NotebookManager.Instance.AddCharacter(_currentDialoguer.ID);
+            _currentDialoguer.FirstTimeSpeaking = false;
+        }
         _currentDialoguer = null;
         _recordText = new();
 

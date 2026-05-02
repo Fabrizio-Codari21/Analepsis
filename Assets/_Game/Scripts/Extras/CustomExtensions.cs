@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Claims;
 using Unity.Mathematics;
 using Unity.VisualScripting;
@@ -256,12 +257,37 @@ public static class CustomExtensions
         return result;
     }
 
-    //Devuelve un texto duplicado X cantidad de veces.
+    // Devuelve un texto duplicado X cantidad de veces.
     public static string Times(this string s, int timesToCopy = 1)
     {
         string str = string.Empty;
         for (int i = 0; i < timesToCopy; i++) str += s;
         return str;
+    }
+
+    // Agrega el posesivo en ingles ajustado a si la palabra termina en "s" o no.
+    public static string Possessive(this string s)
+    {
+        return s + (s.Last() == 's' ? "'" : "'s"); 
+    }
+
+    // Agrega el plural en ingles cuando X se cumple, basado en ciertas reglas gramaticales.
+    public static string Plural(this string s, Func<bool> pluralize = default, string irregularPlural = "")
+    {
+        if (pluralize == default) pluralize = () => true;
+        if (irregularPlural == "")
+        {
+            if (pluralize() == false) return s;
+            else switch (s.Last())
+            {
+                case 'y': return s.Remove(s.Length - 1) + "ies";
+                case 's': return s + "es";
+                case 'z': return s + "es";
+                case 'i': return s + "es";
+                default: return s + "s";
+            }
+        }
+        else return pluralize() ? irregularPlural : s;
     }
 
     #endregion
