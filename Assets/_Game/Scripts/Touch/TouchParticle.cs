@@ -28,13 +28,13 @@ public class TouchParticle : MonoBehaviour
     private void ActiveGameObject()
     {
         //_particle.SetActive(true);
-        _particleSystem.Play();
+        _particleSystem?.Play();
 
     }
 
     private void DeactiveGameObject()
     {
         //_particle.SetActive(false);
-        _particleSystem.Stop();
+        _particleSystem?.Stop();
     }
 }
