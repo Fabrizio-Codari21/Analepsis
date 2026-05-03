@@ -12,17 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac10383cdaa11544791e40b37df470bb, type: 3}
   m_Name: SO_Npc_Maid
   m_EditorClassIdentifier: 
-  npcName: Maid
-  role: 2
-  makesEyeContact: 0
   npcGuid:
     Part1: 4233091347
     Part2: 1162895634
     Part3: 2361149373
     Part4: 3417790332
+  npcName: Maid
+  role: 2
   allFaces:
     m_Keys: 020000000100000004000000
     m_Values:
     - {fileID: 21300000, guid: f14bd26a318efcf4f9f61cd120e6d3f2, type: 3}
     - {fileID: 21300000, guid: 8d889bbe1f0731f4bb1efe4994c58085, type: 3}
     - {fileID: 21300000, guid: 8522ad6db3c6dfc4db344f9a88611101, type: 3}
+  allReactions:
+    m_Keys: 0200000001000000
+    m_Values:
+    - Gesticulate
+    - Idle
+  makesEyeContact: 0

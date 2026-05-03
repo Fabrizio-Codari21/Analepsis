@@ -16,6 +16,7 @@ MonoBehaviour:
   startingNode:
     dialogueText: "Don't... get any closer... \nIdentify yourself."
     characterEmotion: 3
+    characterReaction: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017924
@@ -32,6 +33,7 @@ MonoBehaviour:
   allNodes:
   - dialogueText: "Don't... get any closer... \nIdentify yourself."
     characterEmotion: 0
+    characterReaction: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017924
@@ -49,6 +51,7 @@ MonoBehaviour:
       can't lower his guard at times like this, what with those... yankees hiding
       everywhere... "
     characterEmotion: 0
+    characterReaction: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017927
@@ -70,6 +73,7 @@ MonoBehaviour:
       If you happen to know anything about that...
       Whistle and I''ll do what a good comrade must.'
     characterEmotion: 0
+    characterReaction: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017930
@@ -89,6 +93,7 @@ MonoBehaviour:
       Then
       again, I don''t think we have much in common if that''s the case.'
     characterEmotion: 0
+    characterReaction: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017932
@@ -109,6 +114,7 @@ MonoBehaviour:
       Believe me...
       I know that face... The mirror has shown it to me multiple times. '
     characterEmotion: 0
+    characterReaction: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828018020
@@ -134,6 +140,7 @@ MonoBehaviour:
           rid: 5324356914828017926
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 649, y: 124}
     - rid: 5324356914828017925
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
@@ -143,6 +150,7 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: not much, really
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 692.355, y: 492.88287}
     - rid: 5324356914828017926
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
@@ -151,12 +159,13 @@ MonoBehaviour:
           a man can't lower his guard at times like this, what with those... yankees
           hiding everywhere... "
         characterEmotion: 1
+        characterReaction: 1
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828017927
         - rid: 5324356914828017928
         isRootNode: 0
-        editorPosition: {x: 1033, y: 92}
+        editorPosition: {x: 1022.60004, y: 19.000004}
         guid:
           Part1: 2581309536
           Part2: 1215088153
@@ -171,6 +180,7 @@ MonoBehaviour:
           rid: 5324356914828017931
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 2006, y: 19}
     - rid: 5324356914828017928
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
@@ -180,6 +190,7 @@ MonoBehaviour:
           rid: 5324356914828017929
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 1950.6876, y: 158.32251}
     - rid: 5324356914828017929
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
@@ -194,6 +205,7 @@ MonoBehaviour:
           happen to know anything about that... Whistle and I''ll do what a good
           comrade must.'
         characterEmotion: 4
+        characterReaction: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828017930
@@ -213,6 +225,7 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: Mr. guest's paranoia
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 3113.179, y: 134.99998}
     - rid: 5324356914828017931
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
@@ -226,6 +239,7 @@ MonoBehaviour:
           Then again, I don''t think we have much in common if that''s
           the case.'
         characterEmotion: 3
+        characterReaction: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828017932
@@ -245,6 +259,7 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: there being no spies
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 3056, y: -55}
     - rid: 5324356914828017933
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
@@ -255,6 +270,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions:
         - rid: 5324356914828017986
+        alreadyDisplayed: 0
         editorPosition: {x: 692, y: 308.51505}
     - rid: 5324356914828017986
       type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
@@ -270,6 +286,7 @@ MonoBehaviour:
             I shouldn''t be so self-conscious about
             it, but people can get very sensitive when it comes to those things.'
           characterEmotion: 0
+          characterReaction: 0
           doesItProveAnything: 0
           responses:
           - rid: 5324356914828018008
@@ -290,6 +307,7 @@ MonoBehaviour:
           rid: 5324356914828018011
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 4072, y: -518}
     - rid: 5324356914828018009
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
@@ -299,6 +317,7 @@ MonoBehaviour:
           rid: 5324356914828018012
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 4072, y: -687}
     - rid: 5324356914828018011
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
@@ -306,6 +325,7 @@ MonoBehaviour:
         dialogueText: ...n-no, i DON'T mean... you know... "that" West, I mean...
           um... Sorry, I have things to do.
         characterEmotion: 0
+        characterReaction: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828018013
@@ -327,6 +347,7 @@ MonoBehaviour:
           be able to rest without anyone thinking I''m a menace... I mean... Excuse
           me, I have to go.'
         characterEmotion: 0
+        characterReaction: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828018014
@@ -346,6 +367,7 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 5153, y: -536}
     - rid: 5324356914828018014
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
@@ -355,6 +377,7 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 5269, y: -735}
     - rid: 5324356914828018019
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
@@ -368,6 +391,7 @@ MonoBehaviour:
           Believe
           me... I know that face... The mirror has shown it to me multiple times. '
         characterEmotion: 4
+        characterReaction: 0
         doesItProveAnything: 3
         responses:
         - rid: 5324356914828018020
@@ -387,4 +411,5 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: the maid's situation
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 1839, y: 311}

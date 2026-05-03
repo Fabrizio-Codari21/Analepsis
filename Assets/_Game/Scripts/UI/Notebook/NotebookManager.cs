@@ -434,6 +434,16 @@ public enum Emotion
     Happy,
     Sad
 }
+public enum Reaction
+{
+    None,
+    Idle,
+    Gesticulate,
+    AvoidGaze,
+    Laugh,
+    GetNervous,
+    Think,
+}
 
 [Serializable]
 public  class Note

@@ -91,7 +91,7 @@ public class DialogueView : MonoBehaviour
             if(player != default)
             {
                 player.data.sourceObjects.Add(npcPosition);
-                print(player.data.sourceObjects.Count);
+                //print(player.data.sourceObjects.Count);
                 _ = Tween.Custom(player.weight, maxWeight, time, (x => player.weight = x), Ease.OutCirc);
 
             }

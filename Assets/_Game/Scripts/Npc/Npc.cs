@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Rendering.Universal;
@@ -9,6 +10,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
    [SerializeField] private NpcIdentity m_npcIdentity;
    public DecalProjector faceProjector;
    public Emotion defaultEmotion = Emotion.Idle;
+   public Animator animator;
    [SerializeField] private Dialogue m_defaultDialogue;
     private bool _firstTimeSpeaking = true;
    [SerializeField] private DialoguerEvent m_dialogueEvent;
@@ -178,6 +180,59 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
             m_npcIdentity.allFaces[newEmotion].texture);
     }
 
+    public void SetAnimation(Reaction newReaction = Reaction.Idle)
+    {
+        if (!m_npcIdentity.allReactions.ContainsKey(newReaction))
+        {
+            print($"No {newReaction} parameter assigned to {m_npcIdentity.npcName}.");
+            return;
+        }
+        if (animator)
+        {
+            var parameters = animator.parameters.ToList();
+            foreach (var item in animator.parameters)
+            {
+                int index = parameters.IndexOf(item);
+                if (item.name == m_npcIdentity.allReactions[newReaction])
+                {
+                    SetAnimParameter(index, true);
+                    print("Current animation: " + item.name);
+                    //return;
+                }
+                else
+                {
+                    SetAnimParameter(index,false);
+                }
+            }
+        }
+    }
+
+    public void ResetAnimation()
+    {
+        if (animator)
+        {
+            var parameters = animator.parameters.ToList();
+            foreach (var item in animator.parameters)
+            {
+                SetAnimParameter(parameters.IndexOf(item), false);
+            }
+        }
+    }
+
+    public void SetAnimParameter(int index, bool value)
+    {
+        switch (animator.parameters[index].type)
+        {
+            case AnimatorControllerParameterType.Bool:
+                //if(animator.GetBool(index) != value) 
+                animator.SetBool(animator.parameters[index].name, value); break;
+            case AnimatorControllerParameterType.Trigger:
+                if (value) animator.SetTrigger(animator.parameters[index].name); 
+                else animator.ResetTrigger(animator.parameters[index].name); break;
+            default: print("Wrong type of Parameter."); break;
+        }
+        print("Set anim parameter " + animator.parameters[index].name + " to " + value);
+    }
 }
 
 

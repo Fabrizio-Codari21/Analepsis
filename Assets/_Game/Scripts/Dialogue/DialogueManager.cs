@@ -127,6 +127,21 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         try 
         {
             if(node.characterEmotion != Emotion.None) _currentDialoguer.SetFace(node.characterEmotion);
+            
+            // Hay dos maneras de setear las reacciones:
+            // - La A hace que cada vez que se setee una reacción, el npc va a permanecer en ella
+            // hasta que un nodo aclare que tiene que cambiar.
+            // - La B hace que si no se setea una reacción en el nodo siguiente, vuelve por
+            // default al idle, asi que hay que marcar varios nodos si queremos que la anim siga.
+            // Por ahora dejo la B que me cierra mas, pero despues vemos cual es mas comoda.
+
+            // /*A)*/if(node.characterReaction != Reaction.None)
+            //          _currentDialoguer.SetAnimation(node.characterReaction);
+
+            /*B)*/ _currentDialoguer.SetAnimation(
+                        node.characterReaction != Reaction.None 
+                        ? node.characterReaction 
+                        : Reaction.Idle);
 
             await m_dialogueView.PlayDialogueText(node.dialogueText, token, _currentDialoguer.Dialogue.dialogueColor);
         }
@@ -283,6 +298,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         else sameLogIfUnique.UpdateLog(finalLog);
 
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
+        _currentDialoguer.ResetAnimation();
         if (_currentDialoguer.FirstTimeSpeaking)
         {
             NotebookManager.Instance.AddCharacter(_currentDialoguer.ID);

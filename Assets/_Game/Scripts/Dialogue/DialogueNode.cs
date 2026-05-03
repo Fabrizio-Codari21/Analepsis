@@ -6,6 +6,7 @@ public class DialogueNode
 {
     [TextArea(0,20)] public string dialogueText;
     public Emotion characterEmotion;
+    public Reaction characterReaction;
     public Whodunnit doesItProveAnything;
 
     [SerializeReference] public List<DialogueResponse> responses;

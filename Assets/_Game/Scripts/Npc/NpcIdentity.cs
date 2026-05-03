@@ -1,3 +1,5 @@
+using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -5,12 +7,21 @@ using UnityEngine.Rendering.Universal;
 [CreateAssetMenu(menuName = "Game/Npc",fileName = "NewNpc_0")]
 public class NpcIdentity : ScriptableObject
 {
+    public SerializableGuid npcGuid = SerializableGuid.NewGuid();
     public string npcName;
     public Whodunnit role;
-    public bool makesEyeContact = true;
-    
-    public SerializableGuid  npcGuid = SerializableGuid.NewGuid();
+
+    [Header("PERSONALITIES"),InfoBox("NOTE: None of these dictionaries should use 'None' as a Key.",Icon = SdfIconType.Newspaper)]
+
+    [Space(15), Header("Pick a face for any emotion.")]
     public SerializedDictionary<Emotion, Sprite> allFaces = new();
+
+    [Space(15), Header("Pick an animation for any reaction.")]
+    [InfoBox("The values should correspond with a parameter in the animator.")]
+    public SerializedDictionary<Reaction, string> allReactions = new();
+
+    [Space(20)]
+    public bool makesEyeContact = true;
 
 }
 
