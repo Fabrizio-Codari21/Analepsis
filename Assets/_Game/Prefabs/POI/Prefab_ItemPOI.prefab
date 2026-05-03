@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 453936745171104077}
   - component: {fileID: 4564273917514453474}
   - component: {fileID: 7241858740141585443}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: POI PARTICLE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,8 +254,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1.5
-      minScalar: 1
+      scalar: 1.3
+      minScalar: 0.7
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -749,7 +749,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: -0.005
+      scalar: -0.003
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1008,7 +1008,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 50
+      scalar: 100
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1061,7 +1061,7 @@ ParticleSystem:
     rateOverDistance:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 10
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1114,7 +1114,7 @@ ParticleSystem:
     m_BurstCount: 1
     m_Bursts:
     - serializedVersion: 2
-      time: 0
+      time: 0.01
       countCurve:
         serializedVersion: 2
         minMaxState: 0
@@ -1191,8 +1191,8 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.6369158
-          value: 0.86877185
+          time: 0.44818342
+          value: 0.9026702
           inSlope: 1.0000001
           outSlope: 1.0000001
           tangentMode: 0
@@ -5004,9 +5004,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: 998502891
+  m_SortingLayer: -1
+  m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -5015,7 +5015,7 @@ ParticleSystemRenderer:
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
   m_LengthScale: 2
-  m_SortingFudge: 0
+  m_SortingFudge: -1
   m_NormalDirection: 1
   m_ShadowBias: 0
   m_RenderAlignment: 0
