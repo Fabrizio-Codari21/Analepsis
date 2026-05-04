@@ -232,7 +232,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
                 else animator.ResetTrigger(parameter.name); break;
             default: print("Wrong type of Parameter."); break;
         }
-        print("Set anim parameter " + parameter.name + " to " + value);
+        //print("Set anim parameter " + parameter.name + " to " + value);
     }
 }
 
