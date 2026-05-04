@@ -15,7 +15,7 @@ public class DynamicUIText : FactoryUIObject
     Vector2 _currentSize;
 
     [Button]
-    public void CalculateWidthAndHeight(out Vector2 currentSize)
+    public void CalculateWidthAndHeight(out Vector2 currentSize, int compensate = 0)
     {
         Vector2 prefSize = m_text.GetPreferredValues(m_text.text);
         
@@ -32,17 +32,18 @@ public class DynamicUIText : FactoryUIObject
             finalWidth = prefSize.x;
             finalHeight = prefSize.y;
         }
-        m_rectTransform.sizeDelta = new Vector2(finalWidth, finalHeight);
+        m_rectTransform.sizeDelta = new Vector2(finalWidth, finalHeight + (compensate * m_text.fontSize));
         m_rectTransform.anchoredPosition = Vector2.zero;
 
         currentSize = new Vector2(finalWidth, finalHeight);
+        //m_rectTransform.sizeDelta = currentSize;
     }
     public override void OnSpawn()
     {
        base.OnSpawn();
        Cancel();
     }
-    public void SetText(string text,float size, Color color,float maxWidth = 500f, bool setToMaxWidth = false)
+    public void SetText(string text,float size, Color color,float maxWidth = 500f, bool setToMaxWidth = false, int compensateLines = 0)
     {
         m_text.text = text;
         m_text.color = color;
@@ -50,7 +51,7 @@ public class DynamicUIText : FactoryUIObject
         m_text.maxVisibleCharacters = 0; 
         m_maxWidth =  maxWidth;
         _setToMaxWidth = setToMaxWidth;
-        CalculateWidthAndHeight(out _currentSize);
+        CalculateWidthAndHeight(out _currentSize, compensateLines);
     }
     public TMP_Text GetText() => m_text;
     public Vector2 GetSize() => _currentSize;
@@ -87,6 +88,7 @@ public class DynamicUIText : FactoryUIObject
                     TimeSpan.FromSeconds(1f / typeSpeed),
                     cancellationToken: token);
             }
+            CalculateWidthAndHeight(out _currentSize);
         }
         catch (OperationCanceledException)
         {

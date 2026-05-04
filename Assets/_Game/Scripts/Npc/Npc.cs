@@ -221,17 +221,18 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
 
     public void SetAnimParameter(int index, bool value)
     {
-        switch (animator.parameters[index].type)
+        var parameter = animator.parameters[index];
+        switch (parameter.type)
         {
             case AnimatorControllerParameterType.Bool:
-                //if(animator.GetBool(index) != value) 
-                animator.SetBool(animator.parameters[index].name, value); break;
+                if(animator.GetBool(parameter.name) != value) 
+                animator.SetBool(parameter.name, value); break;
             case AnimatorControllerParameterType.Trigger:
-                if (value) animator.SetTrigger(animator.parameters[index].name); 
-                else animator.ResetTrigger(animator.parameters[index].name); break;
+                if (value) animator.SetTrigger(parameter.name); 
+                else animator.ResetTrigger(parameter.name); break;
             default: print("Wrong type of Parameter."); break;
         }
-        print("Set anim parameter " + animator.parameters[index].name + " to " + value);
+        print("Set anim parameter " + parameter.name + " to " + value);
     }
 }
 

@@ -6,6 +6,7 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using System.Linq;
 
 public class NotebookView : MonoBehaviour
 {
@@ -105,7 +106,14 @@ public class NotebookView : MonoBehaviour
             Quaternion.identity,
             m_detailRoot);
 
-            t.SetText(item, m_dynamicTextSetting.size, m_dynamicTextSetting.color, m_textWidth, true);
+            t.SetText(
+                item, 
+                m_dynamicTextSetting.size,
+                m_dynamicTextSetting.color, 
+                m_textWidth, 
+                true, 
+                item == text.Last() ? 11 : 0);
+
             t.ToLast();
             await UniTask.NextFrame(token);
             token.ThrowIfCancellationRequested();

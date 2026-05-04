@@ -85,7 +85,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
                 return; 
             }
 
-            button.PlayImageFill(1f, color: new(0.1f,0,0.4f,1)).Forget();
+            button.PlayImageFill(1f, color: new(0.1f,0,0.4f,0.8f)).Forget();
             AppendToText(ref _manualRecords, content);
             
         };
@@ -144,6 +144,8 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
                         : Reaction.Idle);
 
             await m_dialogueView.PlayDialogueText(node.dialogueText, token, _currentDialoguer.Dialogue.dialogueColor);
+            // mas que nada para que no siga "hablando" cuando el diálogo ya termino de reproducirse.
+            _currentDialoguer.SetAnimation(Reaction.Idle);
         }
         catch (OperationCanceledException) 
         {
@@ -168,7 +170,6 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         
         foreach (var response in availableResponses)
         {
-            // esto lo descomentamos si queremos que solo se vean la primera vez, igual no funciona todavia.
             //if (_currentDialoguer.FirstTimeSpeaking) response.alreadyDisplayed = false;
             string tagToDisplay = string.Empty;
             bool wasUnlocked = false;

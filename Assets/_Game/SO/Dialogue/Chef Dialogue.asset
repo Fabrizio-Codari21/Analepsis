@@ -16,6 +16,7 @@ MonoBehaviour:
   startingNode:
     dialogueText: Please, take a seat, sir. Your food will be served very soon.
     characterEmotion: 1
+    characterReaction: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828018021
@@ -32,6 +33,7 @@ MonoBehaviour:
   allNodes:
   - dialogueText: 
     characterEmotion: 0
+    characterReaction: 0
     doesItProveAnything: 0
     responses: []
     isRootNode: 1
@@ -49,6 +51,7 @@ MonoBehaviour:
       fair, is less of a compliment to myself and more of an insult to this barren
       wasteland of a tundra.'
     characterEmotion: 0
+    characterReaction: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828018023
@@ -64,6 +67,7 @@ MonoBehaviour:
   - dialogueText: Oh... why, yes, it is. I guess I must have left it here when I...
       saw her...
     characterEmotion: 0
+    characterReaction: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828018029
@@ -81,6 +85,7 @@ MonoBehaviour:
       been years since I last saw her, and we didn''t really... end in good terms,
       if you get me.'
     characterEmotion: 0
+    characterReaction: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828018031
@@ -100,6 +105,7 @@ MonoBehaviour:
       genuinely do still love her, and though I know she might not reciprocate, I
       am unable to forget how I was when i was with her... *sigh* '
     characterEmotion: 0
+    characterReaction: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828018034
@@ -118,6 +124,7 @@ MonoBehaviour:
       (which I do), I have a debt with her that i doubt I''ll ever be able to pay...
       *sigh*'
     characterEmotion: 0
+    characterReaction: 0
     doesItProveAnything: 0
     responses: []
     isRootNode: 0
@@ -133,6 +140,7 @@ MonoBehaviour:
       \nin fact, only hotel workers should be able to access it, so, where did you
       find it?"
     characterEmotion: 0
+    characterReaction: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828018037
@@ -148,6 +156,7 @@ MonoBehaviour:
       <b>note</b> on a room threatening her.\nWhoever felt the need to do something
       so cruel wasn't even brave enough to sign..."
     characterEmotion: 0
+    characterReaction: 0
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828018040
@@ -159,7 +168,7 @@ MonoBehaviour:
       Part3: 1618177925
       Part4: 73563290
     tag: 
-  _hiddenProof: 03000000
+  _hiddenProof: 
   references:
     version: 2
     RefIds:
@@ -173,6 +182,7 @@ MonoBehaviour:
           rid: 5324356914828018022
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 797, y: -52.878784}
     - rid: 5324356914828018022
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
@@ -184,6 +194,7 @@ MonoBehaviour:
           to be fair, is less of a compliment to myself and more of an insult to
           this barren wasteland of a tundra.'
         characterEmotion: 1
+        characterReaction: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828018023
@@ -205,6 +216,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions:
         - rid: 5324356914828018025
+        alreadyDisplayed: 0
         editorPosition: {x: 1999, y: -125.878784}
     - rid: 5324356914828018024
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
@@ -214,6 +226,7 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: the Chef's identity
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 1999, y: -375}
     - rid: 5324356914828018025
       type: {class: ItemNodeCondition, ns: , asm: Assembly-CSharp}
@@ -230,6 +243,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions:
         - rid: 5324356914828018027
+        alreadyDisplayed: 0
         editorPosition: {x: 831, y: 242}
     - rid: 5324356914828018027
       type: {class: ItemNodeCondition, ns: , asm: Assembly-CSharp}
@@ -243,6 +257,7 @@ MonoBehaviour:
         dialogueText: Oh... why, yes, it is. I guess I must have left it here when
           I... saw her...
         characterEmotion: 5
+        characterReaction: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828018029
@@ -262,6 +277,7 @@ MonoBehaviour:
           rid: 5324356914828018030
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 1715.25, y: 261.00003}
     - rid: 5324356914828018030
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
@@ -272,6 +288,7 @@ MonoBehaviour:
           been years since I last saw her, and we didn''t really... end in good terms,
           if you get me.'
         characterEmotion: 0
+        characterReaction: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828018031
@@ -292,6 +309,7 @@ MonoBehaviour:
           rid: 5324356914828018035
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 2665, y: 339}
     - rid: 5324356914828018032
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
@@ -301,6 +319,7 @@ MonoBehaviour:
           rid: 5324356914828018033
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 2680.8804, y: 169.48999}
     - rid: 5324356914828018033
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
@@ -313,6 +332,7 @@ MonoBehaviour:
           might not reciprocate, I am unable to forget how I was when i was with
           her... *sigh* '
         characterEmotion: 0
+        characterReaction: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828018034
@@ -332,6 +352,7 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: the Chef's ex-wife
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 3990.3, y: 64.80001}
     - rid: 5324356914828018035
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
@@ -343,6 +364,7 @@ MonoBehaviour:
           love her (which I do), I have a debt with her that i doubt I''ll ever be
           able to pay... *sigh*'
         characterEmotion: 2
+        characterReaction: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324357072761127229
@@ -362,6 +384,7 @@ MonoBehaviour:
           \nin fact, only hotel workers should be able to access it, so, where did
           you find it?"
         characterEmotion: 2
+        characterReaction: 0
         doesItProveAnything: 4
         responses:
         - rid: 5324356914828018037
@@ -381,6 +404,7 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: the Boss' PB problem
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 3263, y: -176}
     - rid: 5324356914828018038
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
@@ -391,6 +415,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions:
         - rid: 5324356914828018041
+        alreadyDisplayed: 0
         editorPosition: {x: 952.50006, y: 493}
     - rid: 5324356914828018039
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
@@ -399,6 +424,7 @@ MonoBehaviour:
           ill-intended <b>note</b> on a room threatening her.\nWhoever felt the need
           to do something so cruel wasn't even brave enough to sign..."
         characterEmotion: 2
+        characterReaction: 0
         doesItProveAnything: 3
         responses:
         - rid: 5324356914828018040
@@ -418,6 +444,7 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: the Maid's problem
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 2028.0895, y: 566}
     - rid: 5324356914828018041
       type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
@@ -433,6 +460,7 @@ MonoBehaviour:
             I shouldn''t be so self-conscious about
             it, but people can get very sensitive when it comes to those things.'
           characterEmotion: 0
+          characterReaction: 0
           doesItProveAnything: 0
           responses:
           - rid: 5324356914828018063
@@ -453,6 +481,7 @@ MonoBehaviour:
           rid: 5324356914828018066
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 4072, y: -518}
     - rid: 5324356914828018064
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
@@ -462,6 +491,7 @@ MonoBehaviour:
           rid: 5324356914828018067
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 4072, y: -687}
     - rid: 5324356914828018066
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
@@ -469,6 +499,7 @@ MonoBehaviour:
         dialogueText: ...n-no, i DON'T mean... you know... "that" West, I mean...
           um... Sorry, I have things to do.
         characterEmotion: 0
+        characterReaction: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828018068
@@ -490,6 +521,7 @@ MonoBehaviour:
           be able to rest without anyone thinking I''m a menace... I mean... Excuse
           me, I have to go.'
         characterEmotion: 0
+        characterReaction: 0
         doesItProveAnything: 0
         responses:
         - rid: 5324356914828018069
@@ -509,6 +541,7 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 5153, y: -536}
     - rid: 5324356914828018069
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
@@ -518,6 +551,7 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: 
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 5269, y: -735}
     - rid: 5324357072761127229
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
@@ -527,4 +561,5 @@ MonoBehaviour:
           rid: -2
         dialogueTopic: the Chef's ex-wife
         m_conditions: []
+        alreadyDisplayed: 0
         editorPosition: {x: 3927, y: 320}

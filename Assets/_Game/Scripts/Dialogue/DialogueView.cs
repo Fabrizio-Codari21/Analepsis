@@ -122,7 +122,7 @@ public class DialogueView : MonoBehaviour
             Quaternion.identity,
             m_conversationRoot);
 
-        t.SetText("- " + content,m_dialogueTextSetting.size, color != default ? color : playerDialogueColor);
+        t.SetText("- " + content,m_dialogueTextSetting.size, color != default ? color : playerDialogueColor, compensateLines: 1);
         t.ToLast();
         await UniTask.NextFrame();
         token.ThrowIfCancellationRequested();
@@ -141,7 +141,7 @@ public class DialogueView : MonoBehaviour
             select.SetSprite((int)(t.GetSize().y / m_dialogueTextSetting.size));
 
         b.SetFill(0f);
-        if (IsAlreadyRecorded.Invoke(content)) b.PlayImageFill(1f, color: new(0.55f,0.4f,0.5f,0.7f)).Forget();
+        if (IsAlreadyRecorded.Invoke(content)) b.PlayImageFill(1f, color: new(0.55f,0.4f,0.5f,0.6f)).Forget();
         b.AddListener(() =>
         {            
             RecordRequested?.Invoke(content, b);           
