@@ -20,6 +20,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     [SerializeField] private RecordNoteEvent m_recordNoteEvent;
     private CancellationTokenSource  _dialogueCts;
     private IDialogable _currentDialoguer;
+    private IDialogable _previousDialoguer;
     
     
     private HashSet<string> _recordedContentInSession = new HashSet<string>();
@@ -99,6 +100,11 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     {
         m_pushActivity.Raise(this);
         _currentDialoguer = dialogable;
+        //if(dialogable != _previousDialoguer)
+        //{
+        //    _previousRecords = new();
+        //    _previousDialoguer = null;
+        //}
         _currentDialoguer.Dialogue._hiddenProof.Clear();
         m_dialogueView.ClearDialogues();
         m_dialogueView.SetSpeakerName(dialogable.NpcName);
@@ -284,7 +290,8 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         ? $" -\n About {_topic.ToLower()}"
         : " -\n No clear topic");
 
-        if (_manualRecords.Count <= 0 && !_recordChanged) _manualRecords = _previousRecords;
+        if (_manualRecords.Count <= 0 && !_recordChanged && _previousDialoguer == _currentDialoguer) 
+            _manualRecords = _previousRecords;
 
         var finalLog = new LogNote(
             title, 
@@ -305,6 +312,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
             NotebookManager.Instance.AddCharacter(_currentDialoguer.ID);
             _currentDialoguer.FirstTimeSpeaking = false;
         }
+        _previousDialoguer = _currentDialoguer;
         _currentDialoguer = null;
         _recordText = new();
 
