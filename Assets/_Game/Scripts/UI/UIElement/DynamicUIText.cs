@@ -12,9 +12,10 @@ public class DynamicUIText : FactoryUIObject
      private float m_maxWidth = 500f;
     bool _setToMaxWidth = false;
     private CancellationTokenSource _cts;
+    Vector2 _currentSize;
 
     [Button]
-    public void CalculateWidthAndHeight()
+    public void CalculateWidthAndHeight(out Vector2 currentSize)
     {
         Vector2 prefSize = m_text.GetPreferredValues(m_text.text);
         
@@ -33,6 +34,8 @@ public class DynamicUIText : FactoryUIObject
         }
         m_rectTransform.sizeDelta = new Vector2(finalWidth, finalHeight);
         m_rectTransform.anchoredPosition = Vector2.zero;
+
+        currentSize = new Vector2(finalWidth, finalHeight);
     }
     public override void OnSpawn()
     {
@@ -47,8 +50,10 @@ public class DynamicUIText : FactoryUIObject
         m_text.maxVisibleCharacters = 0; 
         m_maxWidth =  maxWidth;
         _setToMaxWidth = setToMaxWidth;
-        CalculateWidthAndHeight();
+        CalculateWidthAndHeight(out _currentSize);
     }
+    public TMP_Text GetText() => m_text;
+    public Vector2 GetSize() => _currentSize;
 
     public void ToLast()
     {

@@ -137,6 +137,9 @@ public class DialogueView : MonoBehaviour
             Quaternion.identity, 
             t.transform);
 
+        if (b.TryGetComponent<ImageSelector>(out var select)) 
+            select.SetSprite((int)(t.GetSize().y / m_dialogueTextSetting.size));
+
         b.SetFill(0f);
         if (IsAlreadyRecorded.Invoke(content)) b.PlayImageFill(1f, color: new(0.55f,0.4f,0.5f,0.7f)).Forget();
         b.AddListener(() =>
