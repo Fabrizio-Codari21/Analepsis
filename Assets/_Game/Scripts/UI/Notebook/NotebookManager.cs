@@ -524,6 +524,7 @@ public class LogNote : Note
 
     }
     public override string GetInfo() => _fullInfo.AsString();
+    public void ChangeRecord(List<string> records) => _recordInfo = records;
 }
 
 public class ItemNote : Note

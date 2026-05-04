@@ -100,11 +100,6 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     {
         m_pushActivity.Raise(this);
         _currentDialoguer = dialogable;
-        //if(dialogable != _previousDialoguer)
-        //{
-        //    _previousRecords = new();
-        //    _previousDialoguer = null;
-        //}
         _currentDialoguer.Dialogue._hiddenProof.Clear();
         m_dialogueView.ClearDialogues();
         m_dialogueView.SetSpeakerName(dialogable.NpcName);
@@ -290,6 +285,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         ? $" -\n About {_topic.ToLower()}"
         : " -\n No clear topic");
 
+        List<string> rec = new(_manualRecords);
         if (_manualRecords.Count <= 0 && !_recordChanged && _previousDialoguer == _currentDialoguer) 
             _manualRecords = _previousRecords;
 
@@ -302,7 +298,10 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
 
         LogNote sameLogIfUnique = (LogNote)NotebookManager.Instance.ReturnIfUnique(finalLog, _currentDialoguer.ID);
         if (finalLog == sameLogIfUnique)
+        {
+            finalLog.ChangeRecord(rec);
             NotebookManager.Instance.AddLogToCharacter(_currentDialoguer.ID, finalLog);
+        }
         else sameLogIfUnique.UpdateLog(finalLog);
 
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
