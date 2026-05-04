@@ -92,11 +92,13 @@ public sealed class DialogueGraphNode : Node
             choices = new List<Reaction>
             {
                 Reaction.None,
+                Reaction.Idle,
                 Reaction.Gesticulate,
                 Reaction.AvoidGaze,
                 Reaction.Laugh,
                 Reaction.GetNervous,
                 Reaction.Think,
+                Reaction.Generic,
             }
         };
 

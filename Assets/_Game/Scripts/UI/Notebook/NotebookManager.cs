@@ -443,6 +443,7 @@ public enum Reaction
     Laugh,
     GetNervous,
     Think,
+    Generic,
 }
 
 [Serializable]
