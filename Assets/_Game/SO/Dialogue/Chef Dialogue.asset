@@ -168,12 +168,67 @@ MonoBehaviour:
       Part3: 1618177925
       Part4: 73563290
     tag: 
-  _hiddenProof: 
+  - dialogueText: 'Well, of course I didn''t want to get nosy on her.
+
+      I''ve
+      known her for a while and I''ve learned that the last thing you want is to
+      see her angry.
+
+      The things she could do to you if you dared to do so...'
+    characterEmotion: 2
+    characterReaction: 7
+    doesItProveAnything: 0
+    responses:
+    - rid: 3832489796472668235
+    isRootNode: 0
+    editorPosition: {x: 2443, y: 587.501}
+    guid:
+      Part1: 2226755406
+      Part2: 1082339981
+      Part3: 3126597282
+      Part4: 3993757046
+    tag: 
+  _hiddenProof: 03000000
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 3832489796472668234
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Well, of course I didn''t want to get nosy on her.
+
+          I''ve
+          known her for a while and I''ve learned that the last thing you want is
+          to see her angry.
+
+          The things she could do to you if you dared
+          to do so... Better not learn what she''s sensitive about, that''s what
+          I say.'
+        characterEmotion: 2
+        characterReaction: 7
+        doesItProveAnything: 0
+        responses:
+        - rid: 3832489796472668235
+        isRootNode: 0
+        editorPosition: {x: 2443, y: 587.501}
+        guid:
+          Part1: 2226755406
+          Part2: 1082339981
+          Part3: 3126597282
+          Part4: 3993757046
+        tag: 
+    - rid: 3832489796472668235
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So she can get <b>scary</b>, you say...]'
+        nextNode:
+          rid: -2
+        dialogueTopic: the Maid's problem
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3324.42, y: 627}
     - rid: 5324356914828018021
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -423,7 +478,7 @@ MonoBehaviour:
         dialogueText: "Oh, I feel so sorry for her. \nShe seems to have found an
           ill-intended <b>note</b> on a room threatening her.\nWhoever felt the need
           to do something so cruel wasn't even brave enough to sign..."
-        characterEmotion: 2
+        characterEmotion: 5
         characterReaction: 7
         doesItProveAnything: 3
         responses:
@@ -439,10 +494,10 @@ MonoBehaviour:
     - rid: 5324356914828018040
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[So she''s been <b>threatened</b>...]'
+        responseText: '[What did the note say?]'
         nextNode:
-          rid: -2
-        dialogueTopic: the Maid's problem
+          rid: 3832489796472668234
+        dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 2028.0895, y: 566}

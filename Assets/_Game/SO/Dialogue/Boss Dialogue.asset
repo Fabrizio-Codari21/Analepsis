@@ -117,12 +117,112 @@ MonoBehaviour:
       Part3: 3661331897
       Part4: 2589768789
     tag: 
-  _hiddenProof: 
+  - dialogueText: 'Look, just because she''s all shy doesn''t mean that you should
+      underestimate her.
+
+      Like all foreigners, she can be deceivingly cunning
+      and mischievous if no-one puts her in her place.'
+    characterEmotion: 2
+    characterReaction: 0
+    doesItProveAnything: 0
+    responses:
+    - rid: 3832489796472668237
+    isRootNode: 0
+    editorPosition: {x: 2501, y: 509}
+    guid:
+      Part1: 3554429002
+      Part2: 1292925238
+      Part3: 3304785556
+      Part4: 2785673951
+    tag: 
+  - dialogueText: 'I... never said she was a foreigner. Don''t you dare put words
+      in my mouth... I mean, I''d rather you abstained from spreading such misinformation.
+
+      Any
+      inconvenient you may have with her is something the two of you should deal
+      with.'
+    characterEmotion: 2
+    characterReaction: 0
+    doesItProveAnything: 0
+    responses:
+    - rid: 3832489796472668239
+    isRootNode: 0
+    editorPosition: {x: 3718, y: 462}
+    guid:
+      Part1: 3921425750
+      Part2: 1290022786
+      Part3: 3428983194
+      Part4: 4117224209
+    tag: 
+  _hiddenProof: 01000000
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 3832489796472668236
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Look, just because she''s all shy doesn''t mean that you should
+          underestimate her.
+
+          Like all foreigners, she can be deceivingly
+          cunning and mischievous if no-one puts her in her place.'
+        characterEmotion: 2
+        characterReaction: 2
+        doesItProveAnything: 0
+        responses:
+        - rid: 3832489796472668237
+        isRootNode: 0
+        editorPosition: {x: 2501, y: 509}
+        guid:
+          Part1: 3554429002
+          Part2: 1292925238
+          Part3: 3304785556
+          Part4: 2785673951
+        tag: 
+    - rid: 3832489796472668237
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Foreigners, huh? Then why did you hire her?]'
+        nextNode:
+          rid: 3832489796472668238
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3250, y: 492}
+    - rid: 3832489796472668238
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'I... never said she was a foreigner. Don''t you dare put words
+          in my mouth... I mean, I''d rather you abstained from spreading such misinformation.
+
+          Any
+          inconvenient you may have with her is something the two of you should deal
+          with.'
+        characterEmotion: 2
+        characterReaction: 0
+        doesItProveAnything: 0
+        responses:
+        - rid: 3832489796472668239
+        isRootNode: 0
+        editorPosition: {x: 3718, y: 462}
+        guid:
+          Part1: 3921425750
+          Part2: 1290022786
+          Part3: 3428983194
+          Part4: 4117224209
+        tag: 
+    - rid: 3832489796472668239
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Why denying what you know about her...?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: dismissing the Maid
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4741.29, y: 451.00003}
     - rid: 5324356914828017934
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -350,10 +450,10 @@ MonoBehaviour:
     - rid: 5324356914828018100
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[(That''s... weirdly dismissive.)]'
+        responseText: '[That''s... weirdly dismissive.]'
         nextNode:
-          rid: -2
-        dialogueTopic: dismissing the Maid
+          rid: 3832489796472668236
+        dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 2121, y: 509}
