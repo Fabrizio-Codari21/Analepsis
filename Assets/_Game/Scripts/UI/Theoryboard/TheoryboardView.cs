@@ -21,6 +21,7 @@ public class TheoryboardView : MonoBehaviour
     public Image solveCanvas;
 
     public SerializedDictionary<Whodunnit, TheoryPanel> boardRoots = new();
+    public SerializedDictionary<Whodunnit, DataTest[]> test = new();
 
 
     private IActivity _activity;
@@ -184,4 +185,11 @@ public class TheoryboardView : MonoBehaviour
 
 
 
+}
+
+[System.Serializable]
+public struct DataTest
+{
+    public TheoryPanel theory;
+    public bool check;
 }
