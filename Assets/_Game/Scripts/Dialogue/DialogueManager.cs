@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 //using Unity.VisualScripting.Dependencies.Sqlite;
 
 public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
@@ -282,7 +283,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     private void EndDialogue(bool withTopic = false)
     {
         string title = $"{_currentDialoguer.NpcName.Possessive()} account" + (withTopic
-        ? $" -\n About {_topic.ToLower()}"
+        ? $" -\n About {_topic.FirstCharacterToLower()}"
         : " -\n No clear topic");
 
         List<string> rec = new(_manualRecords);

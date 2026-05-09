@@ -6880,10 +6880,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1557943357}
     m_Modifications:
-    - target: {fileID: 5866666021909216657, guid: 00a6aee94c3c14d4189e03d649cfe5c3, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: c731047ad5165af47af838a0634c2936, type: 2}
     - target: {fileID: -8679921383154817045, guid: 4cc72210ca5fddb46a6d6282ceb98226, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.85821956
@@ -7200,6 +7196,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 145.398
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 00a6aee94c3c14d4189e03d649cfe5c3, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c731047ad5165af47af838a0634c2936, type: 2}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: 00a6aee94c3c14d4189e03d649cfe5c3, type: 3}
     m_RemovedGameObjects: []
@@ -12090,6 +12090,10 @@ PrefabInstance:
       propertyPath: solveCanvas
       value: 
       objectReference: {fileID: 1631675727}
+    - target: {fileID: 2634264641492050105, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
+      propertyPath: caseResolution
+      value: 
+      objectReference: {fileID: 11400000, guid: 31354a75e941b364c81c07684038d382, type: 2}
     - target: {fileID: 2634264641492050105, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: markedItemsRoot
       value: 
@@ -28818,6 +28822,7 @@ MonoBehaviour:
   player: {fileID: 3185908383252735703}
   cam: {fileID: 1128971194}
   camData: {fileID: 1128971196}
+  currentCase: {fileID: 11400000, guid: 31354a75e941b364c81c07684038d382, type: 2}
 --- !u!1 &775630570207151921
 GameObject:
   m_ObjectHideFlags: 0

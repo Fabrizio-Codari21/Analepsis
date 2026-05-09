@@ -8,8 +8,9 @@ using UnityEngine;
 // Objeto base que contiene toda la logica de un dialogo.
 [Serializable]
 [CreateAssetMenu(fileName = "New Dialogue", menuName = "Game/Dialogue Assets/New Dialogue")]
-public class Dialogue : ScriptableObject, IClue
+public class Dialogue : Clue
 {
+    [Space(25), Header("CLUE DATA")]
     [Space(20)]
     [Header("DIALOGUE")]
     public Color dialogueColor;
@@ -23,10 +24,9 @@ public class Dialogue : ScriptableObject, IClue
         _hiddenProof.Add(proof);
     }
 
-    public List<Whodunnit> DoesItProveAnything()
+    public override Tuple<Clue,List<Whodunnit>> DoesItProveAnything()
     {
-        return new List<Whodunnit>(_hiddenProof);
-
+        return new(this,new List<Whodunnit>(_hiddenProof));
     }
     
 

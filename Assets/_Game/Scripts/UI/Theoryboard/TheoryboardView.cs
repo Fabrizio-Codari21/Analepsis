@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using UnityEngine.Rendering;
 using Cysharp.Threading.Tasks;
 using TMPro;
-using UnityEngine.TextCore.Text;
-using UnityEditor;
+using System;
+
 public class TheoryboardView : MonoBehaviour
 {
     [SerializeField] NotebookManager notebookManager;
@@ -21,7 +21,7 @@ public class TheoryboardView : MonoBehaviour
     public Image solveCanvas;
 
     public SerializedDictionary<Whodunnit, TheoryPanel> boardRoots = new();
-    public SerializedDictionary<Whodunnit, DataTest[]> test = new();
+    //public SerializedDictionary<Whodunnit, DataTest[]> test = new();
 
 
     private IActivity _activity;
@@ -89,10 +89,10 @@ public class TheoryboardView : MonoBehaviour
             _currentCharacter--;
             if (_currentCharacter < 0) _currentCharacter = NotebookManager.Instance.FoundCharacters.Count - 1;
         }
-        var charButton = CreateClueButton(character.npcName, markedCharactersRoot, new List<Whodunnit>(){character.role}, isCharacter: true);
+        var charButton = CreateClueButton(character.npcName, markedCharactersRoot, new(character,new List<Whodunnit>(){character.role}), isCharacter: true);
     }
 
-    public ButtonFactoryObject CreateClueButton(string text, Transform parent, List<Whodunnit> proof, bool placeholder = false, bool isCharacter = false)
+    public ButtonFactoryObject CreateClueButton(string text, Transform parent, Tuple<Clue,List<Whodunnit>> proof, bool placeholder = false, bool isCharacter = false)
     {
         var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
             clueButtonSetting,
@@ -128,22 +128,44 @@ public class TheoryboardView : MonoBehaviour
 
     public async UniTask TryToSolveCase(TextMeshProUGUI solveText)
     {
+        CaseAnswer viableAnswer = default;
+        List<CaseAnswer> possibleAnswers = default;
         foreach(var item in boardRoots) 
         { 
             var choice = item.Value.droppedClue;
+            var proof = choice.GetProof();
             //var rightChoice = manager.correctAnswer.FirstOrDefault(x => x.Key == item.Key);
 
-            //print(choice.GetProof());
-            if (choice != null && choice.GetProof().Contains(item.Key)) continue; else
+            if (choice != null && proof.Item2.Contains(item.Key))
             {
-                manager.ConsumeAttempt();
-                if (manager.attemptsLeft > 0) await ShowError(solveText);
-                else manager.FailCase();
+                SerializableList<Clue> l = default;
+                possibleAnswers = manager.currentCase.AllValidAnswers
+                    .Where(x => x.Answer.TryGetValue(item.Key, out l) && l.Items.Contains(proof.Item1))
+                    .ToList();
+                if (possibleAnswers.Count > 0) continue; else
+                {
+                    await manager.ConsumeAttempt(solveText);
+                    return;
+                }
+            }
+            else
+            {
+                await manager.ConsumeAttempt(solveText);
                 return;
             }
         }
-        
-        manager.SolveCase();
+
+        if(possibleAnswers.Count > 1)
+        {
+            print("Mas de un resultado posible");
+            return;
+        }
+
+        viableAnswer = possibleAnswers.FirstOrDefault();
+        if(!viableAnswer.Equals(default)) 
+            manager.SolveCase(
+                viableAnswer.Equals(manager.currentCase.AllValidAnswers[0]),
+                viableAnswer.Name);
     }
 
     public async UniTask ShowError(TextMeshProUGUI solveText)
@@ -187,9 +209,9 @@ public class TheoryboardView : MonoBehaviour
 
 }
 
-[System.Serializable]
-public struct DataTest
-{
-    public TheoryPanel theory;
-    public bool check;
-}
+//[System.Serializable]
+//public struct DataTest
+//{
+//    public TheoryPanel theory;
+//    public bool check;
+//}

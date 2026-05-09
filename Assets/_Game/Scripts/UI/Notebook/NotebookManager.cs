@@ -328,21 +328,26 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
             m_view.ClearDetail();
             if (note.type == NoteType.Log)
             {
+                bool emptied = false;
                 foreach (var character in _characterLogs)
                 {
                     if (character.Value.Contains(note))
                     {
                         character.Value.Remove((LogNote)note);
+                        if(character.Value.Count <= 0) emptied = true;
                     }
                 }
 
-                var button = m_view.CreateButton($"No saved conversations.");
-                button.transform.parent = parent.transform.parent;
-                button.DisableSub();
-                button.SetInteractable(false);
-                button.MoveToPosition(parent.GetPosition());
-                button.gameObject.transform.localScale *= 0.9f;
-                parent.GetParent().AddToChildren(button);
+                if(emptied)
+                {
+                    var button = m_view.CreateButton($"No saved conversations.");
+                    button.transform.parent = parent.transform.parent;
+                    button.DisableSub();
+                    button.SetInteractable(false);
+                    button.MoveToPosition(parent.GetPosition());
+                    button.gameObject.transform.localScale *= 0.9f;
+                    parent.GetParent().AddToChildren(button);
+                }
             }
             else _notebookPages.Remove(note.guid);
 
@@ -452,9 +457,9 @@ public  class Note
     public SerializableGuid guid = SerializableGuid.NewGuid();
     public NoteType type;
     public string displayName;
-    public List<Whodunnit> isProof;
+    public Tuple<Clue,List<Whodunnit>> isProof;
 
-    public Note(string displayName,  List<Whodunnit> proof = null)
+    public Note(string displayName,  Tuple<Clue,List<Whodunnit>> proof = null)
     {
         this.displayName = displayName;
         this.isProof = proof;
@@ -483,7 +488,7 @@ public class LogNote : Note
     private List<string> _recordInfo;
     private bool _showingFull  = false;
     public ButtonFactoryObject parentButton;
-    public LogNote(string displayName,List<string> fullInfo, List<string> recordInfo,List<Whodunnit> proof = null) : base(displayName, proof)
+    public LogNote(string displayName,List<string> fullInfo, List<string> recordInfo,Tuple<Clue, List<Whodunnit>> proof = null) : base(displayName, proof)
     {
         _fullInfo = fullInfo;
         _recordInfo = recordInfo;
@@ -506,7 +511,7 @@ public class LogNote : Note
         view.ClearDetail(); 
         List<string> contentToShow = new(_showingFull ? _fullInfo : 
             (_recordInfo.Count <= 0 
-            ? new(){"\n\n[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n" }
+            ? new(){"\n[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n" }
             : _recordInfo));
 
         contentToShow.Insert(0, _showingFull ? "<b>[FULL TRANSCRIPT]</b>" : "<b>[HIGHLIGHTS]</b>");
@@ -530,7 +535,7 @@ public class LogNote : Note
 public class ItemNote : Note
 {
     private readonly Item _item;
-    public ItemNote(string displayName,Item item, List<Whodunnit> proof = null) : base(displayName, proof)
+    public ItemNote(string displayName,Item item, Tuple<Clue, List<Whodunnit>> proof = null) : base(displayName, proof)
     {
         type = NoteType.Objects;
         if (item == null) return;

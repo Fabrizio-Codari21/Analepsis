@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
@@ -5,14 +6,17 @@ using UnityEngine;
 
 [Serializable]
 [CreateAssetMenu(menuName = "Game/Item",fileName = "Item")]
-public class Item : ScriptableObject, IClue
+public class Item : Clue
 {
-    public ItemViewer gameObject;
-    public SerializableGuid guid = SerializableGuid.NewGuid();
+    [Space(25), Header("CLUE DATA")]
+
+    [Space(20)]
     [InfoBox("Si la scale es mas chico, el objeto se ve mas grande")]
     public float renderCameraScaleMax = 1;
     public float renderCameraScaleMin = 1;
-    
+    public ItemViewer gameObject;
+    public SerializableGuid guid = SerializableGuid.NewGuid();
+
     public string Name;
     public Sprite sprite;
 
@@ -27,9 +31,9 @@ public class Item : ScriptableObject, IClue
     [Space(15), Header("WHAT DOES IT PROVE?")]
     [SerializeField] List<Whodunnit> doesItProveAnything;
 
-    public List<Whodunnit> DoesItProveAnything()
+    public override Tuple<Clue,List<Whodunnit>> DoesItProveAnything()
     {
-        return new List<Whodunnit>(doesItProveAnything);
+        return new(this, new List<Whodunnit>(doesItProveAnything));
     }
     
     public List<ItemPOIData> pois = new();
@@ -45,9 +49,11 @@ public class ItemPOIData
     
 }
 
-
-public interface IClue
+[Serializable]
+public class Clue : ScriptableObject
 {
-    public List<Whodunnit> DoesItProveAnything();
+    public virtual Tuple<Clue,List<Whodunnit>> DoesItProveAnything() => default;
+    [InfoBox("This ID is what will be used to identify the clue when solving the case.")]
+    public string ID;
 }
 

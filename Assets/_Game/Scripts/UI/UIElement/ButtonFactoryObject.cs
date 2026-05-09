@@ -5,7 +5,8 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using PrimeTween; 
+using PrimeTween;
+using System;
 
 public class ButtonFactoryObject : FactoryUIObject
 {
@@ -20,7 +21,7 @@ public class ButtonFactoryObject : FactoryUIObject
     // estas no habria que asignarlas en el inspector en teoria
     [SerializeField, HideInInspector] protected Dictionary<Whodunnit, TheoryPanel> _boardTransforms;
     [SerializeField, HideInInspector] protected TheoryboardView _view;
-    [SerializeField, ShowInInspector, ReadOnly] protected List<Whodunnit> proof = new();
+    [SerializeField, ShowInInspector, ReadOnly] protected Tuple<Clue, List<Whodunnit>> proof = default;
     [SerializeField] protected Image m_buttonImage;
     public override void Despawn()
     {
@@ -79,8 +80,8 @@ public class ButtonFactoryObject : FactoryUIObject
     public void SetBoard(Dictionary<Whodunnit, TheoryPanel> board) => _boardTransforms = board;
     public void SetView(TheoryboardView view) => _view = view;
 
-    public void SetProof(List<Whodunnit> isProof) => proof = isProof;
-    public List<Whodunnit> GetProof() => proof; //!= null ? proof : new List<Whodunnit>();
+    public void SetProof(Tuple<Clue, List<Whodunnit>> isProof) => proof = isProof;
+    public Tuple<Clue, List<Whodunnit>> GetProof() => proof; //!= null ? proof : new List<Whodunnit>();
     public bool IsCharacter() => m_isCharacter;
     public void SetCharacter(bool isCharacter) => m_isCharacter = isCharacter;
 

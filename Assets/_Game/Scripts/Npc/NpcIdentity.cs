@@ -5,10 +5,12 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 [CreateAssetMenu(menuName = "Game/Npc",fileName = "NewNpc_0")]
-public class NpcIdentity : ScriptableObject
+public class NpcIdentity : Clue
 {
-    public SerializableGuid npcGuid = SerializableGuid.NewGuid();
+    [Space(25), Header("CLUE DATA")]
+    [Space(20)]
     public string npcName;
+    public SerializableGuid npcGuid = SerializableGuid.NewGuid();
     public Whodunnit role;
 
     [Header("PERSONALITIES"),InfoBox("NOTE: None of these dictionaries should use 'None' as a Key.",Icon = SdfIconType.Newspaper)]

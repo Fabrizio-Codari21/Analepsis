@@ -2,11 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Security.Claims;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -280,7 +275,9 @@ public static class CustomExtensions
             if (pluralize() == false) return s;
             else switch (s.Last())
             {
-                case 'y': return s.Remove(s.Length - 1) + "ies";
+                case 'y': return s[s.Length - 2] == 'e' 
+                            ? s.Remove(s.Length - 2, 2) + "ies" 
+                            : s.Remove(s.Length - 1) + "ies";
                 case 's': return s + "es";
                 case 'z': return s + "es";
                 case 'i': return s + "es";
@@ -308,6 +305,91 @@ public static class CustomExtensions
 
 }
 
+#region STRUCTS
+
+// Struct que contiene cualquier tipo de variable, ideal para uso generico.
+// (se puede hacer con mas T si hace falta)
+[System.Serializable]
+public struct AnyVariable<T>
+{
+    // ir agregando mas tipos a medida que se necesiten
+    bool _bool; public bool Bool { get => _bool; set => _bool = value; }
+    int _int; public int Int { get => _int; set => _int = value; }
+    float _float; public float Float { get => _float; set => _float = value; }
+    char _char; public char Char { get => _char; set => _char = value; }
+    string _string; public string String { get => _string; set => _string = value; }
+    T _t; public T CustomType { get => _t; set => _t = value; }
+
+    // Permite hacer un enum usando el tipo asignado como id.
+    Dictionary<string,List<T>> _fakeEnums; 
+    public int FakeEnum(Tuple<string,T> id, Tuple<string,List<T>> newEnum = default) 
+    { 
+        if (newEnum != default) _fakeEnums.Add(newEnum.Item1, newEnum.Item2);
+        if (id != default)
+        {
+            if (_fakeEnums.ContainsKey(id.Item1) && _fakeEnums[id.Item1].Contains(id.Item2))
+                return _fakeEnums[id.Item1].IndexOf(id.Item2);
+            else
+            {
+                Debug.LogWarning(!_fakeEnums.ContainsKey(id.Item1)
+                    ? $"There is no FakeEnum with the name {id.Item1}"
+                    : $"The FakeEnum {id.Item1} does not contain an index named {id.Item2}");
+                return default;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("FakeEnum ID not provided.");
+            return default;
+        }
+    }
+
+    public List<object> AllVariables() => new() { Bool, Int, Float, Char, String, CustomType };
+    public List<object> UsedVariables() => AllVariables().Where(x => !x.Equals(default) && !x.Equals(null)).ToList();
+
+}
+
+// Lo mismo pero sin usar tipos genericos.
+[System.Serializable]
+public struct AnyVariable
+{
+    // ir agregando mas tipos a medida que se necesiten
+    bool _bool; public bool Bool { get => _bool; set => _bool = value; }
+    int _int; public int Int { get => _int; set => _int = value; }
+    float _float; public float Float { get => _float; set => _float = value; }
+    char _char; public char Char { get => _char; set => _char = value; }
+    string _string; public string String { get => _string; set => _string = value; }
+
+    // En vez de usar tipos genericos, directamente usamos un string como id.
+    Dictionary<string, List<string>> _fakeEnums;
+    public int FakeEnum(Tuple<string, string> id, Tuple<string, List<string>> newEnum = default)
+    {
+        if (newEnum != default) _fakeEnums.Add(newEnum.Item1, newEnum.Item2);
+        if (id != default)
+        {
+            if (_fakeEnums.ContainsKey(id.Item1) && _fakeEnums[id.Item1].Contains(id.Item2))
+                return _fakeEnums[id.Item1].IndexOf(id.Item2);
+            else
+            {
+                Debug.LogWarning(!_fakeEnums.ContainsKey(id.Item1)
+                    ? $"There is no FakeEnum with the name {id.Item1}"
+                    : $"The FakeEnum {id.Item1} does not contain an index named {id.Item2}");
+                return default;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("FakeEnum ID not provided.");
+            return default;
+        }
+    }
+
+    public List<object> AllVariables() => new() { Bool, Int, Float, Char, String };
+    public List<object> UsedVariables() => AllVariables().Where(x => !x.Equals(default) && !x.Equals(null)).ToList();
+}
+
+
+#endregion
 
 
 

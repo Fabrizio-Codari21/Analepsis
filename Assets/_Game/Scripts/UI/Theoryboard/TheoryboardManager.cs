@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
+using Cysharp.Threading.Tasks;
+using TMPro;
 
 public class TheoryboardManager : MonoBehaviour, IActivity
 {
@@ -29,7 +31,8 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     Tuple<Vector3, Quaternion> _playerTransform;
     //Transform _oldLookAt;
 
-    //[Space(20), Header("WHAT'S THE RIGHT ANSWER?")]
+    [Space(25), Header("SELECT A CASE TO PLAY")]
+    public CaseResolution currentCase;
     ////[DictionaryDrawerSettings(KeyLabel = "Role", ValueLabel = "Proof")] 
     //public SerializedDictionary<Whodunnit, IClue> correctAnswer = new();
 
@@ -95,9 +98,12 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     void Open() => pushEvent.Raise(this);
     void Close() => popEvent.Raise();
 
-    public void SolveCase()
+    public void SolveCase(bool truePath = false, string answerName = "")
     {
-        print("Case solved");
+        print(truePath 
+            ? $"Solved with true answer: {answerName}" 
+            : $"Solved with alternative answer: {answerName}");
+
         this.AsyncLoader("WinScene");
     }
     public void FailCase()
@@ -106,7 +112,12 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         this.AsyncLoader("LoseScene");
     }
 
-    public void ConsumeAttempt() => attemptsLeft--;
+    public async UniTask ConsumeAttempt(TextMeshProUGUI solveText)
+    {
+        attemptsLeft--;
+        if (attemptsLeft > 0) await view.ShowError(solveText);
+        else FailCase();
+    }
 
   
 }

@@ -84,7 +84,7 @@ public class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHand
         }
         else
         {
-            if (proof == null || !proof.Contains(panel.Key)) print("No valid proof list found: " + proof);
+            if (proof == null || !proof.Item2.Contains(panel.Key)) print("No valid proof list found: " + proof);
             else print("No panel found");
 
             m_button.transform.SetParent(_originalTransform, true);
