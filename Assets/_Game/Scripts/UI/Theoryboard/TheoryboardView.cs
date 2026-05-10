@@ -140,7 +140,7 @@ public class TheoryboardView : MonoBehaviour
             {
                 SerializedList<Clue> l = default;
                 possibleAnswers = possibleAnswers
-                    .Where(x => x.Answer.TryGetValue(item.Key, out l) && l.Contains(proof.Item1))
+                    .Where(x => x.Answer.TryGetValue(item.Key, out l) && l.Items.Contains(proof.Item1))
                     .ToList();
                 if (possibleAnswers.Count > 0) continue; else
                 {

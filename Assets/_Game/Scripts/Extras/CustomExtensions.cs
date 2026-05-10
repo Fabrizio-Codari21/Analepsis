@@ -396,10 +396,11 @@ public struct AnyVariable
 
 /// <summary>
 /// Unity no me deja serializar listas dentro de diccionarios, asi que hice esto.
+/// (si hacia una clase que heredara de List servia pero se borraba al cerrar Unity)
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [System.Serializable]
-public class SerializedList<T> : List<T> {}
+public struct SerializedList<T> { [SerializeReference] public List<T> Items; }
 
 #endregion
 
