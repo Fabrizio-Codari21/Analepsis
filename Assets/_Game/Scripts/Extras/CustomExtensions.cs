@@ -1,7 +1,12 @@
+using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -194,15 +199,16 @@ public static class CustomExtensions
 
     #region LEVEL UTILITIES
 
-    public static Func<bool> AsyncLoader(this MonoBehaviour x, string sceneName)
+    public static async UniTask<Func<bool>> AsyncLoader(this MonoBehaviour x, string sceneName)
     {
-        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
+        UnityEngine.AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
 
         IEnumerator load = x.ExecuteUntilTrue(() => op.isDone, () =>
         {
             Debug.Log($"Loading {sceneName}: {Mathf.Clamp01(op.progress) * 100}%");
         });
 
+        await op;
         return () => op.isDone;
     }
 
@@ -305,7 +311,7 @@ public static class CustomExtensions
 
 }
 
-#region STRUCTS
+#region STRUCTS ET AL.
 
 // Struct que contiene cualquier tipo de variable, ideal para uso generico.
 // (se puede hacer con mas T si hace falta)
@@ -388,6 +394,12 @@ public struct AnyVariable
     public List<object> UsedVariables() => AllVariables().Where(x => !x.Equals(default) && !x.Equals(null)).ToList();
 }
 
+/// <summary>
+/// Unity no me deja serializar listas dentro de diccionarios, asi que hice esto.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+[System.Serializable]
+public class SerializedList<T> : List<T> {}
 
 #endregion
 

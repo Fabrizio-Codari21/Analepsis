@@ -98,25 +98,26 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     void Open() => pushEvent.Raise(this);
     void Close() => popEvent.Raise();
 
-    public void SolveCase(bool truePath = false, string answerName = "")
+    public async UniTask SolveCase(int answerID = 0, string answerName = "")
     {
-        print(truePath 
+        print(answerID == 0
             ? $"Solved with true answer: {answerName}" 
             : $"Solved with alternative answer: {answerName}");
 
-        this.AsyncLoader("WinScene");
+        await this.AsyncLoader("WinScene");
+        WinManager.Instance.SetConclusion(answerID);
     }
-    public void FailCase()
+    public async UniTask FailCase()
     {
         print("Case failed");
-        this.AsyncLoader("LoseScene");
+        await this.AsyncLoader("LoseScene");
     }
 
     public async UniTask ConsumeAttempt(TextMeshProUGUI solveText)
     {
         attemptsLeft--;
         if (attemptsLeft > 0) await view.ShowError(solveText);
-        else FailCase();
+        else await FailCase();
     }
 
   

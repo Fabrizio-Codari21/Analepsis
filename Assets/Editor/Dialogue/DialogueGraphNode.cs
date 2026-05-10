@@ -112,12 +112,12 @@ public sealed class DialogueGraphNode : Node
 
         Foldout proofFoldOut = new Foldout()
         {
-            text = "What does it prove?",
+            text = "What can it prove?",
             value = false,
         };
 
         PopupField<Whodunnit> proofField = 
-        new PopupField<Whodunnit>("What does it prove?")
+        new PopupField<Whodunnit>("What can it prove?")
         {
             value = nodeData.doesItProveAnything,
             choices = new List<Whodunnit> 

@@ -1,8 +1,7 @@
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 
 [CreateAssetMenu(menuName = "Game/Npc",fileName = "NewNpc_0")]
 public class NpcIdentity : Clue
@@ -11,7 +10,7 @@ public class NpcIdentity : Clue
     [Space(20)]
     public string npcName;
     public SerializableGuid npcGuid = SerializableGuid.NewGuid();
-    public Whodunnit role;
+    public List<Whodunnit> possibleRoles;
 
     [Header("PERSONALITIES"),InfoBox("NOTE: None of these dictionaries should use 'None' as a Key.",Icon = SdfIconType.Newspaper)]
 

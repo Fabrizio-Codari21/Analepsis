@@ -53,7 +53,5 @@ public class ItemPOIData
 public class Clue : ScriptableObject
 {
     public virtual Tuple<Clue,List<Whodunnit>> DoesItProveAnything() => default;
-    [InfoBox("This ID is what will be used to identify the clue when solving the case.")]
-    public string ID;
 }
 

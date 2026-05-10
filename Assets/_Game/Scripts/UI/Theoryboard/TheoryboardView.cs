@@ -89,7 +89,7 @@ public class TheoryboardView : MonoBehaviour
             _currentCharacter--;
             if (_currentCharacter < 0) _currentCharacter = NotebookManager.Instance.FoundCharacters.Count - 1;
         }
-        var charButton = CreateClueButton(character.npcName, markedCharactersRoot, new(character,new List<Whodunnit>(){character.role}), isCharacter: true);
+        var charButton = CreateClueButton(character.npcName, markedCharactersRoot, new(character,new List<Whodunnit>(character.possibleRoles)), isCharacter: true);
     }
 
     public ButtonFactoryObject CreateClueButton(string text, Transform parent, Tuple<Clue,List<Whodunnit>> proof, bool placeholder = false, bool isCharacter = false)
@@ -129,7 +129,7 @@ public class TheoryboardView : MonoBehaviour
     public async UniTask TryToSolveCase(TextMeshProUGUI solveText)
     {
         CaseAnswer viableAnswer = default;
-        List<CaseAnswer> possibleAnswers = default;
+        List<CaseAnswer> possibleAnswers = new(manager.currentCase.AllValidAnswers);
         foreach(var item in boardRoots) 
         { 
             var choice = item.Value.droppedClue;
@@ -138,9 +138,9 @@ public class TheoryboardView : MonoBehaviour
 
             if (choice != null && proof.Item2.Contains(item.Key))
             {
-                SerializableList<Clue> l = default;
-                possibleAnswers = manager.currentCase.AllValidAnswers
-                    .Where(x => x.Answer.TryGetValue(item.Key, out l) && l.Items.Contains(proof.Item1))
+                SerializedList<Clue> l = default;
+                possibleAnswers = possibleAnswers
+                    .Where(x => x.Answer.TryGetValue(item.Key, out l) && l.Contains(proof.Item1))
                     .ToList();
                 if (possibleAnswers.Count > 0) continue; else
                 {
@@ -163,8 +163,8 @@ public class TheoryboardView : MonoBehaviour
 
         viableAnswer = possibleAnswers.FirstOrDefault();
         if(!viableAnswer.Equals(default)) 
-            manager.SolveCase(
-                viableAnswer.Equals(manager.currentCase.AllValidAnswers[0]),
+            await manager.SolveCase(
+                manager.currentCase.AllValidAnswers.IndexOf(viableAnswer),
                 viableAnswer.Name);
     }
 
