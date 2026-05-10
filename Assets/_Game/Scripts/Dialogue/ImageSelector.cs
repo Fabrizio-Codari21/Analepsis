@@ -21,5 +21,8 @@ public class ImageSelector : MonoBehaviour
     {
         baseImage.sprite = GetSpriteBasedOnSize(size);
     }
+
+    public void SetRandomSprite() => 
+        baseImage.sprite = possibleSprites[Random.Range(0, possibleSprites.Length - 1)];
     
 }

@@ -60,7 +60,12 @@ public class NotebookView : MonoBehaviour
     {
         return CreateButtonInternal(text, m_detailRoot, m_detailButtonSetting, true);
     }
-    
+
+    public ButtonFactoryObject CreateCustomButton(string text, Transform parent, ButtonSetting setting)
+    {
+        return CreateButtonInternal(text, parent, setting, true);
+    }
+
     private ButtonFactoryObject CreateButtonInternal(string text, Transform parent, ButtonSetting setting, bool updateScroll = false)  
     {
         var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(

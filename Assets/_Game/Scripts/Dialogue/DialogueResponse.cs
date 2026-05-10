@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 // Lo que decimos en respuesta a un NPC y que dialogo le sigue a esa respuesta.
 [Serializable]
-public class DialogueResponse
+public class DialogueResponse : INode
 {
     [TextArea] public string responseText;
     [SerializeReference] public DialogueNode nextNode;

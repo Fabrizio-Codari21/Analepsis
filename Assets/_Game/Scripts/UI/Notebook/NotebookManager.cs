@@ -23,7 +23,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private EventChannel putInNotebookChannel;
     [SerializeField] private NotebookView m_view;
     [SerializeField] private RecordNoteEvent m_recordNote;
-    [SerializeField] private MarkingPanelView m_markingPanel;
+    [SerializeField] public MarkingPanelView m_markingPanel;
     [SerializeField] private BoolEventChannel m_udpatePoi;
     private CancellationTokenSource _cts;
     [ReadOnly,ShowInInspector] private NoteType _currentNoteType;
@@ -36,7 +36,10 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
     private UVVirtualMouse _virtualMouse;
     public Dictionary<NpcIdentity, List<LogNote>> FoundCharacters => _characterLogs;
-    [SerializeField] MarkClueEvent markedClueEvent;
+    List<DialogueNote> _startedDialogues = new();
+    public List<DialogueNote> StartedDialogues => _startedDialogues;
+    [SerializeField] public MarkClueEvent markedClueEvent;
+    public void ClearMarkEvent() => enableMarkEvent = delegate { };
 
     public bool HasAllPois(Item item)
     {
@@ -255,6 +258,9 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         //print("markable clues: " + m_markingPanel.markableClues.Count);
     }
 
+    public CancellationTokenSource Cancel() 
+    { _cts?.Cancel(); _cts?.Dispose(); _cts = new CancellationTokenSource(); return _cts; }
+
     public ButtonFactoryObject SpawnClueButton(Note cachedNote)
     {
         var button = m_view.CreateButton(cachedNote.GetButtonText());
@@ -266,9 +272,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         }
         button.AddListener(() =>
         {
-            _cts?.Cancel();
-            _cts?.Dispose();
-            _cts = new CancellationTokenSource();
+            Cancel();
             m_view.ClearDetail();
             _ = SelectNote(button, cachedNote, _cts.Token);
         });
@@ -300,7 +304,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         return button;
     }
 
-    private async UniTask SelectNote(ButtonFactoryObject parent, Note note, CancellationToken token)
+    public async UniTask SelectNote(ButtonFactoryObject parent, Note note, CancellationToken token)
     {
         try
         {
@@ -566,4 +570,63 @@ public class ItemNote : Note
         await view.PlayText(FullInfo(), token);
     }
     public override string GetInfo() => FullInfo().AsString();
+}
+
+// En el sistema de arbol, esto eventualmente reemplazaria a LogNote.
+public class DialogueNote : Note
+{
+    private Dialogue _fullDialogue;
+    private List<INode> _unlockedDialogue;
+    private List<string> _fullInfo;
+    private List<string> _recordInfo;
+    private bool _showingFull = false;
+    public ButtonFactoryObject parentButton;
+    public DialogueNote(string displayName, Dialogue fullDialogue, List<INode> unlockedDialogue, Tuple<Clue, List<Whodunnit>> proof = null) : base(displayName, proof)
+    {
+        _fullDialogue = fullDialogue;
+        _unlockedDialogue = unlockedDialogue;
+        type = NoteType.Log;
+    }
+    public void UpdateLog(DialogueNote log)
+    {
+        // aca agregamos todo lo que queramos actualizar cuando la conversacion
+        // se repite (si marcaste cosas distintas, etc).
+        foreach (INode node in log._unlockedDialogue)
+        {
+            if(!_unlockedDialogue.Contains(node)) _unlockedDialogue.Add(node);
+        }
+    }
+    public override async UniTask Show(NotebookView view, CancellationToken token)
+    {
+        _showingFull = false;
+        await RefreshDisplay(_recordInfo, view, token, true);
+    }
+
+    public async UniTask RefreshDisplay(List<string> text, NotebookView view, CancellationToken token, bool firstTime = false)
+    {
+        view.ClearDetail();
+        List<string> contentToShow = new(_showingFull ? _fullInfo :
+            (_recordInfo.Count <= 0
+            ? new() { "\n[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n" }
+            : text));
+
+        contentToShow.Insert(0, _showingFull ? "<b>[FULL TRANSCRIPT]</b>" : "<b>[HIGHLIGHTS]</b>");
+        await view.PlayText(contentToShow, token);
+        if (token.IsCancellationRequested) return;
+
+        string buttonLabel = _showingFull ? "See Highlights" : "See Full Transcript";
+        var toggleBtn = view.CreateDetailButton(buttonLabel);
+        toggleBtn.AddListener(() =>
+        {
+            _showingFull = !_showingFull;
+            _ = RefreshDisplay(text, view, token, false);
+        });
+        if (!firstTime) NotebookManager.Instance.AddDetailButtons(parentButton, view, this);
+
+    }
+    public override string GetInfo() => _fullInfo.AsString();
+    public Dialogue GetFullDialogue() => _fullDialogue;
+    public List<INode> GetUnlockedDialogue() => _unlockedDialogue;
+
+    public void ChangeRecord(List<string> records) => _recordInfo = records;
 }

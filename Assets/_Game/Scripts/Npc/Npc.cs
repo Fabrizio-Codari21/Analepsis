@@ -196,7 +196,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
                 if (item.name == m_npcIdentity.allReactions[newReaction])
                 {
                     SetAnimParameter(index, true);
-                    print("Current animation: " + item.name);
+                    //print("Current animation: " + item.name);
                     //return;
                 }
                 else

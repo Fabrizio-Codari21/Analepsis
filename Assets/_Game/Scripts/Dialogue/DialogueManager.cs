@@ -5,6 +5,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
+using System.Linq;
 //using Unity.VisualScripting.Dependencies.Sqlite;
 
 public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
@@ -100,20 +101,25 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     private async UniTaskVoid Speak(IDialogable dialogable)   
     {
         m_pushActivity.Raise(this);
+
         _currentDialoguer = dialogable;
         _currentDialoguer.Dialogue._hiddenProof.Clear();
         m_dialogueView.ClearDialogues();
         m_dialogueView.SetSpeakerName(dialogable.NpcName);
+
+        _unlockedDialogue = new(_currentDialoguer.Dialogue, new());
+
         await m_dialogueView.UnfoldDialogue(
             true, 
             _currentDialoguer.ID.makesEyeContact,
             _currentDialoguer.LookAt, 
             _currentDialoguer.Player);
+
         await PlayDialogueNode(dialogable.Dialogue.startingNode);
 
     }
 
-
+    Tuple<Dialogue, List<INode>> _unlockedDialogue;
     private async UniTask PlayDialogueNode(DialogueNode node) 
     {
         if(node == null) return;
@@ -126,6 +132,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         if (node.doesItProveAnything != 0) _currentDialoguer.Dialogue.DiscoverProof(node.doesItProveAnything);
         
         AppendToRecord(node.dialogueText);
+        _unlockedDialogue.Item2.Add(node);
         try 
         {
             if(node.characterEmotion != Emotion.None) _currentDialoguer.SetFace(node.characterEmotion);
@@ -222,7 +229,8 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
             return;
         }
         AppendToRecord($"[Player]: {response.responseText}");
-    
+        _unlockedDialogue.Item2.Add(response);
+
         try 
         {
             await m_dialogueView.PlayDialogueText(response.responseText, token, isResponse: true);
@@ -305,16 +313,31 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
         }
         else sameLogIfUnique.UpdateLog(finalLog);
 
+        // aca se guardan las cosas nuevas para el arbol
+        var newDialogue = new DialogueNote(
+            title,
+            _unlockedDialogue.Item1,
+            _unlockedDialogue.Item2);
+
+        var existingDialogue = NotebookManager.Instance.StartedDialogues
+            .FirstOrDefault(x => x.GetFullDialogue() == newDialogue.GetFullDialogue());
+
+        if (existingDialogue != default) existingDialogue.UpdateLog(newDialogue);
+        else NotebookManager.Instance.StartedDialogues.Add(newDialogue);
+        //
+
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
         _currentDialoguer.ResetAnimation();
         if (_currentDialoguer.FirstTimeSpeaking)
         {
-            NotebookManager.Instance.AddCharacter(_currentDialoguer.ID);
+            NotebookManager.Instance.AddCharacter(_currentDialoguer.ID);           
             _currentDialoguer.FirstTimeSpeaking = false;
         }
         _previousDialoguer = _currentDialoguer;
         _currentDialoguer = null;
         _recordText = new();
+
+
 
         _previousRecords = _manualRecords;
         _manualRecords = new();
