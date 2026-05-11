@@ -113,7 +113,7 @@ public class NotebookView : MonoBehaviour
 
             t.SetText(
                 item, 
-                sizeOverride != default ? sizeOverride : m_dynamicTextSetting.size,
+                !Mathf.Approximately(sizeOverride, 0) ? sizeOverride : m_dynamicTextSetting.size,
                 m_dynamicTextSetting.color, 
                 m_textWidth, 
                 true, 

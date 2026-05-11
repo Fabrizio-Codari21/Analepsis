@@ -4184,6 +4184,7 @@ MonoBehaviour:
     SerializationNodes: []
   AutoUnparentOnAwake: 1
   view: {fileID: 5875442958785433964, guid: dc1270d5a08bc2946b4739079863095c, type: 3}
+  contentUI: {fileID: 816547686}
   treeCanvas: {fileID: 1452429960}
   buttonLayout: {fileID: 2668687769200324736, guid: a099742ba4ff5564f81366ca5bb1421a, type: 3}
   buttonLayoutHeight: 125
@@ -6110,7 +6111,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 951888943}
   m_HandleRect: {fileID: 951888942}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -8089,7 +8090,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000009140191}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &596599769
@@ -11471,6 +11472,7 @@ GameObject:
   - component: {fileID: 816547685}
   - component: {fileID: 816547684}
   - component: {fileID: 816547683}
+  - component: {fileID: 816547686}
   m_Layer: 0
   m_Name: Text View
   m_TagString: Untagged
@@ -11567,6 +11569,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 816547681}
   m_CullTransparentMesh: 1
+--- !u!114 &816547686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 816547681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01b43aee34ed49afa74cd33bc1f131ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_detailRoot: {fileID: 596599768}
+  m_dynamicTextSetting: {fileID: 11400000, guid: d480ad9e6f025f6499dd369caf8869c4, type: 2}
+  m_scrollRect: {fileID: 816547683}
+  m_textWidth: 350
 --- !u!4 &816790329 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8081803737250080153, guid: c7bd4870432e89046983a9bb81d9b084, type: 3}
@@ -12329,7 +12347,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1628364073}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.41
+  m_Size: 0.41000006
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -19603,10 +19621,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -25645,7 +25663,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 657, y: 0}
+  m_AnchoredPosition: {x: 0.000061035156, y: 0}
   m_SizeDelta: {x: -1314, y: -833}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!4 &1581147789 stripped
@@ -26242,7 +26260,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1615527293}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.59000003}
+  m_AnchorMin: {x: 0, y: 0.5899999}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}

@@ -3,12 +3,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Threading;
 using UnityEngine.UI;
 
 // Esto despues se unificaria con el notebook manager/view normal cuando saquemos el sistema viejo.
 public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IActivity
 {
     public NotebookView view;
+
+
+    public DialogueTreeUI contentUI;
     public Canvas treeCanvas;
     public HorizontalLayoutGroup buttonLayout;
     public int buttonLayoutHeight = 125, arrowLayoutHeight = 225;
@@ -77,7 +81,8 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
                     button.DisableSub();
                     button.AddListener(async () =>
                     {
-                        ClearText();  DeleteTree();
+                        ClearText();  
+                        DeleteTree();
                         await BuildTree(_manager.StartedDialogues
                             [_manager.FoundCharacters.ToList().IndexOf(character)]);
                     });
@@ -119,6 +124,8 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
     public async UniTask AddLevel(List<DialogueNode> nodes, Transform origin, int currentLevel = 1)
     {
         var transf = (RectTransform)buttonLayout.transform;
+        
+        Debug.Log("Current level: " + currentLevel);
 
         // 2) Creamos un layout por cada grupo de nodos que recibamos y lo posicionamos
         // respecto al anterior (si tiene un layout previo agrega un layout intermedio de flechas).
@@ -126,6 +133,9 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         {
             var arrowLayout = SpawnLayout(new(transf.sizeDelta.x, arrowLayoutHeight));
             arrowLayout.transform.position = origin.position - new Vector3(0, buttonLayoutHeight + 50, 0);
+            
+            Debug.Log(origin.transform.position);
+            Debug.Log(origin.transform.gameObject.name);
 
             foreach (var node in nodes)
             {
@@ -139,21 +149,20 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
 
         var layout = SpawnLayout(new(transf.sizeDelta.x, buttonLayoutHeight));
 
-        if (origin != treeParent)
-            layout.transform.position = origin.position - new Vector3(0, arrowLayoutHeight - 50, 0);
+        if (origin != treeParent) layout.transform.position = origin.position - new Vector3(0, arrowLayoutHeight - 50, 0);
 
         foreach (var node in nodes)
         {
             // 3) Armamos una nota con la info de este nodo
             var note = new LogNote(
-                node.PreviousResponse != default ? node.PreviousResponse.responseText : "Beginning",
+                node.PreviousResponse != null ? node.PreviousResponse.responseText : "Beginning",
                 new() { node.dialogueText },
                 new() { node.dialogueText },
                 new(_currentDialogue, new() { node.doesItProveAnything }));
 
             // 4) Creamos un boton para ese nodo, que se bloquea si no esta en la lista de desbloqueados.
             // (si la pista tiene condiciones aparece un simbolo mas sutil)
-            if (!node.PreviousResponse.IsAvailable())
+            if (node.PreviousResponse != null && !node.PreviousResponse.IsAvailable())
             {
                 var locked = Instantiate(lockImage, layout.transform);
                 locked.GetComponentInChildren<Image>().color = _lockColor;
@@ -161,6 +170,8 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
             }
             var unread = !_unlockedDialogue.Contains(node);
             var button = SpawnClueButton(note, layout.transform, unread);
+
+            button.gameObject.name = $"Button - {currentLevel}";
 
             // 5) Si el nodo no tiene dialogo a continuacion o esta bloqueado, no hace nada mas...
             if ((node.responses.Count <= 1 && node.responses[0]?.nextNode == null) || unread) continue;
@@ -170,6 +181,7 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
                 .Where(r => r.nextNode != null)
                 .Select(x => { x.nextNode.PreviousResponse = x; return x.nextNode; })
                 .ToList();
+            
             await AddLevel(nextNodes, button.transform, currentLevel++);
         }     
 
@@ -206,7 +218,7 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         {
             var newToken = _manager.Cancel();
             ClearText();
-            await view.PlayText(new(){cachedNote.GetInfo()}, new(), textParent, 32);
+            await contentUI.PlayText(new(){cachedNote.GetInfo()}, CancellationToken.None, textParent, 32);
              _manager.AddDetailButtons(button, view, cachedNote);
         });
         //button.MoveSubToLast();

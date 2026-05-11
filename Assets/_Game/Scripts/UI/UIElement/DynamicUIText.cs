@@ -9,7 +9,7 @@ public class DynamicUIText : FactoryUIObject
 {
     [SerializeField] private TMP_Text m_text;
     [SerializeField] private float m_charsPerSecond = 30f;
-     private float m_maxWidth = 500f;
+    private float m_maxWidth = 500f;
     bool _setToMaxWidth = false;
     private CancellationTokenSource _cts;
     Vector2 _currentSize;
@@ -34,7 +34,6 @@ public class DynamicUIText : FactoryUIObject
         }
         m_rectTransform.sizeDelta = new Vector2(finalWidth, finalHeight + (compensate * m_text.fontSize));
         m_rectTransform.anchoredPosition = Vector2.zero;
-
         currentSize = new Vector2(finalWidth, finalHeight);
         //m_rectTransform.sizeDelta = currentSize;
     }
