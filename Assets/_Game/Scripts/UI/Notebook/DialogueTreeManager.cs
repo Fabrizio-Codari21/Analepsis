@@ -13,7 +13,7 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
     public HorizontalLayoutGroup buttonLayout;
     public int buttonLayoutHeight = 125, arrowLayoutHeight = 225;
     public ButtonSetting buttonSetting;
-    public Transform treeParent, textParent;
+    public Transform treeParent, textParent, characterParent;
     public ImageSelector arrowImage;
     public Image lockImage;
     Color _lockColor = new(0.4f, 0, 0.1f, 0.1f);
@@ -65,12 +65,28 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
             {
                 pushEvent?.Raise(this);
                 treeCanvas.gameObject.SetActive(true);
-                if (_manager.StartedDialogues.Count > 0) _ = BuildTree(_manager.StartedDialogues[0]);
+                foreach(var character in _manager.FoundCharacters)
+                {
+                    var button = view.CreateCustomButton(
+                        character.Key.npcName, 
+                        characterParent, 
+                        buttonSetting);
+
+                    button.transform.localScale *= 0.9f;
+
+                    button.DisableSub();
+                    button.AddListener(async () =>
+                    {
+                        ClearText();  DeleteTree();
+                        await BuildTree(_manager.StartedDialogues
+                            [_manager.FoundCharacters.ToList().IndexOf(character)]);
+                    });
+                }
             }
             else
             {
                 popEvent?.Raise();
-                DeleteTree();
+                ClearText(); DeleteTree(); ClearButtons();
                 treeCanvas.gameObject.SetActive(false);
             }
 
@@ -81,8 +97,15 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
     List<INode> _unlockedDialogue;
     public void DeleteTree()
     {
-        foreach(Transform child in treeParent) Destroy(child.gameObject);
+        foreach(Transform child in treeParent) Destroy(child.gameObject);        
     }
+
+    public void ClearText()
+    {
+        view.Despawn(textParent);
+    }
+
+    public void ClearButtons() => view.Despawn(characterParent);
 
     public async UniTask BuildTree(DialogueNote dialogue)
     {
@@ -123,14 +146,14 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         {
             // 3) Armamos una nota con la info de este nodo
             var note = new LogNote(
-                node.tag, //node.PreviousResponse != default ? node.PreviousResponse.responseText : "Beginning",
+                node.PreviousResponse != default ? node.PreviousResponse.responseText : "Beginning",
                 new() { node.dialogueText },
                 new() { node.dialogueText },
                 new(_currentDialogue, new() { node.doesItProveAnything }));
 
             // 4) Creamos un boton para ese nodo, que se bloquea si no esta en la lista de desbloqueados.
             // (si la pista tiene condiciones aparece un simbolo mas sutil)
-            if (node.PreviousResponse.HasConditions())
+            if (!node.PreviousResponse.IsAvailable())
             {
                 var locked = Instantiate(lockImage, layout.transform);
                 locked.GetComponentInChildren<Image>().color = _lockColor;
@@ -182,7 +205,7 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         button.AddListener(async () =>
         {
             var newToken = _manager.Cancel();
-            view.ClearDetail();
+            ClearText();
             await view.PlayText(new(){cachedNote.GetInfo()}, new(), textParent, 32);
              _manager.AddDetailButtons(button, view, cachedNote);
         });

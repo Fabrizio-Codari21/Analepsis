@@ -135,7 +135,7 @@ public class NotebookView : MonoBehaviour
         
     }
     
-    private void Despawn(Transform root) 
+    public void Despawn(Transform root) 
     {
         foreach (var f in root.GetComponentsInChildren<IFlyweight>())
         {
