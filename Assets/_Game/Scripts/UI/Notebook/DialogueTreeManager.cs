@@ -41,13 +41,11 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
     public void Pause()
     {
         OnPause?.Invoke();
-        enableCursor?.Raise(false);
     }
 
     public void Resume()
     {
-        OnResume?.Invoke();
-        enableCursor?.Raise(true);
+        OnResume?.Invoke();       
     }
 
     public void Stop()
@@ -63,11 +61,12 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
     public void Update()
     {
         // placeholder, obvio
-        if(Input.GetKeyDown(KeyCode.T))
+        if(Input.GetKeyDown(KeyCode.T) && !_manager.m_markingPanel.isMarkingClue)
         {
             if(!treeCanvas.gameObject.activeInHierarchy) 
             {
                 pushEvent?.Raise(this);
+                enableCursor?.Raise(true);
                 treeCanvas.gameObject.SetActive(true);
                 foreach(var character in _manager.FoundCharacters)
                 {
@@ -93,6 +92,7 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
                 popEvent?.Raise();
                 ClearText(); DeleteTree(); ClearButtons();
                 treeCanvas.gameObject.SetActive(false);
+                enableCursor?.Raise(false);
             }
 
         }
