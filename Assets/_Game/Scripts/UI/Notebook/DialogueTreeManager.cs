@@ -118,10 +118,10 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         _unlockedDialogue = dialogue.GetUnlockedDialogue();
 
         // 1) Inicia la construccion del arbol creando un layout nuevo con el nodo original
-        await AddLevel(new(){_currentDialogue.startingNode}, treeParent, 1);
+        await AddLevel(new(){_currentDialogue.startingNode}, (RectTransform)treeParent, 1);
     }
 
-    public async UniTask AddLevel(List<DialogueNode> nodes, Transform origin, int currentLevel = 1)
+    public async UniTask AddLevel(List<DialogueNode> nodes, RectTransform origin, int currentLevel = 1)
     {
         var transf = (RectTransform)buttonLayout.transform;
         
@@ -131,25 +131,26 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         // respecto al anterior (si tiene un layout previo agrega un layout intermedio de flechas).
         if (origin != treeParent)
         {
-            var arrowLayout = SpawnLayout(new(transf.sizeDelta.x, arrowLayoutHeight));
-            arrowLayout.transform.position = origin.position - new Vector3(0, buttonLayoutHeight + 50, 0);
-            
-            Debug.Log(origin.transform.position);
-            Debug.Log(origin.transform.gameObject.name);
+            var arrowLayout = SpawnLayout(origin.position - new Vector3(0, buttonLayoutHeight + 50, 0), new(transf.sizeDelta.x, arrowLayoutHeight));
+            arrowLayout.gameObject.name = $"ArrowLayer {currentLevel - 1}";
+            //arrowLayout.transform.position = origin.position - new Vector3(0, buttonLayoutHeight + 50, 0);
+
 
             foreach (var node in nodes)
             {
                 var arrow = Instantiate(arrowImage, arrowLayout.transform);
+                arrow.gameObject.name = $"Arrow {nodes.IndexOf(node) + 1} - Level {currentLevel}";
                 arrow.SetRandomSprite();
                 arrow.SetRotationOnGroup(nodes.IndexOf(node), nodes.Count);
                 if (!node.PreviousResponse.IsAvailable()) arrow.baseImage.color = _lockColor;
             }
-            origin = arrowLayout.transform;
+            origin = (RectTransform)arrowLayout.transform;
         }
 
-        var layout = SpawnLayout(new(transf.sizeDelta.x, buttonLayoutHeight));
+        var layout = SpawnLayout(origin.position - new Vector3(0, arrowLayoutHeight - 50, 0), new(transf.sizeDelta.x, buttonLayoutHeight));
+        layout.gameObject.name = $"TreeLevel {currentLevel}";
 
-        if (origin != treeParent) layout.transform.position = origin.position - new Vector3(0, arrowLayoutHeight - 50, 0);
+        //if (origin != treeParent) layout.transform.position = origin.position - new Vector3(0, arrowLayoutHeight - 50, 0);
 
         foreach (var node in nodes)
         {
@@ -165,13 +166,14 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
             if (node.PreviousResponse != null && !node.PreviousResponse.IsAvailable())
             {
                 var locked = Instantiate(lockImage, layout.transform);
+                locked.gameObject.name = $"Button {nodes.IndexOf(node) + 1} - Level {currentLevel}";
                 locked.GetComponentInChildren<Image>().color = _lockColor;
                 continue;
             }
             var unread = !_unlockedDialogue.Contains(node);
             var button = SpawnClueButton(note, layout.transform, unread);
 
-            button.gameObject.name = $"Button - {currentLevel}";
+            button.gameObject.name = $"Button {nodes.IndexOf(node) + 1} - Level {currentLevel}";
 
             // 5) Si el nodo no tiene dialogo a continuacion o esta bloqueado, no hace nada mas...
             if ((node.responses.Count <= 1 && node.responses[0]?.nextNode == null) || unread) continue;
@@ -181,17 +183,20 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
                 .Where(r => r.nextNode != null)
                 .Select(x => { x.nextNode.PreviousResponse = x; return x.nextNode; })
                 .ToList();
-            
-            await AddLevel(nextNodes, button.transform, currentLevel++);
+
+            var t = (RectTransform)button.transform;
+            print(t.position.x != origin.position.x);
+            await AddLevel(nextNodes, t, currentLevel + 1);
         }     
 
     }
 
-    public HorizontalLayoutGroup SpawnLayout(Vector2 idealScale)
+    public HorizontalLayoutGroup SpawnLayout(Vector3 position, Vector2 idealScale)
     {
         var layout = Instantiate(buttonLayout, treeParent);
         var transf = (RectTransform)layout.transform;
 
+        transf.position = position;
         transf.sizeDelta = idealScale;
         return layout;
     }
