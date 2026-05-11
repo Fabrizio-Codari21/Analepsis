@@ -23,12 +23,10 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     //[SerializeField] NotebookManager notebookManager;
     [SerializeField] private Canvas boardView;
 
-    [SerializeField] Transform playerMenuTransform;
-    [SerializeField] Transform boardTransform;
-    [SerializeField] GameObject player;
-    [SerializeField] GameObject cam;
+  
     [SerializeField] CinemachinePanTilt camData;
-    Tuple<Vector3, Quaternion> _playerTransform;
+    [SerializeField] CinemachineCamera _camera;
+    
     //Transform _oldLookAt;
 
     [Space(25), Header("SELECT A CASE TO PLAY")]
@@ -53,14 +51,8 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         OnPause?.Invoke();
         inputReaderBoard.SetEnable(false);
         enableCursor.Raise(false);
-        //playerCamera.Camera.LookAt = _oldLookAt;
-        //print("llamado");
-        player.transform.position = _playerTransform.Item1;
-        player.transform.localEulerAngles = Vector3.zero;
-        //camData.PanAxis.CancelRecentering(); camData.TiltAxis.CancelRecentering();
-        cam.transform.rotation = _playerTransform.Item2;
-        m_cameraRotationEventChannel.Raise(player.transform);
-        //Destroy(newTransform.gameObject, 0.5f);
+       
+        _camera.enabled = false;
         
     }
 
@@ -69,12 +61,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         OnResume?.Invoke();
         inputReaderBoard.SetEnable();
         enableCursor.Raise(true);
-        _playerTransform = new Tuple<Vector3, Quaternion>(player.transform.position, cam.transform.rotation);
-        //_oldLookAt = playerCamera.Camera.LookAt;
-        //playerCamera.Camera.LookAt = boardTransform;
-        player.transform.position = playerMenuTransform.position;
-        player.transform.rotation = playerMenuTransform.rotation;
-        m_cameraRotationEventChannel.Raise(playerMenuTransform);
+        _camera.enabled = true;
     }
 
     public void Stop()
