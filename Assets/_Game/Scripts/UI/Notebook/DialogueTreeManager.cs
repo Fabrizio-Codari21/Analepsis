@@ -15,6 +15,8 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
     public ButtonSetting buttonSetting;
     public Transform treeParent, textParent;
     public ImageSelector arrowImage;
+    public Image lockImage;
+    Color _lockColor = new(0.4f, 0, 0.1f, 0.1f);
 
     [SerializeField] private BoolEventChannel enableCursor;
     [SerializeField] private IActivityEvent pushEvent;
@@ -36,20 +38,17 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
     {
         OnPause?.Invoke();
         enableCursor?.Raise(false);
-        treeCanvas.gameObject.SetActive(false);
-        popEvent?.Raise();
     }
 
     public void Resume()
     {
         OnResume?.Invoke();
         enableCursor?.Raise(true);
-        treeCanvas.gameObject.SetActive(true);
     }
 
     public void Stop()
     {
-        throw new NotImplementedException();
+        OnPause?.Invoke();
     }
 
     private void Start()
@@ -62,13 +61,29 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         // placeholder, obvio
         if(Input.GetKeyDown(KeyCode.T))
         {
-            pushEvent?.Raise(this);
-            if(_manager.StartedDialogues.Count > 0) _ = BuildTree(_manager.StartedDialogues[0]);
+            if(!treeCanvas.gameObject.activeInHierarchy) 
+            {
+                pushEvent?.Raise(this);
+                treeCanvas.gameObject.SetActive(true);
+                if (_manager.StartedDialogues.Count > 0) _ = BuildTree(_manager.StartedDialogues[0]);
+            }
+            else
+            {
+                popEvent?.Raise();
+                DeleteTree();
+                treeCanvas.gameObject.SetActive(false);
+            }
+
         }
     }
 
     Dialogue _currentDialogue;
     List<INode> _unlockedDialogue;
+    public void DeleteTree()
+    {
+        foreach(Transform child in treeParent) Destroy(child.gameObject);
+    }
+
     public async UniTask BuildTree(DialogueNote dialogue)
     {
         _currentDialogue = dialogue.GetFullDialogue();
@@ -87,11 +102,14 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         if (origin != treeParent)
         {
             var arrowLayout = SpawnLayout(new(transf.sizeDelta.x, arrowLayoutHeight));
-            arrowLayout.transform.position = origin.position - new Vector3(0, buttonLayoutHeight + 20, 0);
+            arrowLayout.transform.position = origin.position - new Vector3(0, buttonLayoutHeight + 50, 0);
+
             foreach (var node in nodes)
             {
                 var arrow = Instantiate(arrowImage, arrowLayout.transform);
                 arrow.SetRandomSprite();
+                arrow.SetRotationOnGroup(nodes.IndexOf(node), nodes.Count);
+                if (!node.PreviousResponse.IsAvailable()) arrow.baseImage.color = _lockColor;
             }
             origin = arrowLayout.transform;
         }
@@ -99,26 +117,36 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         var layout = SpawnLayout(new(transf.sizeDelta.x, buttonLayoutHeight));
 
         if (origin != treeParent)
-            layout.transform.position = origin.transform.position - new Vector3(0, arrowLayoutHeight + 20, 0);
+            layout.transform.position = origin.position - new Vector3(0, arrowLayoutHeight - 50, 0);
 
         foreach (var node in nodes)
         {
             // 3) Armamos una nota con la info de este nodo
             var note = new LogNote(
-                node.tag,
+                node.tag, //node.PreviousResponse != default ? node.PreviousResponse.responseText : "Beginning",
                 new() { node.dialogueText },
                 new() { node.dialogueText },
                 new(_currentDialogue, new() { node.doesItProveAnything }));
 
             // 4) Creamos un boton para ese nodo, que se bloquea si no esta en la lista de desbloqueados.
-            var locked = !_unlockedDialogue.Contains(node);
-            var button = SpawnClueButton(note, layout.transform, locked);
+            // (si la pista tiene condiciones aparece un simbolo mas sutil)
+            if (node.PreviousResponse.HasConditions())
+            {
+                var locked = Instantiate(lockImage, layout.transform);
+                locked.GetComponentInChildren<Image>().color = _lockColor;
+                continue;
+            }
+            var unread = !_unlockedDialogue.Contains(node);
+            var button = SpawnClueButton(note, layout.transform, unread);
 
             // 5) Si el nodo no tiene dialogo a continuacion o esta bloqueado, no hace nada mas...
-            if ((node.responses.Count <= 1 && node.responses[0].nextNode == null) || locked) continue;
+            if ((node.responses.Count <= 1 && node.responses[0]?.nextNode == null) || unread) continue;
             
             // 6) ...pero si tiene dialogo, volvemos a llamar el metodo con el proximo grupo de nodos.
-            var nextNodes = node.responses.Select(x => x.nextNode).ToList();
+            var nextNodes = node.responses
+                .Where(r => r.nextNode != null)
+                .Select(x => { x.nextNode.PreviousResponse = x; return x.nextNode; })
+                .ToList();
             await AddLevel(nextNodes, button.transform, currentLevel++);
         }     
 
@@ -133,20 +161,30 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         return layout;
     }
 
-    public ButtonFactoryObject SpawnClueButton(Note cachedNote, Transform parent, bool locked = false)
+    public ButtonFactoryObject SpawnClueButton(Note cachedNote, Transform parent, bool unread = false)
     {
+
         var button = view.CreateCustomButton(cachedNote.GetButtonText(), parent, buttonSetting);
         button.transform.localScale *= 0.6f;
+
+        if(unread)
+        {
+            button.SetInteractable(false);
+            button.DisableSub();
+            button.SetText("???");
+            return button;
+        }
 
         if (_manager.markedClues.ContainsKey(cachedNote.guid))
         {
             button.DisplayMark(true);
         }
-        button.AddListener(() =>
+        button.AddListener(async () =>
         {
             var newToken = _manager.Cancel();
             view.ClearDetail();
-            _ = _manager.SelectNote(button, cachedNote, newToken.Token);
+            await view.PlayText(new(){cachedNote.GetInfo()}, new(), textParent, 32);
+             _manager.AddDetailButtons(button, view, cachedNote);
         });
         //button.MoveSubToLast();
         button.EnableSub();

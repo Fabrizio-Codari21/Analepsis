@@ -98,7 +98,7 @@ public class NotebookView : MonoBehaviour
         }
         Despawn(m_buttonRoot);
     }
-    public async UniTask PlayText(List<string> text, CancellationToken token) 
+    public async UniTask PlayText(List<string> text, CancellationToken token, Transform parent = default, float sizeOverride = default) 
     {
         token.ThrowIfCancellationRequested();
 
@@ -109,11 +109,11 @@ public class NotebookView : MonoBehaviour
             m_dynamicTextSetting,
             Vector3.zero,
             Quaternion.identity,
-            m_detailRoot);
+            parent != default ? parent : m_detailRoot);
 
             t.SetText(
                 item, 
-                m_dynamicTextSetting.size,
+                sizeOverride != default ? sizeOverride : m_dynamicTextSetting.size,
                 m_dynamicTextSetting.color, 
                 m_textWidth, 
                 true, 
