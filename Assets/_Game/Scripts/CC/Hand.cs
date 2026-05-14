@@ -20,10 +20,10 @@ public class Hand : MonoBehaviour
         var handler = m_handRoot.GetChild(0);
         if (handler)
         {
-            handler.transform.position += (new Vector3(
-                UIManager.Instance.AspectRatioOffset(2), 
+            handler.transform.position += new Vector3(
+                UIManager.Instance.AspectRatioOffset(1f), 
                 0,
-                UIManager.Instance.AspectRatioOffset(2)));
+                UIManager.Instance.AspectRatioOffset(1.5f));
         }
 
         PutIn();

@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 
@@ -14,6 +15,7 @@ public class FlashbackManager : MonoBehaviour
     [SerializeField] private FlashbackContext m_ctx;
     public BoolEventChannel enableFlashback;
     [SerializeField] private GameObject[] m_GoInFlashback;
+    [SerializeField] private GameObject m_leaveFlashback;
     
     [SerializeField] private DynamicTextSetting displaySetting;
     [SerializeField] private ItemEventChannel itemEvent;
@@ -27,7 +29,7 @@ public class FlashbackManager : MonoBehaviour
     private void Start()
     {
         FsmSetup();
-       
+        m_leaveFlashback.transform.localPosition += new Vector3(0, UIManager.Instance.AspectRatioOffset(), 0);
     }
     
     private void SetCurrentItem(Item item) => _currentItem = item;

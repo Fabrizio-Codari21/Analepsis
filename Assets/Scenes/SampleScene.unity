@@ -5146,6 +5146,7 @@ MonoBehaviour:
   enableFlashback: {fileID: 11400000, guid: e865ba2e8caa6484ca4ebd26200eb8f2, type: 2}
   m_GoInFlashback:
   - {fileID: 1165859166}
+  m_leaveFlashback: {fileID: 1877869975}
   displaySetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
   itemEvent: {fileID: 11400000, guid: 07624e21598f3584c8e21fc9ae8ce6e2, type: 2}
   m_recordNote: {fileID: 11400000, guid: 1b1d8c85c67ad1044a318c65776e259a, type: 2}
@@ -17108,7 +17109,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 99
   m_TargetDisplay: 0
 --- !u!4 &1461099663 stripped
 Transform:
@@ -25685,6 +25686,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b01864ba62138a64f848c7c35fbb3809, type: 3}
+--- !u!1 &1877869975 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3598687962909436823, guid: ed35f506457e05f4a828473cdad5c3b6, type: 3}
+  m_PrefabInstance: {fileID: 1165859165}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1889609847 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 98e02563392051941a7bb697c0b8ae66, type: 3}
@@ -26627,7 +26633,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 98
   m_TargetDisplay: 0
 --- !u!4 &1998635584 stripped
 Transform:

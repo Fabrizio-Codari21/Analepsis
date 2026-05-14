@@ -20,6 +20,7 @@ public class Inspection : MonoBehaviour, IActivity
     [SerializeField] private ItemEventChannel itemEvent;
     [SerializeField] private StringEventChannel poiInfo;
     [SerializeField] private TMP_Text m_poiText;
+    [SerializeField] private GameObject m_controls;
 
     [Header("Zoom")]
     [SerializeField] private RawImage m_objectRawImage;
@@ -55,6 +56,10 @@ public class Inspection : MonoBehaviour, IActivity
 
         m_poiText.alpha = 0f;
 
+        m_poiText.transform.position -= new Vector3(0, UIManager.Instance.AspectRatioOffset(), 0);
+        m_controls.transform.position += new Vector3(0, UIManager.Instance.AspectRatioOffset(), 0);
+        m_flashbackIndication.transform.position += new Vector3(0, UIManager.Instance.AspectRatioOffset(), 0);
+
         gameObject.SetActive(false);
     }
 
@@ -86,8 +91,9 @@ public class Inspection : MonoBehaviour, IActivity
         _currentItem = inspectable.GetItemReference();
 
         var inspectItem = _currentItem.GetInspectItem();
-
-        Instantiate(inspectItem.gameObject, m_inspectRoot);
+        
+        var item = Instantiate(inspectItem.gameObject, m_inspectRoot);
+        item.transform.localScale *= UIManager.Instance.AspectRatioScale();
 
         _maxScale = inspectItem.renderCameraScaleMax;
         _minScale = inspectItem.renderCameraScaleMin;
