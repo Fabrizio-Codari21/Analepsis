@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Interacter : MonoBehaviour
 {
@@ -6,7 +7,7 @@ public class Interacter : MonoBehaviour
     [SerializeField] private LayerMask m_interactableLayer;
     [SerializeField] private float m_hoverDelay = 0.05f;
     [SerializeField] private Transform m_canvaRoot;
-    [SerializeField] private InteractView m_interactCanva;
+    public InteractView interactCanva;
 
     private Camera _camera;
     private CcInputHandler _inputHandler;
@@ -32,16 +33,18 @@ public class Interacter : MonoBehaviour
         
     }
 
-    private void Awake()
+    void Awake()
     {
-       _camera = Camera.main;
-       _inputHandler = GetComponent<CcInputHandler>();
+        _camera = Camera.main;
+
+        _inputHandler = GetComponent<CcInputHandler>();
        _activity = GetComponent<IActivity>();
     }
 
     private void Start()
     {
-        m_interactCanva = Instantiate(m_interactCanva, m_canvaRoot);
+        interactCanva = Instantiate(interactCanva, m_canvaRoot);
+        interactCanva.m_textRoot.position += new Vector3(0f, UIManager.Instance.AspectRatioOffset(), 0f);
         _activity.OnResume += Resume;
         _activity.OnPause += Pause;
         _activity.OnStop += Stop;
@@ -103,13 +106,13 @@ public class Interacter : MonoBehaviour
 
     private void Resume()
     {
-        m_interactCanva.gameObject?.SetActive(true);
+        interactCanva.gameObject?.SetActive(true);
         enabled = true;
     }
 
     private void Pause()
     {
-        m_interactCanva.gameObject?.SetActive(false);
+        interactCanva.gameObject?.SetActive(false);
         enabled = false;
     }
 

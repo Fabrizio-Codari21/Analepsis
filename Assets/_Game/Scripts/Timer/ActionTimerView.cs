@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class ActionTimerView : MonoBehaviour
 {
     [SerializeField] private TMP_Text m_text;
+    public Transform UIParent;
     [SerializeField] private Image mainUI;
     [SerializeField] private Image shadeUI;
     [SerializeField] private float timeToFadeUI, timeToShowUI;
@@ -22,8 +23,14 @@ public class ActionTimerView : MonoBehaviour
         shadeUI.color -= new Color(0, 0, 0, shadeUI.color.a);
         mainUI.color -= new Color(0, 0, 0, mainUI.color.a);
         m_text.color -= new Color(0, 0, 0, m_text.color.a);
+        UIParent.position -= new Vector3(0, UIManager.Instance.AspectRatioOffset(), 0);
 
         ShowCostLeft(_actionTimer.m_maxActionsLevel);
+    }
+
+    private void Start()
+    {
+        
     }
 
     private void OnEnable()

@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Threading;
 using TMPro;
@@ -10,7 +11,8 @@ public class InteractView : MonoBehaviour
     
     [SerializeField] private DynamicTextSetting m_dynamicTextSetting;
     [SerializeField] private Transform m_textCanvaRoot;
-    [SerializeField] private Transform m_textRoot;
+    [SerializeField] public Transform m_textRoot;
+
     
     private CancellationTokenSource _cts;
     private void OnEnable()

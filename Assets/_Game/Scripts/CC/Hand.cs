@@ -16,6 +16,16 @@ public class Hand : MonoBehaviour
     {
         takeOutChannel.OnEventRaised += TakeOut;
         putInChannel.OnEventRaised += PutIn;
+
+        var handler = m_handRoot.GetChild(0);
+        if (handler)
+        {
+            handler.transform.position += (new Vector3(
+                UIManager.Instance.AspectRatioOffset(2), 
+                0,
+                UIManager.Instance.AspectRatioOffset(2)));
+        }
+
         PutIn();
     }
 

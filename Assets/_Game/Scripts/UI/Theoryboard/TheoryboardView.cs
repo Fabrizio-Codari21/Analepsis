@@ -130,9 +130,15 @@ public class TheoryboardView : MonoBehaviour
     {
         CaseAnswer viableAnswer = default;
         List<CaseAnswer> possibleAnswers = new(manager.currentCase.AllValidAnswers);
+        if(boardRoots.Any(x => x.Value.droppedClue == null))
+        {
+            await ShowIncomplete(solveButton.GetComponentInChildren<TextMeshProUGUI>());
+            return;
+        }
         foreach(var item in boardRoots) 
         { 
-            var choice = item.Value.droppedClue;
+            var choice = item.Value.droppedClue; 
+
             var proof = choice.GetProof();
             //var rightChoice = manager.correctAnswer.FirstOrDefault(x => x.Key == item.Key);
 
@@ -166,6 +172,15 @@ public class TheoryboardView : MonoBehaviour
             await manager.SolveCase(
                 manager.currentCase.AllValidAnswers.IndexOf(viableAnswer),
                 viableAnswer.Name);
+    }
+
+    public async UniTask ShowIncomplete(TextMeshProUGUI solveText)
+    {
+        var text = solveButton.GetComponentInChildren<TextMeshProUGUI>();
+        var oldtext = text.text;
+        text.text = "Incomplete";
+        await UniTask.Delay(800);
+        text.text = oldtext;
     }
 
     public async UniTask ShowError(TextMeshProUGUI solveText)

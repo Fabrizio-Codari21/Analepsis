@@ -62,13 +62,13 @@ public class DialogueView : MonoBehaviour
     {
         if (m_root == null) return;
         Tween.StopAll(m_root.gameObject.transform);
-        
-        var seq = Sequence.Create();
 
+        var scale = UIManager.Instance.AspectRatioScale(0.2f);
+        var seq = Sequence.Create();
         if (isOpening)
         {
-            m_root.gameObject.transform.localScale = new Vector3(1, 0, 1);
-            _ = seq.Group(Tween.ScaleY(m_root.gameObject.transform, 1f, 0.3f, Ease.OutBack));
+            m_root.gameObject.transform.localScale = new Vector3(1, 0, 1) * scale;
+            _ = seq.Group(Tween.ScaleY(m_root.gameObject.transform, scale, 0.3f, Ease.OutBack));
             if (npc != default && player != default && makesEyeContact) _ = MakeEyeContact(npc, player, 1, 0.9f); 
         }
         else
@@ -92,7 +92,7 @@ public class DialogueView : MonoBehaviour
             {
                 player.data.sourceObjects.Add(npcPosition);
                 //print(player.data.sourceObjects.Count);
-                _ = Tween.Custom(player.weight, maxWeight, time, (x => player.weight = x), Ease.OutCirc);
+                await Tween.Custom(player.weight, maxWeight, time, (x => player.weight = x), Ease.OutCirc);
 
             }
 
@@ -103,7 +103,7 @@ public class DialogueView : MonoBehaviour
             _ = Tween.Custom(npc.weight, 0, time, (x => npc.weight = x), Ease.OutCirc);
             if (player != default)
             {
-                _ = Tween.Custom(player.weight, 0, time, (x => player.weight = x), Ease.OutCirc);
+                await Tween.Custom(player.weight, 0, time, (x => player.weight = x), Ease.OutCirc);
                 player.data.sourceObjects.Remove(npcPosition);
             }
 

@@ -79,6 +79,10 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         m_openTheoryBoardChannel.OnEventRaised += view.LoadMarkedClues;
         inputReaderBoard.Close += Close;
         attemptsLeft = maxSolveAttempts;
+        _camera.transform.localPosition += new Vector3(
+            -UIManager.Instance.AspectRatioOffset(0.2f), 
+            UIManager.Instance.AspectRatioOffset(1), 
+            0);
 
     }
 
