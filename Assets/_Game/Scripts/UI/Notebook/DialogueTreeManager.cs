@@ -158,15 +158,15 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         _unlockedDialogue = dialogue.GetUnlockedDialogue();
 
         // 1) Inicia la construccion del arbol creando un layout nuevo con el nodo original
-        await AddLevel(new(){_currentDialogue.startingNode}, treeParent, 1);
+        await AddLevel(new(){_currentDialogue.startingNode}, treeParent, 0);
     }
 
-    public async UniTask AddLevel(List<DialogueNode> nodes, Transform origin, int currentLevel = 1)
+    public async UniTask AddLevel(List<DialogueNode> nodes, Transform origin, int currentLevel = 0)
     {
         var transf = (RectTransform)buttonLayout.transform;
         
         //Debug.Log("Current level: " + currentLevel);
-        Debug.Log("Creating a new layout from: " + origin.gameObject.name);
+        Debug.Log($"Creating level {currentLevel} from: " + origin.gameObject.name);
 
         // 2) Creamos un layout por cada grupo de nodos que recibamos y lo posicionamos
         // respecto al anterior (si tiene un layout previo agrega un layout intermedio de flechas).
@@ -216,6 +216,15 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
 
             button.gameObject.name = $"Button {nodes.IndexOf(node) + 1} - Level {currentLevel}";
 
+            // tratando de ver que pasa con el orden del arbol (me da la sensacion de que
+            // no esta tomando bien la posicion del primer boton de cada layout).
+            if(button.transform.position.x != origin.position.x)
+                print($"{button.gameObject.name}: {button.transform.position} " +
+                    $"has moved from {origin.gameObject.name}: {origin.position} " +
+                    $"by {button.transform.position.x - origin.position.x}; " +
+                    $"it {(!node.PreviousResponse.HasConditions() ? "doesn't have" : "has")} conditions " +
+                    $"and it{(unread ? "'s unread." : " was read.")}");
+
             // 5) Si el nodo no tiene dialogo a continuacion o esta bloqueado, no hace nada mas...
             if (node.responses.Count <= 0 || unread) continue;
             else if (node.responses.Count == 1 && node.responses[0]?.nextNode == null) continue;
@@ -226,8 +235,6 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
                 .Select(x => { x.nextNode.PreviousResponse = x; return x.nextNode; })
                 .ToList();
 
-            
-            print("The new button was moved by " + (button.transform.position.x - origin.position.x));
             await AddLevel(nextNodes, button.transform, currentLevel + 1);
         }     
 
