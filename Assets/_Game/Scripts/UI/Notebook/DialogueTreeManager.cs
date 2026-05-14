@@ -5,13 +5,15 @@ using UnityEngine;
 using System.Linq;
 using System.Threading;
 using UnityEngine.UI;
+using TMPro;
 
 // Esto despues se unificaria con el notebook manager/view normal cuando saquemos el sistema viejo.
 public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IActivity
 {
     public NotebookView view;
 
-
+    public ScrollRect treeScroll;
+    public float scrollSpeed = 10f;
     public DialogueTreeUI contentUI;
     public Canvas treeCanvas;
     public HorizontalLayoutGroup buttonLayout;
@@ -33,6 +35,7 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
     int _currentTreeLevel = 1;
     NotebookManager _manager;
 
+    #region IActivity
     public bool CanPopWithKey()
     {
         return true;
@@ -52,10 +55,13 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
     {
         OnPause?.Invoke();
     }
+    #endregion
 
+    Vector3 _scrollScale;
     private void Start()
     {
         _manager = NotebookManager.Instance;
+        _scrollScale = treeParent.localScale;
     }
 
     public void Update()
@@ -82,6 +88,9 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
                     {
                         ClearText();  
                         DeleteTree();
+                        treeScroll.verticalNormalizedPosition = 0;
+                        treeScroll.horizontalNormalizedPosition = 0;
+                        treeParent.localScale = _scrollScale;
                         await BuildTree(_manager.StartedDialogues
                             [_manager.FoundCharacters.ToList().IndexOf(character)]);
                     });
@@ -91,25 +100,56 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
             {
                 popEvent?.Raise();
                 ClearText(); DeleteTree(); ClearButtons();
+                treeParent.localScale = _scrollScale;
                 treeCanvas.gameObject.SetActive(false);
                 enableCursor?.Raise(false);
             }
 
         }
+        // otro placeholder, para mover el scroll con el teclado
+        MoveTreeScroll();
     }
+
+    public void MoveTreeScroll()
+    {        
+        if (treeCanvas.gameObject.activeInHierarchy && !_manager.m_markingPanel.isMarkingClue)
+        {
+            if (Input.GetKey(KeyCode.W)) treeParent.position -= new Vector3(0,Time.deltaTime,0) * 100 * scrollSpeed;
+            else if (Input.GetKey(KeyCode.S)) treeParent.position += new Vector3(0, Time.deltaTime, 0) * 100 * scrollSpeed;
+            if (Input.GetKey(KeyCode.D)) treeParent.position -= new Vector3(Time.deltaTime, 0, 0) * 100 * scrollSpeed;
+            else if (Input.GetKey(KeyCode.A)) treeParent.position += new Vector3(Time.deltaTime, 0, 0) * 100 * scrollSpeed;
+
+            if(Input.mouseScrollDelta != Vector2.zero)
+            {
+                if (Input.mouseScrollDelta.y > 0) 
+                    treeParent.localScale += new Vector3(Time.deltaTime, Time.deltaTime, 0) * 3 * scrollSpeed;
+                else if (Input.mouseScrollDelta.y < 0) 
+                    treeParent.localScale -= new Vector3(Time.deltaTime, Time.deltaTime, 0) * 3 * scrollSpeed;
+                
+                treeParent.localScale = new Vector3(
+                Mathf.Clamp(treeParent.localScale.x, _scrollScale.x / 2, _scrollScale.x * 2),
+                Mathf.Clamp(treeParent.localScale.y, _scrollScale.y / 2, _scrollScale.y * 2),
+                treeParent.localScale.z);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                treeScroll.verticalNormalizedPosition = 0;
+                treeScroll.horizontalNormalizedPosition = 0;
+                treeParent.localScale = _scrollScale;
+            }
+        }
+    }
+
 
     Dialogue _currentDialogue;
     List<INode> _unlockedDialogue;
+
     public void DeleteTree()
     {
-        foreach(Transform child in treeParent) Destroy(child.gameObject);        
-    }
-
-    public void ClearText()
-    {
-        view.Despawn(textParent);
-    }
-
+        foreach(Transform child in treeParent) Destroy(child.gameObject);
+    }    
+    public void ClearText() => view.Despawn(textParent);
     public void ClearButtons() => view.Despawn(characterParent);
 
     public async UniTask BuildTree(DialogueNote dialogue)
@@ -118,14 +158,15 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         _unlockedDialogue = dialogue.GetUnlockedDialogue();
 
         // 1) Inicia la construccion del arbol creando un layout nuevo con el nodo original
-        await AddLevel(new(){_currentDialogue.startingNode}, (RectTransform)treeParent, 1);
+        await AddLevel(new(){_currentDialogue.startingNode}, treeParent, 1);
     }
 
-    public async UniTask AddLevel(List<DialogueNode> nodes, RectTransform origin, int currentLevel = 1)
+    public async UniTask AddLevel(List<DialogueNode> nodes, Transform origin, int currentLevel = 1)
     {
         var transf = (RectTransform)buttonLayout.transform;
         
-        Debug.Log("Current level: " + currentLevel);
+        //Debug.Log("Current level: " + currentLevel);
+        Debug.Log("Creating a new layout from: " + origin.gameObject.name);
 
         // 2) Creamos un layout por cada grupo de nodos que recibamos y lo posicionamos
         // respecto al anterior (si tiene un layout previo agrega un layout intermedio de flechas).
@@ -166,7 +207,7 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
             if (node.PreviousResponse != null && !node.PreviousResponse.IsAvailable())
             {
                 var locked = Instantiate(lockImage, layout.transform);
-                locked.gameObject.name = $"Button {nodes.IndexOf(node) + 1} - Level {currentLevel}";
+                locked.gameObject.name = $"Lock {nodes.IndexOf(node) + 1} - Level {currentLevel}";
                 locked.GetComponentInChildren<Image>().color = _lockColor;
                 continue;
             }
@@ -176,7 +217,8 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
             button.gameObject.name = $"Button {nodes.IndexOf(node) + 1} - Level {currentLevel}";
 
             // 5) Si el nodo no tiene dialogo a continuacion o esta bloqueado, no hace nada mas...
-            if ((node.responses.Count <= 1 && node.responses[0]?.nextNode == null) || unread) continue;
+            if (node.responses.Count <= 0 || unread) continue;
+            else if (node.responses.Count == 1 && node.responses[0]?.nextNode == null) continue;
             
             // 6) ...pero si tiene dialogo, volvemos a llamar el metodo con el proximo grupo de nodos.
             var nextNodes = node.responses
@@ -184,9 +226,9 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
                 .Select(x => { x.nextNode.PreviousResponse = x; return x.nextNode; })
                 .ToList();
 
-            var t = (RectTransform)button.transform;
-            print(t.position.x != origin.position.x);
-            await AddLevel(nextNodes, t, currentLevel + 1);
+            
+            print("The new button was moved by " + (button.transform.position.x - origin.position.x));
+            await AddLevel(nextNodes, button.transform, currentLevel + 1);
         }     
 
     }
@@ -196,23 +238,28 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         var layout = Instantiate(buttonLayout, treeParent);
         var transf = (RectTransform)layout.transform;
 
-        transf.position = position;
+        layout.transform.position = position;
         transf.sizeDelta = idealScale;
         return layout;
     }
 
     public ButtonFactoryObject SpawnClueButton(Note cachedNote, Transform parent, bool unread = false)
     {
-
         var button = view.CreateCustomButton(cachedNote.GetButtonText(), parent, buttonSetting);
         button.transform.localScale *= 0.6f;
+        button.transform.Rotate(0, 0, UnityEngine.Random.Range(-5, 5));
 
-        if(unread)
+        if (unread)
         {
             button.SetInteractable(false);
             button.DisableSub();
             button.SetText("???");
             return button;
+        }
+        else
+        {
+            var text = button.GetComponentInChildren<TextMeshProUGUI>();
+            text.fontSizeMax = 30; text.fontSizeMin = 26;
         }
 
         if (_manager.markedClues.ContainsKey(cachedNote.guid))
