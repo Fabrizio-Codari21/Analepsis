@@ -46,6 +46,9 @@ public class TheoryboardView : MonoBehaviour
     int _currentCharacter = 0;
     public void LoadMarkedClues()
     {
+
+        Despawn(markedLogsRoot);
+        Despawn(markedItemsRoot);
         var markedLogs = notebookManager.markedClues.Where(x => x.Value.type == NoteType.Log);
         var markedList = markedLogs.ToList();
         if(!markedList.Any())
