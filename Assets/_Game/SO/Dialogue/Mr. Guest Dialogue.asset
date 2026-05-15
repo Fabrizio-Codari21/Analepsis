@@ -126,12 +126,36 @@ MonoBehaviour:
       Part3: 34110648
       Part4: 3409610157
     tag: 
-  _hiddenProof: 
+  - dialogueText: En teoria este nodo tendria que quedar bien acomodado
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    responses:
+    - rid: 3832489953844789381
+    isRootNode: 0
+    editorPosition: {x: 2473.195, y: 501.5}
+    guid:
+      Part1: 2506063997
+      Part2: 1136227565
+      Part3: 829671055
+      Part4: 2533831410
+    tag: 
+  _hiddenProof: 03000000
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 3832489953844789381
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Salir
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3084.4626, y: 531.8375}
     - rid: 5324356914828017924
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -396,7 +420,7 @@ MonoBehaviour:
         responses:
         - rid: 5324356914828018020
         isRootNode: 0
-        editorPosition: {x: 1083, y: 297}
+        editorPosition: {x: 1063.1625, y: 340.64252}
         guid:
           Part1: 2821513536
           Part2: 1112106946
@@ -412,4 +436,4 @@ MonoBehaviour:
         dialogueTopic: the maid's situation
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 1839, y: 311}
+        editorPosition: {x: 1825, y: 422.09}

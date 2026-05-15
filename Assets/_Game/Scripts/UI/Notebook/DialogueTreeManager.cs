@@ -158,29 +158,31 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
         _unlockedDialogue = dialogue.GetUnlockedDialogue();
 
         // 1) Inicia la construccion del arbol creando un layout nuevo con el nodo original
-        await AddLevel(new(){_currentDialogue.startingNode}, treeParent, 0);
+        await AddLevel(new(){_currentDialogue.startingNode}, treeParent, 1);
     }
 
-    public async UniTask AddLevel(List<DialogueNode> nodes, Transform origin, int currentLevel = 0)
+    public async UniTask AddLevel(List<DialogueNode> nodes, Transform origin, int currentLevel = 1)
     {
         var transf = (RectTransform)buttonLayout.transform;
         
         //Debug.Log("Current level: " + currentLevel);
-        Debug.Log($"Creating level {currentLevel} from: " + origin.gameObject.name);
+        Debug.Log($"Creating level {currentLevel - 1} from: " + origin.gameObject.name);
 
         // 2) Creamos un layout por cada grupo de nodos que recibamos y lo posicionamos
         // respecto al anterior (si tiene un layout previo agrega un layout intermedio de flechas).
+        HorizontalLayoutGroup arrowLayout = null;
         if (origin != treeParent)
         {
-            var arrowLayout = SpawnLayout(origin.position - new Vector3(0, buttonLayoutHeight + 50, 0), new(transf.sizeDelta.x, arrowLayoutHeight));
+            arrowLayout = SpawnLayout(origin.position - new Vector3(0, buttonLayoutHeight + 50, 0), new(transf.sizeDelta.x, arrowLayoutHeight));
             arrowLayout.gameObject.name = $"ArrowLayer {currentLevel - 1}";
+            arrowLayout.spacing = 500 / Mathf.Pow(nodes.Count, (currentLevel == 2 ? currentLevel : currentLevel - 1));
             //arrowLayout.transform.position = origin.position - new Vector3(0, buttonLayoutHeight + 50, 0);
 
 
             foreach (var node in nodes)
             {
                 var arrow = Instantiate(arrowImage, arrowLayout.transform);
-                arrow.gameObject.name = $"Arrow {nodes.IndexOf(node) + 1} - Level {currentLevel}";
+                arrow.gameObject.name = $"Arrow {nodes.IndexOf(node) + 1} - Level {currentLevel - 1}";
                 arrow.SetRandomSprite();
                 arrow.SetRotationOnGroup(nodes.IndexOf(node), nodes.Count);
                 if (!node.PreviousResponse.IsAvailable()) arrow.baseImage.color = _lockColor;
@@ -190,9 +192,10 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
 
         var layout = SpawnLayout(origin.position - new Vector3(0, arrowLayoutHeight - 50, 0), new(transf.sizeDelta.x, buttonLayoutHeight));
         layout.gameObject.name = $"TreeLevel {currentLevel}";
+        layout.spacing = 500 / Mathf.Pow(nodes.Count, currentLevel - 1);
 
         //if (origin != treeParent) layout.transform.position = origin.position - new Vector3(0, arrowLayoutHeight - 50, 0);
-
+        bool allNodesSpawned = false; bool compensated = false;
         foreach (var node in nodes)
         {
             // 3) Armamos una nota con la info de este nodo
@@ -209,6 +212,7 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
                 var locked = Instantiate(lockImage, layout.transform);
                 locked.gameObject.name = $"Lock {nodes.IndexOf(node) + 1} - Level {currentLevel}";
                 locked.GetComponentInChildren<Image>().color = _lockColor;
+                if (node == nodes.Last()) allNodesSpawned = true;
                 continue;
             }
             var unread = !_unlockedDialogue.Contains(node);
@@ -216,14 +220,7 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
 
             button.gameObject.name = $"Button {nodes.IndexOf(node) + 1} - Level {currentLevel}";
 
-            // tratando de ver que pasa con el orden del arbol (me da la sensacion de que
-            // no esta tomando bien la posicion del primer boton de cada layout).
-            if(button.transform.position.x != origin.position.x)
-                print($"{button.gameObject.name}: {button.transform.position} " +
-                    $"has moved from {origin.gameObject.name}: {origin.position} " +
-                    $"by {button.transform.position.x - origin.position.x}; " +
-                    $"it {(!node.PreviousResponse.HasConditions() ? "doesn't have" : "has")} conditions " +
-                    $"and it{(unread ? "'s unread." : " was read.")}");
+            if (node == nodes.Last()) allNodesSpawned = true;
 
             // 5) Si el nodo no tiene dialogo a continuacion o esta bloqueado, no hace nada mas...
             if (node.responses.Count <= 0 || unread) continue;
@@ -235,7 +232,21 @@ public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IAc
                 .Select(x => { x.nextNode.PreviousResponse = x; return x.nextNode; })
                 .ToList();
 
-            await AddLevel(nextNodes, button.transform, currentLevel + 1);
+            // 7) Cuando el ultimo nodo del layout termine de aparecer (para asegurarnos de que ya
+            // esten bien posicionados), recien ahi llamamos al metodo para hacer los proximos layouts.
+            this.ExecuteAfterTrue(() => allNodesSpawned, async () =>
+            {
+                if(nodes.Count > 2 && !compensated)
+                {
+                    arrowLayout.transform.position -= new Vector3(arrowLayout.spacing * (nodes.Count - 2), 0, 0);
+                    layout.transform.position -= new Vector3(layout.spacing * (nodes.Count - 2), 0, 0);
+                    compensated = true;
+                }
+
+                await AddLevel(nextNodes, button.transform, currentLevel + 1);
+            }, 
+            cancelCondition: () => !treeCanvas.gameObject.activeInHierarchy);
+
         }     
 
     }

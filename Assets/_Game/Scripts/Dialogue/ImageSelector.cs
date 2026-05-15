@@ -32,7 +32,7 @@ public class ImageSelector : MonoBehaviour
             case 1: 
                 return new() { 0 };
             case 2: return new() { -20, 20 };
-            case 3: return new() { -30, 0, 30 };
+            case 3: return new() { -45, 0, 45 };
             default: return new() { 0 };
         }
     }
