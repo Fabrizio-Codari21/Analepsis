@@ -14,7 +14,7 @@ public class WinManager : Singleton<WinManager>
 
     public void Retry()
     { 
-        SceneManager.UnloadSceneAsync("WinScene");
+        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
        SceneManager.LoadScene("SampleScene");
     }
 
@@ -28,3 +28,5 @@ public class WinManager : Singleton<WinManager>
         conclusionText.text = conclusions[answer];
     }
 }
+
+
