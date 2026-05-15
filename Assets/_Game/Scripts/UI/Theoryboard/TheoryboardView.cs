@@ -47,23 +47,25 @@ public class TheoryboardView : MonoBehaviour
     public void LoadMarkedClues()
     {
         var markedLogs = notebookManager.markedClues.Where(x => x.Value.type == NoteType.Log);
-        if(markedLogs.Count() <= 0)
+        var markedList = markedLogs.ToList();
+        if(!markedList.Any())
             CreateClueButton("No Logs marked \n(Click the star to mark)", markedLogsRoot, default, true);
         var markedItems = notebookManager.markedClues.Where(x => x.Value.type == NoteType.Objects);
-        if (markedItems.Count() <= 0)
+        var keyValuePairs = markedItems.ToList();
+        if (!keyValuePairs.Any())
             CreateClueButton("No Objects marked \n(Click the star to mark)", markedItemsRoot, default, true);
 
         SwitchCharacter();
         
         if (notebookManager.markedClues.Count <= 0) return;
 
-        foreach (var log in markedLogs) 
+        foreach (var log in markedList) 
         {
             var button = CreateClueButton(log.Value.displayName, markedLogsRoot, log.Value.isProof);
             //print(log.Value.isProof);
            
         }
-        foreach (var item in markedItems)
+        foreach (var item in keyValuePairs)
         {
             var button = CreateClueButton(item.Value.displayName, markedItemsRoot, item.Value.isProof);
             //print(item.Value.isProof);

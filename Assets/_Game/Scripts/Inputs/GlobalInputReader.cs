@@ -5,6 +5,11 @@ using UnityEngine.InputSystem;
 public class GlobalInputReader : InputReader, InputActions.IGlobalActions
 {
     public event Action EscapePressed = delegate { };
+    protected override void RemoveCallback(InputActions inputAction)
+    {
+        inputAction?.Global.RemoveCallbacks(this);
+    }
+
     public override void SetEnable( bool enable = true)
     { 
         if(enable) InputAction?.Global.Enable();

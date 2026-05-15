@@ -12,6 +12,12 @@ public class DialogueInputReader : InputReader,InputActions.IDialogueActions
     {
         inputAction?.Dialogue.SetCallbacks(this);
     }
+
+    protected override void RemoveCallback(InputActions inputAction)
+    {
+       inputAction?.Dialogue.RemoveCallbacks(this);
+    }
+
     public override void SetEnable(bool enable = true)
     {
         if(enable) InputAction?.Dialogue.Enable();

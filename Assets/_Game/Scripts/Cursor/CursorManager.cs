@@ -2,7 +2,7 @@
 using UnityEngine;
 using PrimeTween;
 
-public class CursorManager : PersistentSingleton<CursorManager>
+public class CursorManager : Singleton<CursorManager>
 {
     [SerializeField] private BoolEventChannel m_cursorEnableChannel;
     [SerializeField] private CursorAnimationEvent m_cursorAnimationChannel;

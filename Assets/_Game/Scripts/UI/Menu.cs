@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Menu : MonoBehaviour,IActivity
@@ -9,6 +10,8 @@ public class Menu : MonoBehaviour,IActivity
     [SerializeField] private EventChannel m_popEvent;
     [SerializeField] private BoolEventChannel m_cursorEnableChannel;
 
+    
+    [SerializeField] private Button m_reloadButton;
     public bool CanPopWithKey() => m_canPop;
 
     [SerializeField] private bool m_canPop;
@@ -25,6 +28,8 @@ public class Menu : MonoBehaviour,IActivity
     { 
         gameObject.SetActive(true); 
         m_button.onClick.AddListener(m_popEvent.Raise);
+        
+        m_reloadButton.onClick.AddListener(Reload);
         m_cursorEnableChannel?.Raise(true);
         OnResume?.Invoke();
     }
@@ -33,6 +38,7 @@ public class Menu : MonoBehaviour,IActivity
     { 
         gameObject.SetActive(false);
         m_button.onClick.RemoveAllListeners();
+        m_reloadButton.onClick.RemoveAllListeners();
         m_cursorEnableChannel?.Raise(false);
         OnPause?.Invoke();
     }
@@ -42,4 +48,12 @@ public class Menu : MonoBehaviour,IActivity
         Pause();  
         OnStop?.Invoke();
     }
+
+    public void Reload()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    
+    
+    
 }

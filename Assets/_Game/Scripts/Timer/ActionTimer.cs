@@ -27,6 +27,14 @@ public class ActionTimer : MonoBehaviour
          actionsLeft = m_maxActionsLevel;
          OnActionChanged?.Invoke(actionsLeft);    
     }
+    
+    private void OnDestroy()
+    {
+        m_checkActionAmount.OnRequest -= TryCostAction;
+        m_consumeAction.OnRequest -= Check;
+    }
+
+    
 
     private bool Check(int cost)
     {
@@ -43,11 +51,7 @@ public class ActionTimer : MonoBehaviour
     {
         OnActionFinish?.Invoke();
     }
-    private void OnDestroy()
-    {
-        m_checkActionAmount.OnRequest -= TryCostAction;
-    }
-
+ 
     public int CurrentAction() => m_maxActionsLevel - actionsLeft;
 }
 

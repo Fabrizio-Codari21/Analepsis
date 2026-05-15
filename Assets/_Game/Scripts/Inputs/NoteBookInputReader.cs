@@ -20,6 +20,11 @@ public class NoteBookInputReader : InputReader, InputActions.INoteBookActions
         Flip?.Invoke(value);
     }
 
+    protected override void RemoveCallback(InputActions inputAction)
+    {
+        inputAction?.NoteBook.RemoveCallbacks(this);
+    }
+
     public override void SetEnable(bool enable = true)
     {
         if (enable) InputAction?.NoteBook.Enable();

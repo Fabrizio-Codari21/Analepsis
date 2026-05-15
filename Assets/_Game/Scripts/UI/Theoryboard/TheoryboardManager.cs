@@ -13,26 +13,31 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     [SerializeField] int maxSolveAttempts;
     public int attemptsLeft { get; private set; }
 
+
+    [SerializeField] private bool isTest;
+
+
+    #region Event
+    
+
     [SerializeField] private EventChannel m_openTheoryBoardChannel;
     [SerializeField] private BoolEventChannel enableCursor;
     [SerializeField] private BoardInputReader inputReaderBoard;
     [SerializeField] private IActivityEvent pushEvent;
     [SerializeField] private EventChannel popEvent;
-    [SerializeField] private TransformEventChannel m_cameraRotationEventChannel;
-
-    //[SerializeField] NotebookManager notebookManager;
+    #endregion
+ 
     [SerializeField] private Canvas boardView;
 
   
     [SerializeField] CinemachinePanTilt camData;
     [SerializeField] CinemachineCamera _camera;
     
-    //Transform _oldLookAt;
+
 
     [Space(25), Header("SELECT A CASE TO PLAY")]
     public CaseResolution currentCase;
-    ////[DictionaryDrawerSettings(KeyLabel = "Role", ValueLabel = "Proof")] 
-    //public SerializedDictionary<Whodunnit, IClue> correctAnswer = new();
+
 
     #region IActivity
     public event Action OnResume;
@@ -46,7 +51,6 @@ public class TheoryboardManager : MonoBehaviour, IActivity
 
     public void Pause()
     {
-        //var newTransform = Instantiate(new GameObject("View"), _playerTransform.Item1, _playerTransform.Item2).transform;
 
         OnPause?.Invoke();
         inputReaderBoard.SetEnable(false);
@@ -71,20 +75,30 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     }
     #endregion
 
+    #region Unity Life
+
+    
+
+ 
     private void Start()
     {
-        //boardView.renderMode = RenderMode.WorldSpace;
-        //boardView.worldCamera = Camera.current;
+     
         m_openTheoryBoardChannel.OnEventRaised += Open;
         m_openTheoryBoardChannel.OnEventRaised += view.LoadMarkedClues;
         inputReaderBoard.Close += Close;
         attemptsLeft = maxSolveAttempts;
-        _camera.transform.localPosition += new Vector3(
-            -UIManager.Instance.AspectRatioOffset(0.2f), 
-            UIManager.Instance.AspectRatioOffset(1), 
-            0);
+        _camera.transform.localPosition += new Vector3(-UIManager.Instance.AspectRatioOffset(0.2f), UIManager.Instance.AspectRatioOffset(1), 0);
 
     }
+
+    private void OnDestroy()
+    {
+        m_openTheoryBoardChannel.OnEventRaised -= Open;
+        m_openTheoryBoardChannel.OnEventRaised -= view.LoadMarkedClues;
+        inputReaderBoard.Close -= Close;
+    }
+
+    #endregion
 
     void Open() => pushEvent.Raise(this);
     void Close() => popEvent.Raise();

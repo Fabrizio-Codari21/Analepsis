@@ -11,6 +11,11 @@ public class MenuInputReader : InputReader,InputActions.IMenuActions
         inputAction?.Menu.SetCallbacks(this);
     }
 
+    protected override void RemoveCallback(InputActions inputAction)
+    {
+        inputAction?.Menu.RemoveCallbacks(this);
+    }
+
     public override void SetEnable(bool enable = true)
     {
    

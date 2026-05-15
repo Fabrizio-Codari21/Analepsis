@@ -1,8 +1,7 @@
-using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class ScreenManager : RegulatorSingleton<ScreenManager>
+public class ScreenManager : Singleton<ScreenManager>
 {
     [ShowInInspector, ReadOnly] private StackManager<IActivity> _activities = new StackManager<IActivity>();
     

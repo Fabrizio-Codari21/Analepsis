@@ -20,6 +20,11 @@ public class BoardInputReader : InputReader, InputActions.ITheoryBoardActions
     //    Flip?.Invoke(value);
     //}
 
+    protected override void RemoveCallback(InputActions inputAction)
+    {
+        inputAction?.TheoryBoard.SetCallbacks(this);
+    }
+
     public override void SetEnable(bool enable = true)
     {
         if (enable) InputAction?.TheoryBoard.Enable();

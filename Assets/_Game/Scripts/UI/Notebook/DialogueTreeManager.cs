@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using TMPro;
 
 // Esto despues se unificaria con el notebook manager/view normal cuando saquemos el sistema viejo.
-public class DialogueTreeManager : PersistentSingleton<DialogueTreeManager>, IActivity
+public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
 {
     public NotebookView view;
 

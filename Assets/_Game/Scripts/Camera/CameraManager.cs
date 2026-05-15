@@ -3,7 +3,7 @@ using Unity.Cinemachine;
 using System;
 using System.Collections.Generic;
 
-public class CameraManager : PersistentSingleton<CameraManager>
+public class CameraManager : Singleton<CameraManager>
 {
     private Dictionary<ICinemachineCamera, Action> _enterActions = new();
     private Dictionary<ICinemachineCamera, Action> _exitActions = new();

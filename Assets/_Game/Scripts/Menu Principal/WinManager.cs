@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class WinManager : PersistentSingleton<WinManager>
+public class WinManager : Singleton<WinManager>
 {
     //que buen script la puta madre
     public void EndGame()
     {
-        print("termino"); Application.Quit();
+        print("termino");
+        Application.Quit();
     }
 
     public void Retry()
-    {
+    { 
+        SceneManager.UnloadSceneAsync("WinScene");
        SceneManager.LoadScene("SampleScene");
     }
 

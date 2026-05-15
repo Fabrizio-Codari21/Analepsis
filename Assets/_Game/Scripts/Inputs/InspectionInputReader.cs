@@ -22,6 +22,12 @@ public class InspectionInputReader : InputReader, InputActions.IInspectionAction
     {
         inputAction?.Inspection.SetCallbacks(this);
     }
+
+    protected override void RemoveCallback(InputActions inputAction)
+    { 
+        inputAction.Inspection.RemoveCallbacks(this);
+    }
+
     public override void SetEnable(bool enable = true)
     {
         if(enable) InputAction?.Inspection.Enable();

@@ -12,7 +12,12 @@ public class FlashbackInputReader : InputReader, InputActions.IFlashbackActions
     {
         if(context.started) ExitFlashback?.Invoke();
     }
-    
+
+    protected override void RemoveCallback(InputActions inputAction)
+    {
+        inputAction?.Flashback.RemoveCallbacks(this);
+    }
+
     public override void SetEnable(bool enable = true)
     {
         if (enable) InputAction?.Flashback.Enable();

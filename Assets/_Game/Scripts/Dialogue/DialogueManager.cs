@@ -6,9 +6,9 @@ using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using System.Linq;
-//using Unity.VisualScripting.Dependencies.Sqlite;
 
-public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
+
+public class DialogueManager : Singleton<DialogueManager>,IActivity
 {
     [SerializeField] private DialoguerEvent m_dialogueEvent;
     [SerializeField] private DialogueInputReader m_inputReader;
@@ -75,7 +75,6 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
     {
         m_dialogueView = Instantiate(m_dialogueView,transform);
         m_dialogueView.m_player = m_player;
-        
         m_dialogueView.RecordRequested += (content, button) =>
         {
             if (_currentDialoguer == null) return;
@@ -92,11 +91,21 @@ public class DialogueManager : PersistentSingleton<DialogueManager>,IActivity
             AppendToText(ref _manualRecords, content);
             
         };
-        m_dialogueView.IsAlreadyRecorded += (content) =>
-        {
-            return _previousRecords.Contains("- " + content);
-        };
-        m_dialogueEvent.OnEventRaised += dialogable => _ = Speak(dialogable);
+        m_dialogueView.IsAlreadyRecorded += (content) => _previousRecords.Contains("- " + content);
+        
+        
+        m_dialogueEvent.OnEventRaised += SpeakTo;
+    }
+
+
+    private void OnDestroy()
+    {
+        m_dialogueEvent.OnEventRaised -= SpeakTo;
+    }
+
+    private void SpeakTo(IDialogable dialogable)
+    {
+         Speak(dialogable).Forget();
     }
     private async UniTaskVoid Speak(IDialogable dialogable)   
     {

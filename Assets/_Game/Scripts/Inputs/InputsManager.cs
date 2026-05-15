@@ -1,14 +1,13 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class InputsManager : PersistentSingleton<InputsManager>
+public class InputsManager : RegulatorSingleton<InputsManager>
 {
     [SerializeField] public InputReader[] m_inputReader;
-
     private InputActions _inputActions;
-   
     private readonly PointerEventData _pointerEventData = new PointerEventData(EventSystem.current);
     private readonly List<RaycastResult> _raycastResults = new List<RaycastResult>();
     public Vector2 MousePosition => Mouse.current.position.ReadValue();
@@ -21,7 +20,6 @@ public class InputsManager : PersistentSingleton<InputsManager>
             inputReader.Initialize(_inputActions);
             inputReader.SetEnable(inputReader.isAutoEnable);
         }
-        
     }
     
     public bool IsPointerOverUI()
@@ -31,6 +29,6 @@ public class InputsManager : PersistentSingleton<InputsManager>
         EventSystem.current.RaycastAll(_pointerEventData, _raycastResults);
         return _raycastResults.Count > 0;
     }
-    
-    
+
+
 }

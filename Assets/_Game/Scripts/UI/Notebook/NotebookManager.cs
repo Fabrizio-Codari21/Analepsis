@@ -19,13 +19,18 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private EventChannel popEvent;
  
     #endregion
-    [SerializeField] private EventChannel takeOutNotebookChannel;
-    [SerializeField] private EventChannel putInNotebookChannel;
-    [SerializeField] private NotebookView m_view;
-    [SerializeField] private RecordNoteEvent m_recordNote;
-    [SerializeField] public MarkingPanelView m_markingPanel;
+    
+    
+    #region Event
+    [SerializeField] private EventChannel takeOutNotebookChannel; // cuando saca
+    [SerializeField] private EventChannel putInNotebookChannel; // cuando guarda
+    [SerializeField] private RecordNoteEvent m_recordNote; // record 
     [SerializeField] private BoolEventChannel m_udpatePoi;
-    private CancellationTokenSource _cts;
+    [SerializeField] public MarkClueEvent markedClueEvent;
+    #endregion
+    
+    [SerializeField] private NotebookView m_view;
+    [SerializeField] public MarkingPanelView m_markingPanel;
     [ReadOnly,ShowInInspector] private NoteType _currentNoteType;
     [ReadOnly, ShowInInspector] public Dictionary<SerializableGuid, Note> markedClues = new();
     private readonly Dictionary<SerializableGuid, HashSet<string>> _unlockedPoisByItem = new(); // punto de interes
@@ -33,14 +38,17 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private readonly Dictionary<Item, string> _unlockedFlashbackNote = new();
     private Dictionary<NpcIdentity, List<LogNote>> _characterLogs = new();
 
+    private CancellationTokenSource _cts;
 
     private UVVirtualMouse _virtualMouse;
     public Dictionary<NpcIdentity, List<LogNote>> FoundCharacters => _characterLogs;
     List<DialogueNote> _startedDialogues = new();
     public List<DialogueNote> StartedDialogues => _startedDialogues;
-    [SerializeField] public MarkClueEvent markedClueEvent;
+   
     public void ClearMarkEvent() => enableMarkEvent = delegate { };
 
+    
+    #region Poi
     public bool HasAllPois(Item item)
     {
         if (!_unlockedPoisByItem.TryGetValue(item.guid, out var unlockedIds)) return false;
@@ -53,6 +61,15 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         }
 
         return true;
+    }
+    #endregion
+    
+    #region Character
+
+    public Dictionary<NpcIdentity, List<LogNote>> CharacterLogs
+    {
+        get => _characterLogs;
+        set => _characterLogs = value;
     }
 
     public void AddCharacter(NpcIdentity npc)
@@ -70,6 +87,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         else _characterLogs.Add(chara,new(){log});
     }
 
+    
     // Devuelve la nota original si es unica o la ya existente si su informacion es igual.
     public Note ReturnIfUnique(Note note, NpcIdentity character = default)
     {
@@ -83,19 +101,41 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         }
         return note;
     }
-   
+    
+    #endregion
+
+
+
+    #region  Unity Life
+
+    
+
+ 
     private void Start()
     {
         m_view = Instantiate(m_view,transform);
+        ResetMarkingPanel();
         inputReaderNoteBook.Close += Close;
         m_recordNote.OnEventRaised += Record;
-        ResetMarkingPanel();
-        markedClueEvent.OnEventRaised += async (note) => await TryToMarkClue(note);
+        markedClueEvent.OnEventRaised +=  MarkClue;
         m_openNotebookChannel.OnEventRaised += Open;
         
         _virtualMouse = GetComponentInChildren<UVVirtualMouse>();
     }
 
+    private void OnDestroy()
+    {
+        inputReaderNoteBook.Close -= Close;
+        m_recordNote.OnEventRaised -= Record;
+        markedClueEvent.OnEventRaised -= MarkClue;
+        m_openNotebookChannel.OnEventRaised -= Open;
+    }
+
+    #endregion
+
+    
+    
+    
     private void Record(Note note)
     {
         if (!_notebookPages.TryAdd(note.guid, note))
@@ -104,6 +144,12 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         }
   
         //MarkClue(note); //esto es temporal
+    }
+
+
+    private void MarkClue(Note note)
+    {
+        TryToMarkClue(note).Forget();
     }
 
     private async UniTask TryToMarkClue(Note note)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Aca estoy planteando depende estado de juego activar diferente input
 /// </summary>
-public class GameManager : PersistentSingleton<GameManager>
+public class GameManager : Singleton<GameManager>
 {
     private FiniteStateMachine<GameState> _fsm;
     private readonly Dictionary<GameState, IState> _gameStates =  new();

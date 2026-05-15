@@ -36,6 +36,11 @@ public class CCInputReader : InputReader,InputActions.IPlayerActions
         inputAction?.Player.SetCallbacks(this);
     }
 
+    protected override void RemoveCallback(InputActions inputAction)
+    {
+        inputAction?.Player.RemoveCallbacks(this);
+    }
+
     public override void SetEnable(bool enable = true)
     {
        if(enable) InputAction.Player.Enable();
