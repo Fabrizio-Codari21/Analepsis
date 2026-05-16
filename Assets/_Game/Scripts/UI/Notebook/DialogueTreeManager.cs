@@ -100,7 +100,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
                     characterParent,
                     buttonSetting);
 
-                button.transform.localScale *= 0.9f;
+                button.transform.localScale = new Vector3(0.6f,0.9f,0.9f);
 
                 button.DisableSub();
                 button.AddListener(async () =>
@@ -128,20 +128,22 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
         }
 
     }
+    Sequence _seq = new();
     public async UniTask RotateHand(bool horizontal = true)
     {
         if (_handler == null) return;
-        Tween.StopAll(_handler);
+        //Tween.StopAll(_handler);
+        _seq.Complete();
 
-        var seq = Sequence.Create();
+        _seq = Sequence.Create();
 
-        _ = seq.Group(Tween.LocalRotation(
+        _ = _seq.Group(Tween.LocalRotation(
             target: _handler,
             endValue: _handler.localRotation.eulerAngles + new Vector3(0, 0, (horizontal ? 80 : -80)),
             duration: 0.3f,
             ease: Ease.OutCirc));
 
-        _ = seq.Group(Tween.LocalPosition(
+        _ = _seq.Group(Tween.LocalPosition(
             target: _handler,
             endValue: _handler.localPosition 
             + (new Vector3(0.4f,0.4f,-0.4f) / UIManager.Instance.AspectRatioScale(0.0001f)) 
@@ -149,7 +151,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
             duration: 0.3f,
             ease: Ease.OutCirc));
 
-        await seq;
+        await _seq;
     }
 
     public void MoveTreeScroll()
@@ -218,7 +220,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
         HorizontalLayoutGroup arrowLayout = null;
         if (origin != treeParent)
         {
-            arrowLayout = SpawnLayout(origin.position - new Vector3(0, buttonLayoutHeight + 50, 0), new(transf.sizeDelta.x, arrowLayoutHeight));
+            arrowLayout = SpawnLayout(origin.position - new Vector3(0, buttonLayoutHeight + 150, 0), new(transf.sizeDelta.x, arrowLayoutHeight));
             arrowLayout.gameObject.name = $"ArrowLayer {currentLevel - 1}";
             arrowLayout.spacing = 500 / Mathf.Pow(nodes.Count, (currentLevel == 2 ? currentLevel : currentLevel - 1));
             //arrowLayout.transform.position = origin.position - new Vector3(0, buttonLayoutHeight + 50, 0);
@@ -235,7 +237,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
             origin = (RectTransform)arrowLayout.transform;
         }
 
-        var layout = SpawnLayout(origin.position - new Vector3(0, arrowLayoutHeight - 50, 0), new(transf.sizeDelta.x, buttonLayoutHeight));
+        var layout = SpawnLayout(origin.position - new Vector3(0, arrowLayoutHeight + 50, 0), new(transf.sizeDelta.x, buttonLayoutHeight));
         layout.gameObject.name = $"TreeLevel {currentLevel}";
         layout.spacing = 500 / Mathf.Pow(nodes.Count, currentLevel - 1);
 
@@ -309,7 +311,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
     public ButtonFactoryObject SpawnClueButton(Note cachedNote, Transform parent, bool unread = false)
     {
         var button = view.CreateCustomButton(cachedNote.GetButtonText(), parent, buttonSetting);
-        button.transform.localScale *= 0.6f;
+        button.transform.localScale = new Vector3(0.6f,0.8f,1f);
         button.transform.Rotate(0, 0, UnityEngine.Random.Range(-5, 5));
 
         if (unread)
@@ -333,7 +335,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
         {
             var newToken = _manager.Cancel();
             ClearText();
-            await contentUI.PlayText(new(){cachedNote.GetInfo()}, CancellationToken.None, textParent, 32);
+            await contentUI.PlayText(new(){cachedNote.GetInfo()}, CancellationToken.None, textParent, 36);
              _manager.AddDetailButtons(button, view, cachedNote);
         });
         //button.MoveSubToLast();
