@@ -30,6 +30,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     #endregion
     
     [SerializeField] private NotebookView m_view;
+    public Transform handler;
     [SerializeField] public MarkingPanelView m_markingPanel;
     [ReadOnly,ShowInInspector] private NoteType _currentNoteType;
     [ReadOnly, ShowInInspector] public Dictionary<SerializableGuid, Note> markedClues = new();
@@ -113,6 +114,14 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
  
     private void Start()
     {
+        if (handler)
+        {
+            handler.transform.position += new Vector3(
+                UIManager.Instance.AspectRatioOffset(1f),
+                0,
+                UIManager.Instance.AspectRatioOffset(1.5f));
+        }
+
         m_view = Instantiate(m_view,transform);
         ResetMarkingPanel();
         inputReaderNoteBook.Close += Close;

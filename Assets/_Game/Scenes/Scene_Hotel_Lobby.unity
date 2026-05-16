@@ -3842,7 +3842,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &255996305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3856,10 +3856,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view: {fileID: 5875442958785433964, guid: dc1270d5a08bc2946b4739079863095c, type: 3}
+  _handler: {fileID: 0}
   treeScroll: {fileID: 1763391640}
   scrollSpeed: 10
   contentUI: {fileID: 816547686}
-  treeCanvas: {fileID: 1452429960}
+  treeAnchor: {fileID: 0}
+  normalCanvas: {fileID: 0}
   buttonLayout: {fileID: 2668687769200324736, guid: a099742ba4ff5564f81366ca5bb1421a, type: 3}
   buttonLayoutHeight: 125
   arrowLayoutHeight: 225
@@ -6572,7 +6574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -9147,6 +9149,7 @@ MonoBehaviour:
   m_udpatePoi: {fileID: 11400000, guid: 721b20b70b166cb4bbf7cc18f62bcca3, type: 2}
   markedClueEvent: {fileID: 11400000, guid: c081a996fd203124a80c6a8e1d284a5c, type: 2}
   m_view: {fileID: 5875442958785433964, guid: dc1270d5a08bc2946b4739079863095c, type: 3}
+  handler: {fileID: 1557943357}
   m_markingPanel: {fileID: 8640891432761736771, guid: 75973cded5a43e446b381ea738908110, type: 3}
 --- !u!4 &703983305
 Transform:

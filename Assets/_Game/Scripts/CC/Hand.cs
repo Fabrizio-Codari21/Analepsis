@@ -1,3 +1,6 @@
+using Cysharp.Threading.Tasks;
+using PrimeTween;
+using System;
 using UnityEngine;
 
 public class Hand : MonoBehaviour
@@ -16,15 +19,6 @@ public class Hand : MonoBehaviour
     {
         takeOutChannel.OnEventRaised += TakeOut;
         putInChannel.OnEventRaised += PutIn;
-
-        var handler = m_handRoot.GetChild(0);
-        if (handler)
-        {
-            handler.transform.position += new Vector3(
-                UIManager.Instance.AspectRatioOffset(1f), 
-                0,
-                UIManager.Instance.AspectRatioOffset(1.5f));
-        }
 
         PutIn();
     }
@@ -52,6 +46,7 @@ private void ShootRay()
 
     private void TakeOut() { enabled = true; m_handRoot.gameObject.SetActive(true); }
     private void PutIn() { enabled = false; m_handRoot.gameObject.SetActive(false); }
+
 
     private void OnDestroy()
     {

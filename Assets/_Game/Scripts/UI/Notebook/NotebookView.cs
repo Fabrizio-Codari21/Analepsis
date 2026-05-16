@@ -13,7 +13,7 @@ public class NotebookView : MonoBehaviour
     [SerializeField] private TMP_Text m_titleText;
     [SerializeField] private Transform m_buttonRoot;
     [SerializeField] private Transform m_detailRoot;
-    [SerializeField] private Camera m_renderCamera;
+    [SerializeField] public Camera m_renderCamera;
     [SerializeField] private ButtonSetting m_buttonSetting;
     [SerializeField] private ButtonSetting m_detailButtonSetting;
     [SerializeField] private DynamicTextSetting  m_dynamicTextSetting;

@@ -6,16 +6,20 @@ using System.Linq;
 using System.Threading;
 using UnityEngine.UI;
 using TMPro;
+using PrimeTween;
 
 // Esto despues se unificaria con el notebook manager/view normal cuando saquemos el sistema viejo.
 public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
 {
+    #region Variables
+
     public NotebookView view;
+    [HideInInspector] public Transform _handler;
 
     public ScrollRect treeScroll;
     public float scrollSpeed = 10f;
     public DialogueTreeUI contentUI;
-    public Canvas treeCanvas;
+    public GameObject treeAnchor, normalCanvas;
     public HorizontalLayoutGroup buttonLayout;
     public int buttonLayoutHeight = 125, arrowLayoutHeight = 225;
     public ButtonSetting buttonSetting;
@@ -32,8 +36,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
     public event Action OnPause;
     public event Action OnStop;
 
-    int _currentTreeLevel = 1;
-    NotebookManager _manager;
+    #endregion
 
     #region IActivity
     public bool CanPopWithKey()
@@ -57,62 +60,101 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
     }
     #endregion
 
+    #region Controls & Transition
+
+    NotebookManager _manager;
     Vector3 _scrollScale;
+
     private void Start()
     {
         _manager = NotebookManager.Instance;
+        _handler = _manager.handler;
         _scrollScale = treeParent.localScale;
+        treeAnchor.gameObject.SetActive(false);
     }
 
-    public void Update()
+    private void Update()
     {
         // placeholder, obvio
         if(Input.GetKeyDown(KeyCode.T) && !_manager.m_markingPanel.isMarkingClue)
         {
-            if(!treeCanvas.gameObject.activeInHierarchy) 
-            {
-                pushEvent?.Raise(this);
-                enableCursor?.Raise(true);
-                treeCanvas.gameObject.SetActive(true);
-                foreach(var character in _manager.FoundCharacters)
-                {
-                    var button = view.CreateCustomButton(
-                        character.Key.npcName, 
-                        characterParent, 
-                        buttonSetting);
-
-                    button.transform.localScale *= 0.9f;
-
-                    button.DisableSub();
-                    button.AddListener(async () =>
-                    {
-                        ClearText();  
-                        DeleteTree();
-                        treeScroll.verticalNormalizedPosition = 0;
-                        treeScroll.horizontalNormalizedPosition = 0;
-                        treeParent.localScale = _scrollScale;
-                        await BuildTree(_manager.StartedDialogues
-                            [_manager.FoundCharacters.ToList().IndexOf(character)]);
-                    });
-                }
-            }
-            else
-            {
-                popEvent?.Raise();
-                ClearText(); DeleteTree(); ClearButtons();
-                treeParent.localScale = _scrollScale;
-                treeCanvas.gameObject.SetActive(false);
-                enableCursor?.Raise(false);
-            }
-
+            _ = ToggleTree();
         }
         // otro placeholder, para mover el scroll con el teclado
         MoveTreeScroll();
     }
+    public async UniTask ToggleTree()
+    {
+        if (!treeAnchor.gameObject.activeInHierarchy)
+        {
+            //pushEvent?.Raise(this);
+            //enableCursor?.Raise(true);
+            normalCanvas.gameObject.SetActive(false);
+            await RotateHand(true);
+            view.m_renderCamera.gameObject.transform.Rotate(0, 0, 90);
+            treeAnchor.gameObject.SetActive(true);
+            foreach (var character in _manager.FoundCharacters)
+            {
+                var button = view.CreateCustomButton(
+                    character.Key.npcName,
+                    characterParent,
+                    buttonSetting);
+
+                button.transform.localScale *= 0.9f;
+
+                button.DisableSub();
+                button.AddListener(async () =>
+                {
+                    ClearText();
+                    DeleteTree();
+                    treeScroll.verticalNormalizedPosition = 0;
+                    treeScroll.horizontalNormalizedPosition = 0;
+                    treeParent.localScale = _scrollScale;
+                    await BuildTree(_manager.StartedDialogues
+                        [_manager.FoundCharacters.ToList().IndexOf(character)]);
+                });
+            }
+        }
+        else
+        {
+            //popEvent?.Raise();
+            ClearText(); DeleteTree(); ClearButtons();
+            treeParent.localScale = _scrollScale;
+            treeAnchor.gameObject.SetActive(false);
+            view.m_renderCamera.gameObject.transform.Rotate(0, 0, -90);
+            await RotateHand(false);
+            normalCanvas.gameObject.SetActive(true);
+            //enableCursor?.Raise(false);
+        }
+
+    }
+    public async UniTask RotateHand(bool horizontal = true)
+    {
+        if (_handler == null) return;
+        Tween.StopAll(_handler);
+
+        var seq = Sequence.Create();
+
+        _ = seq.Group(Tween.LocalRotation(
+            target: _handler,
+            endValue: _handler.localRotation.eulerAngles + new Vector3(0, 0, (horizontal ? 80 : -80)),
+            duration: 0.3f,
+            ease: Ease.OutCirc));
+
+        _ = seq.Group(Tween.LocalPosition(
+            target: _handler,
+            endValue: _handler.localPosition 
+            + (new Vector3(0.4f,0.4f,-0.4f) / UIManager.Instance.AspectRatioScale(0.0001f)) 
+            * (horizontal ? 1 : -1),
+            duration: 0.3f,
+            ease: Ease.OutCirc));
+
+        await seq;
+    }
 
     public void MoveTreeScroll()
     {        
-        if (treeCanvas.gameObject.activeInHierarchy && !_manager.m_markingPanel.isMarkingClue)
+        if (treeAnchor.gameObject.activeInHierarchy && !_manager.m_markingPanel.isMarkingClue)
         {
             if (Input.GetKey(KeyCode.W)) treeParent.position -= new Vector3(0,Time.deltaTime,0) * 100 * scrollSpeed;
             else if (Input.GetKey(KeyCode.S)) treeParent.position += new Vector3(0, Time.deltaTime, 0) * 100 * scrollSpeed;
@@ -141,6 +183,9 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
         }
     }
 
+    #endregion
+
+    #region Tree Generation
 
     Dialogue _currentDialogue;
     List<INode> _unlockedDialogue;
@@ -245,7 +290,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
 
                 await AddLevel(nextNodes, button.transform, currentLevel + 1);
             }, 
-            cancelCondition: () => !treeCanvas.gameObject.activeInHierarchy);
+            cancelCondition: () => !treeAnchor.gameObject.activeInHierarchy);
 
         }     
 
@@ -316,4 +361,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
 
         return button;
     }
+
+    #endregion
+
 }
