@@ -7,6 +7,7 @@ using System.Threading;
 using UnityEngine.UI;
 using TMPro;
 using PrimeTween;
+using UnityEngine.TextCore.Text;
 
 // Esto despues se unificaria con el notebook manager/view normal cuando saquemos el sistema viejo.
 public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
@@ -17,7 +18,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
     [HideInInspector] public Transform _handler;
 
     public ScrollRect treeScroll;
-    public float scrollSpeed = 10f;
+    public float scrollSpeed = 10f, transitionSpeed = 6f;
     public DialogueTreeUI contentUI;
     public GameObject treeAnchor, normalCanvas;
     public HorizontalLayoutGroup buttonLayout;
@@ -76,16 +77,16 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
     private void Update()
     {
         // placeholder, obvio
-        if(Input.GetKeyDown(KeyCode.T) && !_manager.m_markingPanel.isMarkingClue)
-        {
-            _ = ToggleTree();
-        }
+        //if(Input.GetKeyDown(KeyCode.T) && !_manager.m_markingPanel.isMarkingClue)
+        //{
+        //    _ = ToggleTree();
+        //}
         // otro placeholder, para mover el scroll con el teclado
         MoveTreeScroll();
     }
-    public async UniTask ToggleTree()
+    public async UniTask ToggleTree(bool on = true, NpcIdentity openingCharacter = default)
     {
-        if (!treeAnchor.gameObject.activeInHierarchy)
+        if (on)
         {
             //pushEvent?.Raise(this);
             //enableCursor?.Raise(true);
@@ -93,6 +94,15 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
             await RotateHand(true);
             view.m_renderCamera.gameObject.transform.Rotate(0, 0, 90);
             treeAnchor.gameObject.SetActive(true);
+            
+            var returnButton = view.CreateCustomButton("- RETURN -", characterParent, buttonSetting);
+            returnButton.transform.localScale = new Vector3(0.6f, 0.9f, 0.9f);
+            returnButton.DisableSub();
+            returnButton.AddListener(async () =>
+            {
+                await ToggleTree(false);
+            });
+
             foreach (var character in _manager.FoundCharacters)
             {
                 var button = view.CreateCustomButton(
@@ -114,10 +124,15 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
                         [_manager.FoundCharacters.ToList().IndexOf(character)]);
                 });
             }
+            if(openingCharacter != default)
+                await BuildTree(_manager.StartedDialogues
+                        [_manager.FoundCharacters.ToList().IndexOf(
+                            _manager.FoundCharacters.First(x => x.Key == openingCharacter))]);
         }
         else
         {
             //popEvent?.Raise();
+            view.ClearDetail();
             ClearText(); DeleteTree(); ClearButtons();
             treeParent.localScale = _scrollScale;
             treeAnchor.gameObject.SetActive(false);
@@ -140,7 +155,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
         _ = _seq.Group(Tween.LocalRotation(
             target: _handler,
             endValue: _handler.localRotation.eulerAngles + new Vector3(0, 0, (horizontal ? 80 : -80)),
-            duration: 0.3f,
+            duration: 2 / transitionSpeed,
             ease: Ease.OutCirc));
 
         _ = _seq.Group(Tween.LocalPosition(
@@ -148,7 +163,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
             endValue: _handler.localPosition 
             + (new Vector3(0.4f,0.4f,-0.4f) / UIManager.Instance.AspectRatioScale(0.0001f)) 
             * (horizontal ? 1 : -1),
-            duration: 0.3f,
+            duration: 2 / transitionSpeed,
             ease: Ease.OutCirc));
 
         await _seq;

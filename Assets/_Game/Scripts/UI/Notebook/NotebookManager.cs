@@ -255,41 +255,53 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                 charButton.DisableSub();
                 closeAllButtonsEvent += charButton.MakeOpen;
 
-                charButton.AddListener(() =>
+                charButton.AddListener(async () =>
                 {
-                    if (!charButton.IsOpen())
-                    {
-                        if (character.Value.Count > 0)
-                        {
-                            foreach (var item in character.Value)
-                            {
-                                var button = SpawnClueButton(item);
-                                button.EnableSub();
-                                //if (markedClues.ContainsKey(item.guid)) button.DisplayMark(true); // no termino de funcionar
-                                button.MoveToPosition(charButton.GetPosition() + (character.Value.IndexOf(item) + 1));
-                                button.gameObject.transform.localScale *= 0.9f;
-                                charButton.AddToChildren(button);
-                                item.parentButton = button;
-                            }
-                            charButton.MakeOpen(true);
-                        }
-                        else
-                        {
-                            var button = m_view.CreateButton($"No saved conversations.");
-                            button.DisableSub();
-                            button.SetInteractable(false);
-                            button.MoveToPosition(charButton.GetPosition() + 1);
-                            button.gameObject.transform.localScale *= 0.9f;
-                            charButton.AddToChildren(button);
-                            charButton.MakeOpen(true);
-                        }
-                    }
-                    else
-                    {
-                        charButton.ClearChildren();
-                        charButton.MakeOpen(false);
+
+                    Cancel();
+                    m_view.ClearDetail();
+                    m_view.CreateImage(character.Key.filePhoto);
+                    await m_view.PlayText(new() { character.Key.characterInfo }, new());
+                    var treeButton = m_view.CreateDetailButton("See Dialogue Tree");
+                    treeButton.AddListener(async () => 
+                    { 
                         m_view.ClearDetail();
-                    }
+                        await DialogueTreeManager.Instance.ToggleTree(true, character.Key);
+                    });
+
+                    //if (!charButton.IsOpen())
+                    //{
+                    //    if (character.Value.Count > 0)
+                    //    {
+                    //        foreach (var item in character.Value)
+                    //        {
+                    //            var button = SpawnClueButton(item);
+                    //            button.EnableSub();
+                    //            //if (markedClues.ContainsKey(item.guid)) button.DisplayMark(true); // no termino de funcionar
+                    //            button.MoveToPosition(charButton.GetPosition() + (character.Value.IndexOf(item) + 1));
+                    //            button.gameObject.transform.localScale *= 0.9f;
+                    //            charButton.AddToChildren(button);
+                    //            item.parentButton = button;
+                    //        }
+                    //        charButton.MakeOpen(true);
+                    //    }
+                    //    else
+                    //    {
+                    //        var button = m_view.CreateButton($"No saved conversations.");
+                    //        button.DisableSub();
+                    //        button.SetInteractable(false);
+                    //        button.MoveToPosition(charButton.GetPosition() + 1);
+                    //        button.gameObject.transform.localScale *= 0.9f;
+                    //        charButton.AddToChildren(button);
+                    //        charButton.MakeOpen(true);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    charButton.ClearChildren();
+                    //    charButton.MakeOpen(false);
+                    //    m_view.ClearDetail();
+                    //}
                 });
             }
         }
