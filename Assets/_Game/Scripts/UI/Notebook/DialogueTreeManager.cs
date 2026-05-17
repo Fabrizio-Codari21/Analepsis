@@ -86,6 +86,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
     }
     public async UniTask ToggleTree(bool on = true, NpcIdentity openingCharacter = default)
     {
+        AudioManager.Instance.SelectSFX(SFXType.Player, on ? "FlipForwards" : "FlipBackwards");
         if (on)
         {
             //pushEvent?.Raise(this);

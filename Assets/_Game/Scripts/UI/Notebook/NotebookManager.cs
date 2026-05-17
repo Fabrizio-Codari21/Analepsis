@@ -176,12 +176,14 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private void Open()
     {
         pushEvent.Raise(this);
+        AudioManager.Instance.SelectSFX(SFXType.Player, "Open");
         _ = ActionTimer.Instance.m_view.DisplayUI();       
     }
 
     private void Close()
     {
         popEvent.Raise();
+        AudioManager.Instance.SelectSFX(SFXType.Player, "Close");
         closeAllButtonsEvent?.Invoke(false); closeAllButtonsEvent = default;
     }
     
@@ -365,6 +367,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
             button.DisplayMark(true);
             enableMarkEvent = button.DisplayMark;
             EnableButtons(false);
+            AudioManager.Instance.SelectSFX(SFXType.Player, "FlipForwards");
             markedClueEvent.Raise(cachedNote);
         });
 
@@ -438,7 +441,8 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         
         if (currentIndex >= values.Length) currentIndex = 0;
         else if (currentIndex < 0) currentIndex = values.Length - 1;
-        
+
+        AudioManager.Instance.SelectSFX(SFXType.Player, currentIndex > (int)_currentNoteType ? "FlipForwards" : "FlipBackwards");
         OpenNotebookByType(values[currentIndex]);
     }
     

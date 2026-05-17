@@ -72,7 +72,7 @@ public class AudioManager : PersistentSingleton<AudioManager>
 public enum SFXType
 {
     None,
-    Walking,
+    Player,
     Notebook,
     Menu,
     Ambient,

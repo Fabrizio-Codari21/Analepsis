@@ -1,6 +1,8 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -31,6 +33,7 @@ public class AudioSelector : MonoBehaviour
 
     public void PlayRandomSource(bool continuously = false, Func<bool> cancelIf = default)
     {
+        if (cancelIf()) return;
         var sound = _randomSources[UnityEngine.Random.Range(0, _randomSources.Count - 1)];
         sound.Play();
         if(continuously && cancelIf != default)
@@ -38,7 +41,7 @@ public class AudioSelector : MonoBehaviour
             this.ExecuteAfterTrue(() => !sound.isPlaying, () =>
             {
                 PlayRandomSource(continuously,cancelIf);
-            }, 
+            },
             cancelCondition: cancelIf);
         }
     }

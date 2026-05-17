@@ -78,6 +78,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
             _newClueName = default;
             print("Marked clue: " + newClue.displayName);
 
+            AudioManager.Instance.SelectSFX(SFXType.Player, "Scribble");
             inputField.text = "Sending to the Theory Board...";
             markClueButton.interactable = false; cancelButton.interactable = false; inputField.interactable = false;
             await UniTask.Delay(500);
@@ -93,6 +94,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
         {
             _newClueName = default;
             NotebookManager.Instance.EnableMark(false);
+            AudioManager.Instance.SelectSFX(SFXType.Player, "FlipBackwards");
             await UnfoldPanel(false);
             popEvent.Raise();
             NotebookManager.Instance.EnableButtons(true);

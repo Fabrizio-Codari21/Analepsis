@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using Unity.Cinemachine;
 using UnityEngine.InputSystem;
+using System.Threading;
 
 public class CcInputHandler : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class CcInputHandler : MonoBehaviour
 
 
    private bool _onFlashBack = false;
-    private void Start()
+   private void Start()
    {
         foreach (var controller in m_cameraAxisController.Controllers)
         {
@@ -52,10 +53,16 @@ public class CcInputHandler : MonoBehaviour
       m_reader.OpenTheoryBoard += TryOpenTheoryBoard;
    }
 
-
+   bool _isMoving = false;
    private void Movement(Vector2 dir)
    {
-      Move?.Invoke(dir);
+        Move?.Invoke(dir);
+        if(dir != Vector2.zero && !_isMoving)
+        {
+            _isMoving = true;
+            AudioManager.Instance.RandomSFX(SFXType.Player, true, () => !_isMoving);
+        }
+        else if(dir ==  Vector2.zero) _isMoving = false;
    }
 
 
