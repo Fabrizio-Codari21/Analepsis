@@ -31,18 +31,26 @@ public class AudioSelector : MonoBehaviour
         }
     }
 
+    AudioSource _currentSource;
     public void PlayRandomSource(bool continuously = false, Func<bool> cancelIf = default)
     {
         if (cancelIf()) return;
-        var sound = _randomSources[UnityEngine.Random.Range(0, _randomSources.Count - 1)];
-        sound.Play();
-        if(continuously && cancelIf != default)
+
+        this.ExecuteAfterTrue(() => !(_currentSource && _currentSource.isPlaying), () =>
         {
-            this.ExecuteAfterTrue(() => !sound.isPlaying, () =>
+            var sound = _randomSources[UnityEngine.Random.Range(0, _randomSources.Count - 1)];
+            sound.Play();
+            _currentSource = sound;
+            if (continuously && cancelIf != default)
             {
-                PlayRandomSource(continuously,cancelIf);
-            },
-            cancelCondition: cancelIf);
-        }
+                this.ExecuteAfterTrue(() => !sound.isPlaying, () =>
+                {
+                    PlayRandomSource(continuously, cancelIf);
+                },
+                cancelCondition: cancelIf);
+            }
+        },
+        cancelCondition: cancelIf);
+
     }
 }
