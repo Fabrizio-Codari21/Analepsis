@@ -118,6 +118,7 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
 
         _unlockedDialogue = new(_currentDialoguer.Dialogue, new());
 
+        _ = AudioManager.Instance.ChangeMusicState(MusicState.Dialogue);
         await m_dialogueView.UnfoldDialogue(
             true, 
             _currentDialoguer.ID.makesEyeContact,
@@ -299,6 +300,8 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
 
     private void EndDialogue(bool withTopic = false)
     {
+        _ = AudioManager.Instance.ChangeMusicState(MusicState.Default);
+
         string title = $"{_currentDialoguer.NpcName.Possessive()} account" + (withTopic
         ? $" -\n About {_topic.FirstCharacterToLower()}"
         : " -\n No clear topic");
