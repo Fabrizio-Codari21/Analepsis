@@ -28,24 +28,26 @@ public class AudioManager : PersistentSingleton<AudioManager>
     Sequence _currentSeq = new();
     public async UniTask ChangeMusicState(MusicState state, bool instant = false)
     {
-        if (!instant)
-        {
-            while (_currentSeq.isAlive)
-            {
-                await UniTask.NextFrame();
-            }
-        }
+        _currentSeq.Stop();
+        //if (!instant)
+        //{
+        //    while (_currentSeq.isAlive)
+        //    {
+        //        await UniTask.NextFrame();
+        //    }
+        //}
         var oldState = _currentMusicState;
+        var oldVol = Music[oldState].volume;
+        var newVol = Music[state].volume;
+        var volMult = oldVol > newVol ? oldVol : newVol;
         Tween.StopAll();
-        //Music[oldState].volume = _currentSeq.progress;
-        //Music[state].volume = Mathf.Lerp(1, 0, _currentSeq.progress);
         var seq = Sequence.Create();
 
         // fade out de la musica actual
-        _ = seq.Group(Tween.Custom(0, 1, (instant ? 0 : 10 / musicTransitionSpeed), (x) =>
+        _ = seq.Group(Tween.Custom(0, 1, (instant ? 0 : (10 / musicTransitionSpeed) * volMult), (x) =>
         {
-            Music[oldState].volume = Mathf.Lerp(1, 0, x);
-            Music[state].volume = x;
+            Music[oldState].volume = Mathf.Lerp(oldVol, 0, x);
+            Music[state].volume = Mathf.Lerp(newVol, 1, x);
         }, 
         Ease.InOutExpo));
 
