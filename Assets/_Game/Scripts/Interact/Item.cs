@@ -18,7 +18,7 @@ public class Item : Clue
     public SerializableGuid guid = SerializableGuid.NewGuid();
 
     public string Name;
-    public Sprite sprite;
+    [PreviewField] public Sprite sprite;
 
     [Space(15), Header("WHAT CLUES CAN WE FIND?")]
     // La lista de textos sirve para poder tener la data de los puntos de interes por separado.
@@ -26,7 +26,7 @@ public class Item : Clue
 
 
     [Space(15), Header("ON A FLASHBACK, YOU'LL SEE...")]
-    public FlashbackInfo flashbackInfo ;
+    public FlashbackInfo flashbackInfo;
 
     [Space(15), Header("WHAT DOES IT PROVE?")]
     [SerializeField] List<Whodunnit> doesItProveAnything;

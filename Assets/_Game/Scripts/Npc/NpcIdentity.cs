@@ -9,6 +9,8 @@ public class NpcIdentity : Clue
     [Space(25), Header("CLUE DATA")]
     [Space(20)]
     public string npcName;
+    [TextArea(0,30)] public string characterInfo;
+    [PreviewField] public Sprite filePhoto;
     public SerializableGuid npcGuid = SerializableGuid.NewGuid();
     public List<Whodunnit> possibleRoles;
 

@@ -6,16 +6,21 @@ using System.Linq;
 using System.Threading;
 using UnityEngine.UI;
 using TMPro;
+using PrimeTween;
+using UnityEngine.TextCore.Text;
 
 // Esto despues se unificaria con el notebook manager/view normal cuando saquemos el sistema viejo.
 public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
 {
+    #region Variables
+
     public NotebookView view;
+    [HideInInspector] public Transform _handler;
 
     public ScrollRect treeScroll;
-    public float scrollSpeed = 10f;
+    public float scrollSpeed = 10f, transitionSpeed = 6f;
     public DialogueTreeUI contentUI;
-    public Canvas treeCanvas;
+    public GameObject treeAnchor, normalCanvas;
     public HorizontalLayoutGroup buttonLayout;
     public int buttonLayoutHeight = 125, arrowLayoutHeight = 225;
     public ButtonSetting buttonSetting;
@@ -32,8 +37,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
     public event Action OnPause;
     public event Action OnStop;
 
-    int _currentTreeLevel = 1;
-    NotebookManager _manager;
+    #endregion
 
     #region IActivity
     public bool CanPopWithKey()
@@ -57,62 +61,117 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
     }
     #endregion
 
+    #region Controls & Transition
+
+    NotebookManager _manager;
     Vector3 _scrollScale;
+
     private void Start()
     {
         _manager = NotebookManager.Instance;
+        _handler = _manager.handler;
         _scrollScale = treeParent.localScale;
+        treeAnchor.gameObject.SetActive(false);
     }
 
-    public void Update()
+    private void Update()
     {
         // placeholder, obvio
-        if(Input.GetKeyDown(KeyCode.T) && !_manager.m_markingPanel.isMarkingClue)
-        {
-            if(!treeCanvas.gameObject.activeInHierarchy) 
-            {
-                pushEvent?.Raise(this);
-                enableCursor?.Raise(true);
-                treeCanvas.gameObject.SetActive(true);
-                foreach(var character in _manager.FoundCharacters)
-                {
-                    var button = view.CreateCustomButton(
-                        character.Key.npcName, 
-                        characterParent, 
-                        buttonSetting);
-
-                    button.transform.localScale *= 0.9f;
-
-                    button.DisableSub();
-                    button.AddListener(async () =>
-                    {
-                        ClearText();  
-                        DeleteTree();
-                        treeScroll.verticalNormalizedPosition = 0;
-                        treeScroll.horizontalNormalizedPosition = 0;
-                        treeParent.localScale = _scrollScale;
-                        await BuildTree(_manager.StartedDialogues
-                            [_manager.FoundCharacters.ToList().IndexOf(character)]);
-                    });
-                }
-            }
-            else
-            {
-                popEvent?.Raise();
-                ClearText(); DeleteTree(); ClearButtons();
-                treeParent.localScale = _scrollScale;
-                treeCanvas.gameObject.SetActive(false);
-                enableCursor?.Raise(false);
-            }
-
-        }
+        //if(Input.GetKeyDown(KeyCode.T) && !_manager.m_markingPanel.isMarkingClue)
+        //{
+        //    _ = ToggleTree();
+        //}
         // otro placeholder, para mover el scroll con el teclado
         MoveTreeScroll();
+    }
+    public async UniTask ToggleTree(bool on = true, NpcIdentity openingCharacter = default)
+    {
+        if (on)
+        {
+            //pushEvent?.Raise(this);
+            //enableCursor?.Raise(true);
+            normalCanvas.gameObject.SetActive(false);
+            await RotateHand(true);
+            view.m_renderCamera.gameObject.transform.Rotate(0, 0, 90);
+            treeAnchor.gameObject.SetActive(true);
+            
+            var returnButton = view.CreateCustomButton("- RETURN -", characterParent, buttonSetting);
+            returnButton.transform.localScale = new Vector3(0.6f, 0.9f, 0.9f);
+            returnButton.DisableSub();
+            returnButton.AddListener(async () =>
+            {
+                await ToggleTree(false);
+            });
+
+            foreach (var character in _manager.FoundCharacters)
+            {
+                var button = view.CreateCustomButton(
+                    character.Key.npcName,
+                    characterParent,
+                    buttonSetting);
+
+                button.transform.localScale = new Vector3(0.6f,0.9f,0.9f);
+
+                button.DisableSub();
+                button.AddListener(async () =>
+                {
+                    ClearText();
+                    DeleteTree();
+                    treeScroll.verticalNormalizedPosition = 0;
+                    treeScroll.horizontalNormalizedPosition = 0;
+                    treeParent.localScale = _scrollScale;
+                    await BuildTree(_manager.StartedDialogues
+                        [_manager.FoundCharacters.ToList().IndexOf(character)]);
+                });
+            }
+            if(openingCharacter != default)
+                await BuildTree(_manager.StartedDialogues
+                        [_manager.FoundCharacters.ToList().IndexOf(
+                            _manager.FoundCharacters.First(x => x.Key == openingCharacter))]);
+        }
+        else
+        {
+            //popEvent?.Raise();
+            view.ClearDetail();
+            ClearText(); DeleteTree(); ClearButtons();
+            treeParent.localScale = _scrollScale;
+            treeAnchor.gameObject.SetActive(false);
+            view.m_renderCamera.gameObject.transform.Rotate(0, 0, -90);
+            await RotateHand(false);
+            normalCanvas.gameObject.SetActive(true);
+            //enableCursor?.Raise(false);
+        }
+
+    }
+    Sequence _seq = new();
+    public async UniTask RotateHand(bool horizontal = true)
+    {
+        if (_handler == null) return;
+        //Tween.StopAll(_handler);
+        _seq.Complete();
+
+        _seq = Sequence.Create();
+
+        _ = _seq.Group(Tween.LocalRotation(
+            target: _handler,
+            endValue: _handler.localRotation.eulerAngles + new Vector3(0, 0, (horizontal ? 80 : -80)),
+            duration: 2 / transitionSpeed,
+            ease: Ease.OutCirc));
+
+        _ = _seq.Group(Tween.LocalPosition(
+            target: _handler,
+            endValue: _handler.localPosition 
+            + (new Vector3(0.4f,0.4f,-0.4f) / UIManager.Instance.AspectRatioScale(0.0001f)) 
+            * (horizontal ? 1 : -1),
+            duration: 2 / transitionSpeed,
+            ease: Ease.OutCirc));
+
+        await _seq;
     }
 
     public void MoveTreeScroll()
     {        
-        if (treeCanvas.gameObject.activeInHierarchy && !_manager.m_markingPanel.isMarkingClue)
+        if (treeAnchor.gameObject.activeInHierarchy && !_manager.m_markingPanel.isMarkingClue)
         {
             if (Input.GetKey(KeyCode.W)) treeParent.position -= new Vector3(0,Time.deltaTime,0) * 100 * scrollSpeed;
             else if (Input.GetKey(KeyCode.S)) treeParent.position += new Vector3(0, Time.deltaTime, 0) * 100 * scrollSpeed;
@@ -141,6 +200,9 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
         }
     }
 
+    #endregion
+
+    #region Tree Generation
 
     Dialogue _currentDialogue;
     List<INode> _unlockedDialogue;
@@ -173,7 +235,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
         HorizontalLayoutGroup arrowLayout = null;
         if (origin != treeParent)
         {
-            arrowLayout = SpawnLayout(origin.position - new Vector3(0, buttonLayoutHeight + 50, 0), new(transf.sizeDelta.x, arrowLayoutHeight));
+            arrowLayout = SpawnLayout(origin.position - new Vector3(0, buttonLayoutHeight + 150, 0), new(transf.sizeDelta.x, arrowLayoutHeight));
             arrowLayout.gameObject.name = $"ArrowLayer {currentLevel - 1}";
             arrowLayout.spacing = 500 / Mathf.Pow(nodes.Count, (currentLevel == 2 ? currentLevel : currentLevel - 1));
             //arrowLayout.transform.position = origin.position - new Vector3(0, buttonLayoutHeight + 50, 0);
@@ -190,7 +252,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
             origin = (RectTransform)arrowLayout.transform;
         }
 
-        var layout = SpawnLayout(origin.position - new Vector3(0, arrowLayoutHeight - 50, 0), new(transf.sizeDelta.x, buttonLayoutHeight));
+        var layout = SpawnLayout(origin.position - new Vector3(0, arrowLayoutHeight + 50, 0), new(transf.sizeDelta.x, buttonLayoutHeight));
         layout.gameObject.name = $"TreeLevel {currentLevel}";
         layout.spacing = 500 / Mathf.Pow(nodes.Count, currentLevel - 1);
 
@@ -245,7 +307,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
 
                 await AddLevel(nextNodes, button.transform, currentLevel + 1);
             }, 
-            cancelCondition: () => !treeCanvas.gameObject.activeInHierarchy);
+            cancelCondition: () => !treeAnchor.gameObject.activeInHierarchy);
 
         }     
 
@@ -264,7 +326,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
     public ButtonFactoryObject SpawnClueButton(Note cachedNote, Transform parent, bool unread = false)
     {
         var button = view.CreateCustomButton(cachedNote.GetButtonText(), parent, buttonSetting);
-        button.transform.localScale *= 0.6f;
+        button.transform.localScale = new Vector3(0.6f,0.8f,1f);
         button.transform.Rotate(0, 0, UnityEngine.Random.Range(-5, 5));
 
         if (unread)
@@ -288,7 +350,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
         {
             var newToken = _manager.Cancel();
             ClearText();
-            await contentUI.PlayText(new(){cachedNote.GetInfo()}, CancellationToken.None, textParent, 32);
+            await contentUI.PlayText(new(){cachedNote.GetInfo()}, CancellationToken.None, textParent, 36);
              _manager.AddDetailButtons(button, view, cachedNote);
         });
         //button.MoveSubToLast();
@@ -316,4 +378,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
 
         return button;
     }
+
+    #endregion
+
 }
