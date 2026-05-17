@@ -93,6 +93,9 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
             normalCanvas.gameObject.SetActive(false);
             await RotateHand(true);
             view.m_renderCamera.gameObject.transform.Rotate(0, 0, 90);
+            treeScroll.verticalNormalizedPosition = 0;
+            treeScroll.horizontalNormalizedPosition = 0;
+            treeParent.localScale = _scrollScale;
             treeAnchor.gameObject.SetActive(true);
             
             var returnButton = view.CreateCustomButton("- RETURN -", characterParent, buttonSetting);
@@ -134,6 +137,8 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
             //popEvent?.Raise();
             view.ClearDetail();
             ClearText(); DeleteTree(); ClearButtons();
+            treeScroll.verticalNormalizedPosition = 0;
+            treeScroll.horizontalNormalizedPosition = 0;
             treeParent.localScale = _scrollScale;
             treeAnchor.gameObject.SetActive(false);
             view.m_renderCamera.gameObject.transform.Rotate(0, 0, -90);
