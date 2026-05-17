@@ -73,7 +73,6 @@ public enum SFXType
 {
     None,
     Player,
-    Notebook,
     Menu,
     Ambient,
 }

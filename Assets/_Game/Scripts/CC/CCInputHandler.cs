@@ -60,8 +60,7 @@ public class CcInputHandler : MonoBehaviour
         if(dir != Vector2.zero && !_isMoving)
         {
             _isMoving = true;
-            var oldDir = dir;
-            AudioManager.Instance.RandomSFX(SFXType.Player, true, () => !_isMoving || dir != oldDir);
+            AudioManager.Instance.RandomSFX(SFXType.Player, true, () => !_isMoving);
         }
         else if(dir == Vector2.zero) _isMoving = false;
    }

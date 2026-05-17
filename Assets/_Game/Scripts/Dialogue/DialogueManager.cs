@@ -118,7 +118,9 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
 
         _unlockedDialogue = new(_currentDialoguer.Dialogue, new());
 
+        AudioManager.Instance.SelectSFX(SFXType.Player, "FlipForwards");
         _ = AudioManager.Instance.ChangeMusicState(MusicState.Dialogue);
+
         await m_dialogueView.UnfoldDialogue(
             true, 
             _currentDialoguer.ID.makesEyeContact,
@@ -300,6 +302,7 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
 
     private void EndDialogue(bool withTopic = false)
     {
+        AudioManager.Instance.SelectSFX(SFXType.Player, "FlipBackwards");
         _ = AudioManager.Instance.ChangeMusicState(MusicState.Default);
 
         string title = $"{_currentDialoguer.NpcName.Possessive()} account" + (withTopic
