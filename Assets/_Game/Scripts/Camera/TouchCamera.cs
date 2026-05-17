@@ -2,7 +2,7 @@ using System;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class StaticCamera : MonoBehaviour,IActivity,ITouch
+public class TouchCamera : MonoBehaviour,IActivity,ITouch
 {
    [SerializeField] private CinemachineCamera m_camera;
    [SerializeField] private bool m_canPopWithKey;

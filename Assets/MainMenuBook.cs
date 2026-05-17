@@ -17,6 +17,8 @@ public class MainMenuBook : MonoBehaviour
 
         _activity.OnPause += () => { enabled = false; };
         _activity.OnResume += () => { enabled = true; };
+        
+        enabled = false;
     }
 
     private void OnEnable()

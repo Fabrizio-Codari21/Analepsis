@@ -53,7 +53,18 @@ public class Menu : MonoBehaviour,IActivity
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    
+
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+
+    public void Back()
+    {
+        m_popEvent.Raise();
+    }
     
     
 }
