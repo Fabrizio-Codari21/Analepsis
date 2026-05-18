@@ -15,7 +15,7 @@ public class WinManager : Singleton<WinManager>
     public void Retry()
     { 
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
-       SceneManager.LoadScene("SampleScene");
+       SceneManager.LoadScene("Scene_Hotel_Lobby");
     }
 
     // obviamente esto despues se cambia cuando nuestra pantalla de victoria sea mas que un texto.

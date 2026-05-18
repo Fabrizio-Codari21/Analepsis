@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Rendering;
 
-public class AudioManager : PersistentSingleton<AudioManager>
+public class AudioManager : Singleton<AudioManager>
 {
     public SerializedDictionary<SFXType, AudioSelector> SFX = new();
     public SerializedDictionary<MusicState, AudioSource> Music = new();

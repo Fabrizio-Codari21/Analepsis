@@ -32,7 +32,13 @@ public class Hand : MonoBehaviour
         
     }
 
-    
+    private void OnDestroy()
+    {
+        takeOutChannel.OnEventRaised -= Takeout;
+        putInChannel.OnEventRaised -= Put;
+    }
+
+
     private void Takeout(ITakeable objectToTakeOut)
     {
         m_handCamera.gameObject.SetActive(true);
