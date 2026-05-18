@@ -1,0 +1,16 @@
+Para crear un caso nuevo se necesita:
+
+1) Traer todos los managers contenidos dentro de "--- BASE GAME ---" en otra escena para que el juego funcione; a eso se le sumaria un "--- MAP ---" donde iria el diseño del nivel y "--- ELEMENTS ---" donde irian los personajes, pistas y demas.
+
+2) En la carpeta "_Game/SO" se pueden crear Scriptable Objects haciendo click derecho (Create > Game > [Name]): lo primero es crear un CaseResolution el cual va a contener todas las soluciones posibles al caso en cuestión, cada una con su nombre, descripción, y pistas asociadas a cada rol del whodunnit.
+
+3) Para crear un personaje, ademas de copiar el prefab de BaseCharacter, se necesita hacer un SO de Npc (el cual contiene nombre, rol y aspectos de la estetica y personalidad del npc) y otro de Dialogue (el cual contiene el graph con la conversacion y la info que guarda cada nodo) para luego asignarselos al script NPC que cada personaje tiene.
+Además, hay que:
+- Meterse al LookAt dentro del Rig y asignar el LookAt del player a la lista de SourceObjects, de modo tal que pueda girar la cabeza hacia el player.
+
+4) Para crear una pista, ademas de copiar el prefab de BaseItem, se necesita hacer un SO de Item (el cual contiene nombre, objeto e informacion obtenida en cada punto del analisis) para luego asignarselos al ItemReference de cada objeto. 
+Además, hay que:
+- Crear una instancia Prefab_UI del objeto para mostrar durante la inspección, la cual debe tener dentro los POI con el ID correspondiente para poder ser inspeccionados.
+- Crear una instancia del maniqui posado con el cual hacer el flashback y meterlo dentro de un TransformKeyInstance ya posicionado en la escena (con su propio SO de TransformKey)
+
+5) Una vez creadas todas las pistas y escritos todos los dialogos, se asignan segun correspondan a la lista de cada solucion del CaseResolution, y ya con eso deberia estar.
