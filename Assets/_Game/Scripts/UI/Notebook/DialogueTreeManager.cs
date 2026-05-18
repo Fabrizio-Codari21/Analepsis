@@ -377,7 +377,6 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
             _manager.ClearMarkEvent();
             _manager.enableMarkEvent += button.DisplayMark;
             _manager.EnableButtons(false);
-            view.m_renderCamera.gameObject.transform.Rotate(0, 0, 90);
             _manager.markedClueEvent.Raise(cachedNote);
         });
 
