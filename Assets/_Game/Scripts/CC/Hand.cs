@@ -1,56 +1,73 @@
-using Cysharp.Threading.Tasks;
-using PrimeTween;
 using System;
 using UnityEngine;
-
+using Cysharp.Threading.Tasks;
 public class Hand : MonoBehaviour
 {
+    
     [Header("Settings")]
     [SerializeField] private Transform m_handRoot;
-    [SerializeField] private Camera m_handCamera; 
-    [SerializeField] private LayerMask m_handLayerMask;
-    [SerializeField] private Vector2EventChannel uvPositionChannel;
+    [Header("Rendering Camera")]
+    [SerializeField] private Camera m_handCamera;
 
     [Header("Channels")]
-    [SerializeField] private EventChannel takeOutChannel;
-    [SerializeField] private EventChannel putInChannel;
+    [SerializeField] private TakeableEvent takeOutChannel;
+    [SerializeField] private TakeableEvent putInChannel;
 
+    [Header("Animation")]
+    [SerializeField] private Animator m_animator;
+    [Range(0f,1f)][SerializeField] private float m_takeCrossFade = 0.2f;
+    [Range(0f,1f)][SerializeField] private float m_putCrossFade = 0.2f;
+    
+    private const string TakeoutState = "Anim_Hand_Takeout";  // despues pueder cambiar por int , que es un poco mas eficiente que string
+    private const string PutinState = "Anim_Hand_Put";
+
+    
     private void Start()
     {
-        takeOutChannel.OnEventRaised += TakeOut;
-        putInChannel.OnEventRaised += PutIn;
-
-        PutIn();
+        takeOutChannel.OnEventRaised += Takeout;
+        putInChannel.OnEventRaised += Put;
+        
+        m_handCamera.gameObject.SetActive(false);
+        
+        
     }
 
-    private void Update()
-    {
-        ShootRay();
-    }
-
-private void ShootRay()
-{
-   
-    Ray ray = m_handCamera.ScreenPointToRay(Input.mousePosition);
     
-    if (Physics.Raycast(ray, out var hit, 2.0f, m_handLayerMask))
+    private void Takeout(ITakeable objectToTakeOut)
     {
-        uvPositionChannel.Raise(hit.textureCoord);
+        m_handCamera.gameObject.SetActive(true);
+        
+        objectToTakeOut.TryTake(m_handRoot);
+        m_animator.CrossFade(TakeoutState, m_takeCrossFade);
     }
-    else
+
+
+    private void Put(ITakeable objectToPutIn)
     {
-        Debug.DrawRay(ray.origin, ray.direction * 2.0f, Color.red);
-        uvPositionChannel.Raise(new Vector2(-1f, -1f));
+        PlayAnimationAsync(PutinState,m_putCrossFade, callBack: ()=>
+        {
+            objectToPutIn.Release();
+            m_handCamera.gameObject.SetActive(false);
+        }).Forget();
+    }
+
+
+    private async UniTask PlayAnimationAsync(string hash,float transitionDuration,Action callBack)  // animation hand
+    {
+        m_animator.CrossFade(hash, transitionDuration);
+        
+        await UniTask.Yield();
+        var animationStateInfo = m_animator.GetCurrentAnimatorStateInfo(0);
+        await UniTask.Delay(TimeSpan.FromSeconds(animationStateInfo.length));
+        
+        callBack();
     }
 }
 
-    private void TakeOut() { enabled = true; m_handRoot.gameObject.SetActive(true); }
-    private void PutIn() { enabled = false; m_handRoot.gameObject.SetActive(false); }
-
-
-    private void OnDestroy()
-    {
-        takeOutChannel.OnEventRaised -= TakeOut;
-        putInChannel.OnEventRaised -= PutIn;
-    }
+public interface ITakeable
+{
+    public void TryTake(Transform takeRoot);
+    
+    public void Release();
+    
 }

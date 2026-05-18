@@ -9,7 +9,7 @@ public class DynamicUIText : FactoryUIObject
 {
     [SerializeField] private TMP_Text m_text;
     [SerializeField] private float m_charsPerSecond = 30f;
-    private float m_maxWidth = 500f;
+    [SerializeField ]private float m_maxWidth = 500f;
     bool _setToMaxWidth = false;
     private CancellationTokenSource _cts;
     Vector2 _currentSize;

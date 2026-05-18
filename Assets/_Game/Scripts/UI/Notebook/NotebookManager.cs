@@ -22,15 +22,16 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     
     
     #region Event
-    [SerializeField] private EventChannel takeOutNotebookChannel; // cuando saca
-    [SerializeField] private EventChannel putInNotebookChannel; // cuando guarda
+    [Header("Takeout and Put Events")]
+    [SerializeField] private TakeableEvent takeOutNotebookChannel; // cuando saca
+    [SerializeField] private TakeableEvent putInNotebookChannel; // cuando guarda
+    [Header("Notebook Core Events")]
     [SerializeField] private RecordNoteEvent m_recordNote; // record 
     [SerializeField] private BoolEventChannel m_udpatePoi;
     [SerializeField] public MarkClueEvent markedClueEvent;
     #endregion
     
-    [SerializeField] private NotebookView m_view;
-    public Transform handler;
+    [SerializeField] private NotebookRepresenter representer;
     [SerializeField] public MarkingPanelView m_markingPanel;
     [ReadOnly,ShowInInspector] private NoteType _currentNoteType;
     [ReadOnly, ShowInInspector] public Dictionary<SerializableGuid, Note> markedClues = new();
@@ -40,8 +41,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private Dictionary<NpcIdentity, List<LogNote>> _characterLogs = new();
 
     private CancellationTokenSource _cts;
-
-    private UVVirtualMouse _virtualMouse;
+    
     public Dictionary<NpcIdentity, List<LogNote>> FoundCharacters => _characterLogs;
     List<DialogueNote> _startedDialogues = new();
     public List<DialogueNote> StartedDialogues => _startedDialogues;
@@ -108,28 +108,22 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
 
     #region  Unity Life
-
     
-
  
     private void Start()
     {
-        if (handler)
-        {
-            handler.transform.position += new Vector3(
-                UIManager.Instance.AspectRatioOffset(1f),
-                0,
-                UIManager.Instance.AspectRatioOffset(1.5f));
-        }
-
-        m_view = Instantiate(m_view,transform);
+        // if (handler)
+        // {
+        //     handler.transform.position += new Vector3(UIManager.Instance.AspectRatioOffset(1f), 0, UIManager.Instance.AspectRatioOffset(1.5f));
+        // }
+        
+        representer = Instantiate(representer);
         ResetMarkingPanel();
         inputReaderNoteBook.Close += Close;
         m_recordNote.OnEventRaised += Record;
         markedClueEvent.OnEventRaised +=  MarkClue;
         m_openNotebookChannel.OnEventRaised += Open;
         
-        _virtualMouse = GetComponentInChildren<UVVirtualMouse>();
     }
 
     private void OnDestroy()
@@ -172,21 +166,176 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     public event Action<bool> closeAllButtonsEvent = delegate { };
     public void EnableButtons(bool enable) => enableButtonsEvent?.Invoke(enable);
     public void EnableMark(bool enable) => enableMarkEvent?.Invoke(enable);
+    
+    
+    #region Take & Put
 
     private void Open()
     {
         pushEvent.Raise(this);
         AudioManager.Instance.SelectSFX(SFXType.Player, "Open");
+
+        takeOutNotebookChannel.Raise(representer);
+
         _ = ActionTimer.Instance.m_view.DisplayUI();       
     }
 
     private void Close()
     {
         popEvent.Raise();
+
         AudioManager.Instance.SelectSFX(SFXType.Player, "Close");
-        closeAllButtonsEvent?.Invoke(false); closeAllButtonsEvent = default;
+
+        putInNotebookChannel.Raise(representer);
+        closeAllButtonsEvent?.Invoke(false);
+        closeAllButtonsEvent = null;
     }
     
+    
+    #endregion
+
+    #region  Internal
+
+    
+
+    private void OpenNotebookByType(NoteType type)
+    {
+        _currentNoteType = type;
+        _cts?.Cancel();
+        _cts?.Dispose();
+        _cts = null;
+        
+        representer.ClearDetail();
+        representer.ClearButton();
+        enableButtonsEvent = null; 
+        enableMarkEvent = null;
+       
+        representer.SetTitle(type.ToString()); // si vamos a hacer localization ya deberia usar de esta forma , lo hago asi para ahorrarme tiempo
+        // no es muy solid que digamos pero para probar por ahora sirve
+        if(type == NoteType.Log && _characterLogs.Count > 0)
+        {
+            foreach(var character in _characterLogs)
+            {
+                var charButton = representer.CreateButton(character.Key.npcName + " Logs");
+                charButton.gameObject.transform.localScale *= 1.1f;
+                charButton.DisableSub();
+                closeAllButtonsEvent += charButton.MakeOpen;
+
+                charButton.AddListener(async () =>
+                {
+
+                    Cancel();
+                    representer.ClearDetail();
+                    representer.CreateImage(character.Key.filePhoto);
+                    await representer.PlayText(new() { character.Key.characterInfo }, new());
+                    var treeButton = representer.CreateDetailButton("See Dialogue Tree");
+                    treeButton.AddListener(async () => 
+                    { 
+                        representer.ClearDetail();
+                        await representer.ToggleTree(true, character.Key);
+                    });
+                });
+            }
+        }
+        else
+        {
+            if (_notebookPages.All(x => x.Value.type != type))
+            {
+                var button = representer.CreateButton($"No {type} found yet.");
+                button.EnableSub(false); button.SetInteractable(false); return;
+            }
+
+            foreach (var button in _notebookPages.Values.Where(note => note.type == type).Select(SpawnClueButton))
+            {
+                button.EnableSub();
+                button.gameObject.transform.localScale *= 1.1f;
+            }
+        }
+
+    }
+
+  
+
+    private ButtonFactoryObject SpawnClueButton(Note cachedNote)
+    {
+        var button = representer.CreateButton(cachedNote.GetButtonText());
+      
+        
+        if (markedClues.ContainsKey(cachedNote.guid))
+        {
+            button.DisplayMark(true);
+        }
+        button.AddListener(() =>
+        {
+            Cancel();
+            representer.ClearDetail();
+            _ = SelectNote(button, cachedNote, _cts.Token);
+        });
+        button.EnableSub();
+        enableButtonsEvent += (x) => 
+        {
+            if (button != null) button.EnableSub();
+        };
+        button.AddListenerToSub(() =>
+        {
+            if (markedClues.ContainsKey(cachedNote.guid))
+            {
+                button.DisplayMark(false);
+                markedClues.Remove(cachedNote.guid);
+                return;
+            }
+            m_markingPanel.isMarkingClue = true;
+
+            button.DisplayMark(true);
+            enableMarkEvent = button.DisplayMark;
+            EnableButtons(false);
+            markedClueEvent.Raise(cachedNote);
+        });
+        
+        return button;
+    }
+
+    private async UniTask SelectNote(ButtonFactoryObject parent, Note note, CancellationToken token)
+    {
+        try
+        {
+            representer.ClearDetail();
+            await note.Show(representer, token);
+            token.ThrowIfCancellationRequested();
+            AddDetailButtons(parent, representer, note);
+
+        }
+        catch (OperationCanceledException)
+        {
+        }
+    }
+    
+    private void ChangeType(float direction)
+    {
+        if(direction == 0 ) return;
+        var values = (NoteType[])Enum.GetValues(typeof(NoteType));
+        var currentIndex = (int)_currentNoteType;
+        
+        currentIndex += direction > 0 ? 1 : -1;
+        
+        if (currentIndex >= values.Length) currentIndex = 0;
+        else if (currentIndex < 0) currentIndex = values.Length - 1;
+        
+        OpenNotebookByType(values[currentIndex]);
+    }
+    
+    
+    
+    #endregion
+    
+    #region External
+    public CancellationTokenSource Cancel() 
+    { 
+        _cts?.Cancel(); 
+        _cts?.Dispose(); 
+        _cts = new CancellationTokenSource(); 
+        return _cts; 
+    }
     public void UnlockPoi(Item item, string poiId)
     {
         if (!_unlockedPoisByItem.ContainsKey(item.guid))
@@ -235,171 +384,18 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         return !_unlockedFlashbackNote.TryGetValue(item, out var flashback) ? string.Empty : flashback;
     }
 
-    private void OpenNotebookByType(NoteType type)
+
+    public void AddDetailButtons(ButtonFactoryObject parent, NotebookRepresenter representer, Note note)
     {
-        _currentNoteType = type;
-        _cts?.Cancel();
-        _cts?.Dispose();
-        _cts = null;
-        
-        m_view.ClearDetail();
-        m_view.ClearButton();
-        enableButtonsEvent = default; enableMarkEvent = default;
-        //m_markingPanel.markableClues.Clear();
-        m_view.SetTitle(type.ToString()); // si vamos a hacer localization ya deberia usar de esta forma , lo hago asi para ahorrarme tiempo
-        // no es muy solid que digamos pero para probar por ahora sirve
-        if(type == NoteType.Log && _characterLogs.Count > 0)
-        {
-            foreach(var character in _characterLogs)
-            {
-                var charButton = m_view.CreateButton(character.Key.npcName + " Logs");
-                charButton.gameObject.transform.localScale *= 1.1f;
-                charButton.DisableSub();
-                closeAllButtonsEvent += charButton.MakeOpen;
-
-                charButton.AddListener(async () =>
-                {
-
-                    Cancel();
-                    m_view.ClearDetail();
-                    m_view.CreateImage(character.Key.filePhoto);
-                    await m_view.PlayText(new() { character.Key.characterInfo }, new());
-                    var treeButton = m_view.CreateDetailButton("See Dialogue Tree");
-                    treeButton.AddListener(async () => 
-                    { 
-                        m_view.ClearDetail();
-                        await DialogueTreeManager.Instance.ToggleTree(true, character.Key);
-                    });
-
-                    //if (!charButton.IsOpen())
-                    //{
-                    //    if (character.Value.Count > 0)
-                    //    {
-                    //        foreach (var item in character.Value)
-                    //        {
-                    //            var button = SpawnClueButton(item);
-                    //            button.EnableSub();
-                    //            //if (markedClues.ContainsKey(item.guid)) button.DisplayMark(true); // no termino de funcionar
-                    //            button.MoveToPosition(charButton.GetPosition() + (character.Value.IndexOf(item) + 1));
-                    //            button.gameObject.transform.localScale *= 0.9f;
-                    //            charButton.AddToChildren(button);
-                    //            item.parentButton = button;
-                    //        }
-                    //        charButton.MakeOpen(true);
-                    //    }
-                    //    else
-                    //    {
-                    //        var button = m_view.CreateButton($"No saved conversations.");
-                    //        button.DisableSub();
-                    //        button.SetInteractable(false);
-                    //        button.MoveToPosition(charButton.GetPosition() + 1);
-                    //        button.gameObject.transform.localScale *= 0.9f;
-                    //        charButton.AddToChildren(button);
-                    //        charButton.MakeOpen(true);
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    charButton.ClearChildren();
-                    //    charButton.MakeOpen(false);
-                    //    m_view.ClearDetail();
-                    //}
-                });
-            }
-        }
-        else
-        {
-            if (_notebookPages.Where(x => x.Value.type == type).Count() <= 0)
-            {
-                var button = m_view.CreateButton($"No {type} found yet.");
-                button.EnableSub(false); button.SetInteractable(false); return;
-            }
-            foreach (var note in _notebookPages.Values)
-            {
-                if (note.type != type) continue;
-                var cachedNote = note;
-                var button = SpawnClueButton(cachedNote);
-                button.EnableSub();
-                button.gameObject.transform.localScale *= 1.1f;
-            }
-        }
-
-        //print("markable clues: " + m_markingPanel.markableClues.Count);
-    }
-
-    public CancellationTokenSource Cancel() 
-    { _cts?.Cancel(); _cts?.Dispose(); _cts = new CancellationTokenSource(); return _cts; }
-
-    public ButtonFactoryObject SpawnClueButton(Note cachedNote)
-    {
-        var button = m_view.CreateButton(cachedNote.GetButtonText());
-        //m_markingPanel.markableClues.Add(cachedNote.guid, button);
-        
-        if (markedClues.ContainsKey(cachedNote.guid))
-        {
-            button.DisplayMark(true);
-        }
-        button.AddListener(() =>
-        {
-            Cancel();
-            m_view.ClearDetail();
-            _ = SelectNote(button, cachedNote, _cts.Token);
-        });
-        //button.MoveSubToLast();
-        button.EnableSub();
-        enableButtonsEvent += (x) => 
-        {
-            if (button != null) button.EnableSub();
-        };
-        button.AddListenerToSub(() =>
-        {
-            //_cts?.Cancel();
-            //_cts?.Dispose();
-            //_cts = new CancellationTokenSource();
-            if (markedClues.ContainsKey(cachedNote.guid))
-            {
-                button.DisplayMark(false);
-                markedClues.Remove(cachedNote.guid);
-                return;
-            }
-            m_markingPanel.isMarkingClue = true;
-
-            button.DisplayMark(true);
-            enableMarkEvent = button.DisplayMark;
-            EnableButtons(false);
-            AudioManager.Instance.SelectSFX(SFXType.Player, "FlipForwards");
-            markedClueEvent.Raise(cachedNote);
-        });
-
-        return button;
-    }
-
-    public async UniTask SelectNote(ButtonFactoryObject parent, Note note, CancellationToken token)
-    {
-        try
-        {
-            m_view.ClearDetail();
-            await note.Show(m_view, token);
-            token.ThrowIfCancellationRequested();
-            AddDetailButtons(parent, m_view, note);
-
-        }
-        catch (OperationCanceledException)
-        {
-        }
-    }
-
-    public void AddDetailButtons(ButtonFactoryObject parent, NotebookView view, Note note)
-    {
-        var clearButton = view.CreateDetailButton("Clear");
+        var clearButton = representer.CreateDetailButton("Clear");
         clearButton.AddListener(() =>
         {
-            view.ClearDetail();
+            representer.ClearDetail();
         });
-        var deleteButton = m_view.CreateDetailButton("Delete Log");
+        var deleteButton = this.representer.CreateDetailButton("Delete Log");
         deleteButton.AddListener(() =>
         {
-            m_view.ClearDetail();
+            this.representer.ClearDetail();
             if (note.type == NoteType.Log)
             {
                 bool emptied = false;
@@ -414,7 +410,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
                 if(emptied)
                 {
-                    var button = m_view.CreateButton($"No saved conversations.");
+                    var button = this.representer.CreateButton($"No saved conversations.");
                     button.transform.parent = parent.transform.parent;
                     button.DisableSub();
                     button.SetInteractable(false);
@@ -430,23 +426,13 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
         });
     }
-
-    private void ChangeType(float direction)
-    {
-        if(direction == 0 ) return;
-        var values = (NoteType[])Enum.GetValues(typeof(NoteType));
-        var currentIndex = (int)_currentNoteType;
-        
-        currentIndex += direction > 0 ? 1 : -1;
-        
-        if (currentIndex >= values.Length) currentIndex = 0;
-        else if (currentIndex < 0) currentIndex = values.Length - 1;
-
-        AudioManager.Instance.SelectSFX(SFXType.Player, currentIndex > (int)_currentNoteType ? "FlipForwards" : "FlipBackwards");
-        OpenNotebookByType(values[currentIndex]);
-    }
     
-    #region Interface
+
+    public bool CheckNote(SerializableGuid guid) => _notebookPages.ContainsKey(guid);
+
+#endregion
+    
+    #region IActivity
     public event Action OnResume;
     public event Action OnPause;
     public event Action OnStop;
@@ -455,14 +441,10 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         OnResume?.Invoke();
         inputReaderNoteBook.SetEnable();
-       
-        _virtualMouse.enabled = true;
         if (m_markingPanel.isMarkingClue) return;
-        m_view.gameObject.SetActive(true);
-        m_view.NextButtonAdd(()=> ChangeType(1));
-        m_view.PreviousButtonAdd(()=>ChangeType(-1));
+        representer.NextButtonAdd(()=> ChangeType(1));
+        representer.PreviousButtonAdd(()=>ChangeType(-1));
         inputReaderNoteBook.Flip += ChangeType;
-        takeOutNotebookChannel.Raise();
         enableCursor.Raise(true);
         OpenNotebookByType(_currentNoteType);
     }
@@ -471,14 +453,10 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         OnPause?.Invoke();
         inputReaderNoteBook.SetEnable(false);
-        _virtualMouse.enabled = false;
         if (m_markingPanel.isMarkingClue) return;
-
-        m_view.gameObject.SetActive(false);
-        m_view.RemoveNext();
-        m_view.RemovePrevious();
+        representer.RemoveNext();
+        representer.RemovePrevious();
         enableCursor.Raise(false);
-          putInNotebookChannel.Raise();
         inputReaderNoteBook.Flip -= ChangeType;
     }
 
@@ -492,9 +470,9 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
       return true;
     }
+  
     #endregion
      
-    public bool CheckNote(SerializableGuid guid) => _notebookPages.ContainsKey(guid);
     
 }
 
@@ -546,7 +524,7 @@ public  class Note
     {
         return displayName;
     }
-    public virtual UniTask Show(NotebookView view, CancellationToken token)
+    public virtual UniTask Show(NotebookRepresenter representer, CancellationToken token)
     {
         return UniTask.CompletedTask;
     }
@@ -575,32 +553,32 @@ public class LogNote : Note
         // se repite (si marcaste cosas distintas, etc).
         _recordInfo = log._recordInfo;
     }
-   public override async UniTask Show(NotebookView view, CancellationToken token)
+   public override async UniTask Show(NotebookRepresenter representer, CancellationToken token)
     {
         _showingFull = false; 
-        await RefreshDisplay(view, token, true);
+        await RefreshDisplay(representer, token, true);
     }
 
-    private async UniTask RefreshDisplay(NotebookView view, CancellationToken token, bool firstTime = false)
+    private async UniTask RefreshDisplay(NotebookRepresenter representer, CancellationToken token, bool firstTime = false)
     {
-        view.ClearDetail(); 
+        representer.ClearDetail(); 
         List<string> contentToShow = new(_showingFull ? _fullInfo : 
             (_recordInfo.Count <= 0 
             ? new(){"\n[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n" }
             : _recordInfo));
 
         contentToShow.Insert(0, _showingFull ? "<b>[FULL TRANSCRIPT]</b>" : "<b>[HIGHLIGHTS]</b>");
-        await view.PlayText(contentToShow, token);
+        await representer.PlayText(contentToShow, token);
         if (token.IsCancellationRequested) return;
         
         string buttonLabel = _showingFull ? "See Highlights" : "See Full Transcript";
-        var toggleBtn = view.CreateDetailButton(buttonLabel);
+        var toggleBtn = representer.CreateDetailButton(buttonLabel);
         toggleBtn.AddListener(() =>
         {
             _showingFull = !_showingFull;
-            _ = RefreshDisplay(view, token, false);
+            _ = RefreshDisplay(representer, token, false);
         });
-        if(!firstTime) NotebookManager.Instance.AddDetailButtons(parentButton, view, this);
+        if(!firstTime) NotebookManager.Instance.AddDetailButtons(parentButton, representer, this);
 
     }
     public override string GetInfo() => _fullInfo.AsString();
@@ -633,12 +611,12 @@ public class ItemNote : Note
         return fullContent;
     }
 
-    public override async UniTask Show(NotebookView view, CancellationToken token)
+    public override async UniTask Show(NotebookRepresenter representer, CancellationToken token)
     {
-        view.CreateImage(_item.sprite);
+        representer.CreateImage(_item.sprite);
     
         
-        await view.PlayText(FullInfo(), token);
+        await representer.PlayText(FullInfo(), token);
     }
     public override string GetInfo() => FullInfo().AsString();
 }
@@ -667,32 +645,32 @@ public class DialogueNote : Note
             if(!_unlockedDialogue.Contains(node)) _unlockedDialogue.Add(node);
         }
     }
-    public override async UniTask Show(NotebookView view, CancellationToken token)
+    public override async UniTask Show(NotebookRepresenter representer, CancellationToken token)
     {
         _showingFull = false;
-        await RefreshDisplay(_recordInfo, view, token, true);
+        await RefreshDisplay(_recordInfo, representer, token, true);
     }
 
-    public async UniTask RefreshDisplay(List<string> text, NotebookView view, CancellationToken token, bool firstTime = false)
+    public async UniTask RefreshDisplay(List<string> text, NotebookRepresenter representer, CancellationToken token, bool firstTime = false)
     {
-        view.ClearDetail();
+        representer.ClearDetail();
         List<string> contentToShow = new(_showingFull ? _fullInfo :
             (_recordInfo.Count <= 0
             ? new() { "\n[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n" }
             : text));
 
         contentToShow.Insert(0, _showingFull ? "<b>[FULL TRANSCRIPT]</b>" : "<b>[HIGHLIGHTS]</b>");
-        await view.PlayText(contentToShow, token);
+        await representer.PlayText(contentToShow, token);
         if (token.IsCancellationRequested) return;
 
         string buttonLabel = _showingFull ? "See Highlights" : "See Full Transcript";
-        var toggleBtn = view.CreateDetailButton(buttonLabel);
+        var toggleBtn = representer.CreateDetailButton(buttonLabel);
         toggleBtn.AddListener(() =>
         {
             _showingFull = !_showingFull;
-            _ = RefreshDisplay(text, view, token, false);
+            _ = RefreshDisplay(text, representer, token, false);
         });
-        if (!firstTime) NotebookManager.Instance.AddDetailButtons(parentButton, view, this);
+        if (!firstTime) NotebookManager.Instance.AddDetailButtons(parentButton, representer, this);
 
     }
     public override string GetInfo() => _fullInfo.AsString();

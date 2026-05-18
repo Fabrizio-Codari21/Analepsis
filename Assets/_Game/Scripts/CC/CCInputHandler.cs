@@ -10,14 +10,13 @@ public class CcInputHandler : MonoBehaviour
    [SerializeField] private IActivityEvent m_readerEvent;
    [SerializeField] private CinemachineInputAxisController m_cameraAxisController;
    [SerializeField] private CinemachineCamera  m_camera;
-   [SerializeField] private Transform m_cameraTransform;
    [SerializeField] private EventChannel m_openBook;
    [SerializeField] private EventChannel m_openTheoryBoard;
    [SerializeField] private BoolEventChannel m_flashback;
    public event Action<Vector2> Move = delegate { };
    public event Action InteractPressed = delegate { };
    public event Action InteractReleased = delegate { };
-   private IActivity activity;
+   private IActivity _activity;
    
    [SerializeField] private TransformEventChannel m_cameraTransformEvent;
 
@@ -29,15 +28,15 @@ public class CcInputHandler : MonoBehaviour
         {
             controller.Input.InputAction = InputActionReference.Create(m_reader.InputAction.Player.Look); // agrego camera input action reference
         }
-        activity = GetComponent<IActivity>();
-        activity.OnResume += Resume;
-        activity.OnPause += Pause;
-        activity.OnStop += Stop;
+        _activity = GetComponent<IActivity>();
+        _activity.OnResume += Resume;
+        _activity.OnPause += Pause;
+        _activity.OnStop += Stop;
       
         m_flashback.OnEventRaised += Flashback;
         InitReader();
         m_cameraTransformEvent.OnEventRaised += SetCamera;
-        m_readerEvent.Raise(activity); // BASE ACTIVITY EN TEORIA
+        m_readerEvent.Raise(_activity); // BASE ACTIVITY EN TEORIA
       
    }
 

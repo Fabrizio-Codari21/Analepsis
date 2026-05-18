@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +11,8 @@ public class DialogueTreeUI : MonoBehaviour
     [SerializeField] private Transform m_detailRoot;
     [SerializeField] private DynamicTextSetting  m_dynamicTextSetting;
     [SerializeField] private ScrollRect m_scrollRect;
-    [Range(200f,700f)][SerializeField] private float m_textWidth = 600f;
+    [Range(10f,700f)]
+    [SerializeField] private float m_textWidth = 600f;
     
     public async UniTask PlayText(List<string> text, CancellationToken token, Transform parent = null, float sizeOverride = 0) 
     {
@@ -38,7 +38,6 @@ public class DialogueTreeUI : MonoBehaviour
             t.ToLast();
             await UniTask.NextFrame(token);
             token.ThrowIfCancellationRequested();
-            m_scrollRect.verticalNormalizedPosition = 0;
             await t.PlayTypeWriterEffect(externalToken: token);
         }
 

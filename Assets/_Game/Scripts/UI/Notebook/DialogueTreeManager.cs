@@ -14,7 +14,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
 {
     #region Variables
 
-    public NotebookView view;
+    public NotebookRepresenter view;
     [HideInInspector] public Transform _handler;
 
     public ScrollRect treeScroll;
@@ -69,7 +69,7 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
     private void Start()
     {
         _manager = NotebookManager.Instance;
-        _handler = _manager.handler;
+    
         _scrollScale = treeParent.localScale;
         treeAnchor.gameObject.SetActive(false);
     }
@@ -93,7 +93,6 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
             //enableCursor?.Raise(true);
             normalCanvas.gameObject.SetActive(false);
             await RotateHand(true);
-            view.m_renderCamera.gameObject.transform.Rotate(0, 0, 90);
             treeScroll.verticalNormalizedPosition = 0;
             treeScroll.horizontalNormalizedPosition = 0;
             treeParent.localScale = _scrollScale;
@@ -142,7 +141,6 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
             treeScroll.horizontalNormalizedPosition = 0;
             treeParent.localScale = _scrollScale;
             treeAnchor.gameObject.SetActive(false);
-            view.m_renderCamera.gameObject.transform.Rotate(0, 0, -90);
             await RotateHand(false);
             normalCanvas.gameObject.SetActive(true);
             //enableCursor?.Raise(false);
