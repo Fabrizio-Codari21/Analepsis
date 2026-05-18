@@ -442,7 +442,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         if (currentIndex >= values.Length) currentIndex = 0;
         else if (currentIndex < 0) currentIndex = values.Length - 1;
 
-        AudioManager.Instance.SelectSFX(SFXType.Player, currentIndex > (int)_currentNoteType ? "FlipForwards" : "FlipBackwards");
+        //AudioManager.Instance.SelectSFX(SFXType.Player, currentIndex > (int)_currentNoteType ? "FlipForwards" : "FlipBackwards");
         OpenNotebookByType(values[currentIndex]);
     }
     
