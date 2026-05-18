@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueColor: {r: 0, g: 0, b: 0, a: 0}
   startingNode:
-    dialogueText: Hello, welcome to the hotel
+    dialogueText: Hey there...
     characterEmotion: 1
     characterReaction: 1
     doesItProveAnything: 4
     responses:
     - rid: 6774952466358992965
+    - rid: 6774952466358992967
     isRootNode: 1
     editorPosition: {x: 364, y: 280}
     guid:
@@ -56,33 +57,312 @@ MonoBehaviour:
       Part3: 3489654206
       Part4: 3013054045
     tag: 
-  _hiddenProof: 
+  - dialogueText: I'm not! At least not more than any ex-combatant, someone should
+      look into what war does to a fellow's brain
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    responses:
+    - rid: 6774952466358992970
+    - rid: 6774952466358992971
+    isRootNode: 0
+    editorPosition: {x: 1164, y: 453}
+    guid:
+      Part1: 4122052253
+      Part2: 1305631986
+      Part3: 1843491242
+      Part4: 971911095
+    tag: 
+  - dialogueText: I didn't do it for you
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    responses:
+    - rid: 6774952466358992973
+    isRootNode: 0
+    editorPosition: {x: 2372, y: 569}
+    guid:
+      Part1: 3054298216
+      Part2: 1109359958
+      Part3: 2955129729
+      Part4: 3364976297
+    tag: 
+  - dialogueText: Not quite a troop, I wasn't doing much of the shooting. I prefer
+      one bullet per brain, not three hundred misses to injure a single leg, ha!
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    responses:
+    - rid: 6774952466358992976
+    - rid: 6774952466358992977
+    isRootNode: 0
+    editorPosition: {x: 2388, y: 239.5}
+    guid:
+      Part1: 49811686
+      Part2: 1151970307
+      Part3: 697042092
+      Part4: 3722765143
+    tag: 
+  - dialogueText: Oh, get over it
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    responses: []
+    isRootNode: 0
+    editorPosition: {x: 3621, y: 372}
+    guid:
+      Part1: 1159698806
+      Part2: 1178946090
+      Part3: 445712812
+      Part4: 798104986
+    tag: 
+  - dialogueText: If I didn't take light of having to kill my fellow compatriots
+      in my desperate attempt to appease my superiors against constant defamations
+      and attacks towards my persona... I would've left that place a long time before
+      I was discharged
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    responses:
+    - rid: 6774952466358992980
+    - rid: 6774952466358992981
+    isRootNode: 0
+    editorPosition: {x: 3668, y: 94.52}
+    guid:
+      Part1: 2866881234
+      Part2: 1269484422
+      Part3: 2837742259
+      Part4: 3537210373
+    tag: 
+  - dialogueText: I began to believe everyone was a a secret (secret (secret (secret)))
+      spy! Crazy, right?
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    responses:
+    - rid: 6774952466358992983
+    isRootNode: 0
+    editorPosition: {x: 5525, y: -7.9600067}
+    guid:
+      Part1: 1974382265
+      Part2: 1165827636
+      Part3: 405430694
+      Part4: 3257180410
+    tag: 
+  _hiddenProof: 0400000003000000
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 6774952466358992965
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Hello comrade, are you an ex-combatant perhaps?
+        responseText: Hiya, lovely hotel
         nextNode:
-          rid: 6774952466358992966
+          rid: -2
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 806, y: 236}
-    - rid: 6774952466358992966
+        editorPosition: {x: 777, y: 110.99999}
+    - rid: 6774952466358992967
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Hey, you seem tense
+        nextNode:
+          rid: 6774952466358992969
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 750.5502, y: 453.00006}
+    - rid: 6774952466358992969
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: Yes, how did you know?
-        characterEmotion: 4
-        characterReaction: 6
-        doesItProveAnything: 3
+        dialogueText: I'm not! At least not more than any ex-combatant, someone should
+          look into what war does to a fellow's brain
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        responses:
+        - rid: 6774952466358992970
+        - rid: 6774952466358992971
+        isRootNode: 0
+        editorPosition: {x: 1164, y: 453}
+        guid:
+          Part1: 4122052253
+          Part2: 1305631986
+          Part3: 1843491242
+          Part4: 971911095
+        tag: 
+    - rid: 6774952466358992970
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: So you were a troop?
+        nextNode:
+          rid: 6774952466358992975
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1978.0558, y: 316.12125}
+    - rid: 6774952466358992971
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Thank you for your service
+        nextNode:
+          rid: 6774952466358992972
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1978, y: 568.9165}
+    - rid: 6774952466358992972
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: I didn't do it for you
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        responses:
+        - rid: 6774952466358992973
+        isRootNode: 0
+        editorPosition: {x: 2372, y: 569}
+        guid:
+          Part1: 3054298216
+          Part2: 1109359958
+          Part3: 2955129729
+          Part4: 3364976297
+        tag: 
+    - rid: 6774952466358992973
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Sorry...
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2672, y: 569}
+    - rid: 6774952466358992975
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Not quite a troop, I wasn't doing much of the shooting. I prefer
+          one bullet per brain, not three hundred misses to injure a single leg,
+          ha!
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        responses:
+        - rid: 6774952466358992976
+        - rid: 6774952466358992977
+        isRootNode: 0
+        editorPosition: {x: 2388, y: 239.5}
+        guid:
+          Part1: 49811686
+          Part2: 1151970307
+          Part3: 697042092
+          Part4: 3722765143
+        tag: 
+    - rid: 6774952466358992976
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Charming fellow, aren't ya!
+        nextNode:
+          rid: 6774952466358992979
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3313.0537, y: 159.99998}
+    - rid: 6774952466358992977
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: You... killed people?
+        nextNode:
+          rid: 6774952466358992978
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3313, y: 348}
+    - rid: 6774952466358992978
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Oh, get over it
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
         responses: []
         isRootNode: 0
-        editorPosition: {x: 1367, y: 193.5}
+        editorPosition: {x: 3621, y: 372}
         guid:
-          Part1: 3718920237
-          Part2: 1231748614
-          Part3: 3489654206
-          Part4: 3013054045
+          Part1: 1159698806
+          Part2: 1178946090
+          Part3: 445712812
+          Part4: 798104986
         tag: 
+    - rid: 6774952466358992979
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: If I didn't take light of having to kill my fellow compatriots
+          in my desperate attempt to appease my superiors against constant defamations
+          and attacks towards my persona... I would've left that place a long time
+          before I was discharged
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        responses:
+        - rid: 6774952466358992980
+        - rid: 6774952466358992981
+        isRootNode: 0
+        editorPosition: {x: 3668, y: 94.52}
+        guid:
+          Part1: 2866881234
+          Part2: 1269484422
+          Part3: 2837742259
+          Part4: 3537210373
+        tag: 
+    - rid: 6774952466358992980
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: What were you discharged for?
+        nextNode:
+          rid: 6774952466358992982
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5126.8647, y: 12.000023}
+    - rid: 6774952466358992981
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Leave before he has a breakdown]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5126.999, y: 202.47415}
+    - rid: 6774952466358992982
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: I began to believe everyone was a a secret (secret (secret
+          (secret))) spy! Crazy, right?
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        responses:
+        - rid: 6774952466358992983
+        isRootNode: 0
+        editorPosition: {x: 5525, y: -7.9600067}
+        guid:
+          Part1: 1974382265
+          Part2: 1165827636
+          Part3: 405430694
+          Part4: 3257180410
+        tag: 
+    - rid: 6774952466358992983
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Crazy indeed, bye...
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 6164, y: -8}
