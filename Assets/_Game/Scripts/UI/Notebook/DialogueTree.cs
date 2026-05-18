@@ -18,11 +18,7 @@ public class DialogueTree : MonoBehaviour
 
     [Header("Tree Layout Geometry (Pure World Units)")]
     [SerializeField] private float levelVerticalDistance = 40.0f;
-    
-
     [SerializeField] private float baseHorizontalSpacing = 30.0f;
-
-
     [SerializeField] private float spacingAttentuation = 0.85f;
 
     public DialogueTreeUI contentUI;
@@ -47,10 +43,11 @@ public class DialogueTree : MonoBehaviour
 
     [Header("Components")]
     private NotebookRepresenter representer;
+    [SerializeField] private UIHoverDetector scrollHoverDetector; 
     [SerializeField] private Vector3 _scrollScale = Vector3.one;
     
-    
     [SerializeField] private float angleOffset = 30f;
+    #endregion
 
     private void Awake()
     {
@@ -67,7 +64,7 @@ public class DialogueTree : MonoBehaviour
     {
         if (on)
         {
-            ResetScrollAndScale();
+            ResetScrollAndScale(); // 打开时重置对焦
             treeAnchor.gameObject.SetActive(true);
             var returnButton = representer.CreateCustomButton("- RETURN -", characterParent, buttonSetting);
             returnButton.DisableSub();
@@ -85,7 +82,7 @@ public class DialogueTree : MonoBehaviour
                 {
                     ClearText();
                     DeleteTree();
-                    ResetScrollAndScale();
+                    ResetScrollAndScale(); 
                     await BuildTree(_manager.StartedDialogues[_manager.FoundCharacters.ToList().IndexOf(character)]);
                 });
             }
@@ -100,46 +97,85 @@ public class DialogueTree : MonoBehaviour
             DeleteTree(); 
             ClearButtons();
             ResetScrollAndScale();
-           
         }
     }
 
+  
     private void ResetScrollAndScale()
     {
-        treeScroll.verticalNormalizedPosition = 0;
-        treeScroll.horizontalNormalizedPosition = 0;
+        
+        if (treeScroll != null)
+        {
+            treeScroll.verticalNormalizedPosition = 0.5f;
+            treeScroll.horizontalNormalizedPosition = 0.5f;
+        }
+        treeParent.localPosition = Vector3.zero;
+        
+       
         treeParent.localScale = _scrollScale;
     }
 
-    public void MoveTreeScroll()  // Inputs System
+   
+    public void MoveTreeScroll()  
     {
         if (!treeAnchor.gameObject.activeInHierarchy || _manager.m_markingPanel.isMarkingClue) return;
         
+      
         float moveStep = scrollSpeed * Time.deltaTime;
-        if (Input.GetKey(KeyCode.W)) treeParent.position -= new Vector3(0, moveStep, 0);
-        else if (Input.GetKey(KeyCode.S)) treeParent.position += new Vector3(0, moveStep, 0);
-        if (Input.GetKey(KeyCode.D)) treeParent.position -= new Vector3(moveStep, 0, 0);
-        else if (Input.GetKey(KeyCode.A)) treeParent.position += new Vector3(moveStep, 0, 0);
+        Vector3 localMove = Vector3.zero;
+    
+        if (Input.GetKey(KeyCode.W)) localMove += new Vector3(0, moveStep, 0);
+        else if (Input.GetKey(KeyCode.S)) localMove -= new Vector3(0, moveStep, 0);
+        if (Input.GetKey(KeyCode.D)) localMove += new Vector3(moveStep, 0, 0);
+        else if (Input.GetKey(KeyCode.A)) localMove -= new Vector3(moveStep, 0, 0);
+    
+        treeParent.localPosition += localMove;
 
-        if(Input.mouseScrollDelta != Vector2.zero)
+       
+        if (Mathf.Abs(Input.mouseScrollDelta.y) > 0.001f && scrollHoverDetector != null && scrollHoverDetector.IsMouseHovering)
         {
+            
+            Vector3 mouseWorldPosBefore = GetMouseWorldPosOnCanvas();
+            Vector3 mouseLocalPosBefore = treeParent.InverseTransformPoint(mouseWorldPosBefore);
+           
             float zoomStep = Input.mouseScrollDelta.y * zoomSpeed * Time.deltaTime;
-            treeParent.localScale += new Vector3(zoomStep, zoomStep, 0);
+            Vector3 targetScale = treeParent.localScale + new Vector3(zoomStep, zoomStep, 0);
 
-            treeParent.localScale = new Vector3(
-                Mathf.Clamp(treeParent.localScale.x, _scrollScale.x / 4f, _scrollScale.x * 4f),
-                Mathf.Clamp(treeParent.localScale.y, _scrollScale.y / 4f, _scrollScale.y * 4f),
-                treeParent.localScale.z);
+            targetScale.x = Mathf.Clamp(targetScale.x, _scrollScale.x / 4f, _scrollScale.x * 4f);
+            targetScale.y = Mathf.Clamp(targetScale.y, _scrollScale.y / 4f, _scrollScale.y * 4f);
+        
+            treeParent.localScale = targetScale;
+            
+            Vector3 mouseWorldPosAfter = treeParent.TransformPoint(mouseLocalPosBefore);
+
+        
+            Vector3 worldOffset = mouseWorldPosBefore - mouseWorldPosAfter;
+            Vector3 localOffset = treeParent.parent.InverseTransformVector(worldOffset); 
+        
+            treeParent.localPosition += localOffset;
         }
 
         if (!Input.GetKeyDown(KeyCode.F)) return;
         ResetScrollAndScale();
     }
 
-    #endregion
+    private Vector3 GetMouseWorldPosOnCanvas()
+    {
+        RectTransform parentRect = treeParent.GetComponent<RectTransform>();
+        
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(parentRect, Input.mousePosition, Camera.main, out Vector3 worldPoint))
+        {
+            return worldPoint;
+        }
+        
+        return treeParent.position;
+    }
+
+
 
     #region Tree Generation
-
+    
+    
     Dialogue _currentDialogue;
     List<INode> _unlockedDialogue;
 
@@ -162,8 +198,6 @@ public class DialogueTree : MonoBehaviour
     {
         _currentDialogue = dialogue.GetFullDialogue();
         _unlockedDialogue = dialogue.GetUnlockedDialogue();
-
-     
         await AddLevel(new(){ _currentDialogue.startingNode }, Vector3.zero, 1);
     }
 
@@ -180,10 +214,8 @@ public class DialogueTree : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             DialogueNode node = nodes[i];
-
             Vector3 nodeLocalPos;
 
-           
             if (currentLevel == 1)
             {
                 nodeLocalPos = Vector3.zero;
@@ -195,7 +227,6 @@ public class DialogueTree : MonoBehaviour
                 nodeLocalPos = new Vector3(targetX, targetY, 0f);
             }
 
-        
             if (currentLevel > 1)
             {
                 Vector3 arrowLocalPos = Vector3.Lerp(parentLocalPos, nodeLocalPos, 0.5f);
@@ -207,7 +238,6 @@ public class DialogueTree : MonoBehaviour
                 
                 Vector3 direction = nodeLocalPos - parentLocalPos;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
                 arrow.transform.localRotation = Quaternion.Euler(0f, 0f, angle - angleOffset ); 
 
                 if (node.PreviousResponse != null && !node.PreviousResponse.IsAvailable())
@@ -252,7 +282,6 @@ public class DialogueTree : MonoBehaviour
             }
         }
 
-        // 3. 递归生成下一层
         foreach (var item in spawnedNodesInThisLevel)
         {
             var nextNodes = item.node.responses
@@ -268,8 +297,6 @@ public class DialogueTree : MonoBehaviour
     {
         var button = representer.CreateCustomButton(cachedNote.GetButtonText(), parent, buttonSetting);
         button.transform.localScale = Vector3.one;
-        
-        // 四元数死锁本地 X 和 Y 旋转轴，仅允许 Z 轴在平面内歪斜
         button.transform.localRotation = Quaternion.Euler(0f, 0f, Random.Range(-5f, 5f));
         
         if (unread)
@@ -322,6 +349,5 @@ public class DialogueTree : MonoBehaviour
         
         return button;
     }
-
     #endregion
 }

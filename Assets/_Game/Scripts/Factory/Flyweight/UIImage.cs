@@ -5,7 +5,7 @@ public class UIImage : FactoryUIObject
     
     [SerializeField] private Image m_image;
     
-    [SerializeField] private int Factor = 1;
+    [SerializeField] private float Factor = 1;
     
     
     

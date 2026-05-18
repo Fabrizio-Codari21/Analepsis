@@ -227,13 +227,16 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
                     Cancel();
                     representer.ClearDetail();
                     representer.CreateImage(character.Key.filePhoto);
-                    await representer.PlayText(new() { character.Key.characterInfo }, new());
+                    
                     var treeButton = representer.CreateDetailButton("See Dialogue Tree");
                     treeButton.AddListener(async () => 
                     { 
                         representer.ClearDetail();
                         await representer.ToggleTree(true, character.Key);
                     });
+                    
+                    await representer.PlayText(new() { character.Key.characterInfo }, CancellationToken.None);
+                   
                 });
             }
         }
@@ -468,14 +471,13 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
     public bool CanPopWithKey()
     {
-      return true;
+      return false;
     }
   
     #endregion
      
     
 }
-
 
 
 public enum NoteType

@@ -1292,26 +1292,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00e0fbcb73cc3a54caa0dd015de0e1e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  view: {fileID: 5875442958785433964, guid: dc1270d5a08bc2946b4739079863095c, type: 3}
-  _handler: {fileID: 0}
   treeScroll: {fileID: 1044706627}
   scrollSpeed: 10
-  transitionSpeed: 6
+  zoomSpeed: 5
+  levelVerticalDistance: 40
+  baseHorizontalSpacing: 30
+  spacingAttentuation: 0.85
   contentUI: {fileID: 1410370644}
   treeAnchor: {fileID: 0}
-  normalCanvas: {fileID: 0}
-  buttonLayout: {fileID: 2668687769200324736, guid: a099742ba4ff5564f81366ca5bb1421a, type: 3}
-  buttonLayoutHeight: 125
-  arrowLayoutHeight: 225
-  buttonSetting: {fileID: 11400000, guid: e4c7f3e2291dd9e40b7d5dd56797a26d, type: 2}
   treeParent: {fileID: 1297847110}
   textParent: {fileID: 1280590080}
   characterParent: {fileID: 1202199959}
-  arrowImage: {fileID: 2345275029603621582, guid: e306ce7911138604088dc8d9573d7e67, type: 3}
   lockImage: {fileID: 5739135816376137315, guid: 03674bcbdfc06424fb8467817538f49f, type: 3}
+  _lockColor: {r: 0.4, g: 0, b: 0.1, a: 0.1}
+  nodeContainerPrefab: {fileID: 0}
+  buttonSetting: {fileID: 11400000, guid: e4c7f3e2291dd9e40b7d5dd56797a26d, type: 2}
+  arrowImage: {fileID: 2345275029603621582, guid: e306ce7911138604088dc8d9573d7e67, type: 3}
   enableCursor: {fileID: 11400000, guid: e691ca0bdc44b8f4cbd61759a64638cf, type: 2}
   pushEvent: {fileID: 11400000, guid: 3027f54723217b445909fe93945c6bd2, type: 2}
   popEvent: {fileID: 11400000, guid: 76cb339f73e2d5646ac0696838117b5e, type: 2}
+  scrollHoverDetector: {fileID: 0}
+  _scrollScale: {x: 1, y: 1, z: 1}
+  angleOffset: 30
 --- !u!1 &102814123
 GameObject:
   m_ObjectHideFlags: 0
@@ -6481,8 +6483,38 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d33550c1f8986254f8f4be30dcba2c70, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 371739050}
   m_SourcePrefab: {fileID: 100100000, guid: d33550c1f8986254f8f4be30dcba2c70, type: 3}
+--- !u!1 &371739049 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d33550c1f8986254f8f4be30dcba2c70, type: 3}
+  m_PrefabInstance: {fileID: 371739048}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &371739050
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371739049}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1353746659569323740, guid: d33550c1f8986254f8f4be30dcba2c70, type: 3}
 --- !u!1001 &389255283
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11611,6 +11643,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5429149505413041380, guid: 43f24e5dc3ca6db45b74fe971c735128, type: 3}
+      propertyPath: stepHeight
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5429149505413041380, guid: 43f24e5dc3ca6db45b74fe971c735128, type: 3}
       propertyPath: layerMask.m_Bits
       value: 375
       objectReference: {fileID: 0}
@@ -13772,16 +13808,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 507f48509b8dd5f4fb66d82f64c4e80d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  AutoUnparentOnAwake: 1
   SFX:
     m_Keys: 01000000
     m_Values:
@@ -26259,12 +26285,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_handRoot: {fileID: 791353792}
   m_handCamera: {fileID: 791353794}
-  m_handLayerMask:
-    serializedVersion: 2
-    m_Bits: 512
-  uvPositionChannel: {fileID: 11400000, guid: a36b27fc98dc8a64c9a715aa389c7546, type: 2}
-  takeOutChannel: {fileID: 11400000, guid: b9fddf1885d892a46b4e48a7b4dd5492, type: 2}
-  putInChannel: {fileID: 11400000, guid: 2a01e673b30c2514aaf4be55d8755fbe, type: 2}
+  takeOutChannel: {fileID: 0}
+  putInChannel: {fileID: 0}
+  m_animator: {fileID: 0}
+  m_takeCrossFade: 0.2
+  m_putCrossFade: 0.2
 --- !u!1001 &1419054601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35961,10 +35986,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 759366768}
     m_Modifications:
-    - target: {fileID: 5866666021909216657, guid: 00a6aee94c3c14d4189e03d649cfe5c3, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: c731047ad5165af47af838a0634c2936, type: 2}
     - target: {fileID: -8679921383154817045, guid: 4cc72210ca5fddb46a6d6282ceb98226, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.85821956
@@ -36281,6 +36302,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 145.398
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 00a6aee94c3c14d4189e03d649cfe5c3, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c731047ad5165af47af838a0634c2936, type: 2}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: 00a6aee94c3c14d4189e03d649cfe5c3, type: 3}
     m_RemovedGameObjects: []
@@ -38235,13 +38260,12 @@ MonoBehaviour:
   inputReaderNoteBook: {fileID: 11400000, guid: 9903e482b1106a94f8aaa831e3fd6532, type: 2}
   pushEvent: {fileID: 11400000, guid: 3027f54723217b445909fe93945c6bd2, type: 2}
   popEvent: {fileID: 11400000, guid: 76cb339f73e2d5646ac0696838117b5e, type: 2}
-  takeOutNotebookChannel: {fileID: 11400000, guid: b9fddf1885d892a46b4e48a7b4dd5492, type: 2}
-  putInNotebookChannel: {fileID: 11400000, guid: 2a01e673b30c2514aaf4be55d8755fbe, type: 2}
+  takeOutNotebookChannel: {fileID: 0}
+  putInNotebookChannel: {fileID: 0}
   m_recordNote: {fileID: 11400000, guid: 1b1d8c85c67ad1044a318c65776e259a, type: 2}
   m_udpatePoi: {fileID: 11400000, guid: 721b20b70b166cb4bbf7cc18f62bcca3, type: 2}
   markedClueEvent: {fileID: 11400000, guid: c081a996fd203124a80c6a8e1d284a5c, type: 2}
-  m_view: {fileID: 5875442958785433964, guid: dc1270d5a08bc2946b4739079863095c, type: 3}
-  handler: {fileID: 759366768}
+  representer: {fileID: 0}
   m_markingPanel: {fileID: 8640891432761736771, guid: 75973cded5a43e446b381ea738908110, type: 3}
 --- !u!4 &2140361880
 Transform:
