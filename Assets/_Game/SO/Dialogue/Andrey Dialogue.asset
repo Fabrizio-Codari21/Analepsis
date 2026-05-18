@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
+  m_Name: Andrey Dialogue
+  m_EditorClassIdentifier: 
+  dialogueColor: {r: 0, g: 0, b: 0, a: 0}
+  startingNode:
+    dialogueText: Hello, welcome to the hotel
+    characterEmotion: 1
+    characterReaction: 1
+    doesItProveAnything: 4
+    responses:
+    - rid: 6774952466358992965
+    isRootNode: 1
+    editorPosition: {x: 364, y: 280}
+    guid:
+      Part1: 1731469969
+      Part2: 1088413411
+      Part3: 491232698
+      Part4: 2994897401
+    tag: 
+  allNodes:
+  - dialogueText: Hello, welcome to the hotel
+    characterEmotion: 1
+    characterReaction: 1
+    doesItProveAnything: 0
+    responses:
+    - rid: 6774952466358992965
+    isRootNode: 1
+    editorPosition: {x: 364, y: 280}
+    guid:
+      Part1: 1731469969
+      Part2: 1088413411
+      Part3: 491232698
+      Part4: 2994897401
+    tag: 
+  - dialogueText: Yes, how did you know?
+    characterEmotion: 4
+    characterReaction: 6
+    doesItProveAnything: 0
+    responses: []
+    isRootNode: 0
+    editorPosition: {x: 1367, y: 193.5}
+    guid:
+      Part1: 3718920237
+      Part2: 1231748614
+      Part3: 3489654206
+      Part4: 3013054045
+    tag: 
+  _hiddenProof: 
+  references:
+    version: 2
+    RefIds:
+    - rid: 6774952466358992965
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Hello comrade, are you an ex-combatant perhaps?
+        nextNode:
+          rid: 6774952466358992966
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 806, y: 236}
+    - rid: 6774952466358992966
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Yes, how did you know?
+        characterEmotion: 4
+        characterReaction: 6
+        doesItProveAnything: 3
+        responses: []
+        isRootNode: 0
+        editorPosition: {x: 1367, y: 193.5}
+        guid:
+          Part1: 3718920237
+          Part2: 1231748614
+          Part3: 3489654206
+          Part4: 3013054045
+        tag: 
