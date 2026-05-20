@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using PrimeTween;
 using Unity.VisualScripting;
+using System;
 
 public class MarkingPanelView : MonoBehaviour, IActivity
 {
@@ -47,8 +48,21 @@ public class MarkingPanelView : MonoBehaviour, IActivity
         isMarkingClue = false;
     }
 
+    private void Update()
+    {
+        if (_currentClue != null)
+        {
+            if (Input.GetKeyDown(KeyCode.Return)) OnMarking?.Invoke(_currentClue);
+            else if (Input.GetKeyDown(KeyCode.Space)) inputField.ActivateInputField();
+
+        }
+            
+    }
+
     string _newClueName = default;
     [HideInInspector] public bool isMarkingClue = false;
+    public event Action<Note> OnMarking = delegate { };
+    Note _currentClue = null;
     public async UniTask RenameAndMarkClue(Note clue)
     {
         _newClueName = "";
@@ -63,36 +77,18 @@ public class MarkingPanelView : MonoBehaviour, IActivity
         enableCursor.Raise(true);
         tipText.text = RandomTip(clue.type);
         await UnfoldPanel(true);
-
+        _currentClue = clue;
+        OnMarking += Mark;
         markClueButton.onClick.AddListener(async () =>
         {
-            Note newClue = new Note(clue.displayName, clue.isProof);
-            newClue.type = clue.type;
-            newClue.displayName = _newClueName != "" 
-                ? _newClueName.FirstCharacterToUpper() 
-                : newClue.displayName;
-
-            if (!NotebookManager.Instance.markedClues.Remove(clue.guid))
-                NotebookManager.Instance.markedClues.TryAdd(clue.guid, newClue);
-            
-            _newClueName = default;
-            print("Marked clue: " + newClue.displayName);
-
-            AudioManager.Instance.SelectSFX(SFXType.Player, "Scribble");
-            inputField.text = "Sending to the Theory Board...";
-            markClueButton.interactable = false; cancelButton.interactable = false; inputField.interactable = false;
-            await UniTask.Delay(500);
-
-            popEvent.Raise();
-            await UnfoldPanel(false);
-            NotebookManager.Instance.EnableButtons(true);
-            NotebookManager.Instance.ResetMarkingPanel();
-            Destroy(gameObject);
+            OnMarking?.Invoke(clue);
         });
 
         cancelButton.onClick.AddListener(async () =>
         {
             _newClueName = default;
+            _currentClue = null;
+            OnMarking -= Mark;
             NotebookManager.Instance.EnableMark(false);
             AudioManager.Instance.SelectSFX(SFXType.Player, "FlipBackwards");
             await UnfoldPanel(false);
@@ -110,6 +106,34 @@ public class MarkingPanelView : MonoBehaviour, IActivity
         {
             if (newValue == "") tipText.text = RandomTip(clue.type);
         });
+    }
+
+    public void Mark(Note clue) => _ = Marking(clue);
+    public async UniTask Marking(Note clue)
+    {
+        _currentClue = null;
+        Note newClue = new Note(clue.displayName, clue.isProof);
+        newClue.type = clue.type;
+        newClue.displayName = _newClueName != ""
+            ? _newClueName.FirstCharacterToUpper()
+            : newClue.displayName;
+
+        if (!NotebookManager.Instance.markedClues.Remove(clue.guid))
+            NotebookManager.Instance.markedClues.TryAdd(clue.guid, newClue);
+
+        _newClueName = default;
+        print("Marked clue: " + newClue.displayName);
+
+        AudioManager.Instance.SelectSFX(SFXType.Player, "Scribble");
+        inputField.text = "Sending to the Theory Board...";
+        markClueButton.interactable = false; cancelButton.interactable = false; inputField.interactable = false;
+        await UniTask.Delay(500);
+
+        popEvent.Raise();
+        await UnfoldPanel(false);
+        NotebookManager.Instance.EnableButtons(true);
+        NotebookManager.Instance.ResetMarkingPanel();
+        Destroy(gameObject);
     }
 
     public async UniTask UnfoldPanel(bool isOpening)
@@ -134,7 +158,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
 
     }
 
-    public string RandomTip(NoteType type) => _tips[type][Random.Range(0, _tips[type].Count - 1)];
+    public string RandomTip(NoteType type) => _tips[type][UnityEngine.Random.Range(0, _tips[type].Count - 1)];
 
 
     public event System.Action OnResume;
