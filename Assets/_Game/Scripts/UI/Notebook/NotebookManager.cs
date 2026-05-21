@@ -504,6 +504,7 @@ public enum Reaction
     GetNervous,
     Think,
     Generic,
+    Angry,
 }
 
 [Serializable]

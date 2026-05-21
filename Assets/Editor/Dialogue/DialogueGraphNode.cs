@@ -99,6 +99,7 @@ public sealed class DialogueGraphNode : Node
                 Reaction.GetNervous,
                 Reaction.Think,
                 Reaction.Generic,
+                Reaction.Angry,
             }
         };
 

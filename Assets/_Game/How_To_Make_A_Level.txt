@@ -15,11 +15,11 @@ Para crear un caso nuevo se necesita:
 4) Crear pistas: 
 - Crear una instancia del prefab de BaseItem en escena con el mesh deseado.
 - Crear un SO de Item (el cual contiene nombre, objeto e informacion obtenida en cada punto del analisis). 
-- Crear una instancia Prefab_UI del objeto para mostrar durante la inspección, la cual debe tener dentro los POI con el ID correspondiente para poder ser inspeccionados.
+- Crear una instancia Prefab_UI del objeto para mostrar durante la inspección, la cual debe tener dentro los POI con el ID correspondiente para poder ser inspeccionados y la asignacion del SO.
 - Crear una instancia del maniqui posado con el cual hacer el flashback.
 - Crear un TransformKeyInstance dentro de un objeto vacio ya posicionado en la escena (con su propio SO de TransformKey) y meterle el maniqui del flashback adentro.
 - Asignar tanto el prefab de UI como el del flashback al SO, y asignar este SO al script ItemReference del item en escena.
 
-5) Una vez creadas todas las pistas y escritos todos los dialogos, asignarlas segun correspondan a la lista de cada solucion del CaseResolution.
+5) Una vez creadas todas las pistas y escritos todos los dialogos, asignarlas segun correspondan a la lista de cada solucion del CaseResolution y asignar ese SO al TheoryboardManager del nivel.
 
 6) Listo.

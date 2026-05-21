@@ -124,8 +124,8 @@ public class DialogueTree : MonoBehaviour
         float moveStep = scrollSpeed * Time.deltaTime;
         Vector3 localMove = Vector3.zero;
     
-        if (Input.GetKey(KeyCode.W)) localMove += new Vector3(0, moveStep, 0);
-        else if (Input.GetKey(KeyCode.S)) localMove -= new Vector3(0, moveStep, 0);
+        if (Input.GetKey(KeyCode.W)) localMove -= new Vector3(0, moveStep, 0);
+        else if (Input.GetKey(KeyCode.S)) localMove += new Vector3(0, moveStep, 0);
         if (Input.GetKey(KeyCode.D)) localMove += new Vector3(moveStep, 0, 0);
         else if (Input.GetKey(KeyCode.A)) localMove -= new Vector3(moveStep, 0, 0);
     
