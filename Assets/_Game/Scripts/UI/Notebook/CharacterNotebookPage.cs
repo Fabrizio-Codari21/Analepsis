@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterNotebookPage : MonoBehaviour
+public class CharacterNotebookPage : NotebookPage
 {
     [Header("Character Info")]
     [SerializeField] private Image m_characterIcon;
@@ -17,6 +18,9 @@ public class CharacterNotebookPage : MonoBehaviour
     [SerializeField] private List<NpcIdentity> m_characters = new List<NpcIdentity>();
     [SerializeField] private int m_currentIndex;
     private readonly Dictionary<NpcIdentity,int> _indexMap = new Dictionary<NpcIdentity,int>();
+    
+    
+    
     private void Start()
     {
         m_characters.Clear();

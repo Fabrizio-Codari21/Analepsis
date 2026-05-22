@@ -5,6 +5,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using System.Linq;
+using Sirenix.Utilities.Editor;
 
 
 public class NotebookManager : Singleton<NotebookManager>, IActivity
@@ -27,24 +28,31 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private TakeableEvent putInNotebookChannel; // cuando guarda
     [Header("Notebook Core Events")]
     [SerializeField] private RecordNoteEvent m_recordNote; // record 
-    [SerializeField] private BoolEventChannel m_udpatePoi;
-    [SerializeField] public MarkClueEvent markedClueEvent;
+    [SerializeField] private BoolEventChannel m_updatePoi;
     #endregion
     
-    [SerializeField] private NotebookRepresenter representer;
-    [SerializeField] public MarkingPanelView m_markingPanel;
-    [ReadOnly,ShowInInspector] private PageType _currentPageType;
-    [ReadOnly, ShowInInspector] public Dictionary<SerializableGuid, Note> MarkedClues = new();
-    private readonly Dictionary<SerializableGuid, HashSet<string>> _unlockedPoisByItem = new(); // punto de interes
-    private readonly Dictionary<SerializableGuid,Note> _notebookPages = new();
-    private readonly Dictionary<Item, string> _unlockedFlashbackNote = new();
-    private Dictionary<NpcIdentity, List<LogNote>> _characterLogs = new();
-
-    private CancellationTokenSource _cts;
     
-    public Dictionary<NpcIdentity, List<LogNote>> FoundCharacters => _characterLogs;
+    #region General
+    [SerializeField] private NotebookRepresenter representer;
+    [ReadOnly,ShowInInspector] private PageType _currentPageType;
+    private readonly Dictionary<SerializableGuid,Note> _notebookPages = new();
+    [ReadOnly, ShowInInspector] public Dictionary<SerializableGuid, Note> MarkedClues = new();
+    #endregion
+    
+    
+    #region Item Page
+    private readonly Dictionary<SerializableGuid, HashSet<string>> _unlockedPoisByItem = new(); // punto de interes
+    private readonly Dictionary<Item, string> _unlockedFlashbackNote = new();
+    #endregion
+    
+
+    #region Character Page
+
+    public Dictionary<NpcIdentity, List<LogNote>> FoundCharacters { get; private set; } = new();
     public List<DialogueNote> StartedDialogues { get; } = new();
 
+    #endregion
+    
 
     #region Poi
     public bool HasAllPois(Item item)
@@ -66,23 +74,23 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
     public Dictionary<NpcIdentity, List<LogNote>> CharacterLogs
     {
-        get => _characterLogs;
-        set => _characterLogs = value;
+        get => FoundCharacters;
+        set => FoundCharacters = value;
     }
 
     public void AddCharacter(NpcIdentity npc)
     {
-        if (!_characterLogs.ContainsKey(npc)) _characterLogs.Add(npc, new List<LogNote>());
+        if (!FoundCharacters.ContainsKey(npc)) FoundCharacters.Add(npc, new List<LogNote>());
     }
     public void AddLogToCharacter(NpcIdentity chara, LogNote log)
     {
-        foreach (var character in _characterLogs)
+        foreach (var character in FoundCharacters)
         {
             if (character.Value.Contains(ReturnIfUnique(log, chara))) return;
         }
 
-        if (_characterLogs.ContainsKey(chara)) _characterLogs[chara].Add(log);
-        else _characterLogs.Add(chara,new(){log});
+        if (FoundCharacters.ContainsKey(chara)) FoundCharacters[chara].Add(log);
+        else FoundCharacters.Add(chara,new(){log});
     }
 
     
@@ -90,7 +98,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     public Note ReturnIfUnique(Note note, NpcIdentity character = default)
     {
         List<Note> otherNotes = note.type == PageType.Character
-        ? (_characterLogs.ContainsKey(character) ? new(_characterLogs[character]) : new())
+        ? (FoundCharacters.ContainsKey(character) ? new(FoundCharacters[character]) : new())
         : _notebookPages.Values.ToList();
 
         foreach(Note existingNote in otherNotes)
@@ -113,7 +121,6 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         representer = Instantiate(representer);
         inputReaderNoteBook.Close += Close;
         m_recordNote.OnEventRaised += Record;
-        markedClueEvent.OnEventRaised +=  MarkClue;
         m_openNotebookChannel.OnEventRaised += Open;
         
     }
@@ -122,13 +129,11 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         inputReaderNoteBook.Close -= Close;
         m_recordNote.OnEventRaised -= Record;
-        markedClueEvent.OnEventRaised -= MarkClue;
+    
         m_openNotebookChannel.OnEventRaised -= Open;
     }
 
     #endregion
-
-    
     
     
     private void Record(Note note)
@@ -140,28 +145,14 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
   
     }
 
-
-    private void MarkClue(Note note)
-    {
-        TryToMarkClue(note).Forget();
-    }
-
-    private async UniTask TryToMarkClue(Note note)
-    {
-        var panel = Instantiate(m_markingPanel,transform);
-        await panel.RenameAndMarkClue(note);
-    }
     
-    #region Take & Put
-
+    #region Open & Close
     private void Open()
     {
         pushEvent.Raise(this);
         AudioManager.Instance.SelectSFX(SFXType.Player, "Open");
-
         takeOutNotebookChannel.Raise(representer);
-
-        _ = ActionTimer.Instance.m_view.DisplayUI();       
+        
     }
 
     private void Close()
@@ -173,31 +164,24 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
  
     }
     
-    
     #endregion
 
     #region  Internal
 
-    private void OpenNotebookByType(PageType type)
-    {
-       
-      
 
-    }
-
-   
     private void ChangeType(float direction)
     {
-        if(direction == 0 ) return;
-        var values = (PageType[])Enum.GetValues(typeof(PageType));
-        var currentIndex = (int)_currentPageType;
-        
-        currentIndex += direction > 0 ? 1 : -1;
-        
-        if (currentIndex >= values.Length) currentIndex = 0;
-        else if (currentIndex < 0) currentIndex = values.Length - 1;
-        
-        OpenNotebookByType(values[currentIndex]);
+        switch (direction)
+        {
+            case 0:
+                return;
+            case > 0:
+                representer.NextPage();
+                return;
+            case < 0:
+                representer.PreviousPage();
+                break;
+        }
     }
     
     
@@ -205,13 +189,9 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     #endregion
     
     #region External
-    public CancellationTokenSource Cancel() 
-    { 
-        _cts?.Cancel(); 
-        _cts?.Dispose(); 
-        _cts = new CancellationTokenSource(); 
-        return _cts; 
-    }
+
+    #region  Item
+
     public void UnlockPoi(Item item, string poiId)
     {
         if (!_unlockedPoisByItem.ContainsKey(item.guid))
@@ -230,7 +210,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         bool isCompleteNow = HasAllPois(item);
         if (wasCompleteBefore != isCompleteNow)
         {
-            m_udpatePoi.Raise(isCompleteNow);
+            m_updatePoi.Raise(isCompleteNow);
         }
     }
     
@@ -258,12 +238,11 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         return !_unlockedFlashbackNote.TryGetValue(item, out var flashback) ? string.Empty : flashback;
     }
 
-
-   
-
     public bool CheckNote(SerializableGuid guid) => _notebookPages.ContainsKey(guid);
+    
+    #endregion
 
-#endregion
+    #endregion
     
     #region IActivity
     public event Action OnResume;
@@ -274,17 +253,14 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         OnResume?.Invoke();
         inputReaderNoteBook.SetEnable();
-        if (m_markingPanel.isMarkingClue) return;
         inputReaderNoteBook.Flip += ChangeType;
         enableCursor.Raise(true);
-        OpenNotebookByType(_currentPageType);
     }
 
     public void Pause()
     {
         OnPause?.Invoke();
         inputReaderNoteBook.SetEnable(false);
-        if (m_markingPanel.isMarkingClue) return;
         enableCursor.Raise(false);
         inputReaderNoteBook.Flip -= ChangeType;
     }
@@ -301,11 +277,67 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     }
   
     #endregion
-     
     
+    
+    
+    // private void MarkClue(Note note)
+    // {
+    //     TryToMarkClue(note).Forget();
+    // }
+    //
+    // private async UniTask TryToMarkClue(Note note)
+    // {
+    //     var panel = Instantiate(m_markingPanel,transform);
+    //     await panel.RenameAndMarkClue(note);
+    // }
+    
+}
+[Serializable]
+public abstract class NotebookLayout
+{
+
+    public int Index;
+
+    public abstract void Initialize(Transform leftRoot, Transform rightRoot);
+
+    public virtual void Hide()
+    {
+        
+    }
+
+    public virtual void Show()
+    {
+        
+    }
 }
 
 
+public abstract class NotebookPage : MonoBehaviour
+{
+    public virtual void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public virtual void Show()
+    {
+        gameObject.SetActive(true);
+    }
+}
+[Serializable]
+public class CharacterLayout :  NotebookLayout
+{
+    public CharacterNotebookPage characterNotebookPage;
+    public TreePage treePage;
+    public override void Initialize(Transform leftRoot, Transform rightRoot)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+    
+
+    
 public enum PageType
 {
     Character,

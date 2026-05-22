@@ -81,7 +81,7 @@ public class DialogueTree : MonoBehaviour
    
     public void MoveTreeScroll()  
     {
-        if (!treeAnchor.gameObject.activeInHierarchy || _manager.m_markingPanel.isMarkingClue) return;
+        if (!treeAnchor.gameObject.activeInHierarchy) return;
         
       
         float moveStep = scrollSpeed * Time.deltaTime;

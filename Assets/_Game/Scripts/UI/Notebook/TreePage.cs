@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TreePage : MonoBehaviour
+public class TreePage : NotebookPage
 {
    
     [SerializeField] private Transform m_treeRoot;
