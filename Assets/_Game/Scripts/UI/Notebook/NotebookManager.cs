@@ -173,17 +173,72 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         switch (direction)
         {
-            case 0:
-                return;
-            case > 0:
-                representer.NextPage();
-                return;
-            case < 0:
-                representer.PreviousPage();
-                break;
+            case 0: return;
+            case > 0: NextPage(); return;
+            case < 0: PreviousPage(); break;
         }
     }
     
+    
+    #region Page Control
+    
+    #region Switch
+    
+    private readonly List<NotebookLayout> _layouts = new();
+    private NotebookLayout _currentLayout;
+    private int _currentIndex;
+    
+    private Dictionary<PageType,int> _pages = new();
+    public void NextPage()
+    {
+        if (_layouts.Count == 0) return;
+
+        int next = _currentIndex + 1;
+
+        if (next >= _layouts.Count) next = 0;
+
+        ShowLayout(next);
+    }
+
+    public void PreviousPage()
+    {
+        if (_layouts.Count == 0) return;
+
+        int prev = _currentIndex - 1;
+
+        if (prev < 0) prev = _layouts.Count - 1;
+
+        ShowLayout(prev);
+    }
+    
+    #endregion
+    
+    #endregion
+    
+    #region Layout
+    public void AddLayout(NotebookLayout layout)
+    {
+        layout.Index = _layouts.Count;
+        _layouts.Add(layout);
+    }
+
+    public void ShowLayout(int index)
+    {
+        if(_layouts.Count == 0) return;
+        if (index < 0 || index >= _layouts.Count) return;
+        
+        _currentLayout?.Hide();
+        _currentIndex =  index;
+        _currentLayout = _layouts[index];
+        _currentLayout.Show();
+    }
+
+    public void ShowLayout(PageType pageType)
+    {
+        
+    }
+
+    #endregion
     
     
     #endregion
@@ -331,7 +386,7 @@ public class CharacterLayout :  NotebookLayout
     public TreePage treePage;
     public override void Initialize(Transform leftRoot, Transform rightRoot)
     {
-        throw new NotImplementedException();
+        
     }
 }
 
