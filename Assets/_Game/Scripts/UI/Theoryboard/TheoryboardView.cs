@@ -49,18 +49,18 @@ public class TheoryboardView : MonoBehaviour
 
         Despawn(markedLogsRoot);
         Despawn(markedItemsRoot);
-        var markedLogs = notebookManager.markedClues.Where(x => x.Value.type == NoteType.Log);
+        var markedLogs = notebookManager.MarkedClues.Where(x => x.Value.type == PageType.Character);
         var markedList = markedLogs.ToList();
         if(!markedList.Any())
             CreateClueButton("No Logs marked \n(Click the star to mark)", markedLogsRoot, default, true);
-        var markedItems = notebookManager.markedClues.Where(x => x.Value.type == NoteType.Objects);
+        var markedItems = notebookManager.MarkedClues.Where(x => x.Value.type == PageType.Objects);
         var keyValuePairs = markedItems.ToList();
         if (!keyValuePairs.Any())
             CreateClueButton("No Objects marked \n(Click the star to mark)", markedItemsRoot, default, true);
 
         SwitchCharacter();
         
-        if (notebookManager.markedClues.Count <= 0) return;
+        if (notebookManager.MarkedClues.Count <= 0) return;
 
         foreach (var log in markedList) 
         {

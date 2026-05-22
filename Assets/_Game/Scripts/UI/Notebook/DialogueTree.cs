@@ -60,45 +60,8 @@ public class DialogueTree : MonoBehaviour
         MoveTreeScroll();
     }
 
-    public async UniTask ToggleTree(bool on = true, NpcIdentity openingCharacter = null)
-    {
-        if (on)
-        {
-            ResetScrollAndScale(); // 打开时重置对焦
-            treeAnchor.gameObject.SetActive(true);
-            var returnButton = representer.CreateCustomButton("- RETURN -", characterParent, buttonSetting);
-            returnButton.DisableSub();
-            returnButton.AddListener(async () => { await ToggleTree(false); });
-            
-            foreach (var character in _manager.FoundCharacters)
-            {
-                var button = representer.CreateCustomButton(
-                    character.Key.npcName,
-                    characterParent,
-                    buttonSetting);
-                
-                button.DisableSub();
-                button.AddListener(async () =>
-                {
-                    ClearText();
-                    DeleteTree();
-                    ResetScrollAndScale(); 
-                    await BuildTree(_manager.StartedDialogues[_manager.FoundCharacters.ToList().IndexOf(character)]);
-                });
-            }
-            
-            if(openingCharacter != default) await BuildTree(_manager.StartedDialogues[_manager.FoundCharacters.ToList().IndexOf(_manager.FoundCharacters.First(x => x.Key == openingCharacter))]);
-        }
-        else
-        {
-            representer.ClearDetail();
-            _= representer.ResetNotebookAnimation();
-            ClearText(); 
-            DeleteTree(); 
-            ClearButtons();
-            ResetScrollAndScale();
-        }
-    }
+   
+    
 
   
     private void ResetScrollAndScale()
@@ -186,12 +149,12 @@ public class DialogueTree : MonoBehaviour
 
     public void ClearText()
     {
-        representer.Despawn(textParent);
+        
     }
 
     public void ClearButtons()
     {
-        representer.Despawn(characterParent);
+     
     } 
 
     public async UniTask BuildTree(DialogueNote dialogue)
@@ -295,59 +258,59 @@ public class DialogueTree : MonoBehaviour
 
     public ButtonFactoryObject SpawnClueButton(Note cachedNote, Transform parent, bool unread = false)
     {
-        var button = representer.CreateCustomButton(cachedNote.GetButtonText(), parent, buttonSetting);
-        button.transform.localScale = Vector3.one;
-        button.transform.localRotation = Quaternion.Euler(0f, 0f, Random.Range(-5f, 5f));
-        
-        if (unread)
-        {
-            button.SetInteractable(false);
-            button.DisableSub();
-            button.SetText("???");
-            return button;
-        }
-        else
-        {
-            var text = button.GetComponentInChildren<TextMeshProUGUI>();
-            text.fontSizeMax = 30;
-            text.fontSizeMin = 26;
-        }
-        
-        if (_manager.markedClues.ContainsKey(cachedNote.guid))
-        {
-            button.DisplayMark(true);
-        }
-        button.AddListener(async () =>
-        {
-            var newToken = _manager.Cancel();
-            ClearText();
-            await contentUI.PlayText(new(){cachedNote.GetInfo()}, CancellationToken.None, textParent, 10);
-            _manager.AddDetailButtons(button, representer, cachedNote);
-        });
-
-        button.EnableSub();
-        _manager.enableButtonsEvent += (x) =>
-        {
-            if (button != null) button.EnableSub();
-        };
-        button.AddListenerToSub(() =>
-        {
-            if (_manager.markedClues.ContainsKey(cachedNote.guid))
-            {
-                button.DisplayMark(false);
-                _manager.markedClues.Remove(cachedNote.guid);
-                return;
-            }
-            _manager.m_markingPanel.isMarkingClue = true;
-        
-            button.DisplayMark(true);
-            _manager.ClearMarkEvent();
-            _manager.enableMarkEvent += button.DisplayMark;
-            _manager.EnableButtons(false);
-            _manager.markedClueEvent.Raise(cachedNote);
-        });
-        
-        return button;
+        // var button = representer.CreateCustomButton(cachedNote.GetButtonText(), parent, buttonSetting);
+        // button.transform.localScale = Vector3.one;
+        // button.transform.localRotation = Quaternion.Euler(0f, 0f, Random.Range(-5f, 5f));
+        //
+        // if (unread)
+        // {
+        //     button.SetInteractable(false);
+        //     button.DisableSub();
+        //     button.SetText("???");
+        //     return button;
+        // }
+        // else
+        // {
+        //     var text = button.GetComponentInChildren<TextMeshProUGUI>();
+        //     text.fontSizeMax = 30;
+        //     text.fontSizeMin = 26;
+        // }
+        //
+        // if (_manager.markedClues.ContainsKey(cachedNote.guid))
+        // {
+        //     button.DisplayMark(true);
+        // }
+        // button.AddListener(async () =>
+        // {
+        //     ClearText();
+        //     await contentUI.PlayText(new(){cachedNote.GetInfo()}, CancellationToken.None, textParent, 10);
+        //     _manager.AddDetailButtons(button, representer, cachedNote);
+        // });
+        //
+        // button.EnableSub();
+        // _manager.enableButtonsEvent += (x) =>
+        // {
+        //     if (button != null) button.EnableSub();
+        // };
+        // button.AddListenerToSub(() =>
+        // {
+        //     if (_manager.markedClues.ContainsKey(cachedNote.guid))
+        //     {
+        //         button.DisplayMark(false);
+        //         _manager.markedClues.Remove(cachedNote.guid);
+        //         return;
+        //     }
+        //     _manager.m_markingPanel.isMarkingClue = true;
+        //
+        //     button.DisplayMark(true);
+        //     _manager.ClearMarkEvent();
+        //     _manager.enableMarkEvent += button.DisplayMark;
+        //     _manager.EnableButtons(false);
+        //     _manager.markedClueEvent.Raise(cachedNote);
+        // });
+        //
+        // return button;
+        return null;
     }
     #endregion
 }

@@ -18,9 +18,9 @@ public class MarkingPanelView : MonoBehaviour, IActivity
     [SerializeField] TextMeshProUGUI tipText;
     [SerializeField] Button markClueButton, cancelButton;
 
-    private Dictionary<NoteType, List<string>> _tips = new()
+    private Dictionary<PageType, List<string>> _tips = new()
     {
-        { NoteType.Log, new List<string>()
+        { PageType.Character, new List<string>()
         {
             "e.g. 'X claims Y hates Z.'",
             "e.g. 'X heard Y talking with Z.'",
@@ -29,7 +29,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
             "e.g. 'X avoided talking about Y.'",
             "e.g. 'X saw Y carrying Z.'",
         }},
-        { NoteType.Objects, new List<string>()
+        { PageType.Objects, new List<string>()
         {
             "e.g. 'X was used by Y.'",
             "e.g. 'X thinks this is dangerous.'",
@@ -89,12 +89,9 @@ public class MarkingPanelView : MonoBehaviour, IActivity
             _newClueName = default;
             _currentClue = null;
             OnMarking -= Mark;
-            NotebookManager.Instance.EnableMark(false);
             AudioManager.Instance.SelectSFX(SFXType.Player, "FlipBackwards");
             await UnfoldPanel(false);
             popEvent.Raise();
-            NotebookManager.Instance.EnableButtons(true);
-            NotebookManager.Instance.ResetMarkingPanel();
             Destroy(gameObject);
         });
 
@@ -118,8 +115,8 @@ public class MarkingPanelView : MonoBehaviour, IActivity
             ? _newClueName.FirstCharacterToUpper()
             : newClue.displayName;
 
-        if (!NotebookManager.Instance.markedClues.Remove(clue.guid))
-            NotebookManager.Instance.markedClues.TryAdd(clue.guid, newClue);
+        if (!NotebookManager.Instance.MarkedClues.Remove(clue.guid))
+            NotebookManager.Instance.MarkedClues.TryAdd(clue.guid, newClue);
 
         _newClueName = default;
         print("Marked clue: " + newClue.displayName);
@@ -131,8 +128,6 @@ public class MarkingPanelView : MonoBehaviour, IActivity
 
         popEvent.Raise();
         await UnfoldPanel(false);
-        NotebookManager.Instance.EnableButtons(true);
-        NotebookManager.Instance.ResetMarkingPanel();
         Destroy(gameObject);
     }
 
@@ -158,7 +153,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
 
     }
 
-    public string RandomTip(NoteType type) => _tips[type][UnityEngine.Random.Range(0, _tips[type].Count - 1)];
+    public string RandomTip(PageType type) => _tips[type][UnityEngine.Random.Range(0, _tips[type].Count - 1)];
 
 
     public event System.Action OnResume;

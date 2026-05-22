@@ -334,12 +334,10 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
             _unlockedDialogue.Item1,
             _unlockedDialogue.Item2);
 
-        var existingDialogue = NotebookManager.Instance.StartedDialogues
-            .FirstOrDefault(x => x.GetFullDialogue() == newDialogue.GetFullDialogue());
+        var existingDialogue = NotebookManager.Instance.StartedDialogues.FirstOrDefault(x => x.GetFullDialogue() == newDialogue.GetFullDialogue());
 
-        if (existingDialogue != default) existingDialogue.UpdateLog(newDialogue);
+        if (existingDialogue != null) existingDialogue.UpdateLog(newDialogue);
         else NotebookManager.Instance.StartedDialogues.Add(newDialogue);
-        //
 
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
         _currentDialoguer.ResetAnimation();
