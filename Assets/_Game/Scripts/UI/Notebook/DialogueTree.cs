@@ -20,6 +20,7 @@ public class DialogueTree : MonoBehaviour
     [SerializeField] private float levelVerticalDistance = 40.0f;
     [SerializeField] private float baseHorizontalSpacing = 30.0f;
     [SerializeField] private float spacingAttentuation = 0.85f;
+    [SerializeField] private float minSpacing;
 
     public DialogueTreeUI contentUI;
     public GameObject treeAnchor;
@@ -45,6 +46,7 @@ public class DialogueTree : MonoBehaviour
     private NotebookRepresenter representer;
     [SerializeField] private UIHoverDetector scrollHoverDetector; 
     [SerializeField] private Vector3 _scrollScale = Vector3.one;
+    [SerializeField] private Vector3 _scrollOffset = Vector3.zero;
     
     [SerializeField] private float angleOffset = 30f;
     #endregion
@@ -126,8 +128,8 @@ public class DialogueTree : MonoBehaviour
     
         if (Input.GetKey(KeyCode.W)) localMove -= new Vector3(0, moveStep, 0);
         else if (Input.GetKey(KeyCode.S)) localMove += new Vector3(0, moveStep, 0);
-        if (Input.GetKey(KeyCode.D)) localMove += new Vector3(moveStep, 0, 0);
-        else if (Input.GetKey(KeyCode.A)) localMove -= new Vector3(moveStep, 0, 0);
+        if (Input.GetKey(KeyCode.D)) localMove -= new Vector3(moveStep, 0, 0);
+        else if (Input.GetKey(KeyCode.A)) localMove += new Vector3(moveStep, 0, 0);
     
         treeParent.localPosition += localMove;
 
@@ -141,8 +143,8 @@ public class DialogueTree : MonoBehaviour
             float zoomStep = Input.mouseScrollDelta.y * zoomSpeed * Time.deltaTime;
             Vector3 targetScale = treeParent.localScale + new Vector3(zoomStep, zoomStep, 0);
 
-            targetScale.x = Mathf.Clamp(targetScale.x, _scrollScale.x / 4f, _scrollScale.x * 4f);
-            targetScale.y = Mathf.Clamp(targetScale.y, _scrollScale.y / 4f, _scrollScale.y * 4f);
+            targetScale.x = Mathf.Clamp(targetScale.x, _scrollScale.x / 2f, _scrollScale.x * 4f);
+            targetScale.y = Mathf.Clamp(targetScale.y, _scrollScale.y / 2f, _scrollScale.y * 4f);
         
             treeParent.localScale = targetScale;
             
@@ -198,7 +200,7 @@ public class DialogueTree : MonoBehaviour
     {
         _currentDialogue = dialogue.GetFullDialogue();
         _unlockedDialogue = dialogue.GetUnlockedDialogue();
-        await AddLevel(new(){ _currentDialogue.startingNode }, Vector3.zero, 1);
+        await AddLevel(new(){ _currentDialogue.startingNode }, Vector3.zero + _scrollOffset, 1);
     }
 
     private async UniTask AddLevel(List<DialogueNode> nodes, Vector3 parentLocalPos, int currentLevel = 1)
@@ -218,7 +220,7 @@ public class DialogueTree : MonoBehaviour
 
             if (currentLevel == 1)
             {
-                nodeLocalPos = Vector3.zero;
+                nodeLocalPos = Vector3.zero + _scrollOffset;
             }
             else
             {
@@ -309,8 +311,8 @@ public class DialogueTree : MonoBehaviour
         else
         {
             var text = button.GetComponentInChildren<TextMeshProUGUI>();
-            text.fontSizeMax = 30;
-            text.fontSizeMin = 26;
+            text.fontSizeMax = 7;
+            text.fontSizeMin = 6;
         }
         
         if (_manager.markedClues.ContainsKey(cachedNote.guid))
@@ -321,7 +323,7 @@ public class DialogueTree : MonoBehaviour
         {
             var newToken = _manager.Cancel();
             ClearText();
-            await contentUI.PlayText(new(){cachedNote.GetInfo()}, CancellationToken.None, textParent, 10);
+            await contentUI.PlayText(new(){cachedNote.GetInfo()}, CancellationToken.None, textParent, 6);
             _manager.AddDetailButtons(button, representer, cachedNote);
         });
 
