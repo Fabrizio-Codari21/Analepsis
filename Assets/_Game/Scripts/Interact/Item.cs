@@ -24,6 +24,7 @@ public class Item : Clue
     // La lista de textos sirve para poder tener la data de los puntos de interes por separado.
     [TextArea(0, 20)] public string baseClue;
 
+    public List<ItemPOIData> pois = new();
 
     [Space(15), Header("ON A FLASHBACK, YOU'LL SEE...")]
     public FlashbackInfo flashbackInfo;
@@ -31,12 +32,14 @@ public class Item : Clue
     [Space(15), Header("WHAT DOES IT PROVE?")]
     [SerializeField] List<Whodunnit> doesItProveAnything;
 
+    [Space(15), Header("CAN IT UNLOCK ANYTHING?")]
+    public bool isKey = false;
+
     public override Tuple<Clue,List<Whodunnit>> DoesItProveAnything()
     {
         return new(this, new List<Whodunnit>(doesItProveAnything));
     }
-    
-    public List<ItemPOIData> pois = new();
+
 }
 
 [Serializable]
