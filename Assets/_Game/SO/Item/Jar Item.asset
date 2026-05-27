@@ -23,13 +23,6 @@ MonoBehaviour:
   Name: Jar
   sprite: {fileID: 21300000, guid: 643dda420defc704899cf9e89d38f500, type: 3}
   baseClue: 
-  flashbackInfo:
-    info: "Someone placed their peanut butter in this room \nconsciously and used
-      it, even though it was forbidden. \nI wonder why..."
-    characterPrefab: {fileID: -7788030297154945564, guid: cab142ae67d2f034db6770213d50edf6, type: 3}
-    key: {fileID: 11400000, guid: d232f36bf1e4d04479c03f1b80580b24, type: 2}
-    offset: {x: 0, y: 0, z: 0}
-  doesItProveAnything: 04000000
   pois:
   - poiId: Label
     description: 'The label describes this as "Peanut Butter". '
@@ -43,3 +36,12 @@ MonoBehaviour:
 
       Why would
       it be here then?'
+  flashbackInfo:
+    info: "Someone placed their peanut butter in this room \nconsciously and used
+      it, even though it was forbidden. \nI wonder why..."
+    characterPrefab: {fileID: -7788030297154945564, guid: cab142ae67d2f034db6770213d50edf6, type: 3}
+    key: {fileID: 11400000, guid: d232f36bf1e4d04479c03f1b80580b24, type: 2}
+    offset: {x: 0, y: 0, z: 0}
+  doesItProveAnything: 04000000
+  keyInfo:
+    isKey: 1

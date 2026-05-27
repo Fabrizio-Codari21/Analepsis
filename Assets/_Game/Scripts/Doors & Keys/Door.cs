@@ -5,7 +5,7 @@ using PrimeTween;
 [RequireComponent(typeof(BoxCollider))]
 public class Door : MonoBehaviour
 {
-    public KeyItem requiredToOpen;
+    public Item requiredToOpen;
     public Collider doorObject;
     public float openingDegrees, openingDuration, closedShakeIntensity;
     public Vector2 interactRange;
@@ -24,9 +24,15 @@ public class Door : MonoBehaviour
         
     }
 
+    // Por ahora, si no tiene llave o si llegaste a ver el flashback de la llave (es decir que
+    // analizaste el objeto por completo) te deja desbloquear la puerta.
     private void OnTriggerEnter(Collider collider)
     {
-        _ = ToggleDoor(true, requiredToOpen == null || (requiredToOpen != null /*&& forma de saber que el player tiene el objeto*/));
+        _ = ToggleDoor(
+            true, 
+            requiredToOpen == null || 
+            (requiredToOpen != null && requiredToOpen.keyInfo.isKey &&
+            NotebookManager.Instance.GetItemFlashbackInfo(requiredToOpen) != string.Empty));
     }
     private void OnTriggerExit(Collider other)
     {

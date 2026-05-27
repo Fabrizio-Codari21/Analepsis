@@ -33,7 +33,7 @@ public class Item : Clue
     [SerializeField] List<Whodunnit> doesItProveAnything;
 
     [Space(15), Header("CAN IT UNLOCK ANYTHING?")]
-    public bool isKey = false;
+    public KeyItem keyInfo;
 
     public override Tuple<Clue,List<Whodunnit>> DoesItProveAnything()
     {
