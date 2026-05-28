@@ -19,7 +19,39 @@ public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
     //    FlashbackManager.Instance.ToggleByFlashback(gameObject);
     //}
 
+    #region Emergency Teleport
 
+    public Transform teleportIfOverlapping;
+    bool _canTeleport = true;
+    private void OnCollisionEnter(Collision collision)
+    {
+        print(collision.gameObject);
+        if (teleportIfOverlapping && _canTeleport)
+        {
+            print("Emergency teleporting");
+            collision.gameObject.transform.position = teleportIfOverlapping.position;
+
+            this.WaitAndThen(timeToWait: 0.2f, () =>
+            {
+                _canTeleport = false;
+            },
+            cancelCondition: () => this.ExecuteIfCancelled(!enabled, () =>
+            {
+                _canTeleport = true;
+            }));
+        }
+    }
+
+    private void OnEnable()
+    {
+        _canTeleport = true;
+    }
+    private void OnDisable()
+    {
+        _canTeleport = true;
+    }
+
+    #endregion
 
     public virtual void InteractStart()
     {

@@ -188,8 +188,8 @@ public class TheoryTreeManager : MonoBehaviour, IActivity
             float zoomStep = Input.mouseScrollDelta.y * zoomSpeed * Time.deltaTime;
             Vector3 targetScale = treeAnchor.localScale + new Vector3(zoomStep, zoomStep, 0);
 
-            targetScale.x = Mathf.Clamp(targetScale.x, _scrollScale.x / 2f, _scrollScale.x * 4f);
-            targetScale.y = Mathf.Clamp(targetScale.y, _scrollScale.y / 2f, _scrollScale.y * 4f);
+            targetScale.x = Mathf.Clamp(targetScale.x, _scrollScale.x / 2f, _scrollScale.x * 3f);
+            targetScale.y = Mathf.Clamp(targetScale.y, _scrollScale.y / 2f, _scrollScale.y * 3f);
 
             treeAnchor.localScale = targetScale;
 
