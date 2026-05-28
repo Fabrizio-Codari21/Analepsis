@@ -49,7 +49,7 @@ public class Door : MonoBehaviour
         {
             _ = seq.Group(Tween.LocalRotation(
             doorObject.gameObject.transform,
-            new Vector3(0, open ? openingDegrees : 0, 0),
+            new Vector3(-90, 0, open ? openingDegrees : 0),
             openingDuration,
             ease: Ease.OutCirc));
 
@@ -60,7 +60,7 @@ public class Door : MonoBehaviour
         {
             _ = seq.Group(Tween.PunchLocalRotation(
             doorObject.gameObject.transform, 
-            new Vector3(0, closedShakeIntensity, 0),
+            new Vector3(0, 0, closedShakeIntensity),
             openingDuration,
             easeBetweenShakes: Ease.OutCirc));
         }

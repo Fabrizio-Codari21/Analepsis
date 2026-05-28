@@ -128,7 +128,7 @@ public sealed class DialogueGraphNode : Node
                 Whodunnit.Killer,
                 Whodunnit.Motive,
                 Whodunnit.Weapon,
-                //TheoryboardManager.Whodunnit.Place,
+                Whodunnit.Place,
             }
         };
 
