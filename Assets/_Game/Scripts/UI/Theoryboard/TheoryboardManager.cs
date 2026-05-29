@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using UnityEngine;
 using Unity.Cinemachine;
@@ -24,14 +25,20 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     [SerializeField] private EventChannel m_solveCaseEvent;
     #endregion
     [Header("Data")] 
+    [Space(5)]
+    [Header("Life")]
     [ShowInInspector, ReadOnly] private int _leftAttempts;
     [SerializeField] private int m_maxSolveAttempts;
-    
+    [Header("Case")]
+    [SerializeField] private List<TheoryboardReasonRequired> m_caseReasonRequired;
+    [SerializeField] private CaseResolution m_caseResolution;
+    [Header("Text Base")] 
+    [SerializeField, TextArea(3, 10)]
+    private string m_baseTextOnTrySolver;
     [Header("Test Panel")]
     [SerializeField] private bool isInstaWin = false;
-
-
-
+    
+    
     
 
     #region IActivity
@@ -112,7 +119,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     private bool TrySolveCase()
     {
         // el check debe ser por aca
-        return true;
+        return false;
     }
 
     private void TryResult(bool success)
@@ -135,9 +142,14 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     {
         _leftAttempts--;
         
-        // llamar a view
+        if (_leftAttempts <= 0)
+        {
+            Lose();
+            return;
+        }
+        m_view.Tip(m_baseTextOnTrySolver + $"\n [{_leftAttempts} attempts left]").Forget();
         
-        if (_leftAttempts <= 0) Lose();
+       
     }
     
     private void Lose()
@@ -145,29 +157,20 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         
     }
 
-    public async UniTask SolveCase(int answerID = 0, string answerName = "")
-    {
-        
-        await this.AsyncLoader("WinScene");
-        WinManager.Instance.SetConclusion(answerID);
-    }
-    public async UniTask FailCase()
-    {
-        print("Case failed");
-        await this.AsyncLoader("LoseScene");
-    }
-
-    public async UniTask ConsumeAttempt(string solveText)
-    {
-        _leftAttempts--;
-        if (_leftAttempts > 0) await m_view.ShowError(solveText);
-        else await FailCase();
-    }
-
+  
   
 }
 
 
+public class TheoryboardReasonRequired : MonoBehaviour
+{
+    [SerializeField] private List<Whodunnit> m_acceptedWhodunnits = new List<Whodunnit>();
+    
+    public bool Accept(Whodunnit w) => m_acceptedWhodunnits.Contains(w);
+    
+    
+    
+}
 
 
 public enum Whodunnit

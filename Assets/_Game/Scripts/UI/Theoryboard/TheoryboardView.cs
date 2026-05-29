@@ -32,7 +32,7 @@ public class TheoryboardView : MonoBehaviour
 
     [Header("Events")]
     [SerializeField] private EventChannel m_solverChannel;
-    
+
 
 
     private IActivity _activity;
@@ -58,6 +58,8 @@ public class TheoryboardView : MonoBehaviour
             Despawn(m_itemRoot);
         };
         #endregion
+        
+        m_erroTip = Instantiate(m_erroTip,transform);
         
     }
 
@@ -170,15 +172,7 @@ public class TheoryboardView : MonoBehaviour
 
 
    
-
-    public async UniTask ShowIncomplete(TextMeshProUGUI solveText)
-    {
-        var text = m_solveButton.GetComponentInChildren<TextMeshProUGUI>();
-        var oldtext = text.text;
-        text.text = "Incomplete";
-        await UniTask.Delay(800);
-        text.text = oldtext;
-    }
+    
 
     public async UniTask ShowError(string solveTxt)
     {
@@ -192,6 +186,12 @@ public class TheoryboardView : MonoBehaviour
         // solveText.text = oldText;
     }
 
+    public async UniTask Tip(string solveTxt)
+    {
+        m_erroTip.gameObject.SetActive(true);
+        await m_erroTip.FadeInAndFadeOut(solveTxt);
+        m_erroTip.gameObject.SetActive(false);
+    }
 
 
 

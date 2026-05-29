@@ -10,7 +10,7 @@ public class CaseResolution : ScriptableObject
 {
     /// <summary>
     /// La lista tiene structs que contienen un caso (con clues asignadas a roles) 
-    /// mas su nombre y descripción (un string).
+    /// mas su nombre y descripciï¿½n (un string).
     /// </summary>
     [InfoBox("Make a new case by creating <b>ways to solve it</b>: " +
         "\n\n<b>1)</b> Give your theory a <b>name</b> to identify it. " +
@@ -22,8 +22,8 @@ public class CaseResolution : ScriptableObject
     public List<CaseAnswer> AllValidAnswers = new();
 }
 
-[System.Serializable]
-public struct CaseAnswer
+[Serializable]
+public class CaseAnswer
 {
     [Title("--- CREATE AN ANSWER ---", TitleAlignment = TitleAlignments.Centered)]
     public string Name;
