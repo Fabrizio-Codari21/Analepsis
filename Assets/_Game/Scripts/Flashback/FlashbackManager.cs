@@ -19,7 +19,7 @@ public class FlashbackManager : MonoBehaviour
     
     [SerializeField] private DynamicTextSetting displaySetting;
     [SerializeField] private ItemEventChannel itemEvent;
-    [SerializeField] private RecordNoteEvent m_recordNote;
+    [SerializeField] private NoteEvent note;
     private Interactable _flashbackObject;
     private Item _currentItem;
     DynamicText flashbackClueDisplay;

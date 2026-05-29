@@ -140,6 +140,8 @@ public class MoveEngine : MonoBehaviour,IKCCConfig
         return Vector3.Dot(move, Up) > 0;
     }
     
+    
+    
   
     protected virtual void SnapPlayerDown()
     {
@@ -237,6 +239,9 @@ public class MoveEngine : MonoBehaviour,IKCCConfig
     
     public const float DefaultMaxLaunchVelocity = 2.0f;
     public virtual float MaxDefaultLaunchVelocity => DefaultMaxLaunchVelocity;  
+    
+    
+ 
     
     public virtual Vector3 GetGroundVelocity()
     {

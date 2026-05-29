@@ -156,14 +156,7 @@ public class DialogueTree : MonoBehaviour
     {
      
     } 
-
-    public async UniTask BuildTree(DialogueNote dialogue)
-    {
-        _currentDialogue = dialogue.GetFullDialogue();
-        _unlockedDialogue = dialogue.GetUnlockedDialogue();
-        await AddLevel(new(){ _currentDialogue.startingNode }, Vector3.zero, 1);
-    }
-
+    
     private async UniTask AddLevel(List<DialogueNode> nodes, Vector3 parentLocalPos, int currentLevel = 1)
     {
         int count = nodes.Count;

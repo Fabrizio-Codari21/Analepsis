@@ -18,7 +18,6 @@ public class TheoryboardManager : MonoBehaviour, IActivity
 
 
     #region Event
-    
 
     [SerializeField] private EventChannel m_openTheoryBoardChannel;
     [SerializeField] private BoolEventChannel enableCursor;
@@ -33,7 +32,6 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     [SerializeField] CinemachinePanTilt camData;
     [SerializeField] CinemachineCamera _camera;
     
-
 
     [Space(25), Header("SELECT A CASE TO PLAY")]
     public CaseResolution currentCase;
@@ -78,7 +76,6 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     #region Unity Life
 
     
-
  
     private void Start()
     {
@@ -105,10 +102,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
 
     public async UniTask SolveCase(int answerID = 0, string answerName = "")
     {
-        print(answerID == 0
-            ? $"Solved with true answer: {answerName}" 
-            : $"Solved with alternative answer: {answerName}");
-
+        
         await this.AsyncLoader("WinScene");
         WinManager.Instance.SetConclusion(answerID);
     }

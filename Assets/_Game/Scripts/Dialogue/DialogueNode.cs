@@ -16,9 +16,14 @@ public class DialogueNode : INode
     [Header("ID")]
     public SerializableGuid guid = SerializableGuid.NewGuid();
     public string tag = "";
-    DialogueResponse _previousResponse = default; 
-    public DialogueResponse PreviousResponse { get => _previousResponse; set => _previousResponse = value; }
-
+    private DialogueResponse _previousResponse = null;
+    
+    public DialogueResponse PreviousResponse
+    {
+        get => _previousResponse;
+        set => _previousResponse = value;
+    }
+    
 }
 
 public interface INode {}

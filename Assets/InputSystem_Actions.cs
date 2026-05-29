@@ -1296,6 +1296,34 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""MarkPanel"",
+            ""id"": ""795ebc26-3d7f-4ec3-bea3-274e1750296c"",
+            ""actions"": [
+                {
+                    ""name"": ""Confirm"",
+                    ""type"": ""Button"",
+                    ""id"": ""2cfcfc08-ceda-44df-b5e0-acda08a2ac7a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""db398ff8-5d05-4687-8f9c-e8c6a448c3b8"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Confirm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1410,6 +1438,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Touch = m_Menu.FindAction("Touch", throwIfNotFound: true);
+        // MarkPanel
+        m_MarkPanel = asset.FindActionMap("MarkPanel", throwIfNotFound: true);
+        m_MarkPanel_Confirm = m_MarkPanel.FindAction("Confirm", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -1423,6 +1454,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_TheoryBoard.enabled, "This will cause a leak and performance issues, InputActions.TheoryBoard.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Flashback.enabled, "This will cause a leak and performance issues, InputActions.Flashback.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Menu.enabled, "This will cause a leak and performance issues, InputActions.Menu.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_MarkPanel.enabled, "This will cause a leak and performance issues, InputActions.MarkPanel.Disable() has not been called.");
     }
 
     /// <summary>
@@ -2600,6 +2632,102 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="MenuActions" /> instance referencing this action map.
     /// </summary>
     public MenuActions @Menu => new MenuActions(this);
+
+    // MarkPanel
+    private readonly InputActionMap m_MarkPanel;
+    private List<IMarkPanelActions> m_MarkPanelActionsCallbackInterfaces = new List<IMarkPanelActions>();
+    private readonly InputAction m_MarkPanel_Confirm;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "MarkPanel".
+    /// </summary>
+    public struct MarkPanelActions
+    {
+        private @InputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public MarkPanelActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "MarkPanel/Confirm".
+        /// </summary>
+        public InputAction @Confirm => m_Wrapper.m_MarkPanel_Confirm;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_MarkPanel; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="MarkPanelActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(MarkPanelActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="MarkPanelActions" />
+        public void AddCallbacks(IMarkPanelActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MarkPanelActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MarkPanelActionsCallbackInterfaces.Add(instance);
+            @Confirm.started += instance.OnConfirm;
+            @Confirm.performed += instance.OnConfirm;
+            @Confirm.canceled += instance.OnConfirm;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="MarkPanelActions" />
+        private void UnregisterCallbacks(IMarkPanelActions instance)
+        {
+            @Confirm.started -= instance.OnConfirm;
+            @Confirm.performed -= instance.OnConfirm;
+            @Confirm.canceled -= instance.OnConfirm;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="MarkPanelActions.UnregisterCallbacks(IMarkPanelActions)" />.
+        /// </summary>
+        /// <seealso cref="MarkPanelActions.UnregisterCallbacks(IMarkPanelActions)" />
+        public void RemoveCallbacks(IMarkPanelActions instance)
+        {
+            if (m_Wrapper.m_MarkPanelActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="MarkPanelActions.AddCallbacks(IMarkPanelActions)" />
+        /// <seealso cref="MarkPanelActions.RemoveCallbacks(IMarkPanelActions)" />
+        /// <seealso cref="MarkPanelActions.UnregisterCallbacks(IMarkPanelActions)" />
+        public void SetCallbacks(IMarkPanelActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MarkPanelActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MarkPanelActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="MarkPanelActions" /> instance referencing this action map.
+    /// </summary>
+    public MarkPanelActions @MarkPanel => new MarkPanelActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -2953,5 +3081,20 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTouch(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "MarkPanel" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="MarkPanelActions.AddCallbacks(IMarkPanelActions)" />
+    /// <seealso cref="MarkPanelActions.RemoveCallbacks(IMarkPanelActions)" />
+    public interface IMarkPanelActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Confirm" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnConfirm(InputAction.CallbackContext context);
     }
 }

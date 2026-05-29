@@ -4,21 +4,16 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
-using System.Linq;
-using Sirenix.Utilities.Editor;
-
 
 public class NotebookManager : Singleton<NotebookManager>, IActivity
 {
     
     #region  Inputs & Cursor
-    
     [SerializeField] private EventChannel m_openNotebookChannel;
     [SerializeField] private BoolEventChannel enableCursor;
     [SerializeField] private NoteBookInputReader inputReaderNoteBook;
     [SerializeField] private IActivityEvent pushEvent;
     [SerializeField] private EventChannel popEvent;
- 
     #endregion
     
     
@@ -27,30 +22,23 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private TakeableEvent takeOutNotebookChannel; // cuando saca
     [SerializeField] private TakeableEvent putInNotebookChannel; // cuando guarda
     [Header("Notebook Core Events")]
-    [SerializeField] private RecordNoteEvent m_recordNote; // record 
+    [SerializeField] private NoteEvent note; // record 
     [SerializeField] private BoolEventChannel m_updatePoi;
+    
     #endregion
     
     
     #region General
     [SerializeField] private NotebookRepresenter representer;
     [ReadOnly,ShowInInspector] private PageType _currentPageType;
-    private readonly Dictionary<SerializableGuid,Note> _notebookPages = new();
-    [ReadOnly, ShowInInspector] public Dictionary<SerializableGuid, Note> MarkedClues = new();
+    
+    
     #endregion
     
     
     #region Item Page
     private readonly Dictionary<SerializableGuid, HashSet<string>> _unlockedPoisByItem = new(); // punto de interes
     private readonly Dictionary<Item, string> _unlockedFlashbackNote = new();
-    #endregion
-    
-
-    #region Character Page
-
-    public Dictionary<NpcIdentity, List<LogNote>> FoundCharacters { get; private set; } = new();
-    public List<DialogueNote> StartedDialogues { get; } = new();
-
     #endregion
     
 
@@ -72,55 +60,43 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     
     #region Character
 
-    public Dictionary<NpcIdentity, List<LogNote>> CharacterLogs
-    {
-        get => FoundCharacters;
-        set => FoundCharacters = value;
-    }
+    [Header("Character Data")]
+    [ShowInInspector,ReadOnly] public HashSet<NpcIdentity> FoundCharacters { get; } = new();
+    [SerializeField] private NpcEvent m_onNpcFound;
 
+ 
     public void AddCharacter(NpcIdentity npc)
     {
-        if (!FoundCharacters.ContainsKey(npc)) FoundCharacters.Add(npc, new List<LogNote>());
-    }
-    public void AddLogToCharacter(NpcIdentity chara, LogNote log)
-    {
-        foreach (var character in FoundCharacters)
-        {
-            if (character.Value.Contains(ReturnIfUnique(log, chara))) return;
-        }
-
-        if (FoundCharacters.ContainsKey(chara)) FoundCharacters[chara].Add(log);
-        else FoundCharacters.Add(chara,new(){log});
-    }
-
-    
-    // Devuelve la nota original si es unica o la ya existente si su informacion es igual.
-    public Note ReturnIfUnique(Note note, NpcIdentity character = default)
-    {
-        List<Note> otherNotes = note.type == PageType.Character
-        ? (FoundCharacters.ContainsKey(character) ? new(FoundCharacters[character]) : new())
-        : _notebookPages.Values.ToList();
-
-        foreach(Note existingNote in otherNotes)
-        {
-            if(note.GetInfo() == existingNote.GetInfo()) return existingNote;
-        }
-        return note;
+        if (!FoundCharacters.Add(npc)) return;
+        m_onNpcFound?.Raise(npc);
     }
     
+    public List<DialogueNote> GetDialoguesFor(NpcIdentity npcIdentity)
+    {
+        if (_npcTalkedDialogue != null && _npcTalkedDialogue.TryGetValue(npcIdentity, out var list))
+        {
+            return list;
+        }
+        return new List<DialogueNote>(); 
+    }
     #endregion
 
 
-
     #region  Unity Life
-    
+
+    protected override void Awake()
+    {
+        base.Awake();
+        representer = Instantiate(representer);
+        representer.Initialize(this);
+    }
  
     private void Start()
     {
       
-        representer = Instantiate(representer);
+       
         inputReaderNoteBook.Close += Close;
-        m_recordNote.OnEventRaised += Record;
+        note.OnEventRaised += Record;
         m_openNotebookChannel.OnEventRaised += Open;
         
     }
@@ -128,21 +104,42 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private void OnDestroy()
     {
         inputReaderNoteBook.Close -= Close;
-        m_recordNote.OnEventRaised -= Record;
-    
+        note.OnEventRaised -= Record;
         m_openNotebookChannel.OnEventRaised -= Open;
     }
 
     #endregion
     
-    
+    private readonly HashSet<SerializableGuid> _allNote = new();
     private void Record(Note note)
     {
-        if (!_notebookPages.TryAdd(note.guid, note))
+        if (!_allNote.Add(note.guid))
         {
            
         }
   
+    }  
+    
+    [ShowInInspector, ReadOnly] private Dictionary<NpcIdentity,List<DialogueNote>> _npcTalkedDialogue = new();
+    public  void RecordDialogueProgress(NpcIdentity npc, Dialogue dialogue, INode currentNode, INode parentNode)
+    {
+        if (dialogue == null || currentNode == null) return;
+        
+        if (!_npcTalkedDialogue.TryGetValue(npc, out var dialogueList))
+        {
+            dialogueList = new List<DialogueNote>();
+            _npcTalkedDialogue[npc] = dialogueList;
+        }
+        
+        var dialogueNote = dialogueList.Find(x => x.GetFullDialogue() == dialogue); // encuetro si ya existia el node
+        
+        if (dialogueNote == null)
+        {
+            dialogueNote = new DialogueNote(dialogue.name, dialogue, null);
+            dialogueList.Add(dialogueNote);
+        }
+        dialogueNote.RegisterNodeVisit(currentNode, parentNode);
+      
     }
 
     
@@ -152,6 +149,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         pushEvent.Raise(this);
         AudioManager.Instance.SelectSFX(SFXType.Player, "Open");
         takeOutNotebookChannel.Raise(representer);
+        ShowLayout(0);
         
     }
 
@@ -185,11 +183,10 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     #region Switch
     
     private readonly List<NotebookLayout> _layouts = new();
-    private NotebookLayout _currentLayout;
+    [ShowInInspector,ReadOnly] private NotebookLayout _currentLayout;
     private int _currentIndex;
-    
-    private Dictionary<PageType,int> _pages = new();
-    public void NextPage()
+    private Dictionary<int, NotebookLayout> _layoutsDictionary = new ();
+    private void NextPage() 
     {
         if (_layouts.Count == 0) return;
 
@@ -200,7 +197,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         ShowLayout(next);
     }
 
-    public void PreviousPage()
+    private void PreviousPage()
     {
         if (_layouts.Count == 0) return;
 
@@ -218,24 +215,31 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     #region Layout
     public void AddLayout(NotebookLayout layout)
     {
-        layout.Index = _layouts.Count;
+        int index =  _layouts.Count;
+        layout.index = index;
         _layouts.Add(layout);
+        _layoutsDictionary.Add(index, layout);
     }
 
-    public void ShowLayout(int index)
+    private void ShowLayout(int index)
     {
         if(_layouts.Count == 0) return;
-        if (index < 0 || index >= _layouts.Count) return;
-        
+        if (index < 0 || index >= _layouts.Count){ return;}
+        if (_currentLayout == _layouts[index])
+        {
+            _currentLayout.Show(); 
+            return;
+        }
         _currentLayout?.Hide();
         _currentIndex =  index;
         _currentLayout = _layouts[index];
         _currentLayout.Show();
     }
 
-    public void ShowLayout(PageType pageType)
+    public void TryShowLayoutFor(NotebookLayout layout)
     {
-        
+        Debug.Log("Try Show  Layout For "  + layout.gameObject.name);
+        ShowLayout(layout.index);
     }
 
     #endregion
@@ -275,10 +279,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         if (!_unlockedPoisByItem.TryGetValue(item.guid, out var unlockedIds)) return descriptions;
         foreach (var poiData in item.pois)
         {
-            if (unlockedIds.Contains(poiData.poiId))
-            {
-                descriptions.Add(poiData.description);
-            }
+            if (unlockedIds.Contains(poiData.poiId)) descriptions.Add(poiData.description);
         }
         return descriptions;
     }
@@ -293,7 +294,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         return !_unlockedFlashbackNote.TryGetValue(item, out var flashback) ? string.Empty : flashback;
     }
 
-    public bool CheckNote(SerializableGuid guid) => _notebookPages.ContainsKey(guid);
+    public bool CheckNote(SerializableGuid guid) => _allNote.Contains(guid);
     
     #endregion
 
@@ -334,36 +335,6 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     #endregion
     
     
-    
-    // private void MarkClue(Note note)
-    // {
-    //     TryToMarkClue(note).Forget();
-    // }
-    //
-    // private async UniTask TryToMarkClue(Note note)
-    // {
-    //     var panel = Instantiate(m_markingPanel,transform);
-    //     await panel.RenameAndMarkClue(note);
-    // }
-    
-}
-[Serializable]
-public abstract class NotebookLayout
-{
-
-    public int Index;
-
-    public abstract void Initialize(Transform leftRoot, Transform rightRoot);
-
-    public virtual void Hide()
-    {
-        
-    }
-
-    public virtual void Show()
-    {
-        
-    }
 }
 
 
@@ -378,21 +349,10 @@ public abstract class NotebookPage : MonoBehaviour
     {
         gameObject.SetActive(true);
     }
-}
-[Serializable]
-public class CharacterLayout :  NotebookLayout
-{
-    public CharacterNotebookPage characterNotebookPage;
-    public TreePage treePage;
-    public override void Initialize(Transform leftRoot, Transform rightRoot)
-    {
-        
-    }
+
 }
 
-    
 
-    
 public enum PageType
 {
     Character,
@@ -443,15 +403,12 @@ public  class Note
     {
         return UniTask.CompletedTask;
     }
-    public virtual string GetInfo() => default;
+    public virtual string GetInfo() => null;
 }
-
-
 
 
 public class LogNote : Note
 {
- 
     private List<string> _fullInfo;   
     private List<string> _recordInfo;
     private bool _showingFull  = false;
@@ -462,12 +419,7 @@ public class LogNote : Note
         _recordInfo = recordInfo;
         type = PageType.Character;
     }
-    public void UpdateLog(LogNote log)
-    {
-        // aca agregamos todo lo que queramos actualizar cuando la conversacion
-        // se repite (si marcaste cosas distintas, etc).
-        _recordInfo = log._recordInfo;
-    }
+  
    public override async UniTask Show(NotebookRepresenter representer, CancellationToken token)
     {
         _showingFull = false; 
@@ -499,7 +451,6 @@ public class LogNote : Note
     public override string GetInfo() => _fullInfo.AsString();
     public void ChangeRecord(List<string> records) => _recordInfo = records;
 }
-
 public class ItemNote : Note
 {
     private readonly Item _item;
@@ -508,7 +459,7 @@ public class ItemNote : Note
         type = PageType.Objects;
         if (item == null) return;
         _item =  item;
-        guid = _item.guid;  // para usa el guid de item para que solamente anota el item y no se repite, pero el clue se puede ir desbloqueando de a poco
+        guid = _item.guid;  
     }
 
     public List<string> FullInfo()
@@ -536,61 +487,164 @@ public class ItemNote : Note
     public override string GetInfo() => FullInfo().AsString();
 }
 
+
+
+public class TreeNode
+{
+    public readonly INode Source;
+
+    public TreeNode Parent;
+
+    public readonly List<TreeNode> Children = new();
+
+    // Final position
+    public float X;
+    public float Y;
+
+    // Modifier
+    public float Mod;
+
+    // Buchheim fields
+    public float Shift;
+    public float Change;
+
+    public TreeNode Thread;
+    public TreeNode Ancestor;
+
+    // Order index among siblings
+    public int Number;
+
+    public readonly bool IsLocked;
+    public readonly bool IsNpcNode;
+
+    public SerializableGuid GuidRepresent;
+
+    public bool IsLeaf => Children.Count == 0;
+
+    public TreeNode(
+        SerializableGuid guid,
+        INode source,
+        bool isNpcNode = true,
+        bool isLocked = false)
+    {
+        GuidRepresent = guid;
+        Source = source;
+
+        IsNpcNode = isNpcNode;
+        IsLocked = isLocked;
+
+        X = 0;
+        Y = 0;
+        Mod = 0;
+
+        Shift = 0;
+        Change = 0;
+
+        Thread = null;
+        Ancestor = this;
+    }
+
+    public TreeNode GetLeftSibling()
+    {
+        if (Parent == null || Number == 0) return null; 
+        return Parent.Children[Number - 1];
+    }
+
+    public TreeNode GetLeftMostSibling()
+    {
+        if (Parent == null || Parent.Children.Count == 0)
+            return null;
+
+        if (Parent.Children[0] == this)
+            return null;
+
+        return Parent.Children[0];
+    }
+
+    public TreeNode GetNextLeft()
+    {
+        return IsLeaf
+            ? Thread
+            : Children[0];
+    }
+
+    public TreeNode GetNextRight()
+    {
+        return IsLeaf
+            ? Thread
+            : Children[^1];
+    }
+}
+
+
 // En el sistema de arbol, esto eventualmente reemplazaria a LogNote.
 public class DialogueNote : Note
 {
-    private Dialogue _fullDialogue;
-    private List<INode> _unlockedDialogue;
+    private readonly Dialogue _dialogueRepresenter;
+    private readonly HashSet<SerializableGuid> _visitedRawNodeGuids = new();
+    private readonly Dictionary<SerializableGuid, TreeNode> _rtNodeLookup = new();
+    public TreeNode RuntimeTreeRoot { get; private set; }
+    
     private List<string> _fullInfo;
-    private List<string> _recordInfo;
-    private bool _showingFull = false;
-    public ButtonFactoryObject parentButton;
-    public DialogueNote(string displayName, Dialogue fullDialogue, List<INode> unlockedDialogue, Tuple<Clue, List<Whodunnit>> proof = null) : base(displayName, proof)
+
+    public DialogueNote(string displayName, Dialogue dialogueRepresenter,  Tuple<Clue, List<Whodunnit>> proof = null) : base(displayName, proof)
     {
-        _fullDialogue = fullDialogue;
-        _unlockedDialogue = unlockedDialogue;
+        _dialogueRepresenter = dialogueRepresenter;
         type = PageType.Character;
-    }
-    public void UpdateLog(DialogueNote log)
-    {
-        // aca agregamos todo lo que queramos actualizar cuando la conversacion
-        // se repite (si marcaste cosas distintas, etc).
-        foreach (INode node in log._unlockedDialogue)
+        if (_dialogueRepresenter != null && _dialogueRepresenter.startingNode != null)
         {
-            if(!_unlockedDialogue.Contains(node)) _unlockedDialogue.Add(node);
+            InitRoot(_dialogueRepresenter.startingNode);
         }
     }
+
     public override async UniTask Show(NotebookRepresenter representer, CancellationToken token)
     {
-        _showingFull = false;
-        await RefreshDisplay(_recordInfo, representer, token, true);
+       
     }
 
-    public async UniTask RefreshDisplay(List<string> text, NotebookRepresenter representer, CancellationToken token, bool firstTime = false)
-    {
-        // representer.ClearDetail();
-        // List<string> contentToShow = new(_showingFull ? _fullInfo :
-        //     (_recordInfo.Count <= 0
-        //     ? new() { "\n[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n" }
-        //     : text));
-        //
-        // contentToShow.Insert(0, _showingFull ? "<b>[FULL TRANSCRIPT]</b>" : "<b>[HIGHLIGHTS]</b>");
-        // await representer.PlayText(contentToShow, token);
-        // if (token.IsCancellationRequested) return;
-        //
-        // string buttonLabel = _showingFull ? "See Highlights" : "See Full Transcript";
-        // var toggleBtn = representer.CreateDetailButton(buttonLabel);
-        // toggleBtn.AddListener(() =>
-        // {
-        //     _showingFull = !_showingFull;
-        //     _ = RefreshDisplay(text, representer, token, false);
-        // });
-        // if (!firstTime) NotebookManager.Instance.AddDetailButtons(parentButton, representer, this);
-
-    }
+    
     public override string GetInfo() => _fullInfo.AsString();
-    public Dialogue GetFullDialogue() => _fullDialogue;
-    public List<INode> GetUnlockedDialogue() => _unlockedDialogue;
-
-    public void ChangeRecord(List<string> records) => _recordInfo = records;
+    public Dialogue GetFullDialogue() => _dialogueRepresenter;
+    
+    private void InitRoot(DialogueNode startingNode)
+    {
+        RuntimeTreeRoot = new TreeNode(startingNode.guid, startingNode, true);
+        _visitedRawNodeGuids.Add(startingNode.guid);
+        _rtNodeLookup[startingNode.guid] = RuntimeTreeRoot;
+    }
+    
+    public void RegisterNodeVisit(INode currentNode, INode parentNode)
+    {
+        if (currentNode == null) return;
+        SerializableGuid currentGuid = GetNodeGuid(currentNode);
+        
+        if (_visitedRawNodeGuids.Contains(currentGuid)) return;
+        SerializableGuid parentGuid = parentNode != null ? GetNodeGuid(parentNode) : SerializableGuid.Empty;
+        if (!_rtNodeLookup.TryGetValue(parentGuid, out var rtParent))
+        {
+            return;
+        }
+        bool isNpc = currentNode is DialogueNode;
+        
+        
+        TreeNode rtChild = new TreeNode(currentGuid, currentNode, isNpc)
+        {
+            Parent = rtParent
+        };
+        
+        rtParent.Children.Add(rtChild);
+        
+        _visitedRawNodeGuids.Add(currentGuid);
+        _rtNodeLookup[currentGuid] = rtChild;
+    }
+    public bool IsNodeUnlocked(SerializableGuid nodeGuid) => _visitedRawNodeGuids.Contains(nodeGuid);
+    private SerializableGuid GetNodeGuid(INode node)
+    {
+        if (node is DialogueNode dn) return dn.guid;
+        
+        if (node is DialogueResponse dr) return dr.nextNode?.guid ?? SerializableGuid.NewGuid();
+        
+        
+        return SerializableGuid.Empty;
+    }
 }

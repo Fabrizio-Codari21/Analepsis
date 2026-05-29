@@ -3746,7 +3746,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 5000
-  field of view: 63.2214
+  field of view: 60
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -4448,7 +4448,7 @@ MonoBehaviour:
   m_leaveFlashback: {fileID: 1877869975}
   displaySetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
   itemEvent: {fileID: 11400000, guid: 07624e21598f3584c8e21fc9ae8ce6e2, type: 2}
-  m_recordNote: {fileID: 11400000, guid: 1b1d8c85c67ad1044a318c65776e259a, type: 2}
+  note: {fileID: 0}
 --- !u!4 &396423164
 Transform:
   m_ObjectHideFlags: 0
@@ -7841,11 +7841,10 @@ MonoBehaviour:
   popEvent: {fileID: 11400000, guid: 76cb339f73e2d5646ac0696838117b5e, type: 2}
   takeOutNotebookChannel: {fileID: 11400000, guid: 929f5b2a2ca0d9240a8453d32b52584c, type: 2}
   putInNotebookChannel: {fileID: 11400000, guid: a091e522e1ba6234191536a6a09febca, type: 2}
-  m_recordNote: {fileID: 11400000, guid: 1b1d8c85c67ad1044a318c65776e259a, type: 2}
-  m_udpatePoi: {fileID: 11400000, guid: 721b20b70b166cb4bbf7cc18f62bcca3, type: 2}
-  markedClueEvent: {fileID: 11400000, guid: c081a996fd203124a80c6a8e1d284a5c, type: 2}
+  note: {fileID: 0}
+  m_updatePoi: {fileID: 11400000, guid: 721b20b70b166cb4bbf7cc18f62bcca3, type: 2}
   representer: {fileID: 5426958083087860698, guid: e5819d6acb154554cb88fb80a3ee3c49, type: 3}
-  m_markingPanel: {fileID: 8640891432761736771, guid: 75973cded5a43e446b381ea738908110, type: 3}
+  m_onNpcFound: {fileID: 11400000, guid: 20a56cdfc97e2dd429ebf97ef7e2d6ad, type: 2}
 --- !u!4 &703983305
 Transform:
   m_ObjectHideFlags: 0
@@ -9220,7 +9219,7 @@ MonoBehaviour:
   m_popActivity: {fileID: 11400000, guid: 76cb339f73e2d5646ac0696838117b5e, type: 2}
   m_cursorEnable: {fileID: 11400000, guid: e691ca0bdc44b8f4cbd61759a64638cf, type: 2}
   timeToOutDialogue: 1
-  m_recordNoteEvent: {fileID: 11400000, guid: 1b1d8c85c67ad1044a318c65776e259a, type: 2}
+  noteEvent: {fileID: 0}
 --- !u!4 &862810279 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cb4de4fa3624b0b46b62a004c1330f04, type: 3}
@@ -25604,6 +25603,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 790853774}
     m_Modifications:
+    - target: {fileID: 535543784098756016, guid: 43f24e5dc3ca6db45b74fe971c735128, type: 3}
+      propertyPath: m_OcclusionCulling
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2426267404449136652, guid: 43f24e5dc3ca6db45b74fe971c735128, type: 3}
+      propertyPath: Lens.FieldOfView
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 2426267404449136652, guid: 43f24e5dc3ca6db45b74fe971c735128, type: 3}
+      propertyPath: Lens.ModeOverride
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6818324450473006046, guid: 43f24e5dc3ca6db45b74fe971c735128, type: 3}
       propertyPath: m_Name
       value: FPS
@@ -25654,7 +25665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8711742532456367850, guid: 43f24e5dc3ca6db45b74fe971c735128, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27734,7 +27745,7 @@ MonoBehaviour:
   m_itemReference: {fileID: 11400000, guid: 173ad9da7e8c29c4dbe387eae1450770, type: 2}
   m_nameTextSetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
   m_textPositionOffset: {x: 0, y: 0.5, z: 0}
-  m_recordNoteEvent: {fileID: 11400000, guid: 1b1d8c85c67ad1044a318c65776e259a, type: 2}
+  noteEvent: {fileID: 0}
 --- !u!1 &5997801004757860927
 GameObject:
   m_ObjectHideFlags: 0
@@ -29986,7 +29997,7 @@ MonoBehaviour:
   m_itemReference: {fileID: 11400000, guid: 38078761dd0663346bad54d2f88251b9, type: 2}
   m_nameTextSetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
   m_textPositionOffset: {x: 0, y: 0.5, z: 0}
-  m_recordNoteEvent: {fileID: 11400000, guid: 1b1d8c85c67ad1044a318c65776e259a, type: 2}
+  noteEvent: {fileID: 0}
 --- !u!1 &8637315103341996786
 GameObject:
   m_ObjectHideFlags: 0

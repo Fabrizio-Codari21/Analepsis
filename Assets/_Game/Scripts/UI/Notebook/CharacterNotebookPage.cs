@@ -8,43 +8,72 @@ public class CharacterNotebookPage : NotebookPage
 {
     [Header("Character Info")]
     [SerializeField] private Image m_characterIcon;
-    [SerializeField] private TMP_Text m_characterIntroduceText;
+    [SerializeField] private TMP_Text m_text;
 
-    [Header("Button Setting ")]
+    [Header("Button Setting")]
     [SerializeField] private Transform m_buttonRoot;
+    [SerializeField] private CharacterSwitchButton m_button;
     
+    [Header("Event")]
+    [SerializeField] private NpcEvent m_onCharacterSelected;
+    [SerializeField] private NpcEvent m_onNpcAdded;
+    
+    private readonly HashSet<NpcIdentity> _instantiatedButtons = new();
 
-    [Header("Npc")]
-    [SerializeField] private List<NpcIdentity> m_characters = new List<NpcIdentity>();
-    [SerializeField] private int m_currentIndex;
-    private readonly Dictionary<NpcIdentity,int> _indexMap = new Dictionary<NpcIdentity,int>();
-    
-    
-    
     private void Start()
     {
-        m_characters.Clear();
+        m_onCharacterSelected.OnEventRaised += SwitchCharacter;
+        m_onNpcAdded.OnEventRaised += AddNpc;
     }
-    private void AddNewCharacter(NpcIdentity newNpc)
+
+    private void OnDestroy()
     {
-        if(!newNpc) return;
-        if(_indexMap.ContainsKey(newNpc)) return;
-        m_characters.Add(newNpc);
-        var assignedIndex = m_characters.Count - 1;
-        _indexMap.Add(newNpc, assignedIndex);
+        m_onCharacterSelected.OnEventRaised -= SwitchCharacter;
+        m_onNpcAdded.OnEventRaised -= AddNpc;
     }
+
     private void SwitchCharacter(NpcIdentity key)
     {
+        if (key == null) return;
+        m_characterIcon.gameObject.SetActive(true);
+        m_text.gameObject.SetActive(true);
         m_characterIcon.sprite = key.filePhoto;
-        m_characterIntroduceText.text = key.characterInfo;
+        m_text.text = key.characterInfo;
     }
-    private void SwitchCharacter(int direction)
+
+
+    public void SyncAllButtons(List<NpcIdentity> currentCharacters)
     {
-        if (m_characters.Count == 0) return;
-        var finalIndex = (m_currentIndex + direction + m_characters.Count) % m_characters.Count;
-        m_currentIndex = finalIndex;
-        SwitchCharacter(m_characters[finalIndex]);
+        if (currentCharacters == null) return;
+
+        foreach (var npc in currentCharacters)
+        {
+            if (npc != null && !_instantiatedButtons.Contains(npc))
+            {
+                CreateButtonInstance(npc);
+            }
+        }
     }
-    private void Next() => SwitchCharacter(1);
-    private void Previous() => SwitchCharacter(-1);
+
+    public void SetupPage(NpcIdentity currentNpc)
+    {
+        SwitchCharacter(currentNpc);
+    }
+
+    private void AddNpc(NpcIdentity newNpc)
+    {
+        if (!newNpc) return;
+        if (_instantiatedButtons.Contains(newNpc)) return;
+
+        CreateButtonInstance(newNpc);
+    }
+
+  
+    private void CreateButtonInstance(NpcIdentity npc)
+    {
+        var buttonInstance = Instantiate(m_button, m_buttonRoot);
+        buttonInstance.Init(npc);
+        _instantiatedButtons.Add(npc);
+    }
 }
+

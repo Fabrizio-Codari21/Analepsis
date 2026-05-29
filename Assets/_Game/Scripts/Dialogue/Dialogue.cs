@@ -17,17 +17,14 @@ public class Dialogue : Clue
     public DialogueNode startingNode;
     public List<DialogueNode> allNodes =  new List<DialogueNode>();
 
-    [ReadOnly] public List<Whodunnit> _hiddenProof = new();
+    [ReadOnly] public List<Whodunnit> hiddenProof = new();
     public void DiscoverProof(Whodunnit proof)
     {
-        if (_hiddenProof.Contains(proof)) return;
-        _hiddenProof.Add(proof);
+        if (hiddenProof.Contains(proof)) return;
+        hiddenProof.Add(proof);
     }
 
-    public override Tuple<Clue,List<Whodunnit>> DoesItProveAnything()
-    {
-        return new(this,new List<Whodunnit>(_hiddenProof));
-    }
+  
     
 
 }

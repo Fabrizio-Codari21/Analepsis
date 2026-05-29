@@ -8,7 +8,7 @@ public class ItemReference : MonoBehaviour
     private IInteractable _interact;
     private ITipProvider _tipProvider;
     private DynamicText _text;
-    [SerializeField] private RecordNoteEvent  m_recordNoteEvent;
+    [SerializeField] private NoteEvent  noteEvent;
     
     private void Start()
     {
@@ -36,7 +36,7 @@ public class ItemReference : MonoBehaviour
 
     private void RecordItem()
     {
-        m_recordNoteEvent.Raise(new ItemNote
+        noteEvent.Raise(new ItemNote
             ($"Inspected {m_itemReference.Name}",
             m_itemReference,
             m_itemReference.DoesItProveAnything()));

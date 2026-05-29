@@ -1,186 +1,270 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TreePage : NotebookPage
 {
-   
     [SerializeField] private Transform m_treeRoot;
   
-    
     [Header("Tree Layout Geometry (Pure World Units)")]
-    [SerializeField] private float levelVerticalDistance = 40.0f;
-    [SerializeField] private float baseHorizontalSpacing = 30.0f;
-    
+    [SerializeField] private float levelVerticalDistance = 60.0f;
+    [SerializeField] private float baseHorizontalSpacing = 80.0f; 
     
     [Header("UI REFERENCES")]
-    [Header("Tree")]
+    [Space(5)]
+    [Header("Button")]
     [SerializeField] private ButtonSetting m_nodeButton;
+    
+    [Header("Arrow")]
     [SerializeField] private ImageSelector arrowImage;
     [SerializeField] private float angleOffset = 30f;
+    [Header("Lock Image")]
     [SerializeField] private Color m_lockColor = new (0.4f, 0, 0.1f, 0.1f);
     [SerializeField] private Image m_lockImage;
+    
+    [Header("Text")]
+    [SerializeField] private DynamicTextSetting m_dynamicTextSetting;
+    [SerializeField] private ScrollRect m_scrollRect;
+    [SerializeField] private Transform m_textRoot;
+    [SerializeField] private float m_textWidth = 150f;
+    [SerializeField] private float m_textSize = 12f;
+    
+    private CancellationTokenSource _textCancellationTokenSource;
+    private DynamicUIText _currentActiveText;
+    
+    private async UniTask OnNodeButtonClicked(string contentText)
+    {
+       
+        CancelAndDisposeToken();
+        _textCancellationTokenSource = new CancellationTokenSource();
+        
+        if (_currentActiveText != null)
+        {
+            FlyweightFactory.Instance.Return(_currentActiveText);
+            _currentActiveText = null;
+        }
+ 
+        await PlayText(contentText, _textCancellationTokenSource.Token,sizeOverride:m_textSize);
+    }
+    private void CancelAndDisposeToken()
+    {
+        if (_textCancellationTokenSource != null)
+        {
+            _textCancellationTokenSource.Cancel();
+            _textCancellationTokenSource.Dispose();
+            _textCancellationTokenSource = null;
+        }
+    }
 
+    private async UniTask PlayText(string text, CancellationToken token, Transform parent = null, float sizeOverride = 0) 
+    {
+        if (token.IsCancellationRequested) return;
+        if (text == null) return;
+        
+        _currentActiveText = FlyweightFactory.Instance.Spawn<DynamicUIText>(
+            m_dynamicTextSetting, 
+            Vector3.zero, 
+            Quaternion.identity, 
+            parent != null ? parent : m_textRoot
+        );
+        
+        _currentActiveText.SetText(
+            text, 
+            !Mathf.Approximately(sizeOverride, 0) ? sizeOverride : m_dynamicTextSetting.size, 
+            m_dynamicTextSetting.color, 
+            m_textWidth, 
+            true
+        );
+        _currentActiveText.ToLast();
+
+        await UniTask.NextFrame(token);
+        try
+        {
+           
+            await _currentActiveText.PlayTypeWriterEffect(externalToken: token);
+        }
+        catch (OperationCanceledException)
+        {
+            
+        }
+    }
+    private DialogueNote _activeNote;
+    [SerializeField] private NpcEvent m_onNpcSelected;
+
+    private void Start()
+    {
+        if (m_onNpcSelected != null) m_onNpcSelected.OnEventRaised += ShowTreeFor;
+    }
+
+    private void OnDestroy()
+    {
+        if (m_onNpcSelected != null) m_onNpcSelected.OnEventRaised -= ShowTreeFor;
+    }
 
     
-    private Dialogue _currentDialogue;
-    private List<INode> _unlockedDialogue;
-
-    private Dictionary<int, List<DialogueNode>> _levelMap = new();
-    private Dictionary<DialogueNode, Vector2> _nodePositions = new();
     
-    public void ShowTreeFor(NpcIdentity npcIdentity)
+    private void ShowTreeFor(NpcIdentity npcIdentity)
     {   
-        
-    }
-    public async UniTask BuildTree(DialogueNote dialogue)
-    {
-        _currentDialogue = dialogue.GetFullDialogue();
-        _unlockedDialogue = dialogue.GetUnlockedDialogue();
-
-        _levelMap.Clear();
-        _nodePositions.Clear();
-
-        DialogueNode root = _currentDialogue.startingNode;
-
-        CollectLevels(root);
-
-        await LayoutLevels();
-    }
-    
-    private void CollectLevels(DialogueNode root)
-    {
-        Queue<(DialogueNode node, int level)> queue = new();
-        
-        queue.Enqueue((root, 0));
-
-        while (queue.Count > 0)
+        foreach (Transform child in m_treeRoot)
         {
-            var (node, level) = queue.Dequeue();
+            Destroy(child.gameObject); 
+        }
 
-            if (!_levelMap.ContainsKey(level)) _levelMap[level] = new List<DialogueNode>();
-            
-
-            if (!_levelMap[level].Contains(node)) _levelMap[level].Add(node);
-            
-
-            foreach (var response in node.responses.Where(response => response.nextNode != null))
-            {
-                response.nextNode.PreviousResponse = response;
-                queue.Enqueue((response.nextNode, level + 1));
-            }
+        var npcTrees = NotebookManager.Instance.GetDialoguesFor(npcIdentity);
+        if (npcTrees is { Count: > 0 })
+        {
+            BuildTree(npcTrees[0]).Forget();
         }
     }
-    
-    private async UniTask LayoutLevels()
+
+
+    private async UniTask BuildTree(DialogueNote dialogueNote) 
     {
-        foreach (var (level, nodes) in _levelMap)
-        {
-            int count = nodes.Count;
+        if (dialogueNote == null || dialogueNote.GetFullDialogue() == null) return;
+        _activeNote = dialogueNote;
 
-            float totalWidth = (count - 1) * baseHorizontalSpacing;
+        Dialogue dialogueAsset = dialogueNote.GetFullDialogue();
 
-            float startX = -totalWidth / 2f;
+        if (dialogueAsset.startingNode == null) return;
+        
+        TreeNode runtimeRoot = BuildRuntimeTreeRecursively(dialogueAsset.startingNode, null);
 
-            for (int i = 0; i < count; i++)
-            {
-                DialogueNode node = nodes[i];
-
-                Vector2 pos = new(startX + i * baseHorizontalSpacing, -level * levelVerticalDistance);
-
-                _nodePositions[node] = pos;
-
-                SpawnNode(node, pos, level);
-            }
-        }
+        if (runtimeRoot == null) return;
+        
+        ReingoldTilfordLayout.CalculatePositions(runtimeRoot);
+        
+        SpawnNodesRecursively(runtimeRoot, 0);
 
         await UniTask.Yield();
-
-        SpawnAllConnections();
+        
+        SpawnConnectionsRecursively(runtimeRoot);
     }
-    
-    private void SpawnAllConnections()
+    private void SpawnNodesRecursively(TreeNode node, int level)
     {
-        foreach (var pair in _levelMap)
-        {
-            foreach (var node in pair.Value)
-            {
-                Vector2 parentPos = _nodePositions[node];
+        if (node == null) return;
 
-                foreach (var response in node.responses.Where(response => response.nextNode != null).Where(response => _nodePositions.ContainsKey(response.nextNode)))
+        Vector2 localUiPos = new Vector2(node.X * baseHorizontalSpacing, -level * levelVerticalDistance);
+      
+        if (node.IsLocked)
+        {
+            Image lockedImg = Instantiate(m_lockImage, m_treeRoot);
+            lockedImg.transform.localScale = Vector3.one;
+            lockedImg.transform.localPosition = localUiPos;
+            lockedImg.gameObject.name = $"Locked_Node_Lvl{level}";
+            lockedImg.color = m_lockColor;
+        }
+        else
+        {
+            if (node.Source is DialogueNode npcNode)
+            {
+                string nodeName = npcNode.PreviousResponse != null ? npcNode.PreviousResponse.responseText : "Beginning";
+                Debug.Log("El nombre de node es  "  +  nodeName);
+                ButtonFactoryObject button = SpawnClueButton(nodeName, m_treeRoot);
+                button.transform.localPosition = localUiPos;
+                button.gameObject.name = $"Unlocked_Node_Lvl{level}";
+                
+                
+                button.AddListener(() =>
                 {
-                    response.nextNode.PreviousResponse = response;
-                    Vector2 childPos = _nodePositions[response.nextNode];
-                    SpawnArrow(parentPos, childPos, response.nextNode);
-                }
+                    OnNodeButtonClicked(npcNode.dialogueText).Forget();
+                });
+                
+                button.AddListenerToSub(() =>
+                {
+                    
+                });
             }
+        }
+        
+        foreach (var child in node.Children)
+        {
+            SpawnNodesRecursively(child, level + 1);
         }
     }
 
+    private TreeNode BuildRuntimeTreeRecursively(DialogueNode configNode, TreeNode parentRtNode)
+    {
+        if (configNode == null) return null;
+
+        bool isUnlocked = _activeNote.IsNodeUnlocked(configNode.guid);
+
+        TreeNode rtNode = new TreeNode(configNode.guid, configNode, isNpcNode: true, isLocked: !isUnlocked)
+        {
+            Parent = parentRtNode
+        };
+
+        if (!isUnlocked || configNode.responses == null) return rtNode;
+
+        foreach (var response in configNode.responses)
+        {
+            if (response.nextNode == null) continue;
+            
+            response.nextNode.PreviousResponse = response;
+
+            TreeNode child = BuildRuntimeTreeRecursively(response.nextNode, rtNode);
+
+            if (child == null) continue;
+
+            child.Number = rtNode.Children.Count;
+            rtNode.Children.Add(child);
+        }
+
+        return rtNode;
+    }
     
-    private void SpawnArrow(Vector2 parentPos, Vector2 childPos, DialogueNode node)
+   
+    private void SpawnConnectionsRecursively(TreeNode node)
+    {
+        if (node == null) return;
+
+        Vector2 parentPos = new Vector2(node.X * baseHorizontalSpacing, -GetNodeLevel(node) * levelVerticalDistance);
+
+        foreach (var child in node.Children)
+        {
+            Vector2 childPos = new Vector2(child.X * baseHorizontalSpacing, -GetNodeLevel(child) * levelVerticalDistance);
+            
+            SpawnArrow(parentPos, childPos, child);
+            SpawnConnectionsRecursively(child);
+        }
+    }
+
+    private int GetNodeLevel(TreeNode node)
+    {
+        int level = 0;
+        TreeNode current = node;
+        while (current.Parent != null)
+        {
+            level++;
+            current = current.Parent;
+        }
+        return level;
+    }
+
+    
+    private void SpawnArrow(Vector2 parentPos, Vector2 childPos, TreeNode childNode)
     {
         Vector3 arrowLocalPos = Vector3.Lerp(parentPos, childPos, 0.5f);
-
         ImageSelector arrow = Instantiate(arrowImage, m_treeRoot);
-
         arrow.transform.localScale = Vector3.one;
-
         arrow.transform.localPosition = arrowLocalPos;
-
         arrow.SetRandomSprite();
 
         Vector3 direction = childPos - parentPos;
-
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
         arrow.transform.localRotation = Quaternion.Euler(0f, 0f, angle - angleOffset);
-
-        if (node.PreviousResponse != null && !node.PreviousResponse.IsAvailable()) arrow.baseImage.color = m_lockColor;
-        
-    }
-    
-    private void SpawnNode(DialogueNode node, Vector2 position, int level)
-    {
-        LogNote note = new(node.PreviousResponse != null ? node.PreviousResponse.responseText : "Beginning", new List<string> { node.dialogueText }, new List<string> { node.dialogueText }, new(_currentDialogue, new() { node.doesItProveAnything }));
-
-        if (node.PreviousResponse != null && !node.PreviousResponse.IsAvailable())
-        {
-            Image locked = Instantiate(m_lockImage, m_treeRoot);
-
-            locked.transform.localScale = Vector3.one;
-
-            locked.transform.localPosition = position;
-
-            locked.transform.localRotation = Quaternion.identity;
-
-            locked.GetComponentInChildren<Image>().color = m_lockColor;
-
-            return;
-        }
-
-        bool unread = !_unlockedDialogue.Contains(node);
-
-        ButtonFactoryObject button = SpawnClueButton(note, m_treeRoot, unread);
-        
-        button.transform.localPosition = position;
-        button.gameObject.name = $"Button_{level}";
     }
 
-    private ButtonFactoryObject SpawnClueButton(Note note, Transform treeRoot, bool unread)
+    private ButtonFactoryObject SpawnClueButton(string displayName, Transform treeRoot)
     {
-        var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
-            m_nodeButton,
-            Vector3.zero,
-            Quaternion.identity,
-            treeRoot
-        );
-        button.SetText(note.displayName);
+        var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(m_nodeButton, Vector3.zero, Quaternion.identity, treeRoot);
+        button.SetText(displayName);
         button.SetInteractable(true);
         button.MoveToLast();
-  
+        
         return button;
     }
 }

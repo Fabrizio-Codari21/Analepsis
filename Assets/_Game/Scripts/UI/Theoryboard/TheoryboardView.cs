@@ -21,7 +21,6 @@ public class TheoryboardView : MonoBehaviour
     public Image solveCanvas;
 
     public SerializedDictionary<Whodunnit, TheoryPanel> boardRoots = new();
-    //public SerializedDictionary<Whodunnit, DataTest[]> test = new();
 
 
     private IActivity _activity;
@@ -49,19 +48,17 @@ public class TheoryboardView : MonoBehaviour
 
         Despawn(markedLogsRoot);
         Despawn(markedItemsRoot);
-        var markedLogs = notebookManager.MarkedClues.Where(x => x.Value.type == PageType.Character);
+        var markedLogs = TheoryMarkingPanel.Instance.MarkedClues.Where(x => x.Value.type == PageType.Character);
         var markedList = markedLogs.ToList();
-        if(!markedList.Any())
-            CreateClueButton("No Logs marked \n(Click the star to mark)", markedLogsRoot, default, true);
-        var markedItems = notebookManager.MarkedClues.Where(x => x.Value.type == PageType.Objects);
+        if(!markedList.Any()) CreateClueButton("No Logs marked \n(Click the star to mark)", markedLogsRoot, null, true);
+        var markedItems = TheoryMarkingPanel.Instance.MarkedClues.Where(x => x.Value.type == PageType.Objects);
         var keyValuePairs = markedItems.ToList();
-        if (!keyValuePairs.Any())
-            CreateClueButton("No Objects marked \n(Click the star to mark)", markedItemsRoot, default, true);
-
+        if (!keyValuePairs.Any()) CreateClueButton("No Objects marked \n(Click the star to mark)", markedItemsRoot, default, true);
+        
         SwitchCharacter();
         
-        if (notebookManager.MarkedClues.Count <= 0) return;
-
+        if ( TheoryMarkingPanel.Instance.MarkedClues.Count <= 0) return;
+        
         foreach (var log in markedList) 
         {
             var button = CreateClueButton(log.Value.displayName, markedLogsRoot, log.Value.isProof);
@@ -76,25 +73,31 @@ public class TheoryboardView : MonoBehaviour
 
     }
 
-    public void SwitchCharacter(int nextOrPrevious = 0)
+    private void SwitchCharacter(int nextOrPrevious = 0)
     {
         Despawn(markedCharactersRoot);
         if(NotebookManager.Instance.FoundCharacters.Count <= 0)
         {
-            CreateClueButton("No characters discovered.", markedCharactersRoot, default, true); return;
+            CreateClueButton("No characters discovered.", markedCharactersRoot, null, true); return;
         }
-        var character = NotebookManager.Instance.FoundCharacters.Keys.ToList()[_currentCharacter];
-        if (nextOrPrevious > 0)
+        var character = NotebookManager.Instance.FoundCharacters.ToList()[_currentCharacter];
+        
+        switch (nextOrPrevious)
         {
-            _currentCharacter++;
-            if (_currentCharacter > NotebookManager.Instance.FoundCharacters.Count - 1) _currentCharacter = 0;
+            case > 0:
+            {
+                _currentCharacter++;
+                if (_currentCharacter > NotebookManager.Instance.FoundCharacters.Count - 1) _currentCharacter = 0;
+                break;
+            }
+            case < 0:
+            {
+                _currentCharacter--;
+                if (_currentCharacter < 0) _currentCharacter = NotebookManager.Instance.FoundCharacters.Count - 1;
+                break;
+            }
         }
-        else if (nextOrPrevious < 0)
-        {
-            _currentCharacter--;
-            if (_currentCharacter < 0) _currentCharacter = NotebookManager.Instance.FoundCharacters.Count - 1;
-        }
-        var charButton = CreateClueButton(character.npcName, markedCharactersRoot, new(character,new List<Whodunnit>(character.possibleRoles)), isCharacter: true);
+        CreateClueButton(character.npcName, markedCharactersRoot, new(character,new List<Whodunnit>(character.possibleRoles)), isCharacter: true);
     }
 
     public ButtonFactoryObject CreateClueButton(string text, Transform parent, Tuple<Clue,List<Whodunnit>> proof, bool placeholder = false, bool isCharacter = false)
@@ -105,7 +108,6 @@ public class TheoryboardView : MonoBehaviour
             Quaternion.identity,
             parent
         );
-
 
         button.SetText(text);
         if (placeholder) 
@@ -173,7 +175,7 @@ public class TheoryboardView : MonoBehaviour
         }
 
         viableAnswer = possibleAnswers.FirstOrDefault();
-        if(!viableAnswer.Equals(default)) 
+        if(!viableAnswer.Equals(null)) 
             await manager.SolveCase(
                 manager.currentCase.AllValidAnswers.IndexOf(viableAnswer),
                 viableAnswer.Name);

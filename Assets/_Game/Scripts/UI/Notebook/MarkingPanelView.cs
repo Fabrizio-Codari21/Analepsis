@@ -17,7 +17,9 @@ public class MarkingPanelView : MonoBehaviour, IActivity
     [SerializeField] TMP_InputField inputField;
     [SerializeField] TextMeshProUGUI tipText;
     [SerializeField] Button markClueButton, cancelButton;
-
+    
+    
+    [SerializeField] private NoteEvent m_markNoteEvent;
     private Dictionary<PageType, List<string>> _tips = new()
     {
         { PageType.Character, new List<string>()
@@ -40,7 +42,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
         }},
     };
 
-    //[HideInInspector] public Dictionary<SerializableGuid, ButtonFactoryObject> markableClues = new();
+    [HideInInspector] public Dictionary<SerializableGuid, ButtonFactoryObject> markableClues = new();
 
     private void OnDestroy()
     {
@@ -66,13 +68,6 @@ public class MarkingPanelView : MonoBehaviour, IActivity
     public async UniTask RenameAndMarkClue(Note clue)
     {
         _newClueName = "";
-        //if (NotebookManager.Instance.markedClues.ContainsKey(clue.guid))
-        //{
-        //    //markableClues[clue.guid]?.DisplayMark(false);
-        //    return;
-        //}
-
-        ////markableClues[clue.guid]?.DisplayMark(true);
         pushEvent.Raise(this);
         enableCursor.Raise(true);
         tipText.text = RandomTip(clue.type);
@@ -104,22 +99,20 @@ public class MarkingPanelView : MonoBehaviour, IActivity
             if (newValue == "") tipText.text = RandomTip(clue.type);
         });
     }
-
-    public void Mark(Note clue) => _ = Marking(clue);
-    public async UniTask Marking(Note clue)
+    private void Mark(Note clue) => _ = Marking(clue);
+    private async UniTask Marking(Note clue)
     {
         _currentClue = null;
-        Note newClue = new Note(clue.displayName, clue.isProof);
-        newClue.type = clue.type;
-        newClue.displayName = _newClueName != ""
-            ? _newClueName.FirstCharacterToUpper()
-            : newClue.displayName;
+        Note newClue = new Note(clue.displayName, clue.isProof)
+        {
+            type = clue.type
+        };
+        newClue.displayName = _newClueName != "" ? _newClueName.FirstCharacterToUpper() : newClue.displayName;
 
-        if (!NotebookManager.Instance.MarkedClues.Remove(clue.guid))
-            NotebookManager.Instance.MarkedClues.TryAdd(clue.guid, newClue);
+        // if (!NotebookManager.Instance.MarkedClues.Remove(clue.guid)) NotebookManager.Instance.MarkedClues.TryAdd(clue.guid, newClue);
 
-        _newClueName = default;
-        print("Marked clue: " + newClue.displayName);
+        _newClueName = null;
+     
 
         AudioManager.Instance.SelectSFX(SFXType.Player, "Scribble");
         inputField.text = "Sending to the Theory Board...";
@@ -131,7 +124,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
         Destroy(gameObject);
     }
 
-    public async UniTask UnfoldPanel(bool isOpening)
+    private async UniTask UnfoldPanel(bool isOpening)
     {
         if (mainUI == null) return;
         Tween.StopAll(mainUI.gameObject.transform);
@@ -148,17 +141,18 @@ public class MarkingPanelView : MonoBehaviour, IActivity
             await seq.Group(Tween.ScaleX(mainUI.gameObject.transform, 0f, 0.2f, Ease.InQuad));
         }
 
-
         await seq;
 
     }
 
-    public string RandomTip(PageType type) => _tips[type][UnityEngine.Random.Range(0, _tips[type].Count - 1)];
+    private string RandomTip(PageType type) => _tips[type][UnityEngine.Random.Range(0, _tips[type].Count - 1)];
 
+    
+    #region IActivity
 
-    public event System.Action OnResume;
-    public event System.Action OnPause;
-    public event System.Action OnStop;
+    public event Action OnResume;
+    public event Action OnPause;
+    public event Action OnStop;
 
     public void Resume()
     {
@@ -180,4 +174,6 @@ public class MarkingPanelView : MonoBehaviour, IActivity
     {
         return true;
     }
+    
+    #endregion
 }

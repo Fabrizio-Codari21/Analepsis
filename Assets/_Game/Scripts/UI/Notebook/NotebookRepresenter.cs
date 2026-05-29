@@ -8,36 +8,45 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Linq;
 using PrimeTween;
+using Sirenix.OdinInspector;
 
 public class NotebookRepresenter : MonoBehaviour,ITakeable
 {
+    [Header("Controller")]
+    [ShowInInspector,ReadOnly] private NotebookManager  m_controller;
     [Header("Page Root")]
     [SerializeField] private Transform m_leftRoot;
     [SerializeField] private Transform m_rightRoot;
+    [SerializeField] private Transform m_buttonLeftRoot;
+    [SerializeField] private Transform m_buttonRightRoot;
     
-   
-
+    [Header("Layout")]
+    [SerializeField] private List<NotebookLayout> m_allLayout;
     
-    
-    
-    [SerializeField] private CharacterLayout m_characterLayout;
-
-
-
-    public event Action<PageType> OnPageSwitchRequested =  delegate { };
- 
-
-    public void RequestPage(PageType pageType)
+    [Header("UI Setting")]
+    [SerializeField] private NotebookButton m_layoutButtonPrefab;
+    public void Initialize(NotebookManager controller)
     {
-        
-        OnPageSwitchRequested?.Invoke(pageType);
-    } 
+        m_controller = controller;
+        InitLayouts();
+    }
     
+    private void InitLayouts()
+    {
+        foreach (var layout in m_allLayout)
+        { 
+            layout.Initialize(m_leftRoot, m_rightRoot);
+            m_controller.AddLayout(layout);   // Creo Layout
+            
+            var newButton = Instantiate(m_layoutButtonPrefab, m_buttonLeftRoot);
+            newButton.OnClick += () => m_controller.TryShowLayoutFor(layout);  // Crear button para swichtear a ese layout
+        }
+    }
+  
     
     #region ITakeable
     public void TryTake(Transform takeRoot)
     {
-       
         transform.SetParent(takeRoot,false);
         gameObject.SetActive(true);
         

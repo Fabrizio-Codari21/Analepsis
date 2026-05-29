@@ -61,7 +61,7 @@ public class DynamicUIText : FactoryUIObject
     }
     
   
-    public async UniTask PlayTypeWriterEffect(string text = null,CancellationToken externalToken = default, float typingSpeed = default)
+    public async UniTask PlayTypeWriterEffect(string text = null,CancellationToken externalToken = default, float typingSpeed = 0)
     {
         Cancel();
 
@@ -74,7 +74,7 @@ public class DynamicUIText : FactoryUIObject
         var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, externalToken);
         var token = linkedCts.Token;
         int totalChars = m_text.textInfo.characterCount;
-        float typeSpeed = typingSpeed != default ? typingSpeed : m_charsPerSecond;
+        float typeSpeed = !Mathf.Approximately(typingSpeed, 0) ? typingSpeed : m_charsPerSecond;
         try
         {
             for (int i = 1; i <= totalChars; i++)
@@ -83,11 +83,10 @@ public class DynamicUIText : FactoryUIObject
 
                 m_text.maxVisibleCharacters = i;
 
-                await UniTask.Delay(
-                    TimeSpan.FromSeconds(1f / typeSpeed),
-                    cancellationToken: token);
+                await UniTask.Delay(TimeSpan.FromSeconds(1f / typeSpeed), cancellationToken: token);
             }
-            CalculateWidthAndHeight(out _currentSize);
+
+            
         }
         catch (OperationCanceledException)
         {

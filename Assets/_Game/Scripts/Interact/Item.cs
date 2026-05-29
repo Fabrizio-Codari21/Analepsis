@@ -52,6 +52,6 @@ public class ItemPOIData
 [Serializable]
 public class Clue : ScriptableObject
 {
-    public virtual Tuple<Clue,List<Whodunnit>> DoesItProveAnything() => default;
+    public virtual Tuple<Clue,List<Whodunnit>> DoesItProveAnything() => null;
 }
 

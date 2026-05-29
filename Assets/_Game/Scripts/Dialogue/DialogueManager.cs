@@ -19,18 +19,18 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
     [SerializeField] private EventChannel m_popActivity;
     [SerializeField] private BoolEventChannel m_cursorEnable;
     [SerializeField] private float timeToOutDialogue; // se usa cuando la última palabra se la da el npc
-    [SerializeField] private RecordNoteEvent m_recordNoteEvent;
+    [SerializeField] private NoteEvent noteEvent;
     private CancellationTokenSource  _dialogueCts;
     private IDialogable _currentDialoguer;
-    private IDialogable _previousDialoguer;
-    
-    
     private HashSet<string> _recordedContentInSession = new HashSet<string>();
 
     private List<string> _manualRecords = new();
     private List<string> _previousRecords = new();
-    private List<string> _recordText = new();
     private string _topic = string.Empty;
+    
+    
+    private DialogueNode _currentNpcNode = null;      
+    private DialogueResponse _currentResponseNode = null;
     [ShowInInspector, ReadOnly] private HashSet<SerializableGuid> _dialogueNodesTalked = new HashSet<SerializableGuid>();
     #region  IActivity
     public event Action OnResume;
@@ -75,22 +75,7 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
     {
         m_dialogueView = Instantiate(m_dialogueView,transform);
         m_dialogueView.m_player = m_player;
-        m_dialogueView.RecordRequested += (content, button) =>
-        {
-            if (_currentDialoguer == null) return;
-            if (!_recordedContentInSession.Add(content) || _previousRecords.Contains("- " + content)) 
-            {
-                button.PlayImageFill(0f).Forget();
-                RemoveFromText(ref _manualRecords, content);
-                _recordedContentInSession.Remove(content);
-                _previousRecords.Remove("- " + content);
-                return; 
-            }
-
-            button.PlayImageFill(1f, color: new(0.1f,0,0.4f,0.8f)).Forget();
-            AppendToText(ref _manualRecords, content);
-            
-        };
+        
         m_dialogueView.IsAlreadyRecorded += (content) => _previousRecords.Contains("- " + content);
         
         
@@ -112,11 +97,11 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         m_pushActivity.Raise(this);
 
         _currentDialoguer = dialogable;
-        _currentDialoguer.Dialogue._hiddenProof.Clear();
+        _currentDialoguer.Dialogue.hiddenProof.Clear();
         m_dialogueView.ClearDialogues();
         m_dialogueView.SetSpeakerName(dialogable.NpcName);
 
-        _unlockedDialogue = new(_currentDialoguer.Dialogue, new());
+      
 
         AudioManager.Instance.SelectSFX(SFXType.Player, "FlipForwards");
         _ = AudioManager.Instance.ChangeMusicState(MusicState.Dialogue);
@@ -126,32 +111,55 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
             _currentDialoguer.ID.makesEyeContact,
             _currentDialoguer.LookAt, 
             _currentDialoguer.Player);
+        
+        if (dialogable.Dialogue && dialogable.Dialogue.startingNode != null)
+        {
+            dialogable.Dialogue.startingNode.PreviousResponse = null;
+        }
 
         await PlayDialogueNode(dialogable.Dialogue.startingNode);
 
     }
 
-    Tuple<Dialogue, List<INode>> _unlockedDialogue;
+   
     private async UniTask PlayDialogueNode(DialogueNode node) 
     {
         if(node == null) return;
-
         _dialogueNodesTalked.Add(node.guid);
+        
+        _currentNpcNode = node;
+        if (_currentDialoguer != null)
+        {
+            NotebookManager.Instance.RecordDialogueProgress(
+                _currentDialoguer.ID,           
+                _currentDialoguer.Dialogue,    
+                node,                           
+                _currentResponseNode          
+            );
+        }
         ResetCancellationToken();
         var token = _dialogueCts.Token;
     
         m_dialogueView.ClearResponses();
-        if (node.doesItProveAnything != 0) _currentDialoguer.Dialogue.DiscoverProof(node.doesItProveAnything);
-        
-        AppendToRecord(node.dialogueText);
-        _unlockedDialogue.Item2.Add(node);
+        if (node.doesItProveAnything != 0)
+        {
+            _currentDialoguer?.Dialogue.DiscoverProof(node.doesItProveAnything);
+        }
+
+       
         try 
         {
-            if(node.characterEmotion != Emotion.None) _currentDialoguer.SetFace(node.characterEmotion);
-            
+            if(node.characterEmotion != Emotion.None)
+            {
+                _currentDialoguer?.SetFace(node.characterEmotion);
+            }
+
             // Hay dos maneras de setear las reacciones:
+            
             // - La A hace que cada vez que se setee una reacción, el npc va a permanecer en ella
             // hasta que un nodo aclare que tiene que cambiar.
+            
+            
             // - La B hace que si no se setea una reacción en el nodo siguiente, vuelve por
             // default al idle, asi que hay que marcar varios nodos si queremos que la anim siga.
             // Por ahora dejo la B que me cierra mas, pero despues vemos cual es mas comoda.
@@ -159,14 +167,16 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
             // /*A)*/if(node.characterReaction != Reaction.None)
             //          _currentDialoguer.SetAnimation(node.characterReaction);
 
-            /*B)*/ _currentDialoguer.SetAnimation(
-                        node.characterReaction != Reaction.None 
-                        ? node.characterReaction 
-                        : Reaction.Idle);
+            /*B)*/
+            if (_currentDialoguer != null)
+            {
+                _currentDialoguer.SetAnimation(node.characterReaction != Reaction.None ? node.characterReaction : Reaction.Idle);
 
-            await m_dialogueView.PlayDialogueText(node.dialogueText, token, _currentDialoguer.Dialogue.dialogueColor);
-            // mas que nada para que no siga "hablando" cuando el diálogo ya termino de reproducirse.
-            _currentDialoguer.SetAnimation(Reaction.Idle);
+                await m_dialogueView.PlayDialogueText(node.dialogueText, token,
+                    _currentDialoguer.Dialogue.dialogueColor);
+                // mas que nada para que no siga "hablando" cuando el diálogo ya termino de reproducirse.
+                _currentDialoguer.SetAnimation(Reaction.Idle);
+            }
         }
         catch (OperationCanceledException) 
         {
@@ -191,32 +201,17 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         
         foreach (var response in availableResponses)
         {
-            //if (_currentDialoguer.FirstTimeSpeaking) response.alreadyDisplayed = false;
             string tagToDisplay = string.Empty;
-            bool wasUnlocked = false;
-            if (NotebookManager.Instance.FoundCharacters.ContainsKey(_currentDialoguer.ID))
-            {
-                if (response.IsNewResponse())
-                {
-                    //tagToDisplay = "NEW";
-                    wasUnlocked = true;
-                    //response.alreadyDisplayed = true;
-                }
-                else if (response.ShouldShowNewPath())
-                {
-                    //tagToDisplay = "PATH EXPANDED";
-                    //response.alreadyDisplayed = true;
-                }
-                //print(tagToDisplay);
-            }
-            //else if (response.IsNewResponse()) response.alreadyDisplayed = false;
+            
+            bool wasUnlocked = NotebookManager.Instance.FoundCharacters.Contains(_currentDialoguer.ID) && response.IsNewResponse();
+            
+            ResponseDialogueButton button = (ResponseDialogueButton)m_dialogueView.CreateResponseButton(response.responseText, tagToDisplay);
 
-            ResponseDialogueButton button = 
-                (ResponseDialogueButton)m_dialogueView.CreateResponseButton(response.responseText, tagToDisplay);
-
-            button.AddListener(() => {
+            button.AddListener(() => 
+            { 
                 button.SetInteractable(false);
-                PlayResponseProcess(response).Forget();
+                _currentResponseNode = response;
+                PlayResponseProcess(response).Forget();  
             });
             button.MarkAsLinked(wasUnlocked);
         }
@@ -229,7 +224,17 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         var token = _dialogueCts.Token;
 
         m_dialogueView.ClearResponses();
-        if (response.nextNode == null)
+        
+        if (_currentDialoguer != null)
+        {
+            NotebookManager.Instance.RecordDialogueProgress(
+                _currentDialoguer.ID,
+                _currentDialoguer.Dialogue,
+                response,        
+                _currentNpcNode  
+            );
+        }
+        if (response.nextNode == null && _currentDialoguer != null)
         {
             await m_dialogueView.UnfoldDialogue(
                 false, 
@@ -237,11 +242,10 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
                 _currentDialoguer.LookAt, 
                 _currentDialoguer.Player);
 
-            EndDialogue(response.HasTopic(out _topic));
+            EndDialogue();
             return;
         }
-        AppendToRecord($"[Player]: {response.responseText}");
-        _unlockedDialogue.Item2.Add(response);
+        
 
         try 
         {
@@ -263,36 +267,13 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         }
         else
         {
-            await m_dialogueView.UnfoldDialogue(
-                           false,
-                           _currentDialoguer.ID.makesEyeContact,
-                           _currentDialoguer.LookAt,
-                           _currentDialoguer.Player);
+            await m_dialogueView.UnfoldDialogue(false, _currentDialoguer.ID.makesEyeContact, _currentDialoguer.LookAt, _currentDialoguer.Player);
 
-            EndDialogue(response.HasTopic(out _topic));
+            EndDialogue();
         }
     }
     
-    bool _recordChanged = false;
-    private void AppendToText(ref List<string> target, string text)
-    {
-        if (string.IsNullOrEmpty(text)) return;
-        target.Add("- " + text);
-        _recordChanged = true;
-    }
-
-    private void RemoveFromText(ref List<string> target, string text)
-    {
-        if (string.IsNullOrEmpty(text)) return;
-        target.Remove("- " + text);
-        _recordChanged = true;
-    }
-
-    private void AppendToRecord(string text)
-    {
-        if (string.IsNullOrEmpty(text)) return;
-        _recordText.Add("- " + text);
-    }
+ 
     private void ResetCancellationToken()
     {
         _dialogueCts?.Cancel();
@@ -300,44 +281,11 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         _dialogueCts = new CancellationTokenSource();
     }
 
-    private void EndDialogue(bool withTopic = false)
+    private void EndDialogue()
     {
         AudioManager.Instance.SelectSFX(SFXType.Player, "FlipBackwards");
         _ = AudioManager.Instance.ChangeMusicState(MusicState.Default);
-
-        string title = $"{_currentDialoguer.NpcName.Possessive()} account" + (withTopic
-        ? $" -\n About {_topic.FirstCharacterToLower()}"
-        : " -\n No clear topic");
-
-        List<string> rec = new(_manualRecords);
-        if (_manualRecords.Count <= 0 && !_recordChanged && _previousDialoguer == _currentDialoguer) 
-            _manualRecords = _previousRecords;
-
-        var finalLog = new LogNote(
-            title, 
-            _recordText.Segmented(), 
-            _manualRecords.Segmented(), 
-            _currentDialoguer.Dialogue.DoesItProveAnything()
-        );
-
-        LogNote sameLogIfUnique = (LogNote)NotebookManager.Instance.ReturnIfUnique(finalLog, _currentDialoguer.ID);
-        if (finalLog == sameLogIfUnique)
-        {
-            finalLog.ChangeRecord(rec);
-            NotebookManager.Instance.AddLogToCharacter(_currentDialoguer.ID, finalLog);
-        }
-        else sameLogIfUnique.UpdateLog(finalLog);
-
-        // aca se guardan las cosas nuevas para el arbol
-        var newDialogue = new DialogueNote(
-            title,
-            _unlockedDialogue.Item1,
-            _unlockedDialogue.Item2);
-
-        var existingDialogue = NotebookManager.Instance.StartedDialogues.FirstOrDefault(x => x.GetFullDialogue() == newDialogue.GetFullDialogue());
-
-        if (existingDialogue != null) existingDialogue.UpdateLog(newDialogue);
-        else NotebookManager.Instance.StartedDialogues.Add(newDialogue);
+        
 
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
         _currentDialoguer.ResetAnimation();
@@ -346,21 +294,17 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
             NotebookManager.Instance.AddCharacter(_currentDialoguer.ID);           
             _currentDialoguer.FirstTimeSpeaking = false;
         }
-        _previousDialoguer = _currentDialoguer;
+        
+        
         _currentDialoguer = null;
-        _recordText = new();
-
-
-
+        _currentNpcNode = null;
+        _currentResponseNode = null;
+        
         _previousRecords = _manualRecords;
         _manualRecords = new();
-        _recordChanged = false;
         _recordedContentInSession.Clear();
         m_popActivity.Raise();
-        
     }
-    
-    
     public bool CheckDialogue(SerializableGuid guid) => _dialogueNodesTalked.Contains(guid);
 }
 

@@ -165,7 +165,7 @@ public class DialogueView : MonoBehaviour
 public class DialogueMarkClueButton : MonoBehaviour
 {
     [SerializeField] private ButtonSetting m_button;
-    [SerializeField] private RecordNoteEvent m_recordNoteEvent;
+    [SerializeField] private NoteEvent noteEvent;
     private IDialogable _dialoguer;
 
     private void Record(DialogueNode node)
