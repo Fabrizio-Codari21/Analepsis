@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -33,8 +32,102 @@ public class TreePage : NotebookPage
     [SerializeField] private float m_textWidth = 150f;
     [SerializeField] private float m_textSize = 12f;
     
+  
+    [Header("Event")] 
+    [SerializeField] private NpcEvent m_onNpcSelected;
+    [SerializeField] private NoteEvent m_sentNoteToTheoryBoardEvent;
+    private DialogueNote _activeNote;
     private CancellationTokenSource _textCancellationTokenSource;
     private DynamicUIText _currentActiveText;
+    private void Start()
+    {
+       m_onNpcSelected.OnEventRaised += ShowTreeFor;
+    }
+
+    private void OnDestroy()
+    {
+        m_onNpcSelected.OnEventRaised -= ShowTreeFor;
+    }
+
+    
+    
+    private void ShowTreeFor(NpcIdentity npcIdentity)
+    {   
+       
+        foreach (var f in m_treeRoot.GetComponentsInChildren<IFlyweight>()) 
+        { 
+            FlyweightFactory.Instance.Return(f);
+        }
+
+        var npcTrees = NotebookManager.Instance.GetDialoguesFor(npcIdentity);
+        if (npcTrees is { Count: > 0 })
+        {
+            BuildTree(npcTrees[0]).Forget();
+        }
+    }
+
+
+    private async UniTask BuildTree(DialogueNote dialogueNote) 
+    {
+        if (dialogueNote == null || !dialogueNote.GetFullDialogue()) return;
+        _activeNote = dialogueNote;
+
+        Dialogue dialogueAsset = dialogueNote.GetFullDialogue();
+
+        if (dialogueAsset.startingNode == null) return;
+        
+        TreeNode runtimeRoot = BuildRuntimeTreeRecursively(dialogueAsset.startingNode, null);
+
+        if (runtimeRoot == null) return;
+        
+        ReingoldTilfordLayout.CalculatePositions(runtimeRoot);
+        
+        SpawnNodesRecursively(runtimeRoot, 0);
+
+        await UniTask.Yield();
+        
+        SpawnConnectionsRecursively(runtimeRoot);
+    }
+    private void SpawnNodesRecursively(TreeNode node, int level)
+    {
+        if (node == null) return;
+
+        Vector2 localUiPos = new Vector2(node.X * baseHorizontalSpacing, -level * levelVerticalDistance);
+      
+        if (node.IsLocked)
+        {
+            Image lockedImg = Instantiate(m_lockImage, m_treeRoot);
+            lockedImg.transform.localScale = Vector3.one;
+            lockedImg.transform.localPosition = localUiPos;
+            lockedImg.gameObject.name = $"Locked_Node_Lvl{level}";
+            lockedImg.color = m_lockColor;
+        }
+        else
+        {
+            if (node.Source is DialogueNode npcNode)
+            {
+                string nodeName = npcNode.PreviousResponse != null ? npcNode.PreviousResponse.responseText : "Beginning";
+                Debug.Log("El nombre de node es  "  +  nodeName);
+                ButtonFactoryObject button = SpawnClueMarkButton(nodeName, m_treeRoot, () =>
+                {
+                    Debug.Log("Try Mark");
+                });
+                button.transform.localPosition = localUiPos;
+                button.gameObject.name = $"Unlocked_Node_Lvl{level}";
+                
+                button.AddListener(() =>
+                {
+                    OnNodeButtonClicked(npcNode.dialogueText).Forget();
+                });
+                
+            
+            }
+        }
+        
+        foreach (var child in node.Children) SpawnNodesRecursively(child, level + 1);
+        
+    }
+    
     
     private async UniTask OnNodeButtonClicked(string contentText)
     {
@@ -91,97 +184,6 @@ public class TreePage : NotebookPage
         {
             
         }
-    }
-    private DialogueNote _activeNote;
-    [SerializeField] private NpcEvent m_onNpcSelected;
-
-    private void Start()
-    {
-        if (m_onNpcSelected != null) m_onNpcSelected.OnEventRaised += ShowTreeFor;
-    }
-
-    private void OnDestroy()
-    {
-        if (m_onNpcSelected != null) m_onNpcSelected.OnEventRaised -= ShowTreeFor;
-    }
-
-    
-    
-    private void ShowTreeFor(NpcIdentity npcIdentity)
-    {   
-        foreach (Transform child in m_treeRoot)
-        {
-            Destroy(child.gameObject); 
-        }
-
-        var npcTrees = NotebookManager.Instance.GetDialoguesFor(npcIdentity);
-        if (npcTrees is { Count: > 0 })
-        {
-            BuildTree(npcTrees[0]).Forget();
-        }
-    }
-
-
-    private async UniTask BuildTree(DialogueNote dialogueNote) 
-    {
-        if (dialogueNote == null || dialogueNote.GetFullDialogue() == null) return;
-        _activeNote = dialogueNote;
-
-        Dialogue dialogueAsset = dialogueNote.GetFullDialogue();
-
-        if (dialogueAsset.startingNode == null) return;
-        
-        TreeNode runtimeRoot = BuildRuntimeTreeRecursively(dialogueAsset.startingNode, null);
-
-        if (runtimeRoot == null) return;
-        
-        ReingoldTilfordLayout.CalculatePositions(runtimeRoot);
-        
-        SpawnNodesRecursively(runtimeRoot, 0);
-
-        await UniTask.Yield();
-        
-        SpawnConnectionsRecursively(runtimeRoot);
-    }
-    private void SpawnNodesRecursively(TreeNode node, int level)
-    {
-        if (node == null) return;
-
-        Vector2 localUiPos = new Vector2(node.X * baseHorizontalSpacing, -level * levelVerticalDistance);
-      
-        if (node.IsLocked)
-        {
-            Image lockedImg = Instantiate(m_lockImage, m_treeRoot);
-            lockedImg.transform.localScale = Vector3.one;
-            lockedImg.transform.localPosition = localUiPos;
-            lockedImg.gameObject.name = $"Locked_Node_Lvl{level}";
-            lockedImg.color = m_lockColor;
-        }
-        else
-        {
-            if (node.Source is DialogueNode npcNode)
-            {
-                string nodeName = npcNode.PreviousResponse != null ? npcNode.PreviousResponse.responseText : "Beginning";
-                Debug.Log("El nombre de node es  "  +  nodeName);
-                ButtonFactoryObject button = SpawnClueButton(nodeName, m_treeRoot);
-                button.transform.localPosition = localUiPos;
-                button.gameObject.name = $"Unlocked_Node_Lvl{level}";
-                
-                
-                button.AddListener(() =>
-                {
-                    OnNodeButtonClicked(npcNode.dialogueText).Forget();
-                });
-                
-                button.AddListenerToSub(() =>
-                {
-                    
-                });
-            }
-        }
-        
-        foreach (var child in node.Children) SpawnNodesRecursively(child, level + 1);
-        
     }
 
     private TreeNode BuildRuntimeTreeRecursively(DialogueNode configNode, TreeNode parentRtNode)
@@ -254,12 +256,14 @@ public class TreePage : NotebookPage
         arrow.transform.localRotation = Quaternion.Euler(0f, 0f, angle - angleOffset);
     }
 
-    private ButtonFactoryObject SpawnClueButton(string displayName, Transform treeRoot)
+    private ButtonFactoryObject SpawnClueMarkButton(string displayName, Transform treeRoot,Action onMark)
     {
-        var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(m_nodeButton, Vector3.zero, Quaternion.identity, treeRoot);
+        ButtonWithSubButton button = FlyweightFactory.Instance.Spawn<ButtonWithSubButton>(m_nodeButton, Vector3.zero, Quaternion.identity, treeRoot);
         button.SetText(displayName);
         button.SetInteractable(true);
         button.MoveToLast();
+        
+        button.AddSubButton(onMark);
         
         return button;
     }

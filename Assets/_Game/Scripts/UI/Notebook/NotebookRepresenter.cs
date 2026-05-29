@@ -17,8 +17,8 @@ public class NotebookRepresenter : MonoBehaviour,ITakeable
     [Header("Page Root")]
     [SerializeField] private Transform m_leftRoot;
     [SerializeField] private Transform m_rightRoot;
-    [SerializeField] private Transform m_buttonLeftRoot;
-    [SerializeField] private Transform m_buttonRightRoot;
+    [SerializeField] private Transform m_buttonSwitchLayoutRoot;
+   
     
     [Header("Layout")]
     [SerializeField] private List<NotebookLayout> m_allLayout;
@@ -38,7 +38,7 @@ public class NotebookRepresenter : MonoBehaviour,ITakeable
             layout.Initialize(m_leftRoot, m_rightRoot);
             m_controller.AddLayout(layout);   // Creo Layout
             
-            var newButton = Instantiate(m_layoutButtonPrefab, m_buttonLeftRoot);
+            var newButton = Instantiate(m_layoutButtonPrefab, m_buttonSwitchLayoutRoot);
             newButton.OnClick += () => m_controller.TryShowLayoutFor(layout);  // Crear button para swichtear a ese layout
         }
     }

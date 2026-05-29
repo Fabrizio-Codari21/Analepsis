@@ -141,7 +141,7 @@ public class TheoryTreeManager : MonoBehaviour, IActivity
         await this.AsyncLoader("LoseScene");
     }
 
-    public async UniTask ConsumeAttempt(TextMeshProUGUI solveText)
+    public async UniTask ConsumeAttempt(string solveText)
     {
         attemptsLeft--;
         if (attemptsLeft > 0) await view.ShowError(solveText);

@@ -1,43 +1,42 @@
 using Sirenix.OdinInspector;
-using UnityEngine.Rendering;
 using System;
-using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 using Unity.Cinemachine;
 using Cysharp.Threading.Tasks;
-using TMPro;
 
 public class TheoryboardManager : MonoBehaviour, IActivity
 {
-    [SerializeField] TheoryboardView view;
-    [SerializeField] int maxSolveAttempts;
-    public int attemptsLeft { get; private set; }
-
-
-    [SerializeField] private bool isTest;
-
-
+    
+    [Header("Core")]
+    [SerializeField] private TheoryboardView m_view;
+    [SerializeField] private BoardInputReader inputReaderBoard;
     #region Event
-
+    [Header("Events")]
+    
+    [Header("Open & Close")]
     [SerializeField] private EventChannel m_openTheoryBoardChannel;
     [SerializeField] private BoolEventChannel enableCursor;
-    [SerializeField] private BoardInputReader inputReaderBoard;
     [SerializeField] private IActivityEvent pushEvent;
     [SerializeField] private EventChannel popEvent;
+    
+    [Header("Core Event")]
+    [SerializeField] private EventChannel m_solveCaseEvent;
     #endregion
- 
-    [SerializeField] private Canvas boardView;
+    [Header("Data")] 
+    [ShowInInspector, ReadOnly] private int _leftAttempts;
+    [SerializeField] private int m_maxSolveAttempts;
+    
+    [Header("Test Panel")]
+    [SerializeField] private bool isInstaWin = false;
 
-  
-    [SerializeField] CinemachinePanTilt camData;
-    [SerializeField] CinemachineCamera _camera;
+
+
     
 
-    [Space(25), Header("SELECT A CASE TO PLAY")]
-    public CaseResolution currentCase;
-
-
     #region IActivity
+    private void Open() => pushEvent.Raise(this);
+    private void Close() => popEvent.Raise();
     public event Action OnResume;
     public event Action OnPause;
     public event Action OnStop;
@@ -53,8 +52,6 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         OnPause?.Invoke();
         inputReaderBoard.SetEnable(false);
         enableCursor.Raise(false);
-       
-        _camera.enabled = false;
         
     }
 
@@ -63,7 +60,6 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         OnResume?.Invoke();
         inputReaderBoard.SetEnable();
         enableCursor.Raise(true);
-        _camera.enabled = true;
     }
 
     public void Stop()
@@ -74,31 +70,80 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     #endregion
 
     #region Unity Life
-
     
- 
     private void Start()
     {
-     
-        m_openTheoryBoardChannel.OnEventRaised += Open;
-        m_openTheoryBoardChannel.OnEventRaised += view.LoadMarkedClues;
-        inputReaderBoard.Close += Close;
-        attemptsLeft = maxSolveAttempts;
-        _camera.transform.localPosition += new Vector3(-UIManager.Instance.AspectRatioOffset(0.2f), UIManager.Instance.AspectRatioOffset(1), 0);
 
+        m_view = Instantiate(m_view,transform);
+        
+        m_openTheoryBoardChannel.OnEventRaised += Open;
+        m_openTheoryBoardChannel.OnEventRaised += m_view.LoadMarkedClues;
+        inputReaderBoard.Close += Close;
+        
+        m_solveCaseEvent.OnEventRaised += SolveCase;
+        
+        _leftAttempts = m_maxSolveAttempts;
+        
     }
 
     private void OnDestroy()
     {
         m_openTheoryBoardChannel.OnEventRaised -= Open;
-        m_openTheoryBoardChannel.OnEventRaised -= view.LoadMarkedClues;
+        m_openTheoryBoardChannel.OnEventRaised -= m_view.LoadMarkedClues;
         inputReaderBoard.Close -= Close;
+        m_solveCaseEvent.OnEventRaised -= SolveCase;
+        
     }
 
     #endregion
 
-    void Open() => pushEvent.Raise(this);
-    void Close() => popEvent.Raise();
+
+    private void SolveCase()
+    {
+        if (isInstaWin)
+        {
+            TryResult(true);
+            return;
+        }
+        TryResult(TrySolveCase());
+    }
+ 
+
+    private bool TrySolveCase()
+    {
+        // el check debe ser por aca
+        return true;
+    }
+
+    private void TryResult(bool success)
+    {
+        if (success)
+        {
+            CaseSuccess();
+            return;
+        }
+        
+        CaseFail();
+    }
+
+    private void CaseSuccess()
+    {
+        
+    }
+
+    private void CaseFail()
+    {
+        _leftAttempts--;
+        
+        // llamar a view
+        
+        if (_leftAttempts <= 0) Lose();
+    }
+    
+    private void Lose()
+    {
+        
+    }
 
     public async UniTask SolveCase(int answerID = 0, string answerName = "")
     {
@@ -112,15 +157,18 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         await this.AsyncLoader("LoseScene");
     }
 
-    public async UniTask ConsumeAttempt(TextMeshProUGUI solveText)
+    public async UniTask ConsumeAttempt(string solveText)
     {
-        attemptsLeft--;
-        if (attemptsLeft > 0) await view.ShowError(solveText);
+        _leftAttempts--;
+        if (_leftAttempts > 0) await m_view.ShowError(solveText);
         else await FailCase();
     }
 
   
 }
+
+
+
 
 public enum Whodunnit
 {

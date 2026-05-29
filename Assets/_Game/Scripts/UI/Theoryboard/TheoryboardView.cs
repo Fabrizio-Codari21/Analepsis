@@ -6,67 +6,102 @@ using UnityEngine.Rendering;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using System;
+using Unity.Cinemachine;
 
 public class TheoryboardView : MonoBehaviour
 {
-    [SerializeField] NotebookManager notebookManager;
-    [SerializeField] TheoryboardManager manager;
-    public Transform markedLogsRoot;
-    public Transform markedItemsRoot;
-    public Transform markedCharactersRoot;
-    public Button previousCharacterButton, nextCharacterButton;
-    public ButtonSetting clueButtonSetting;
-    public Button solveButton;
-    public TextMeshProUGUI solveText;
-    public Image solveCanvas;
+    
+    [Header("Camera")]
+    [SerializeField] private CinemachineCamera m_camera;
+    
+    [Header("UI")]
+    [SerializeField] private Button m_solveButton;
+    [SerializeField] private TMP_Text m_solveText;
+    [SerializeField] private Button m_previousCharacterButton, m_nextCharacterButton;
+ 
+    
+    [Header("UI References")]
+    [Space(10)]
+    [Header("Root")]
+    [SerializeField] private Transform m_logRoot;
+    [SerializeField] private Transform m_itemRoot;
+    [SerializeField] private Transform m_charactersRoot;
+    
+    [Header("Extra UI")]
+    [SerializeField] private FullScreenTipUI m_erroTip;
 
-    public SerializedDictionary<Whodunnit, TheoryPanel> boardRoots = new();
+    [Header("Events")]
+    [SerializeField] private EventChannel m_solverChannel;
+    
 
 
     private IActivity _activity;
-    
-    void Start()
-    {
-        solveButton.onClick.AddListener(async () => await TryToSolveCase(solveText));
-        solveCanvas.transform.parent.gameObject.SetActive(false);
-        previousCharacterButton.onClick.AddListener(() => SwitchCharacter(-1));
-        nextCharacterButton.onClick.AddListener(() => SwitchCharacter(1));
-        
-        _activity = manager.GetComponent<IActivity>();
 
+    #region Unity Life
+
+    
+
+    private void Start()
+    {
+        
+        #region Activity Suscribe  
+        _activity = GetComponentInParent<IActivity>();
+
+        _activity.OnResume += () =>
+        {
+            m_camera.enabled = true;
+        };
         _activity.OnStop += () =>
         {
-            Despawn(markedLogsRoot);
-            Despawn(markedItemsRoot);
+            m_camera.enabled = false;
+            Despawn(m_logRoot);
+            Despawn(m_itemRoot);
         };
+        #endregion
+        
     }
+
+    private void OnEnable()
+    {
+        m_previousCharacterButton.onClick.AddListener(() => SwitchCharacter(-1));
+        m_nextCharacterButton.onClick.AddListener(() => SwitchCharacter(1));
+        m_solveButton.onClick.AddListener(() =>  m_solverChannel.Raise());
+    }
+
+    private void OnDisable()
+    {
+        m_previousCharacterButton.onClick.RemoveAllListeners();
+        m_nextCharacterButton.onClick.RemoveAllListeners();
+        m_solveButton.onClick.RemoveAllListeners();
+    }
+
+    #endregion
 
 
     int _currentCharacter = 0;
     public void LoadMarkedClues()
     {
 
-        Despawn(markedLogsRoot);
-        Despawn(markedItemsRoot);
+        Despawn(m_logRoot);
+        Despawn(m_itemRoot);
         var markedLogs = TheoryMarkingPanel.Instance.MarkedClues.Where(x => x.Value.type == PageType.Character);
         var markedList = markedLogs.ToList();
-        if(!markedList.Any()) CreateClueButton("No Logs marked \n(Click the star to mark)", markedLogsRoot, null, true);
+        if(!markedList.Any()) CreateClueButton("No Logs marked \n(Click the star to mark)", m_logRoot, null, true);
         var markedItems = TheoryMarkingPanel.Instance.MarkedClues.Where(x => x.Value.type == PageType.Objects);
         var keyValuePairs = markedItems.ToList();
-        if (!keyValuePairs.Any()) CreateClueButton("No Objects marked \n(Click the star to mark)", markedItemsRoot, null, true);
+        if (!keyValuePairs.Any()) CreateClueButton("No Objects marked \n(Click the star to mark)", m_itemRoot, null, true);
         
         SwitchCharacter();
         
         if ( TheoryMarkingPanel.Instance.MarkedClues.Count <= 0) return;
-        
         foreach (var log in markedList) 
         {
-            CreateClueButton(log.Value.displayName, markedLogsRoot, log.Value.IsProof);
+            CreateClueButton(log.Value.displayName, m_logRoot, log.Value.IsProof);
            
         }
         foreach (var item in keyValuePairs)
         {
-           CreateClueButton(item.Value.displayName, markedItemsRoot, item.Value.IsProof);
+           CreateClueButton(item.Value.displayName, m_itemRoot, item.Value.IsProof);
           
         }
 
@@ -74,10 +109,10 @@ public class TheoryboardView : MonoBehaviour
 
     private void SwitchCharacter(int nextOrPrevious = 0)
     {
-        Despawn(markedCharactersRoot);
+        Despawn(m_charactersRoot);
         if(NotebookManager.Instance.FoundCharacters.Count <= 0)
         {
-            CreateClueButton("No characters discovered.", markedCharactersRoot, null, true); 
+            CreateClueButton("No characters discovered.", m_charactersRoot, null, true); 
             return;
         }
         
@@ -98,31 +133,31 @@ public class TheoryboardView : MonoBehaviour
                 break;
             }
         }
-        CreateClueButton(character.npcName, markedCharactersRoot, new(character,new List<Whodunnit>(character.possibleRoles)), isCharacter: true);
+        CreateClueButton(character.npcName, m_charactersRoot, new(character,new List<Whodunnit>(character.possibleRoles)), isCharacter: true);
     }
 
     public ButtonFactoryObject CreateClueButton(string text, Transform parent, Tuple<Clue,List<Whodunnit>> proof, bool placeholder = false, bool isCharacter = false)
     {
-        var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
-            clueButtonSetting,
-            Vector3.zero,
-            Quaternion.identity,
-            parent
-        );
-
-        button.SetText(text);
-        if (placeholder) 
-        {
-            button.SetInteractable(false);
-            return button;
-        }
-        button.SetInteractable(true);
-        button.SetBoard(boardRoots);
-        button.SetView(this);
-        button.SetProof(proof);
-        button.SetCharacter(isCharacter);
-        button.MoveToLast();
-        return button;
+        // var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
+        //     clueButtonSetting,
+        //     Vector3.zero,
+        //     Quaternion.identity,
+        //     parent
+        // );
+        //
+        // button.SetText(text);
+        // if (placeholder) 
+        // {
+        //     button.SetInteractable(false);
+        //     return button;
+        // }
+        // button.SetInteractable(true);
+        // button.SetBoard(boardRoots);
+        // button.SetView(this);
+        // button.SetProof(proof);
+        // button.SetCharacter(isCharacter);
+        // button.MoveToLast();
+        return null;
     }
 
     private void Despawn(Transform root) 
@@ -134,106 +169,30 @@ public class TheoryboardView : MonoBehaviour
     }
 
 
-    public async UniTask TryToSolveCase(TextMeshProUGUI solveText)
-    {
-        CaseAnswer viableAnswer = default;
-        List<CaseAnswer> possibleAnswers = new(manager.currentCase.AllValidAnswers);
-        if(boardRoots.Any(x => x.Value.droppedClue == null))
-        {
-            await ShowIncomplete(solveButton.GetComponentInChildren<TextMeshProUGUI>());
-            return;
-        }
-        foreach(var item in boardRoots) 
-        { 
-            var choice = item.Value.droppedClue; 
-
-            var proof = choice.GetProof();
-
-            if (choice != null && proof.Item2.Contains(item.Key))
-            {
-                //SerializedList<Clue> l = default;
-                possibleAnswers = possibleAnswers
-                    .Where(x => x.Answer.TryGetValue(item.Key, out var l) && l.Items.Contains(proof.Item1))
-                    .ToList();
-                if (possibleAnswers.Count > 0) continue; else
-                {
-                    await manager.ConsumeAttempt(solveText);
-                    return;
-                }
-            }
-            else
-            {
-                await manager.ConsumeAttempt(solveText);
-                return;
-            }
-        }
-
-        if(possibleAnswers.Count > 1)
-        {
-            print("Mas de un resultado posible");
-            return;
-        }
-
-        viableAnswer = possibleAnswers.FirstOrDefault();
-        if(!viableAnswer.Equals(null)) 
-            await manager.SolveCase(
-                manager.currentCase.AllValidAnswers.IndexOf(viableAnswer),
-                viableAnswer.Name);
-    }
+   
 
     public async UniTask ShowIncomplete(TextMeshProUGUI solveText)
     {
-        var text = solveButton.GetComponentInChildren<TextMeshProUGUI>();
+        var text = m_solveButton.GetComponentInChildren<TextMeshProUGUI>();
         var oldtext = text.text;
         text.text = "Incomplete";
         await UniTask.Delay(800);
         text.text = oldtext;
     }
 
-    public async UniTask ShowError(TextMeshProUGUI solveText)
+    public async UniTask ShowError(string solveTxt)
     {
-        var oldText = solveText.text;
-
-        print("unsolved");
-        //solveText.text = "Not quite";
-        solveText.text = $"Wait... this doesn't make enough sense. " +
-                         $"\n I need to find a better theory, quickly... " +
-                         $"\n [{manager.attemptsLeft} attempts left]";
-        await DisplayErrorUI();
-        solveText.text = oldText;
+        // var oldText = solveText.text;
+        //
+        // print("unsolved");
+        // //solveText.text = "Not quite";
+        // solveText.text = $"Wait... this doesn't make enough sense. " +
+        //                  $"\n I need to find a better theory, quickly... " + $"\n [{manager.AttemptsLeft} attempts left]";
+        // await DisplayErrorUI();
+        // solveText.text = oldText;
     }
 
-    public async UniTask DisplayErrorUI()
-    {
-        solveCanvas.transform.parent.gameObject.SetActive(true);
-        while (solveCanvas.color.a < 0.8f)
-        {
-            solveCanvas.color += new Color(0, 0, 0, 0.06f);
-            solveText.color += new Color(0, 0, 0, 0.06f);
-            //shadeUI.color += new Color(0, 0, 0, 0.02f * timeToFadeUI / 5);
-            await UniTask.Delay(20);
-        }
-
-        await UniTask.Delay(2000);
-
-        while (solveCanvas.color.a > 0)
-        {
-            solveCanvas.color -= new Color(0, 0, 0, 0.03f);
-            solveText.color -= new Color(0, 0, 0, 0.03f);
-            //shadeUI.color -= new Color(0, 0, 0, 0.015f * timeToFadeUI / 5);
-            await UniTask.Delay(20);
-        }
-        solveCanvas.transform.parent.gameObject.SetActive(false);
-
-    }
 
 
 
 }
-
-//[System.Serializable]
-//public struct DataTest
-//{
-//    public TheoryPanel theory;
-//    public bool check;
-//}

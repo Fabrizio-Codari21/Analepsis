@@ -25,7 +25,6 @@ public class DialogueView : MonoBehaviour
     [SerializeField] private ScrollRect m_scrollRect;
 
     [SerializeField] private Transform m_root;
-    [HideInInspector] public Transform m_player;
     
     public Action<string, ButtonFactoryObject>  RecordRequested;
 
@@ -39,13 +38,12 @@ public class DialogueView : MonoBehaviour
         m_dialoguerName.text = newName;
     }
     
-    public ButtonFactoryObject CreateResponseButton(string text,string tip = "")
+    public ButtonFactoryObject CreateResponseButton(string text)
     {
-        var b = FlyweightFactory.Instance.Spawn<ResponseDialogueButton>(m_responseButton, Vector3.zero, Quaternion.identity, m_responseButtonRoot);
+        var b = FlyweightFactory.Instance.Spawn<TagButton>(m_responseButton, Vector3.zero, Quaternion.identity, m_responseButtonRoot);
         b.SetText(text);
         b.SetInteractable(true);
         b.MoveToLast();
-        b.SetTag(tip);
         return b;
     }
     public void ClearResponses()
@@ -82,7 +80,7 @@ public class DialogueView : MonoBehaviour
     }
 
     // por ahora el npc gira bien pero el player no, lo voy a seguir revisando.
-    public async UniTask MakeEyeContact(MultiAimConstraint npc, MultiAimConstraint player = default, float time = 1f, float maxWeight = 1f)
+    private async UniTask MakeEyeContact(MultiAimConstraint npc, MultiAimConstraint player = default, float time = 1f, float maxWeight = 1f)
     {
         WeightedTransform npcPosition = new(npc.transform, 1f);
         if(maxWeight > 0f)
@@ -101,17 +99,15 @@ public class DialogueView : MonoBehaviour
         else
         {
             _ = Tween.Custom(npc.weight, 0, time, (x => npc.weight = x), Ease.OutCirc);
-            if (player != default)
+            if (player != null)
             {
                 await Tween.Custom(player.weight, 0, time, (x => player.weight = x), Ease.OutCirc);
                 player.data.sourceObjects.Remove(npcPosition);
             }
-
-            //while (looker.weight > 0) {looker.weight -= 0.02f / time; await UniTask.Delay(20);}
+            
         }
     }
-    
-    public event Func<string, bool> IsAlreadyRecorded = delegate { return false; };
+  
     public async UniTask PlayDialogueText(string content, CancellationToken token, Color color = default, bool isResponse = false) // view  
     {
         token.ThrowIfCancellationRequested();
@@ -137,11 +133,9 @@ public class DialogueView : MonoBehaviour
             Quaternion.identity, 
             t.transform);
 
-        if (b.TryGetComponent<ImageSelector>(out var select)) 
-            select.SetSprite((int)(t.GetSize().y / m_dialogueTextSetting.size));
+        if (b.TryGetComponent<ImageSelector>(out var select)) select.SetSprite((int)(t.GetSize().y / m_dialogueTextSetting.size));
+        
 
-        b.SetFill(0f);
-        if (IsAlreadyRecorded.Invoke(content)) b.PlayImageFill(1f, color: new(0.55f,0.4f,0.5f,0.6f)).Forget();
         b.AddListener(() =>
         {            
             RecordRequested?.Invoke(content, b);           

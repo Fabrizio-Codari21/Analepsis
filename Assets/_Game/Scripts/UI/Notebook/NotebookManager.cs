@@ -135,7 +135,12 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         
         if (dialogueNote == null)
         {
-            dialogueNote = new DialogueNote(dialogue.name, dialogue,dialogue.DoesItProveAnything());
+            Whodunnit w = new Whodunnit();
+            if (currentNode is DialogueNode dialogueNode)
+            {
+                w = dialogueNode.doesItProveAnything;
+            }
+            dialogueNote = new DialogueNote(dialogue.name, dialogue,new Tuple<Clue, List<Whodunnit>>(dialogue,new List<Whodunnit>() {w}));
             dialogueList.Add(dialogueNote);
         }
         dialogueNote.RegisterNodeVisit(currentNode, parentNode);
@@ -334,7 +339,6 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
   
     #endregion
     
-    
 }
 
 
@@ -387,13 +391,10 @@ public  class Note
     public PageType type;
     public string displayName;
     public Tuple<Clue,List<Whodunnit>> IsProof;
-
     public Note(string displayName,  Tuple<Clue,List<Whodunnit>> proof = null)
     {
         this.displayName = displayName;
         IsProof = proof;
-
-
     }
 
     public virtual string GetButtonText()
@@ -433,17 +434,17 @@ public class ItemNote : Note
         if (unlockedFlash != string.Empty) fullContent.Add($"FLASHBACK :  {unlockedFlash}");
         return fullContent;
     }
+    
 
-    public override async UniTask Show(NotebookRepresenter representer, CancellationToken token)
-    {
-        // representer.CreateImage(_item.sprite);
-        //
-        //
-        // await representer.PlayText(FullInfo(), token);
-    }
+    // public override  UniTask Show(NotebookRepresenter representer, CancellationToken token)
+    // {
+    //     // representer.CreateImage(_item.sprite);
+    //     //
+    //     //
+    //     // await representer.PlayText(FullInfo(), token);
+    // }
     public override string GetInfo() => FullInfo().AsString();
 }
-
 
 
 public class TreeNode
@@ -518,7 +519,6 @@ public class TreeNode
 }
 
 
-// En el sistema de arbol, esto eventualmente reemplazaria a LogNote.
 public class DialogueNote : Note
 {
     private readonly Dialogue _dialogueRepresenter;
@@ -537,12 +537,6 @@ public class DialogueNote : Note
             InitRoot(_dialogueRepresenter.startingNode);
         }
     }
-
-    public override async UniTask Show(NotebookRepresenter representer, CancellationToken token)
-    {
-       
-    }
-
     
     public override string GetInfo() => _fullInfo.AsString();
     public Dialogue GetFullDialogue() => _dialogueRepresenter;
@@ -583,7 +577,6 @@ public class DialogueNote : Note
         if (node is DialogueNode dn) return dn.guid;
         
         if (node is DialogueResponse dr) return dr.nextNode?.guid ?? SerializableGuid.NewGuid();
-        
         
         return SerializableGuid.Empty;
     }

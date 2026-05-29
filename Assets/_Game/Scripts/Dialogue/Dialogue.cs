@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-//using System.ComponentModel;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting.FullSerializer;
+
 using UnityEngine;
 
 // Objeto base que contiene toda la logica de un dialogo.

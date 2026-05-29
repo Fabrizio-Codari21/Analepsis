@@ -10,27 +10,28 @@ using System.Linq;
 
 public class DialogueManager : Singleton<DialogueManager>,IActivity
 {
+    
+    [Header("Event")]
     [SerializeField] private DialoguerEvent m_dialogueEvent;
-    [SerializeField] private DialogueInputReader m_inputReader;
-    [SerializeField] private DialogueView m_dialogueView;
-    [SerializeField] private Transform m_player;
-
+    [SerializeField] private NoteEvent recordNoteEvent;
+    
     [SerializeField] private IActivityEvent m_pushActivity;
     [SerializeField] private EventChannel m_popActivity;
     [SerializeField] private BoolEventChannel m_cursorEnable;
+    
+    [Header("Input")]
+    [SerializeField] private DialogueInputReader m_inputReader;
+    
+    [Header("Core")]
+    [SerializeField] private DialogueView m_dialogueView;
     [SerializeField] private float timeToOutDialogue; // se usa cuando la última palabra se la da el npc
-    [SerializeField] private NoteEvent noteEvent;
+    
+    
     private CancellationTokenSource  _dialogueCts;
     private IDialogable _currentDialoguer;
-    private HashSet<string> _recordedContentInSession = new HashSet<string>();
-
-    private List<string> _manualRecords = new();
-    private List<string> _previousRecords = new();
-    private string _topic = string.Empty;
-    
-    
     private DialogueNode _currentNpcNode = null;      
     private DialogueResponse _currentResponseNode = null;
+    [Header("Data")]
     [ShowInInspector, ReadOnly] private HashSet<SerializableGuid> _dialogueNodesTalked = new HashSet<SerializableGuid>();
     #region  IActivity
     public event Action OnResume;
@@ -74,10 +75,6 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
     private void Start()
     {
         m_dialogueView = Instantiate(m_dialogueView,transform);
-        m_dialogueView.m_player = m_player;
-        
-        m_dialogueView.IsAlreadyRecorded += (content) => _previousRecords.Contains("- " + content);
-        
         
         m_dialogueEvent.OnEventRaised += SpeakTo;
     }
@@ -201,11 +198,10 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         
         foreach (var response in availableResponses)
         {
-            string tagToDisplay = string.Empty;
             
             bool wasUnlocked = NotebookManager.Instance.FoundCharacters.Contains(_currentDialoguer.ID) && response.IsNewResponse();
             
-            ResponseDialogueButton button = (ResponseDialogueButton)m_dialogueView.CreateResponseButton(response.responseText, tagToDisplay);
+            TagButton button = (TagButton)m_dialogueView.CreateResponseButton(response.responseText);
 
             button.AddListener(() => 
             { 
@@ -213,7 +209,7 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
                 _currentResponseNode = response;
                 PlayResponseProcess(response).Forget();  
             });
-            button.MarkAsLinked(wasUnlocked);
+            button.MarkTag(wasUnlocked);
         }
         await UniTask.NextFrame();
     }
@@ -300,9 +296,6 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         _currentNpcNode = null;
         _currentResponseNode = null;
         
-        _previousRecords = _manualRecords;
-        _manualRecords = new();
-        _recordedContentInSession.Clear();
         m_popActivity.Raise();
     }
     public bool CheckDialogue(SerializableGuid guid) => _dialogueNodesTalked.Contains(guid);
