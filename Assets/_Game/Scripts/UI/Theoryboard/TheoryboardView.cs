@@ -147,13 +147,12 @@ public class TheoryboardView : MonoBehaviour
             var choice = item.Value.droppedClue; 
 
             var proof = choice.GetProof();
-            //var rightChoice = manager.correctAnswer.FirstOrDefault(x => x.Key == item.Key);
 
             if (choice != null && proof.Item2.Contains(item.Key))
             {
-                SerializedList<Clue> l = default;
+                //SerializedList<Clue> l = default;
                 possibleAnswers = possibleAnswers
-                    .Where(x => x.Answer.TryGetValue(item.Key, out l) && l.Items.Contains(proof.Item1))
+                    .Where(x => x.Answer.TryGetValue(item.Key, out var l) && l.Items.Contains(proof.Item1))
                     .ToList();
                 if (possibleAnswers.Count > 0) continue; else
                 {

@@ -99,6 +99,7 @@ public sealed class DialogueGraphNode : Node
                 Reaction.GetNervous,
                 Reaction.Think,
                 Reaction.Generic,
+                Reaction.Angry,
             }
         };
 
@@ -127,7 +128,7 @@ public sealed class DialogueGraphNode : Node
                 Whodunnit.Killer,
                 Whodunnit.Motive,
                 Whodunnit.Weapon,
-                //TheoryboardManager.Whodunnit.Place,
+                Whodunnit.Place,
             }
         };
 

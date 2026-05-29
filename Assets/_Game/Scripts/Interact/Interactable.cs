@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
@@ -19,7 +20,62 @@ public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
     //    FlashbackManager.Instance.ToggleByFlashback(gameObject);
     //}
 
+    #region Emergency Teleport
 
+    public Transform teleportIfOverlapping;
+    bool _canTeleport = true;
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (teleportIfOverlapping && _canTeleport 
+        && collision.gameObject.TryGetComponent<MoveEngine>(out var move)
+        && collision.gameObject.TryGetComponent<Controller>(out var cont))
+        {
+            print(cont.gameObject.name + " is Emergency Teleporting");
+
+            cont.enabled = false;
+            move.RelativeParent.Reset();
+            move.enabled = false;
+            cont.gameObject.transform.position = teleportIfOverlapping.position;
+
+            // La idea era hacer que rotara hacia el ultimo lugar que estaba viendo: esta
+            // rotacion no va a terminar de funcionar por el tema de que la cinemachine
+            // nunca deja de actualizarse (lo mismo que pasaba con el board).
+            var cam = cont.gameObject.GetComponentInChildren<CinemachineCamera>();
+            Physics.Raycast(cam.transform.position, cam.transform.forward, out var r);
+            cam.gameObject.transform.LookAt(r.transform);
+            //cam.ResolveLookAt(r.transform); //?
+
+            this.WaitAndThen(timeToWait: 0.1f, () =>
+            {
+                _canTeleport = false;
+                cont.enabled = true;
+                move.enabled = true;
+            },
+            cancelCondition: () => this.ExecuteIfCancelled(!enabled, () =>
+            {
+                _canTeleport = true;
+                cont.enabled = true;
+                move.enabled = true;
+            }));
+        }
+    }
+
+    private void OnEnable()
+    {
+        _canTeleport = true;
+
+        this.WaitAndThen(timeToWait: 0.1f, () =>
+        {
+            _canTeleport = false;
+        },
+        cancelCondition: () => !enabled);
+    }
+    private void OnDisable()
+    {
+        _canTeleport = true;
+    }
+
+    #endregion
 
     public virtual void InteractStart()
     {

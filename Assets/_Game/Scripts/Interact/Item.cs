@@ -21,9 +21,9 @@ public class Item : Clue
     [PreviewField] public Sprite sprite;
 
     [Space(15), Header("WHAT CLUES CAN WE FIND?")]
-    // La lista de textos sirve para poder tener la data de los puntos de interes por separado.
     [TextArea(0, 20)] public string baseClue;
 
+    public List<ItemPOIData> pois = new();
 
     [Space(15), Header("ON A FLASHBACK, YOU'LL SEE...")]
     public FlashbackInfo flashbackInfo;
@@ -31,12 +31,14 @@ public class Item : Clue
     [Space(15), Header("WHAT DOES IT PROVE?")]
     [SerializeField] List<Whodunnit> doesItProveAnything;
 
+    [Space(15), Header("CAN IT UNLOCK ANYTHING?")]
+    public KeyItem keyInfo; // eventualmente esto podria guardar mas info relevante, por ahora es solo un bool.
+
     public override Tuple<Clue,List<Whodunnit>> DoesItProveAnything()
     {
         return new(this, new List<Whodunnit>(doesItProveAnything));
     }
-    
-    public List<ItemPOIData> pois = new();
+
 }
 
 [Serializable]

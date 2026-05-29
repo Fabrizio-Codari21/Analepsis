@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8704427789990346835
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7599213099957315952}
+  m_Layer: 8
+  m_Name: EmergencyTeleport
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7599213099957315952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8704427789990346835}
+  serializedVersion: 2
+  m_LocalRotation: {x: -3.5527137e-15, y: -0.000000059604645, z: -1, w: 0.00000007549791}
+  m_LocalPosition: {x: 0.01, y: -0.03, z: -0.005}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3242533679255435950}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3131534799047482693
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -86,6 +117,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e63352b871cf34e428f2800910ef8ea1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7784466302422748458}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e63352b871cf34e428f2800910ef8ea1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7599213099957315952}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e63352b871cf34e428f2800910ef8ea1, type: 3}
       insertIndex: -1
@@ -96,6 +130,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e63352b871cf34e428f2800910ef8ea1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6525812176442460632}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e63352b871cf34e428f2800910ef8ea1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4368225000087835655}
   m_SourcePrefab: {fileID: 100100000, guid: e63352b871cf34e428f2800910ef8ea1, type: 3}
 --- !u!1 &2860942033117437972 stripped
 GameObject:
@@ -114,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae01f2d72cf640b3a6534ceda082d55e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportIfOverlapping: {fileID: 7599213099957315952}
 --- !u!65 &395024423882990996
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -150,6 +188,27 @@ MonoBehaviour:
   m_textSetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
   m_offset: {x: 0, y: 1.5, z: 0}
   despawnOnUnFocus: 0
+--- !u!65 &4368225000087835655
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2860942033117437972}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.03, y: 0.03, z: 0.03}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &3242533679255435950 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e63352b871cf34e428f2800910ef8ea1, type: 3}
