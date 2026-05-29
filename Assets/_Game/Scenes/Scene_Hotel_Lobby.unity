@@ -18525,7 +18525,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 391.50018, y: 0}
+  m_AnchoredPosition: {x: -391.50024, y: 0}
   m_SizeDelta: {x: 783, y: 300}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!4 &1270206053 stripped
@@ -20897,6 +20897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae01f2d72cf640b3a6534ceda082d55e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportIfOverlapping: {fileID: 0}
 --- !u!1 &1439389455
 GameObject:
   m_ObjectHideFlags: 0
@@ -30051,8 +30052,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1634724726}
   m_HandleRect: {fileID: 1634724725}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 0.9999995
+  m_Value: 1
+  m_Size: 0.9999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -34645,6 +34646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae01f2d72cf640b3a6534ceda082d55e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportIfOverlapping: {fileID: 0}
 --- !u!33 &1397886002921908666
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -34936,6 +34938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae01f2d72cf640b3a6534ceda082d55e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportIfOverlapping: {fileID: 0}
 --- !u!114 &2162833108199213636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36568,6 +36571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae01f2d72cf640b3a6534ceda082d55e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportIfOverlapping: {fileID: 0}
 --- !u!135 &5470415172678139791
 SphereCollider:
   m_ObjectHideFlags: 0

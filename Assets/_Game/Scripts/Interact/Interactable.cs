@@ -23,22 +23,26 @@ public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
 
     public Transform teleportIfOverlapping;
     bool _canTeleport = true;
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
-        print(collision.gameObject);
-        if (teleportIfOverlapping && _canTeleport)
+        if (teleportIfOverlapping && _canTeleport && collision.gameObject.TryGetComponent<Controller>(out var c))
         {
-            print("Emergency teleporting");
-            collision.gameObject.transform.position = teleportIfOverlapping.position;
+            print(c.gameObject.name + " is Emergency Teleporting");
+            c.enabled = false;
+            c.gameObject.transform.position = teleportIfOverlapping.position;
 
             this.WaitAndThen(timeToWait: 0.2f, () =>
             {
                 _canTeleport = false;
+                c.enabled = true;
             },
             cancelCondition: () => this.ExecuteIfCancelled(!enabled, () =>
             {
                 _canTeleport = true;
+                c.enabled = true;
             }));
+
+            print(c.gameObject.transform.position + " should match " + teleportIfOverlapping.position);
         }
     }
 
