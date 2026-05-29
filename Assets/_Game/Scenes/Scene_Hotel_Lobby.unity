@@ -4897,7 +4897,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 5000
-  field of view: 63.2214
+  field of view: 60
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -35262,6 +35262,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 790853774}
     m_Modifications:
+    - target: {fileID: 2426267404449136652, guid: 43f24e5dc3ca6db45b74fe971c735128, type: 3}
+      propertyPath: Lens.FieldOfView
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 2426267404449136652, guid: 43f24e5dc3ca6db45b74fe971c735128, type: 3}
+      propertyPath: Lens.ModeOverride
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6818324450473006046, guid: 43f24e5dc3ca6db45b74fe971c735128, type: 3}
       propertyPath: m_Name
       value: FPS
