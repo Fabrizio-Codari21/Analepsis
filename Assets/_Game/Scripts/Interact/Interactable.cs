@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
@@ -25,30 +26,49 @@ public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
     bool _canTeleport = true;
     private void OnTriggerEnter(Collider collision)
     {
-        if (teleportIfOverlapping && _canTeleport && collision.gameObject.TryGetComponent<Controller>(out var c))
+        if (teleportIfOverlapping && _canTeleport 
+        && collision.gameObject.TryGetComponent<MoveEngine>(out var move)
+        && collision.gameObject.TryGetComponent<Controller>(out var cont))
         {
-            print(c.gameObject.name + " is Emergency Teleporting");
-            c.enabled = false;
-            c.gameObject.transform.position = teleportIfOverlapping.position;
+            print(cont.gameObject.name + " is Emergency Teleporting");
 
-            this.WaitAndThen(timeToWait: 0.2f, () =>
+            cont.enabled = false;
+            move.RelativeParent.Reset();
+            move.enabled = false;
+            cont.gameObject.transform.position = teleportIfOverlapping.position;
+
+            // La idea era hacer que rotara hacia el ultimo lugar que estaba viendo: esta
+            // rotacion no va a terminar de funcionar por el tema de que la cinemachine
+            // nunca deja de actualizarse (lo mismo que pasaba con el board).
+            var cam = cont.gameObject.GetComponentInChildren<CinemachineCamera>();
+            Physics.Raycast(cam.transform.position, cam.transform.forward, out var r);
+            cam.gameObject.transform.LookAt(r.transform);
+            //cam.ResolveLookAt(r.transform); //?
+
+            this.WaitAndThen(timeToWait: 0.1f, () =>
             {
                 _canTeleport = false;
-                c.enabled = true;
+                cont.enabled = true;
+                move.enabled = true;
             },
             cancelCondition: () => this.ExecuteIfCancelled(!enabled, () =>
             {
                 _canTeleport = true;
-                c.enabled = true;
+                cont.enabled = true;
+                move.enabled = true;
             }));
-
-            print(c.gameObject.transform.position + " should match " + teleportIfOverlapping.position);
         }
     }
 
     private void OnEnable()
     {
         _canTeleport = true;
+
+        this.WaitAndThen(timeToWait: 0.1f, () =>
+        {
+            _canTeleport = false;
+        },
+        cancelCondition: () => !enabled);
     }
     private void OnDisable()
     {
