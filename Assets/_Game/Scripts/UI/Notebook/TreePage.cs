@@ -180,10 +180,8 @@ public class TreePage : NotebookPage
             }
         }
         
-        foreach (var child in node.Children)
-        {
-            SpawnNodesRecursively(child, level + 1);
-        }
+        foreach (var child in node.Children) SpawnNodesRecursively(child, level + 1);
+        
     }
 
     private TreeNode BuildRuntimeTreeRecursively(DialogueNode configNode, TreeNode parentRtNode)
@@ -192,17 +190,15 @@ public class TreePage : NotebookPage
 
         bool isUnlocked = _activeNote.IsNodeUnlocked(configNode.guid);
 
-        TreeNode rtNode = new TreeNode(configNode.guid, configNode, isNpcNode: true, isLocked: !isUnlocked)
+        TreeNode rtNode = new TreeNode(configNode, isLocked: !isUnlocked)
         {
             Parent = parentRtNode
         };
 
         if (!isUnlocked || configNode.responses == null) return rtNode;
 
-        foreach (var response in configNode.responses)
+        foreach (var response in configNode.responses.Where(response => response.nextNode != null))
         {
-            if (response.nextNode == null) continue;
-            
             response.nextNode.PreviousResponse = response;
 
             TreeNode child = BuildRuntimeTreeRecursively(response.nextNode, rtNode);

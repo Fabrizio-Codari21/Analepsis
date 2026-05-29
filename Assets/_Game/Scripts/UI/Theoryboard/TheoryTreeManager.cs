@@ -165,7 +165,7 @@ public class TheoryTreeManager : MonoBehaviour, IActivity
 
     public void MoveTreeScroll()
     {
-        if (!treeAnchor.gameObject.activeInHierarchy || NotebookManager.Instance.m_markingPanel.isMarkingClue) return;
+        if (!treeAnchor.gameObject.activeInHierarchy) return;
 
 
         float moveStep = scrollSpeed * Time.deltaTime;

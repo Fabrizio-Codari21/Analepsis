@@ -135,7 +135,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         
         if (dialogueNote == null)
         {
-            dialogueNote = new DialogueNote(dialogue.name, dialogue, null);
+            dialogueNote = new DialogueNote(dialogue.name, dialogue,dialogue.DoesItProveAnything());
             dialogueList.Add(dialogueNote);
         }
         dialogueNote.RegisterNodeVisit(currentNode, parentNode);
@@ -386,12 +386,12 @@ public  class Note
     public SerializableGuid guid = SerializableGuid.NewGuid();
     public PageType type;
     public string displayName;
-    public Tuple<Clue,List<Whodunnit>> isProof;
+    public Tuple<Clue,List<Whodunnit>> IsProof;
 
     public Note(string displayName,  Tuple<Clue,List<Whodunnit>> proof = null)
     {
         this.displayName = displayName;
-        this.isProof = proof;
+        IsProof = proof;
 
 
     }
@@ -408,50 +408,6 @@ public  class Note
 }
 
 
-public class LogNote : Note
-{
-    private List<string> _fullInfo;   
-    private List<string> _recordInfo;
-    private bool _showingFull  = false;
-    public ButtonFactoryObject parentButton;
-    public LogNote(string displayName,List<string> fullInfo, List<string> recordInfo,Tuple<Clue, List<Whodunnit>> proof = null) : base(displayName, proof)
-    {
-        _fullInfo = fullInfo;
-        _recordInfo = recordInfo;
-        type = PageType.Character;
-    }
-  
-   public override async UniTask Show(NotebookRepresenter representer, CancellationToken token)
-    {
-        _showingFull = false; 
-        await RefreshDisplay(representer, token, true);
-    }
-
-    private async UniTask RefreshDisplay(NotebookRepresenter representer, CancellationToken token, bool firstTime = false)
-    {
-        // representer.ClearDetail(); 
-        // List<string> contentToShow = new(_showingFull ? _fullInfo : 
-        //     (_recordInfo.Count <= 0 
-        //     ? new(){"\n[No highlighted text (Click on a piece of dialogue while talking to someone to highlight it.)]\n\n" }
-        //     : _recordInfo));
-        //
-        // contentToShow.Insert(0, _showingFull ? "<b>[FULL TRANSCRIPT]</b>" : "<b>[HIGHLIGHTS]</b>");
-        // await representer.PlayText(contentToShow, token);
-        // if (token.IsCancellationRequested) return;
-        //
-        // string buttonLabel = _showingFull ? "See Highlights" : "See Full Transcript";
-        // var toggleBtn = representer.CreateDetailButton(buttonLabel);
-        // toggleBtn.AddListener(() =>
-        // {
-        //     _showingFull = !_showingFull;
-        //     _ = RefreshDisplay(representer, token, false);
-        // });
-        // if(!firstTime) NotebookManager.Instance.AddDetailButtons(parentButton, representer, this);
-
-    }
-    public override string GetInfo() => _fullInfo.AsString();
-    public void ChangeRecord(List<string> records) => _recordInfo = records;
-}
 public class ItemNote : Note
 {
     private readonly Item _item;
@@ -516,22 +472,14 @@ public class TreeNode
     public int Number;
 
     public readonly bool IsLocked;
-    public readonly bool IsNpcNode;
-
-    public SerializableGuid GuidRepresent;
+  
 
     public bool IsLeaf => Children.Count == 0;
 
-    public TreeNode(
-        SerializableGuid guid,
-        INode source,
-        bool isNpcNode = true,
-        bool isLocked = false)
+    public TreeNode(INode source,  bool isLocked = false)
     {
-        GuidRepresent = guid;
+      
         Source = source;
-
-        IsNpcNode = isNpcNode;
         IsLocked = isLocked;
 
         X = 0;
@@ -553,27 +501,19 @@ public class TreeNode
 
     public TreeNode GetLeftMostSibling()
     {
-        if (Parent == null || Parent.Children.Count == 0)
-            return null;
+        if (Parent == null || Parent.Children.Count == 0) return null;
 
-        if (Parent.Children[0] == this)
-            return null;
-
-        return Parent.Children[0];
+        return Parent.Children[0] == this ? null : Parent.Children[0];
     }
 
     public TreeNode GetNextLeft()
     {
-        return IsLeaf
-            ? Thread
-            : Children[0];
+        return IsLeaf ? Thread : Children[0];
     }
 
     public TreeNode GetNextRight()
     {
-        return IsLeaf
-            ? Thread
-            : Children[^1];
+        return IsLeaf ? Thread : Children[^1];
     }
 }
 
@@ -609,7 +549,7 @@ public class DialogueNote : Note
     
     private void InitRoot(DialogueNode startingNode)
     {
-        RuntimeTreeRoot = new TreeNode(startingNode.guid, startingNode, true);
+        RuntimeTreeRoot = new TreeNode( startingNode);
         _visitedRawNodeGuids.Add(startingNode.guid);
         _rtNodeLookup[startingNode.guid] = RuntimeTreeRoot;
     }
@@ -627,8 +567,7 @@ public class DialogueNote : Note
         }
         bool isNpc = currentNode is DialogueNode;
         
-        
-        TreeNode rtChild = new TreeNode(currentGuid, currentNode, isNpc)
+        TreeNode rtChild = new TreeNode(currentNode, isNpc)
         {
             Parent = rtParent
         };

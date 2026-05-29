@@ -53,7 +53,7 @@ public class TheoryboardView : MonoBehaviour
         if(!markedList.Any()) CreateClueButton("No Logs marked \n(Click the star to mark)", markedLogsRoot, null, true);
         var markedItems = TheoryMarkingPanel.Instance.MarkedClues.Where(x => x.Value.type == PageType.Objects);
         var keyValuePairs = markedItems.ToList();
-        if (!keyValuePairs.Any()) CreateClueButton("No Objects marked \n(Click the star to mark)", markedItemsRoot, default, true);
+        if (!keyValuePairs.Any()) CreateClueButton("No Objects marked \n(Click the star to mark)", markedItemsRoot, null, true);
         
         SwitchCharacter();
         
@@ -61,14 +61,13 @@ public class TheoryboardView : MonoBehaviour
         
         foreach (var log in markedList) 
         {
-            var button = CreateClueButton(log.Value.displayName, markedLogsRoot, log.Value.isProof);
-            //print(log.Value.isProof);
+            CreateClueButton(log.Value.displayName, markedLogsRoot, log.Value.IsProof);
            
         }
         foreach (var item in keyValuePairs)
         {
-            var button = CreateClueButton(item.Value.displayName, markedItemsRoot, item.Value.isProof);
-            //print(item.Value.isProof);
+           CreateClueButton(item.Value.displayName, markedItemsRoot, item.Value.IsProof);
+          
         }
 
     }
@@ -78,8 +77,10 @@ public class TheoryboardView : MonoBehaviour
         Despawn(markedCharactersRoot);
         if(NotebookManager.Instance.FoundCharacters.Count <= 0)
         {
-            CreateClueButton("No characters discovered.", markedCharactersRoot, null, true); return;
+            CreateClueButton("No characters discovered.", markedCharactersRoot, null, true); 
+            return;
         }
+        
         var character = NotebookManager.Instance.FoundCharacters.ToList()[_currentCharacter];
         
         switch (nextOrPrevious)

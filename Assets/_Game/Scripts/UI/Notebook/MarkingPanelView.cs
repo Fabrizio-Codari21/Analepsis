@@ -103,7 +103,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
     private async UniTask Marking(Note clue)
     {
         _currentClue = null;
-        Note newClue = new Note(clue.displayName, clue.isProof)
+        Note newClue = new Note(clue.displayName, clue.IsProof)
         {
             type = clue.type
         };
