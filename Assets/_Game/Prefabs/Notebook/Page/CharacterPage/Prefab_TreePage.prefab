@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 911831865144482244}
   - component: {fileID: 5951320427993163573}
   m_Layer: 9
-  m_Name: Character Page_Right
+  m_Name: Prefab_TreePage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -274,13 +274,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 635d572915064f1b9b6c3eefb06cbb32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_treeRoot: {fileID: 7233744284641288336}
   levelVerticalDistance: 90
   baseHorizontalSpacing: 150
+  m_treeRoot: {fileID: 7233744284641288336}
   m_nodeButton: {fileID: 11400000, guid: 8fb7a69773db1294ab2c402736036fa2, type: 2}
   arrowImage: {fileID: 2345275029603621582, guid: e306ce7911138604088dc8d9573d7e67, type: 3}
   angleOffset: 70
-  m_lockColor: {r: 0.4, g: 0, b: 0.1, a: 0.1}
+  m_lockColor: {r: 0.4, g: 0, b: 0.1, a: 1}
   m_lockImage: {fileID: 5739135816376137315, guid: 03674bcbdfc06424fb8467817538f49f, type: 3}
   m_dynamicTextSetting: {fileID: 11400000, guid: b152a322092e3344587f1658f8b9e87a, type: 2}
   m_scrollRect: {fileID: 2868861313349699511}
@@ -288,6 +288,9 @@ MonoBehaviour:
   m_textWidth: 145
   m_textSize: 13
   m_onNpcSelected: {fileID: 11400000, guid: 9beae7c3e31ebb44980b65202c086b2f, type: 2}
+  m_sentNoteToTheoryBoardEvent: {fileID: 11400000, guid: 6548c59b460c2404c95482bca179f721, type: 2}
+  m_refreshTree: {fileID: 11400000, guid: ae85a3b4eaf4c5f4e92117dc5aa56a42, type: 2}
+  m_checkIfMarked: {fileID: 11400000, guid: 59e993899d4328b4b9ac9dd105c28197, type: 2}
 --- !u!1 &4071706498315640437
 GameObject:
   m_ObjectHideFlags: 0

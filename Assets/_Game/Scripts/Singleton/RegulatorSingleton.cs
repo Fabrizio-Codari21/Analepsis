@@ -14,8 +14,10 @@ public class RegulatorSingleton<T> : SerializedMonoBehaviour where T : Component
             if (instance == null) {
                 instance = FindAnyObjectByType<T>();
                 if (instance == null) {
-                    var go = new GameObject(typeof(T).Name + " Auto-Generated");
-                    go.hideFlags = HideFlags.HideAndDontSave;
+                    var go = new GameObject(typeof(T).Name + " Auto-Generated")
+                    {
+                        hideFlags = HideFlags.HideAndDontSave
+                    };
                     instance = go.AddComponent<T>();
                 }
             }

@@ -1,13 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class TreePage : NotebookPage
 {
-    [SerializeField] private Transform m_treeRoot;
   
     [Header("Tree Layout Geometry (Pure World Units)")]
     [SerializeField] private float levelVerticalDistance = 60.0f;
@@ -16,6 +15,7 @@ public class TreePage : NotebookPage
     [Header("UI REFERENCES")]
     [Space(5)]
     [Header("Button")]
+    [SerializeField] private Transform m_treeRoot;
     [SerializeField] private ButtonSetting m_nodeButton;
     
     [Header("Arrow")]
@@ -24,6 +24,7 @@ public class TreePage : NotebookPage
     [Header("Lock Image")]
     [SerializeField] private Color m_lockColor = new (0.4f, 0, 0.1f, 0.1f);
     [SerializeField] private Image m_lockImage;
+    
     
     [Header("Text")]
     [SerializeField] private DynamicTextSetting m_dynamicTextSetting;
@@ -35,30 +36,32 @@ public class TreePage : NotebookPage
   
     [Header("Event")] 
     [SerializeField] private NpcEvent m_onNpcSelected;
-    [SerializeField] private NoteEvent m_sentNoteToTheoryBoardEvent;
+    [SerializeField] private EvidenceEvent  m_sentNoteToTheoryBoardEvent;
+    [SerializeField] private EventChannel m_refreshTree;
+    [SerializeField] private Check m_checkIfMarked;
     private DialogueNote _activeNote;
     private CancellationTokenSource _textCancellationTokenSource;
     private DynamicUIText _currentActiveText;
+    
+    
+    private readonly List<IFlyweight> _spawnedFlyweights = new();
+    private readonly List<ImageSelector> _arrow = new();
+    private readonly List<Image> _images = new();
     private void Start()
     {
        m_onNpcSelected.OnEventRaised += ShowTreeFor;
+       m_refreshTree.OnEventRaised += RefreshTree;
     }
 
     private void OnDestroy()
     {
         m_onNpcSelected.OnEventRaised -= ShowTreeFor;
+        m_refreshTree.OnEventRaised -= RefreshTree;
     }
 
-    
-    
     private void ShowTreeFor(NpcIdentity npcIdentity)
-    {   
-       
-        foreach (var f in m_treeRoot.GetComponentsInChildren<IFlyweight>()) 
-        { 
-            FlyweightFactory.Instance.Return(f);
-        }
-
+    {
+        DespawnUI();
         var npcTrees = NotebookManager.Instance.GetDialoguesFor(npcIdentity);
         if (npcTrees is { Count: > 0 })
         {
@@ -101,17 +104,31 @@ public class TreePage : NotebookPage
             lockedImg.transform.localPosition = localUiPos;
             lockedImg.gameObject.name = $"Locked_Node_Lvl{level}";
             lockedImg.color = m_lockColor;
+            
+            _images.Add(lockedImg);
         }
         else
         {
             if (node.Source is DialogueNode npcNode)
             {
                 string nodeName = npcNode.PreviousResponse != null ? npcNode.PreviousResponse.responseText : "Beginning";
-                Debug.Log("El nombre de node es  "  +  nodeName);
-                ButtonFactoryObject button = SpawnClueMarkButton(nodeName, m_treeRoot, () =>
+
+                var fragmentEvidenceToMark = EvidenceDataBase.Instance.GetOrCreate(npcNode.guid, () => new DialogueFragmentNote(nodeName, npcNode.guid, npcNode, _activeNote.GetFullDialogue()));
+                ButtonWithSubButton button = FlyweightFactory.Instance.Spawn<ButtonWithSubButton>(m_nodeButton, Vector3.zero, Quaternion.identity, m_treeRoot);
+                
+                button.SetText(fragmentEvidenceToMark.displayName);
+                var subButton = button.AddSubButton();
+                
+                bool isAlreadyMarked = m_checkIfMarked.Request(fragmentEvidenceToMark.guid);
+                subButton.PlayAnimation(isAlreadyMarked);
+                subButton.AddListener(() =>
                 {
-                    Debug.Log("Try Mark");
+                    bool wasMarked = m_checkIfMarked.Request(fragmentEvidenceToMark.guid);
+                    m_sentNoteToTheoryBoardEvent?.Raise(fragmentEvidenceToMark);
+                    subButton.PlayAnimation(!wasMarked);
                 });
+                
+                
                 button.transform.localPosition = localUiPos;
                 button.gameObject.name = $"Unlocked_Node_Lvl{level}";
                 
@@ -120,12 +137,45 @@ public class TreePage : NotebookPage
                     OnNodeButtonClicked(npcNode.dialogueText).Forget();
                 });
                 
-            
+                _spawnedFlyweights.Add(button);
+                
             }
         }
         
         foreach (var child in node.Children) SpawnNodesRecursively(child, level + 1);
         
+    }
+    
+    
+    private void RefreshTree()
+    {
+        if (_activeNote == null) return;
+        DespawnUI();
+        BuildTree(_activeNote).Forget();
+    }
+
+    private void DespawnUI()
+    {
+        foreach (var flyweight in _spawnedFlyweights)
+        {
+            FlyweightFactory.Instance.Return(flyweight);
+        }
+        _spawnedFlyweights.Clear();
+
+        foreach (var arrow in _arrow)
+        {
+            Destroy(arrow.gameObject);
+        }
+        
+        _arrow.Clear();
+
+
+        foreach (var image in _images)
+        {
+            Destroy(image.gameObject);
+        }
+        
+        _images.Clear();
     }
     
     
@@ -145,12 +195,10 @@ public class TreePage : NotebookPage
     }
     private void CancelAndDisposeToken()
     {
-        if (_textCancellationTokenSource != null)
-        {
-            _textCancellationTokenSource.Cancel();
-            _textCancellationTokenSource.Dispose();
-            _textCancellationTokenSource = null;
-        }
+        if (_textCancellationTokenSource == null) return;
+        _textCancellationTokenSource.Cancel();
+        _textCancellationTokenSource.Dispose();
+        _textCancellationTokenSource = null;
     }
 
     private async UniTask PlayText(string text, CancellationToken token, Transform parent = null, float sizeOverride = 0) 
@@ -247,6 +295,8 @@ public class TreePage : NotebookPage
     {
         Vector3 arrowLocalPos = Vector3.Lerp(parentPos, childPos, 0.5f);
         ImageSelector arrow = Instantiate(arrowImage, m_treeRoot);
+        
+        
         arrow.transform.localScale = Vector3.one;
         arrow.transform.localPosition = arrowLocalPos;
         arrow.SetRandomSprite();
@@ -254,17 +304,8 @@ public class TreePage : NotebookPage
         Vector3 direction = childPos - parentPos;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         arrow.transform.localRotation = Quaternion.Euler(0f, 0f, angle - angleOffset);
+        
+        _arrow.Add(arrow);
     }
 
-    private ButtonFactoryObject SpawnClueMarkButton(string displayName, Transform treeRoot,Action onMark)
-    {
-        ButtonWithSubButton button = FlyweightFactory.Instance.Spawn<ButtonWithSubButton>(m_nodeButton, Vector3.zero, Quaternion.identity, treeRoot);
-        button.SetText(displayName);
-        button.SetInteractable(true);
-        button.MoveToLast();
-        
-        button.AddSubButton(onMark);
-        
-        return button;
-    }
 }

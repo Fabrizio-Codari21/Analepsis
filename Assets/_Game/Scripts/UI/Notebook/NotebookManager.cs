@@ -390,11 +390,10 @@ public  class Note
     public SerializableGuid guid = SerializableGuid.NewGuid();
     public PageType type;
     public string displayName;
-    public Tuple<Clue,List<Whodunnit>> IsProof;
+    
     public Note(string displayName,  Tuple<Clue,List<Whodunnit>> proof = null)
     {
         this.displayName = displayName;
-        IsProof = proof;
     }
 
     public virtual string GetButtonText()
@@ -469,6 +468,8 @@ public class TreeNode
     public TreeNode Thread;
     public TreeNode Ancestor;
 
+    public SerializableGuid RepresentNoteGuid;
+
     // Order index among siblings
     public int Number;
 
@@ -517,8 +518,6 @@ public class TreeNode
         return IsLeaf ? Thread : Children[^1];
     }
 }
-
-
 public class DialogueNote : Note
 {
     private readonly Dialogue _dialogueRepresenter;
@@ -552,19 +551,12 @@ public class DialogueNote : Note
     {
         if (currentNode == null) return;
         SerializableGuid currentGuid = GetNodeGuid(currentNode);
-        
         if (_visitedRawNodeGuids.Contains(currentGuid)) return;
         SerializableGuid parentGuid = parentNode != null ? GetNodeGuid(parentNode) : SerializableGuid.Empty;
-        if (!_rtNodeLookup.TryGetValue(parentGuid, out var rtParent))
-        {
-            return;
-        }
-        bool isNpc = currentNode is DialogueNode;
+        if (!_rtNodeLookup.TryGetValue(parentGuid, out var rtParent)) { return; }
         
-        TreeNode rtChild = new TreeNode(currentNode, isNpc)
-        {
-            Parent = rtParent
-        };
+        bool isNpc = currentNode is DialogueNode;
+        TreeNode rtChild = new TreeNode(currentNode, isNpc) { Parent = rtParent };
         
         rtParent.Children.Add(rtChild);
         
@@ -579,5 +571,50 @@ public class DialogueNote : Note
         if (node is DialogueResponse dr) return dr.nextNode?.guid ?? SerializableGuid.NewGuid();
         
         return SerializableGuid.Empty;
+    }
+}
+
+public abstract class Evidence
+{
+    public SerializableGuid guid;
+
+    public PageType type;
+
+    public string displayName;
+    
+    protected Evidence(string displayName,SerializableGuid guid)
+    {
+        this.displayName = displayName;
+        this.guid = guid;
+    }
+
+    public virtual string GetButtonText()
+    {
+        return displayName;
+    }
+
+    public virtual string GetInfo()
+    {
+        return string.Empty;
+    }
+}
+
+public class DialogueFragmentNote : Evidence
+{
+    public readonly DialogueNode Node;
+
+    public readonly Dialogue Dialogue;
+
+    public DialogueFragmentNote(string displayName,SerializableGuid guid,DialogueNode node, Dialogue dialogue) : base(displayName,guid)
+    {
+        Node = node;
+        Dialogue = dialogue;
+        type = PageType.Character;
+        if (node != null) guid = node.guid;
+        
+    }
+    public override string GetInfo()
+    {
+        return Node != null ? Node.dialogueText : string.Empty;
     }
 }

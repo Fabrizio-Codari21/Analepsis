@@ -16,21 +16,18 @@ public class ImageSelector : MonoBehaviour
         else if(size <= 8) return possibleSprites[2];
         else return possibleSprites[3];
     }
-
     public void SetSprite(int size)
     {
         baseImage.sprite = GetSpriteBasedOnSize(size);
     }
 
-    public void SetRandomSprite() => 
-        baseImage.sprite = possibleSprites[Random.Range(0, possibleSprites.Length - 1)];
+    public void SetRandomSprite() => baseImage.sprite = possibleSprites[Random.Range(0, possibleSprites.Length - 1)];
 
-    public List<int> CalculateRotation(int amount)
+    private List<int> CalculateRotation(int amount)
     {
         switch (amount)
         {
-            case 1: 
-                return new() { 0 };
+            case 1: return new() { 0 };
             case 2: return new() { -20, 20 };
             case 3: return new() { -45, 0, 45 };
             default: return new() { 0 };

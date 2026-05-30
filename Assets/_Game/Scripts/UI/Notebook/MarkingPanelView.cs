@@ -103,23 +103,23 @@ public class MarkingPanelView : MonoBehaviour, IActivity
     private async UniTask Marking(Note clue)
     {
         _currentClue = null;
-        Note newClue = new Note(clue.displayName, clue.IsProof)
-        {
-            type = clue.type
-        };
-        newClue.displayName = _newClueName != "" ? _newClueName.FirstCharacterToUpper() : newClue.displayName;
-
-        // if (!NotebookManager.Instance.MarkedClues.Remove(clue.guid)) NotebookManager.Instance.MarkedClues.TryAdd(clue.guid, newClue);
-
-        _newClueName = null;
-     
-
-        AudioManager.Instance.SelectSFX(SFXType.Player, "Scribble");
-        inputField.text = "Sending to the Theory Board...";
-        markClueButton.interactable = false; cancelButton.interactable = false; inputField.interactable = false;
-        await UniTask.Delay(500);
-
-        popEvent.Raise();
+        // Note newClue = new Note(clue.displayName, clue.IsProof)
+        // {
+        //     type = clue.type
+        // };
+        // newClue.displayName = _newClueName != "" ? _newClueName.FirstCharacterToUpper() : newClue.displayName;
+        //
+        // // if (!NotebookManager.Instance.MarkedClues.Remove(clue.guid)) NotebookManager.Instance.MarkedClues.TryAdd(clue.guid, newClue);
+        //
+        // _newClueName = null;
+        //
+        //
+        // AudioManager.Instance.SelectSFX(SFXType.Player, "Scribble");
+        // inputField.text = "Sending to the Theory Board...";
+        // markClueButton.interactable = false; cancelButton.interactable = false; inputField.interactable = false;
+        // await UniTask.Delay(500);
+        //
+        // popEvent.Raise();
         await UnfoldPanel(false);
         Destroy(gameObject);
     }

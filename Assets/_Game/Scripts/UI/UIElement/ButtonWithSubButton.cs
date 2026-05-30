@@ -6,8 +6,12 @@ public class ButtonWithSubButton : ButtonFactoryObject
 {
     [SerializeField] private Transform m_subButtonRoot;
     [SerializeField] private ButtonSetting m_subButtonSetting;
-    
+ 
     private readonly List<IFlyweight> _myChildren = new List<IFlyweight>();
+
+
+   
+
     public override void Despawn()
     {
         base.Despawn();
@@ -19,12 +23,22 @@ public class ButtonWithSubButton : ButtonFactoryObject
         _myChildren.Clear();
     }
 
-    public void AddSubButton(Action callback)
+    public ButtonFactoryObject AddSubButton()
     {
         var sub = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(m_subButtonSetting,Vector3.zero, Quaternion.identity, m_subButtonRoot);
         
-        sub.AddListener(()=>callback());
         
         _myChildren.Add(sub);
+
+        return sub;
     }
+
+
+    
+}
+
+public abstract class ButtonAnimation : MonoBehaviour
+{
+    public abstract void PlaySuccess();
+    public abstract void PlayFail();
 }

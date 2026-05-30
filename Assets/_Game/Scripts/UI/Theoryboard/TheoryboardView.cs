@@ -84,28 +84,28 @@ public class TheoryboardView : MonoBehaviour
     public void LoadMarkedClues()
     {
 
-        Despawn(m_logRoot);
-        Despawn(m_itemRoot);
-        var markedLogs = TheoryMarkingPanel.Instance.MarkedClues.Where(x => x.Value.type == PageType.Character);
-        var markedList = markedLogs.ToList();
-        if(!markedList.Any()) CreateClueButton("No Logs marked \n(Click the star to mark)", m_logRoot, null, true);
-        var markedItems = TheoryMarkingPanel.Instance.MarkedClues.Where(x => x.Value.type == PageType.Objects);
-        var keyValuePairs = markedItems.ToList();
-        if (!keyValuePairs.Any()) CreateClueButton("No Objects marked \n(Click the star to mark)", m_itemRoot, null, true);
-        
-        SwitchCharacter();
-        
-        if ( TheoryMarkingPanel.Instance.MarkedClues.Count <= 0) return;
-        foreach (var log in markedList) 
-        {
-            CreateClueButton(log.Value.displayName, m_logRoot, log.Value.IsProof);
-           
-        }
-        foreach (var item in keyValuePairs)
-        {
-           CreateClueButton(item.Value.displayName, m_itemRoot, item.Value.IsProof);
-          
-        }
+        // Despawn(m_logRoot);
+        // Despawn(m_itemRoot);
+        // var markedLogs = TheoryMarkingPanel.Instance.PossibleEvidenceMarked.Where(x => x.Value.type == PageType.Character);
+        // var markedList = markedLogs.ToList();
+        // if(!markedList.Any()) CreateClueButton("No Logs marked \n(Click the star to mark)", m_logRoot, null, true);
+        // var markedItems = TheoryMarkingPanel.Instance.PossibleEvidenceMarked.Where(x => x.Value.type == PageType.Objects);
+        // var keyValuePairs = markedItems.ToList();
+        // if (!keyValuePairs.Any()) CreateClueButton("No Objects marked \n(Click the star to mark)", m_itemRoot, null, true);
+        //
+        // SwitchCharacter();
+        //
+        // if ( TheoryMarkingPanel.Instance.PossibleEvidenceMarked.Count <= 0) return;
+        // foreach (var log in markedList) 
+        // {
+        //     // CreateClueButton(log.Value.displayName, m_logRoot, log.Value.IsProof);
+        //    
+        // }
+        // foreach (var item in keyValuePairs)
+        // {
+        //    // CreateClueButton(item.Value.displayName, m_itemRoot, item.Value.IsProof);
+        //   
+        // }
 
     }
 
