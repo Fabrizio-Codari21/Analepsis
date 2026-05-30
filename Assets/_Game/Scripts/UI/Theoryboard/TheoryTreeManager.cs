@@ -97,7 +97,7 @@ public class TheoryTreeManager : MonoBehaviour, IActivity
     bool _open = false;
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             if (!_open)
             {
