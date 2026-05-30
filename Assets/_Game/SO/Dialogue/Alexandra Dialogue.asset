@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
+  m_Name: Alexandra Dialogue
+  m_EditorClassIdentifier: 
+  dialogueColor: {r: 0, g: 0, b: 0, a: 0}
+  startingNode:
+    dialogueText: Hello, I'm british
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    responses:
+    - rid: 6774952739558129733
+    isRootNode: 1
+    editorPosition: {x: 191, y: 145.24}
+    guid:
+      Part1: 1371785725
+      Part2: 1155082823
+      Part3: 790721166
+      Part4: 1571819100
+    tag: 
+  allNodes:
+  - dialogueText: Hello, I'm british
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    responses: []
+    isRootNode: 1
+    editorPosition: {x: 300, y: 200}
+    guid:
+      Part1: 1371785725
+      Part2: 1155082823
+      Part3: 790721166
+      Part4: 1571819100
+    tag: 
+  _hiddenProof: 
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6774952739558129733
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: That's fine
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 529, y: 152}
