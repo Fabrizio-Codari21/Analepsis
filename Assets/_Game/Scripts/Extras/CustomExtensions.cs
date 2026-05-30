@@ -269,12 +269,14 @@ public static class CustomExtensions
     // Agrega el posesivo en ingles ajustado a si la palabra termina en "s" o no.
     public static string Possessive(this string s)
     {
+        if(s == string.Empty) return string.Empty;
         return s + (s.Last() == 's' ? "'" : "'s"); 
     }
 
     // Agrega el plural en ingles cuando X se cumple, basado en ciertas reglas gramaticales.
     public static string Plural(this string s, Func<bool> pluralize = default, string irregularPlural = "")
     {
+        if (s == string.Empty) return string.Empty;
         if (pluralize == default) pluralize = () => true;
         if (irregularPlural == "")
         {
