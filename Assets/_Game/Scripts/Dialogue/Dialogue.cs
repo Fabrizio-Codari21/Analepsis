@@ -7,7 +7,7 @@ using UnityEngine;
 // Objeto base que contiene toda la logica de un dialogo.
 [Serializable]
 [CreateAssetMenu(fileName = "New Dialogue", menuName = "Game/Dialogue Assets/New Dialogue")]
-public class Dialogue : Clue
+public class Dialogue : ScriptableObject
 {
     [Space(25), Header("CLUE DATA")]
     [Space(20)]
@@ -22,8 +22,8 @@ public class Dialogue : Clue
         if (hiddenProof.Contains(proof)) return;
         hiddenProof.Add(proof);
     }
-
-  
     
-
 }
+
+
+

@@ -52,7 +52,6 @@ public class CaseResolution : ScriptableObject  // Recipe
             
             foreach (var globalIdentity in uniqueSlots)
             {
-                
                 if (!answer.AnswerRequirements.TryGetValue(globalIdentity, out var slot)) continue;
                 slot.Identity = globalIdentity; 
             }
@@ -96,7 +95,7 @@ public class CaseAnswer
     [TextArea(0,30)] public string Description;
     
     [ShowInInspector, DictionaryDrawerSettings(KeyLabel = "Role", ValueLabel = "Clues"), PropertySpace(10,15)] 
-    public SerializedDictionary<Whodunnit, SerializedList<Clue>> Answer;
+    public SerializedDictionary<Whodunnit, SerializedList<IClue>> Answer;
     
     [ShowInInspector]
     [DictionaryDrawerSettings(KeyLabel = "ID (Asset)", ValueLabel = "Case Slot", IsReadOnly = true)]
@@ -104,7 +103,7 @@ public class CaseAnswer
     public SerializedDictionary<CaseSlotIdentity, CaseSlot> AnswerRequirements = new();
 
 
-    public bool ValidateAnswer(Dictionary<CaseSlotIdentity, Clue> playerAnswer)
+    public bool ValidateAnswer(Dictionary<CaseSlotIdentity, IClue> playerAnswer)
     {
         if (AnswerRequirements.Count != playerAnswer.Count) return false;
 
@@ -112,8 +111,8 @@ public class CaseAnswer
         {
             CaseSlotIdentity target = kvp.Key;
             CaseSlot rule =  kvp.Value;
-            if (!playerAnswer.TryGetValue(target, out Clue playerPlacedClue)) return false;
-            if (!rule.Validate(rule.requiredWhodunnit, playerPlacedClue)) return false; 
+            if (!playerAnswer.TryGetValue(target, out IClue playerPlacedClue)) return false;
+            if (!rule.Validate(rule.Identity.ProofTypeNeed, playerPlacedClue)) return false; 
         }
 
         return true;
@@ -122,25 +121,93 @@ public class CaseAnswer
     
 }
 
+
 [Serializable]
 public class CaseSlot
 {
     [ReadOnly]  public CaseSlotIdentity Identity;
     
-    [ShowInInspector,ReadOnly]
+    [ShowInInspector, ReadOnly]
     public string SlotTitle => Identity == null ? "(Missing Identity)" : Identity.Description;
+    
+    [ListDrawerSettings(CustomAddFunction = nameof(AddNewClueElement), ShowIndexLabels = true)]
+    [SerializeReference] 
+    public List<IClueHolder> requieredClue = new List<IClueHolder>(); 
 
-    public Whodunnit requiredWhodunnit;
-    
-    [InfoBox("If Need Specific Item / One of this list / if null or empty -> Don't Need Clue")]
-    public List<Clue> requieredClue; 
-    
-    public bool Validate(Whodunnit w, Clue clue)
+#if UNITY_EDITOR
+    private void AddNewClueElement()
     {
-        if (requiredWhodunnit != w) return false;
+        UnityEditor.GenericMenu menu = new UnityEditor.GenericMenu();
+        var allClues = ClueProvider.GetAvailableClues();
+
+        foreach (var clueItem in allClues)
+        {
+            string menuPath = clueItem.Text;
+            IClue clueValue = clueItem.Value;
+
+            menu.AddItem(new GUIContent(menuPath), false, () =>
+            {
+                requieredClue ??= new List<IClueHolder>();
+
+                
+                Type targetType = clueValue.GetType();
+                Type holderGenericType = typeof(ClueHolder<>).MakeGenericType(targetType);
+                
+                IClueHolder wrapperInstance = (IClueHolder)Activator.CreateInstance(holderGenericType, clueValue);
+                
+                requieredClue.Add(wrapperInstance);
+                
+                Sirenix.Utilities.Editor.GUIHelper.RequestRepaint();
+            });
+        }
+
+        menu.ShowAsContext();
+    }
+#endif
+    
+    
+    public bool Validate(Whodunnit w, IClue clue)
+    {
+        if (Identity.ProofTypeNeed != w)
+        {
+            Debug.Log("The ProofTypeNeed is wrong");
+            return false;
+        }
         
         if (requieredClue == null || requieredClue.Count == 0) return true;
         
-        return requieredClue.Contains(clue);
+        
+        foreach (var holder in requieredClue)
+        {
+            if (holder == null || holder.GetClue() != clue) continue;
+            Debug.Log("Has Neede Clue");
+            return true;
+        }
+        
+        Debug.Log("Need Clue");
+        return false;
+    }
+}
+
+public interface IClueHolder
+{
+    IClue GetClue();
+}
+
+[Serializable]
+public class ClueHolder<T> : IClueHolder where T : class, IClue
+{
+
+    [SerializeReference] 
+    private T m_clueTarget;
+    
+    public ClueHolder(T target)
+    {
+        m_clueTarget = target;
+    }
+
+    public IClue GetClue()
+    {
+        return m_clueTarget;
     }
 }

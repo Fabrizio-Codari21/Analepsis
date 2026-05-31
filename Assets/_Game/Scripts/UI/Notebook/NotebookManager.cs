@@ -569,17 +569,17 @@ public class DialogueNote : Note
     }
 }
 [Serializable]
-public abstract class Evidence
+public class Evidence
 {
     public SerializableGuid guid;
-    public PageType type;
     public string displayName;
     public Whodunnit whodunnits; // puede ser list y puede ser para varios
-    public Clue representerClue;
-    protected Evidence(string displayName,SerializableGuid guid,Whodunnit proofs)
+    public IClue representerClue;
+    protected Evidence(string displayName,SerializableGuid guid,Whodunnit proofs,IClue representerClue)
     {
         this.displayName = displayName;
         this.guid = guid;
+        this.representerClue = representerClue;
         whodunnits = proofs;
     }
     
@@ -593,13 +593,9 @@ public class DialogueFragmentNote : Evidence
 {
     public readonly DialogueNode Node;
     
-
-    public DialogueFragmentNote(string displayName,SerializableGuid guid,Whodunnit proofs,DialogueNode node) : base(displayName,guid, proofs)
+    public DialogueFragmentNote(string displayName, Whodunnit proofs, DialogueNode node) : base(displayName, node != null ? node.guid : SerializableGuid.Empty, proofs, node) 
     {
         Node = node;
-        type = PageType.Character;
-        if (node != null) guid = node.guid;
-        
     }
     public override string GetInfo()
     {

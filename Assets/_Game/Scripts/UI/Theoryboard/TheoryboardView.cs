@@ -92,13 +92,13 @@ public class TheoryboardView : MonoBehaviour
 
     public List<TheorySlot> InitializeBoardArchitecture(CaseResolution caseResolution)
     {
-        // 清防空机制
+    
         if (caseResolution == null || caseResolution.allSlots == null) 
             return _allRuntimeSlots;
 
         var targetIdentities = caseResolution.allSlots;
 
-        // 核心：如果有 5 个身份框，我就强行 Instantiate 生成 5 个常驻物理物体
+      
         foreach (var t in targetIdentities)
         {
             var identityAsset = t;
@@ -106,22 +106,19 @@ public class TheoryboardView : MonoBehaviour
 
             if (m_slotPrefab == null || m_slotGridRoot == null)
             {
-                Debug.LogError("【View 架构中止】未指定 m_slotPrefab 或 m_slotGridRoot 容器！");
                 break;
             }
 
-            // 🚀 动态物理克隆，并且立刻摆进 Grid
+         
             TheorySlot newSlotInstance = Instantiate(m_slotPrefab, m_slotGridRoot);
             
-            // 🔥 注入黑盒格子所需的灵魂身份证卡片，并在内部重命名
             newSlotInstance.SetIdentity(t);
             
-            // 开启显示，并打入常驻列表
             newSlotInstance.gameObject.SetActive(true);
             _allRuntimeSlots.Add(newSlotInstance);
         }
 
-        return _allRuntimeSlots; // 扔回给总管，总管也只需要接一次，永久享用
+        return _allRuntimeSlots; 
     }
 
     private void ResetAllSlotsData()
@@ -143,7 +140,6 @@ public class TheoryboardView : MonoBehaviour
     int _currentCharacter = 0;
     public void LoadMarkedClues() 
     {
-
         Despawn();
         var allMarked = TheoryMarkingPanel.Instance.MarkedEvidences;
         
@@ -153,6 +149,7 @@ public class TheoryboardView : MonoBehaviour
         foreach (var log in markedLogs)
         {
             var button = CreateClueButton(log.displayName, m_logRoot,log); 
+            button.InitializeCallback(LoadMarkedClues);
             _flyweights.Add(button);
         }
 
@@ -187,7 +184,7 @@ public class TheoryboardView : MonoBehaviour
         // CreateClueButton(character.npcName, m_charactersRoot, new(character,new List<Whodunnit>(character.possibleRoles)), isCharacter: true);
     }
 
-    private ButtonFactoryObject CreateClueButton(string text, Transform parent,Evidence evidence)
+    private EvidenceRepresentButton CreateClueButton(string text, Transform parent,Evidence evidence)
     {
         var button = FlyweightFactory.Instance.Spawn<EvidenceRepresentButton>(
             m_buttonSetting,
@@ -200,6 +197,8 @@ public class TheoryboardView : MonoBehaviour
         button.SetText(text);
         button.SetInteractable(true);
         button.MoveToLast();
+        
+      
         return button;
     }
 

@@ -6,7 +6,7 @@ using UnityEngine;
 
 [Serializable]
 [CreateAssetMenu(menuName = "Game/Item",fileName = "Item")]
-public class Item : Clue
+public class Item : ScriptableObject,IClue
 {
     [Space(25), Header("CLUE DATA")]
 
@@ -34,10 +34,7 @@ public class Item : Clue
     [Space(15), Header("CAN IT UNLOCK ANYTHING?")]
     public KeyItem keyInfo; // eventualmente esto podria guardar mas info relevante, por ahora es solo un bool.
 
-    public override Tuple<Clue,List<Whodunnit>> DoesItProveAnything()
-    {
-        return new(this, new List<Whodunnit>(doesItProveAnything));
-    }
+    
 }
 
 [Serializable]
@@ -50,9 +47,8 @@ public class ItemPOIData
     
 }
 
-[Serializable]
-public class Clue : ScriptableObject
+public interface IClue
 {
-    public virtual Tuple<Clue,List<Whodunnit>> DoesItProveAnything() => null;
+    
 }
 

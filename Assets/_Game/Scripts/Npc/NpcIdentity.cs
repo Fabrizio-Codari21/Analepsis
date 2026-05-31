@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 [CreateAssetMenu(menuName = "Game/Npc",fileName = "NewNpc_0")]
-public class NpcIdentity : Clue
+public class NpcIdentity : ScriptableObject,IClue
 {
     [Space(25), Header("CLUE DATA")]
     [Space(20)]
@@ -27,6 +27,5 @@ public class NpcIdentity : Clue
     public bool makesEyeContact = true;
 
 }
-
 
 

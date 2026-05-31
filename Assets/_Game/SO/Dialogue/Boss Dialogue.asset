@@ -18,14 +18,11 @@ MonoBehaviour:
       \nCould I interest you in renting a room, perhaps?"
     characterEmotion: 2
     characterReaction: 0
-    doesItProveAnything: 0
+    doesItProveAnything: 1
     responses:
     - rid: 5324356914828017934
     - rid: 5324356914828017935
     - rid: 5324356914828017936
-    - rid: 8641241810836127896
-    - rid: 8641241810836127897
-    - rid: 8641241810836127898
     isRootNode: 1
     editorPosition: {x: 219.39366, y: 197}
     guid:
@@ -37,15 +34,15 @@ MonoBehaviour:
   allNodes:
   - dialogueText: "Welcome to the Trivyag Hotel. I'm the owner and boss of this establishment.
       \nCould I interest you in renting a room, perhaps?"
-    characterEmotion: 0
+    characterEmotion: 2
     characterReaction: 0
-    doesItProveAnything: 0
+    doesItProveAnything: 1
     responses:
     - rid: 5324356914828017934
     - rid: 5324356914828017935
     - rid: 5324356914828017936
     isRootNode: 1
-    editorPosition: {x: 300, y: 200}
+    editorPosition: {x: 219.39366, y: 197}
     guid:
       Part1: 2187425879
       Part2: 1303396138
@@ -56,8 +53,8 @@ MonoBehaviour:
       I seem to have lost the keys to my car. It's a fancy new model and I've barely
       had a chance to drive it yet.\nI doubt you're gonna find them around here,
       but if you find out something... please let me know."
-    characterEmotion: 0
-    characterReaction: 0
+    characterEmotion: 1
+    characterReaction: 2
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828017937
@@ -68,21 +65,21 @@ MonoBehaviour:
       Part2: 1229670118
       Part3: 834325127
       Part4: 1991192220
-    tag: 
+    tag: About keys
   - dialogueText: '...Well, if that''s the case, I should ask you to leave.
 
       However,
-      it would be uncouth to leave you out there, with such a terrible storm going
+      it would be uncouth to let you go out there, with such a terrible storm going
       on.
 
       You may stay, but please, don''t go anywhere past this reception.'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 0
+    characterEmotion: 2
+    characterReaction: 6
+    doesItProveAnything: 1
     responses:
     - rid: 5324356914828017938
     isRootNode: 0
-    editorPosition: {x: 1401, y: 49.449997}
+    editorPosition: {x: 1424.0004, y: -43.00001}
     guid:
       Part1: 1703566582
       Part2: 1202352971
@@ -94,8 +91,8 @@ MonoBehaviour:
 
       She can make up stories, accuse people
       of unproper behaviour... I highly advice you remain from trusting her.'
-    characterEmotion: 0
-    characterReaction: 0
+    characterEmotion: 1
+    characterReaction: 2
     doesItProveAnything: 0
     responses:
     - rid: 5324356914828018100
@@ -107,27 +104,14 @@ MonoBehaviour:
       Part3: 3713609364
       Part4: 931363781
     tag: 
-  - dialogueText: 
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 0
-    responses: []
-    isRootNode: 0
-    editorPosition: {x: 873, y: 192}
-    guid:
-      Part1: 683588782
-      Part2: 1333579791
-      Part3: 3661331897
-      Part4: 2589768789
-    tag: 
   - dialogueText: 'Look, just because she''s all shy doesn''t mean that you should
       underestimate her.
 
       Like all foreigners, she can be deceivingly cunning
       and mischievous if no-one puts her in her place.'
     characterEmotion: 2
-    characterReaction: 0
-    doesItProveAnything: 0
+    characterReaction: 2
+    doesItProveAnything: 3
     responses:
     - rid: 3832489796472668237
     isRootNode: 0
@@ -145,8 +129,8 @@ MonoBehaviour:
       inconvenient you may have with her is something the two of you should deal
       with.'
     characterEmotion: 2
-    characterReaction: 0
-    doesItProveAnything: 0
+    characterReaction: 8
+    doesItProveAnything: 3
     responses:
     - rid: 3832489796472668239
     isRootNode: 0
@@ -157,46 +141,7 @@ MonoBehaviour:
       Part3: 3428983194
       Part4: 4117224209
     tag: 
-  - dialogueText: New Dialogue
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 0
-    responses: []
-    isRootNode: 0
-    editorPosition: {x: 1423.2366, y: 763.4374}
-    guid:
-      Part1: 659216696
-      Part2: 1167035847
-      Part3: 1994624654
-      Part4: 2154854513
-    tag: 
-  - dialogueText: New Dialogue
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 0
-    responses: []
-    isRootNode: 0
-    editorPosition: {x: 1438.9464, y: 1014.4791}
-    guid:
-      Part1: 2093842412
-      Part2: 1080728404
-      Part3: 2242262144
-      Part4: 2449127771
-    tag: 
-  - dialogueText: New Dialogue
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 0
-    responses: []
-    isRootNode: 0
-    editorPosition: {x: 1402.342, y: 1258.6282}
-    guid:
-      Part1: 1565899829
-      Part2: 1083733551
-      Part3: 2326530210
-      Part4: 1436262488
-    tag: 
-  hiddenProof: 
+  hiddenProof: 01000000
   references:
     version: 2
     RefIds:
@@ -284,7 +229,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 950, y: 116}
+        editorPosition: {x: 1007.5002, y: 24.000008}
     - rid: 5324356914828017936
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -349,11 +294,11 @@ MonoBehaviour:
           this reception.'
         characterEmotion: 2
         characterReaction: 6
-        doesItProveAnything: 0
+        doesItProveAnything: 1
         responses:
         - rid: 5324356914828017938
         isRootNode: 0
-        editorPosition: {x: 1401, y: 49.449997}
+        editorPosition: {x: 1424.0004, y: -43.00001}
         guid:
           Part1: 1703566582
           Part2: 1202352971
@@ -499,81 +444,3 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 2121, y: 509}
-    - rid: 8641241810836127896
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: New Response
-        nextNode:
-          rid: 8641241810836127903
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 990.3125, y: 719.355}
-    - rid: 8641241810836127897
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: New Response
-        nextNode:
-          rid: 8641241810836127904
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 990.00006, y: 960.929}
-    - rid: 8641241810836127898
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: New Response
-        nextNode:
-          rid: 8641241810836127905
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 1014.2951, y: 1186.9998}
-    - rid: 8641241810836127903
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: New Dialogue
-        characterEmotion: 0
-        characterReaction: 0
-        doesItProveAnything: 0
-        responses: []
-        isRootNode: 0
-        editorPosition: {x: 1423.2366, y: 763.4374}
-        guid:
-          Part1: 659216696
-          Part2: 1167035847
-          Part3: 1994624654
-          Part4: 2154854513
-        tag: 
-    - rid: 8641241810836127904
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: New Dialogue
-        characterEmotion: 0
-        characterReaction: 0
-        doesItProveAnything: 0
-        responses: []
-        isRootNode: 0
-        editorPosition: {x: 1438.9464, y: 1014.4791}
-        guid:
-          Part1: 2093842412
-          Part2: 1080728404
-          Part3: 2242262144
-          Part4: 2449127771
-        tag: 
-    - rid: 8641241810836127905
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: New Dialogue
-        characterEmotion: 0
-        characterReaction: 0
-        doesItProveAnything: 0
-        responses: []
-        isRootNode: 0
-        editorPosition: {x: 1402.342, y: 1258.6282}
-        guid:
-          Part1: 1565899829
-          Part2: 1083733551
-          Part3: 2326530210
-          Part4: 1436262488
-        tag: 

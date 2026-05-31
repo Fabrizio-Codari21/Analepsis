@@ -12,6 +12,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     [Header("Core")]
     [SerializeField] private TheoryboardView m_view;
     [SerializeField] private BoardInputReader inputReaderBoard;
+    [SerializeField] private TheoryValidator m_validator;
     #region Event
     [Header("Events")]
     
@@ -31,13 +32,15 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     [SerializeField] private int m_maxSolveAttempts;
     [Header("Case")]
     [SerializeField] private CaseResolution m_caseResolution;
+    [Header("Data")]
+    [ShowInInspector,ReadOnly] private List<TheorySlot> _cachedSlotsInScene = new List<TheorySlot>();
+   
     [Header("Text Base")] 
     [SerializeField, TextArea(3, 10)]
     private string m_baseTextOnTrySolver;
     [Header("Test Panel")]
     [SerializeField] private bool isInstaWin = false;
     
-    private List<TheorySlot> _cachedSlotsInScene = new List<TheorySlot>();
     
 
     #region IActivity
@@ -111,20 +114,13 @@ public class TheoryboardManager : MonoBehaviour, IActivity
             TryResult(true);
             return;
         }
-        TryResult(TrySolveCase());
+        TryResult(Validate());
     }
- 
-
-    private bool TrySolveCase()
+    
+    private bool Validate()
     {
-        if (m_caseResolution == null) return false;
-        
-        CaseAnswer resultAnswer = m_caseResolution.ValidateCase(_cachedSlotsInScene);
-
-        if (resultAnswer == null) return false;
-        CaseSuccess();
-        return true;
-
+        var result = m_caseResolution.ValidateCase(_cachedSlotsInScene);
+        return result != null;
     }
 
     private void TryResult(bool success)

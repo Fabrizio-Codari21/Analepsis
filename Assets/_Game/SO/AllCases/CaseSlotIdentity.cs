@@ -4,4 +4,7 @@ public class CaseSlotIdentity : ScriptableObject
 {
    [Tooltip("What Need For This Slot Description")]
    public string Description;
+
+
+   public Whodunnit ProofTypeNeed;
 }

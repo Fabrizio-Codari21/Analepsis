@@ -1,160 +1,130 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public abstract class DraggableButton : ButtonFactoryObject, IBeginDragHandler, IDragHandler, IEndDragHandler
-{
-    private Transform _originalTransform;
-    private int _originalHierarchyPosition;
-    protected RectTransform _rectTransform;
-    protected Canvas _canvas;
-
-    // Ghost 相关变量
-    private GameObject _ghostObject;
-    private RectTransform _ghostRect;
-
-    protected bool IsInteractable => m_button != null && m_button.interactable;
-
-    protected virtual void Awake()
-    {
-        _rectTransform = GetComponent<RectTransform>();
-    }
-
+public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandler, IDragHandler, IEndDragHandler
+{ 
+    Transform _originalTransform;
+    int _originalHierarchyPosition;
+    private Canvas _canvas;
+    
+    
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _canvas = GetComponentInParent<Canvas>(); 
-        if (!_canvas || !IsInteractable) return;
+        _canvas = GetComponentInParent<Canvas>();
         
-        // 1. 记录原本的父级和位置（用于失败回弹）
-        _originalTransform = transform.parent;
-        _originalHierarchyPosition = transform.GetSiblingIndex();
-        
-        // 2. 创建 Ghost（影子）
-        CreateGhost();
+        if (!_canvas)
+        {
+            Debug.Log("Canvas not set");
+            return;
+        }
 
-        // 3. 隐藏本体的视觉流（让本体在原位变透明，或者直接隐藏）
-        // 注意：不要直接 SetActive(false)，否则会中断 UGUI 的 Drag 事件流！
-        SetVisibility(false);
 
-        // 4. 初始化 Ghost 位置
-        UpdateGhostPosition(eventData);
+        if (transform.parent != null)
+        {
+            _originalTransform = transform.parent;
+            _originalHierarchyPosition = transform.GetSiblingIndex();
+        }
+        transform.SetParent(_canvas.transform,false);
+        MoveToLast();
+        SetDraggedPosition(eventData);
+       
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (IsInteractable && _ghostObject != null) 
-        {
-            UpdateGhostPosition(eventData);
-        }
+        if(m_button != null && m_button.interactable) SetDraggedPosition(eventData);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // 显示本体
-        SetVisibility(true);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
 
-        if (IsInteractable && eventData.pointerDrag != null)
+        foreach (RaycastResult result in results)
         {
-            ProcessDrop(eventData);
-        }
-
-        // 无论成功与否，最后销毁 Ghost
-        DestroyGhost();
-    }
-
-    private void CreateGhost()
-    {
-        // 实例化一个自己的副本作为 Ghost
-        _ghostObject = Instantiate(this.gameObject, _canvas.transform, false);
-        _ghostRect = _ghostObject.GetComponent<RectTransform>();
-
-        // 关键：移除 Ghost 身上所有的脚本和交互组件，只留下视觉（Image/Text）
-        // 这样 Ghost 就绝对不会阻挡系统的 Raycast 射线
-        var scripts = _ghostObject.GetComponents<MonoBehaviour>();
-        foreach (var script in scripts)
-        {
-            Destroy(script);
-        }
-        
-        // 确保 Ghost 的射线检测是关闭的
-        if (_ghostObject.TryGetComponent<Graphic>(out var graphic))
-        {
-            graphic.raycastTarget = false;
-        }
-        var childGraphics = _ghostObject.GetComponentsInChildren<Graphic>();
-        foreach (var cg in childGraphics) cg.raycastTarget = false;
-
-        // 调整 Ghost 的尺寸与本体一致
-        _ghostRect.sizeDelta = _rectTransform.sizeDelta;
-    }
-
-    private void UpdateGhostPosition(PointerEventData data)
-    {
-        if (_canvas == null || _ghostRect == null) return;
-        RectTransform draggingPlane = _canvas.transform as RectTransform;
-
-        if (!RectTransformUtility.ScreenPointToWorldPointInRectangle(draggingPlane, data.position, data.pressEventCamera, out var globalMousePos)) return;
-        _ghostRect.position = globalMousePos;
-    }
-
-    private void ProcessDrop(PointerEventData data)
-    {
-        List<RaycastResult> raycastResults = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(data, raycastResults);
-
-        bool isSuccessfullyPlaced = false;
-
-        foreach (RaycastResult result in raycastResults)
-        {
-            if (result.gameObject == null || result.gameObject == this.gameObject) continue;
-
-            ISlotAcceptor slot = result.gameObject.GetComponent<ISlotAcceptor>();
-            if (slot != null)
+            if(result.gameObject == null || result.gameObject == gameObject) continue;
+            if (!result.gameObject.TryGetComponent(out ISlotData<T> acceptor))
             {
-                isSuccessfullyPlaced = HandlePlacement(slot);
-                if (isSuccessfullyPlaced) break;
+                Debug.Log($" DraggleButton : no has slot");
+                continue;
             }
+            if (!acceptor.CanAccept())
+            {
+                Debug.LogWarning($"   DraggleButton : has slot but is block");
+                continue;
+            }
+            
+            T myData = GetButtonData();
+            if (myData == null)
+            {
+                Debug.LogError($"   {gameObject.name}  GetButtonData() Return Null");
+                continue;
+            }
+
+            
+            if (!acceptor.CheckSlotAdapt(myData))
+            {
+                Debug.LogWarning($"  Diferente Type");
+                continue;
+            }
+            
+            if (!acceptor.ReplaceData(myData))
+            {
+                Debug.LogWarning($" Has Something");
+                continue;
+            }
+
+            Insert(acceptor.SlotTransform);
+            return;
         }
 
-        // 如果失败，回弹原位
-        if (!isSuccessfullyPlaced)
-        {
-            ReturnToOriginalPosition();
-        }
-    }
-
-    private void SetVisibility(bool visible)
-    {
-      
-        if (!TryGetComponent<CanvasGroup>(out var group))
-        {
-            group = gameObject.AddComponent<CanvasGroup>();
-        }
-        group.alpha = visible ? 1f : 0f;
-    }
-
-    protected abstract bool HandlePlacement(ISlotAcceptor slot);
-
-    public void ReturnToOriginalPosition()
-    {
-        transform.SetParent(_originalTransform, false);
+        if (_originalTransform == null) return;
+        transform.position = _originalTransform.position;
+        transform.rotation = _originalTransform.rotation;
+        
+        transform.SetParent(_originalTransform, true);
         transform.SetSiblingIndex(_originalHierarchyPosition);
-        _rectTransform.anchoredPosition = Vector2.zero;
     }
-
-    private void DestroyGhost()
+    
+    protected abstract T GetButtonData();
+    private void SetDraggedPosition(PointerEventData data)
     {
-        if (_ghostObject != null)
-        {
-            Destroy(_ghostObject);
-            _ghostObject = null;
-        }
+        if (_canvas == null) return;
+        RectTransform draggingPlane = _canvas.transform as RectTransform;
+        if (!RectTransformUtility.ScreenPointToWorldPointInRectangle(draggingPlane, data.position, data.pressEventCamera, out var globalMousePos)) return;
+        m_rectTransform.position = globalMousePos;
+        if (draggingPlane != null) m_rectTransform.rotation = draggingPlane.rotation;
+    }
+    
+    
+    
+    protected virtual void Insert(Transform slotTransform)
+    {
+        transform.position = slotTransform.position;
+        
+        transform.rotation = slotTransform.rotation;
+        
+        transform.SetParent(slotTransform, true);
+      
     }
 }
-
 
 public interface ISlotAcceptor
 {
     Transform SlotTransform { get; }
+
+    bool CanAccept();
+
+    void ClearSlot();
+}
+
+
+public interface ISlotData<T> : ISlotAcceptor
+{
+    bool ReplaceData(T data);
+
+    bool CheckSlotAdapt(T data);
 }
