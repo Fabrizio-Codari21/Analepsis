@@ -22,13 +22,24 @@ MonoBehaviour:
     Part4: 1282611973
   Name: Sauna Sign
   sprite: {fileID: 0}
-  baseClue: 
-  pois: []
+  baseClue: This was placed in front of one of the doors upstairs.
+  pois:
+  - poiId: Open
+    description: The sign says it's open... but the door doesn't seem to budge in
+      the slightest. That's odd...
+  - poiId: Sauna
+    description: Apparently this door leads to this hotel's sauna.
   flashbackInfo:
-    info: 
+    info: 'Someone replaced an old door sign with this one.
+
+      Why would they
+      make it say "Open" when it''s clearly not?
+
+      I wonder if someone else
+      saw anything...'
     characterPrefab: {fileID: 0}
     key: {fileID: 0}
     offset: {x: 0, y: 0, z: 0}
-  doesItProveAnything: 
+  doesItProveAnything: 04000000
   keyInfo:
     isKey: 0
