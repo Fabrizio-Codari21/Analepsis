@@ -18,8 +18,12 @@ public class TheoryboardView : MonoBehaviour
     [SerializeField] private Button m_solveButton;
     [SerializeField] private TMP_Text m_solveText;
     [SerializeField] private Button m_previousCharacterButton, m_nextCharacterButton;
- 
     
+    
+    [Header("Dynamic Slots Config")]
+    [SerializeField] private TheorySlot m_slotPrefab;
+    [SerializeField] private Transform m_slotGridRoot;
+    private readonly List<TheorySlot> _allRuntimeSlots = new List<TheorySlot>();
     
     [Header("UI References")]
     [Space(10)]
@@ -30,6 +34,9 @@ public class TheoryboardView : MonoBehaviour
     
     [Header("Flyweight")]
     [SerializeField] private ButtonSetting m_buttonSetting;
+    
+    
+    private readonly List<IFlyweight> _flyweights = new List<IFlyweight>();
     
     [Header("Extra UI")]
     [SerializeField] private FullScreenTipUI m_erroTip;
@@ -57,8 +64,8 @@ public class TheoryboardView : MonoBehaviour
         _activity.OnStop += () =>
         {
             m_camera.enabled = false;
-            Despawn(m_logRoot);
-            Despawn(m_itemRoot);
+            Despawn();
+            ResetAllSlotsData();
         };
         #endregion
         
@@ -68,8 +75,8 @@ public class TheoryboardView : MonoBehaviour
 
     private void OnEnable()
     {
-        m_previousCharacterButton.onClick.AddListener(() => SwitchCharacter(-1));
-        m_nextCharacterButton.onClick.AddListener(() => SwitchCharacter(1));
+        // m_previousCharacterButton.onClick.AddListener(() => SwitchCharacter(-1));
+        // m_nextCharacterButton.onClick.AddListener(() => SwitchCharacter(1));
         m_solveButton.onClick.AddListener(() =>  m_solverChannel.Raise());
     }
 
@@ -83,35 +90,80 @@ public class TheoryboardView : MonoBehaviour
     #endregion
 
 
+    public List<TheorySlot> InitializeBoardArchitecture(CaseResolution caseResolution)
+    {
+        // 清防空机制
+        if (caseResolution == null || caseResolution.allSlots == null) 
+            return _allRuntimeSlots;
+
+        var targetIdentities = caseResolution.allSlots;
+
+        // 核心：如果有 5 个身份框，我就强行 Instantiate 生成 5 个常驻物理物体
+        foreach (var t in targetIdentities)
+        {
+            var identityAsset = t;
+            if (identityAsset == null) continue;
+
+            if (m_slotPrefab == null || m_slotGridRoot == null)
+            {
+                Debug.LogError("【View 架构中止】未指定 m_slotPrefab 或 m_slotGridRoot 容器！");
+                break;
+            }
+
+            // 🚀 动态物理克隆，并且立刻摆进 Grid
+            TheorySlot newSlotInstance = Instantiate(m_slotPrefab, m_slotGridRoot);
+            
+            // 🔥 注入黑盒格子所需的灵魂身份证卡片，并在内部重命名
+            newSlotInstance.SetIdentity(t);
+            
+            // 开启显示，并打入常驻列表
+            newSlotInstance.gameObject.SetActive(true);
+            _allRuntimeSlots.Add(newSlotInstance);
+        }
+
+        return _allRuntimeSlots; // 扔回给总管，总管也只需要接一次，永久享用
+    }
+
+    private void ResetAllSlotsData()
+    {
+        foreach (var slot in _allRuntimeSlots.Where(slot => slot != null))
+        {
+            slot.SetEvidence(null); 
+            
+            EvidenceRepresentButton residualButton = slot.GetComponentInChildren<EvidenceRepresentButton>();
+            if (residualButton == null) continue;
+            if (_flyweights.Contains(residualButton))
+            {
+                _flyweights.Remove(residualButton);
+            }
+              
+            FlyweightFactory.Instance.Return(residualButton);
+        }
+    }
     int _currentCharacter = 0;
-    public void LoadMarkedClues()  // Load 从 note manager 已经登记的 在 evidence 有的 
+    public void LoadMarkedClues() 
     {
 
-        Despawn(m_logRoot);
-        Despawn(m_itemRoot);
+        Despawn();
         var allMarked = TheoryMarkingPanel.Instance.MarkedEvidences;
         
         var markedLogs = allMarked.Where(e => e is DialogueFragmentNote).ToList();
-        
-        if (markedLogs.Count == 0)
+
+        if (markedLogs.Count <= 0) return;
+        foreach (var log in markedLogs)
         {
-            CreateClueButton("No Logs marked \n(Click the star to mark)", m_logRoot, null, true);
+            var button = CreateClueButton(log.displayName, m_logRoot,log); 
+            _flyweights.Add(button);
         }
-        else
-        {
-            foreach (var log in markedLogs)
-            {
-                CreateClueButton(log.displayName, m_logRoot, null); 
-            }
-        }
+
     }
 
     private void SwitchCharacter(int nextOrPrevious = 0)
     {
-        Despawn(m_charactersRoot);
+        // Despawn(m_charactersRoot);
         if(NotebookManager.Instance.FoundCharacters.Count <= 0)
         {
-            CreateClueButton("No characters discovered.", m_charactersRoot, null, true); 
+            CreateClueButton("No characters discovered.", m_charactersRoot, null); 
             return;
         }
         
@@ -132,35 +184,32 @@ public class TheoryboardView : MonoBehaviour
                 break;
             }
         }
-        CreateClueButton(character.npcName, m_charactersRoot, new(character,new List<Whodunnit>(character.possibleRoles)), isCharacter: true);
+        // CreateClueButton(character.npcName, m_charactersRoot, new(character,new List<Whodunnit>(character.possibleRoles)), isCharacter: true);
     }
 
-    private ButtonFactoryObject CreateClueButton(string text, Transform parent, Tuple<Clue,List<Whodunnit>> proof, bool placeholder = false, bool isCharacter = false)
+    private ButtonFactoryObject CreateClueButton(string text, Transform parent,Evidence evidence)
     {
-        var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
+        var button = FlyweightFactory.Instance.Spawn<EvidenceRepresentButton>(
             m_buttonSetting,
             Vector3.zero,
             Quaternion.identity,
             parent
         );
         
+        button.SetEvidence(evidence);
         button.SetText(text);
-        if (placeholder) 
-        {
-            button.SetInteractable(false);
-            return button;
-        }
         button.SetInteractable(true);
         button.MoveToLast();
-        return null;
+        return button;
     }
 
-    private void Despawn(Transform root) 
+    private void Despawn() 
     {
-        foreach (var f in root.GetComponentsInChildren<IFlyweight>())
+        foreach (var f in _flyweights)
         {
-            FlyweightFactory.Instance.Return(f);
+            if (f != null)FlyweightFactory.Instance.Return(f);
         }
+        _flyweights.Clear();    
     }
     
     public async UniTask ShowError(string solveTxt)
@@ -180,6 +229,12 @@ public class TheoryboardView : MonoBehaviour
         m_erroTip.gameObject.SetActive(true);
         await m_erroTip.FadeInAndFadeOut(solveTxt);
         m_erroTip.gameObject.SetActive(false);
+    }
+
+
+    public void CreateSlot(CaseSlot slot)
+    {
+        
     }
 
 

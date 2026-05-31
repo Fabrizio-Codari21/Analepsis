@@ -37,7 +37,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     [Header("Test Panel")]
     [SerializeField] private bool isInstaWin = false;
     
-    
+    private List<TheorySlot> _cachedSlotsInScene = new List<TheorySlot>();
     
 
     #region IActivity
@@ -81,7 +81,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     {
 
         m_view = Instantiate(m_view,transform);
-        
+        _cachedSlotsInScene = m_view.InitializeBoardArchitecture(m_caseResolution);
         m_openTheoryBoardChannel.OnEventRaised += Open;
         m_openTheoryBoardChannel.OnEventRaised += m_view.LoadMarkedClues;
         inputReaderBoard.Close += Close;
@@ -117,8 +117,14 @@ public class TheoryboardManager : MonoBehaviour, IActivity
 
     private bool TrySolveCase()
     {
-        // el check debe ser por aca
-        return false;
+        if (m_caseResolution == null) return false;
+        
+        CaseAnswer resultAnswer = m_caseResolution.ValidateCase(_cachedSlotsInScene);
+
+        if (resultAnswer == null) return false;
+        CaseSuccess();
+        return true;
+
     }
 
     private void TryResult(bool success)

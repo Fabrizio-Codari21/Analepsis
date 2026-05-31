@@ -568,7 +568,7 @@ public class DialogueNote : Note
         return SerializableGuid.Empty;
     }
 }
-
+[Serializable]
 public abstract class Evidence
 {
     public SerializableGuid guid;
@@ -588,7 +588,6 @@ public abstract class Evidence
         return string.Empty;
     }
 }
-
 
 public class DialogueFragmentNote : Evidence
 {

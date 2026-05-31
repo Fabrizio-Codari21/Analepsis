@@ -28,6 +28,9 @@ MonoBehaviour:
       - Items:
         - {fileID: 11400000, guid: 173ad9da7e8c29c4dbe387eae1450770, type: 2}
         - {fileID: 11400000, guid: c8ca820684b0ceb469b6c8e341de9ea7, type: 2}
+    AnswerRequirements:
+      m_Keys: []
+      m_Values: []
   - Name: Resolucion Alternativa
     Description: 'El Chef mata a Mrs. Guest con el Cuchillo por Rencor (Imperfecta)
 
@@ -45,3 +48,26 @@ MonoBehaviour:
       - Items:
         - {fileID: 11400000, guid: 38078761dd0663346bad54d2f88251b9, type: 2}
         - {fileID: 11400000, guid: c8ca820684b0ceb469b6c8e341de9ea7, type: 2}
+    AnswerRequirements:
+      m_Keys: []
+      m_Values: []
+  allSlots:
+  - {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
+  - {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+  validAnswers:
+  - Name: 
+    Description: 
+    Answer:
+      m_Keys: 
+      m_Values: []
+    AnswerRequirements:
+      m_Keys:
+      - {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+      - {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
+      m_Values:
+      - Identity: {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+        requiredWhodunnit: 2
+        requieredClue: []
+      - Identity: {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
+        requiredWhodunnit: 1
+        requieredClue: []
