@@ -8,6 +8,7 @@ public class DialogueNode : INode
     public Emotion characterEmotion;
     public Reaction characterReaction;
     public Whodunnit doesItProveAnything;
+    public bool isKey;
 
     [SerializeReference] public List<DialogueResponse> responses;
     public bool isRootNode = true;

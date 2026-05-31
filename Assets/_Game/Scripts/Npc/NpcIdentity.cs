@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[CreateAssetMenu(menuName = "Game/Npc",fileName = "NewNpc_0")]
+[CreateAssetMenu(menuName = "Game/Npc",fileName = "SO_Npc_Name")]
 public class NpcIdentity : Clue
 {
     [Space(25), Header("CLUE DATA")]

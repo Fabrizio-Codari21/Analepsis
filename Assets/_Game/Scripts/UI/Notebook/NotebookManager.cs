@@ -648,6 +648,12 @@ public class DialogueNote : Note
             if(!_unlockedDialogue.Contains(node)) _unlockedDialogue.Add(node);
         }
     }
+
+    public bool IsKey() => _unlockedDialogue.Count > 0 && _unlockedDialogue
+        .Where(d => d is DialogueNode)
+        .Select(x => (DialogueNode)x)
+        .Any(n => n.isKey);
+
     public override async UniTask Show(NotebookRepresenter representer, CancellationToken token)
     {
         _showingFull = false;
