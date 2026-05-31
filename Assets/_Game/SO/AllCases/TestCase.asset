@@ -10,28 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2479a5e0d70a6ce4f8eec2c9c7e59a78, type: 3}
-  m_Name: Two Spies
+  m_Name: TestCase
   m_EditorClassIdentifier: 
   AllValidAnswers:
   - Name: Friendly Fire
-    Description: 
-    Answer:
-      m_Keys: 01000000020000000300000004000000
-      m_Values:
-      - Items:
-        - {fileID: 11400000, guid: 5043c68b662704849a2d6d0baeae7a51, type: 2}
-      - Items:
-        - {fileID: 11400000, guid: 5043c68b662704849a2d6d0baeae7a51, type: 2}
-      - Items:
-        - {fileID: 11400000, guid: fe2cfe21de2f9b84b8f72e8aade2b0fe, type: 2}
-      - Items:
-        - {fileID: 11400000, guid: fe2cfe21de2f9b84b8f72e8aade2b0fe, type: 2}
-    AnswerRequirements:
-      m_Keys: []
-      m_Values: []
-  allSlots: []
-  ValidAnswers:
-  - Name: 
     Description: 
     Answer:
       m_Keys: 
@@ -39,3 +21,18 @@ MonoBehaviour:
     AnswerRequirements:
       m_Keys: []
       m_Values: []
+  allSlots:
+  - {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+  validAnswers:
+  - Name: 
+    Description: 
+    Answer:
+      m_Keys: 
+      m_Values: []
+    AnswerRequirements:
+      m_Keys:
+      - {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+      m_Values:
+      - Identity: {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+        requiredWhodunnit: 0
+        requieredClue: []

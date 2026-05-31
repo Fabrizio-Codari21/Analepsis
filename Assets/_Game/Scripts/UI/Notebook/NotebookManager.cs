@@ -135,12 +135,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         
         if (dialogueNote == null)
         {
-            Whodunnit w = new Whodunnit();
-            if (currentNode is DialogueNode dialogueNode)
-            {
-                w = dialogueNode.doesItProveAnything;
-            }
-            dialogueNote = new DialogueNote(dialogue.name, dialogue,new Tuple<Clue, List<Whodunnit>>(dialogue,new List<Whodunnit>() {w}));
+            dialogueNote = new DialogueNote(dialogue.name, dialogue);
             dialogueList.Add(dialogueNote);
         }
         dialogueNote.RegisterNodeVisit(currentNode, parentNode);
@@ -391,7 +386,7 @@ public  class Note
     public PageType type;
     public string displayName;
     
-    public Note(string displayName,  Tuple<Clue,List<Whodunnit>> proof = null)
+    public Note(string displayName)
     {
         this.displayName = displayName;
     }
@@ -411,7 +406,7 @@ public  class Note
 public class ItemNote : Note
 {
     private readonly Item _item;
-    public ItemNote(string displayName,Item item, Tuple<Clue, List<Whodunnit>> proof = null) : base(displayName, proof)
+    public ItemNote(string displayName,Item item) : base(displayName)
     {
         type = PageType.Objects;
         if (item == null) return;
@@ -527,7 +522,7 @@ public class DialogueNote : Note
     
     private List<string> _fullInfo;
 
-    public DialogueNote(string displayName, Dialogue dialogueRepresenter,  Tuple<Clue, List<Whodunnit>> proof = null) : base(displayName, proof)
+    public DialogueNote(string displayName, Dialogue dialogueRepresenter) : base(displayName)
     {
         _dialogueRepresenter = dialogueRepresenter;
         type = PageType.Character;
@@ -594,78 +589,15 @@ public abstract class Evidence
     }
 }
 
-public class TheorySlot : MonoBehaviour
-{
-    [SerializeField] private Whodunnit m_whodunnitRequired; // este slot que tipo necesita
-    [SerializeField] private string m_displayName;
-    private Whodunnit _currentWhodunnit;
-    public Whodunnit CurrentWhodunnit;
-    private Evidence _currentEvidenceHolder;
-
-    public Clue GetCurrentClue()
-    {
-        return _currentEvidenceHolder?.representerClue;
-    }
-    public bool Check()
-    {
-        return _currentEvidenceHolder != null && m_whodunnitRequired == _currentWhodunnit;
-    }
-    public void SetEvidence(Evidence evidence, Whodunnit incomingType)
-    {
-        _currentEvidenceHolder = evidence;
-        _currentWhodunnit = incomingType;
-    }
-}
-
-public class TheoryValidator : MonoBehaviour
-{
-    [SerializeField] private List<TheorySlot> m_allSlot = new();
-    [SerializeField] private CaseResolution m_currentCaseResolution;
-    private bool Validate()
-    {
-        Dictionary<Whodunnit, List<Clue>> playerSubmission = null;
-        foreach (var slot in m_allSlot)
-        {
-            if (!slot.Check()) return false;
-            Clue clue = slot.GetCurrentClue();
-            if (clue == null)
-            {
-                Debug.LogWarning("Warning: Check The Clue When Created Evidence / if is a Evidence not Important.. Ignore This ");
-                continue;
-            }
-
-            playerSubmission ??= new Dictionary<Whodunnit, List<Clue>>();
-
-            if (!playerSubmission.ContainsKey(slot.CurrentWhodunnit))
-            {
-                playerSubmission[slot.CurrentWhodunnit] = new List<Clue>();
-            }
-            
-            playerSubmission[slot.CurrentWhodunnit].Add(clue);
-        }
-        
-        foreach (var caseAnswer in m_currentCaseResolution.AllValidAnswers)
-        {
-            
-            
-             
-        }
-        return true;
-    }
-   
-}
-
 
 public class DialogueFragmentNote : Evidence
 {
     public readonly DialogueNode Node;
+    
 
-    public readonly Dialogue Dialogue;
-
-    public DialogueFragmentNote(string displayName,SerializableGuid guid,Whodunnit proofs,DialogueNode node, Dialogue dialogue) : base(displayName,guid, proofs)
+    public DialogueFragmentNote(string displayName,SerializableGuid guid,Whodunnit proofs,DialogueNode node) : base(displayName,guid, proofs)
     {
         Node = node;
-        Dialogue = dialogue;
         type = PageType.Character;
         if (node != null) guid = node.guid;
         

@@ -117,7 +117,7 @@ public class TreePage : NotebookPage
             {
                 string nodeName = npcNode.PreviousResponse != null ? npcNode.PreviousResponse.responseText : "Beginning";
 
-                var fragmentEvidenceToMark = EvidenceDataBase.Instance.GetOrCreate(npcNode.guid, () => new DialogueFragmentNote(nodeName, npcNode.guid, npcNode.doesItProveAnything,npcNode, _activeNote.GetFullDialogue()));
+                var fragmentEvidenceToMark = EvidenceDataBase.Instance.GetOrCreate(npcNode.guid, () => new DialogueFragmentNote(nodeName, npcNode.guid, npcNode.doesItProveAnything,npcNode));
                 ButtonWithSubButton button = FlyweightFactory.Instance.Spawn<ButtonWithSubButton>(m_nodeButton, Vector3.zero, Quaternion.identity, m_treeRoot);
                 
                 button.SetText(fragmentEvidenceToMark.displayName);

@@ -147,7 +147,6 @@ public class TheoryboardManager : MonoBehaviour, IActivity
             return;
         }
         m_view.Tip(m_baseTextOnTrySolver + $"\n [{_leftAttempts} attempts left]").Forget();
-        
        
     }
     

@@ -38,7 +38,6 @@ public class Item : Clue
     {
         return new(this, new List<Whodunnit>(doesItProveAnything));
     }
-
 }
 
 [Serializable]
