@@ -31,7 +31,16 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     
     [Header("Data")]
     private readonly HashSet<SerializableGuid> _possibleEvidenceMarked = new();
-    
+    public IEnumerable<Evidence> MarkedEvidences 
+    {
+        get
+        {
+            foreach (var guid in _possibleEvidenceMarked)
+            {
+                if (EvidenceDataBase.Instance.TryGet(guid, out var evidence)) yield return evidence;
+            }
+        }
+    }
     private Evidence _currentEvidenceOnEdit;
     private string _cachedRandomTip = string.Empty;
 

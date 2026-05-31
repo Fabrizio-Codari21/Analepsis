@@ -12,6 +12,10 @@ public class TreePage : NotebookPage
     [SerializeField] private float levelVerticalDistance = 60.0f;
     [SerializeField] private float baseHorizontalSpacing = 80.0f; 
     
+    [Header("Zoom Settings")]
+    [SerializeField] private float zoomSpeed = 5f;
+    [SerializeField] private float minScale = 1f;
+    [SerializeField] private float maxScale = 5f;
     [Header("UI REFERENCES")]
     [Space(5)]
     [Header("Button")]
@@ -113,7 +117,7 @@ public class TreePage : NotebookPage
             {
                 string nodeName = npcNode.PreviousResponse != null ? npcNode.PreviousResponse.responseText : "Beginning";
 
-                var fragmentEvidenceToMark = EvidenceDataBase.Instance.GetOrCreate(npcNode.guid, () => new DialogueFragmentNote(nodeName, npcNode.guid, npcNode, _activeNote.GetFullDialogue()));
+                var fragmentEvidenceToMark = EvidenceDataBase.Instance.GetOrCreate(npcNode.guid, () => new DialogueFragmentNote(nodeName, npcNode.guid, npcNode.doesItProveAnything,npcNode, _activeNote.GetFullDialogue()));
                 ButtonWithSubButton button = FlyweightFactory.Instance.Spawn<ButtonWithSubButton>(m_nodeButton, Vector3.zero, Quaternion.identity, m_treeRoot);
                 
                 button.SetText(fragmentEvidenceToMark.displayName);

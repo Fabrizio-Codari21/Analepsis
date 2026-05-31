@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 
 [Serializable]
 [CreateAssetMenu(fileName = "New Case", menuName = "Game/CaseResolution/NewCase")]
-public class CaseResolution : ScriptableObject
+public class CaseResolution : ScriptableObject  // Recipe
 {
     /// <summary>
     /// La lista tiene structs que contienen un caso (con clues asignadas a roles) 
@@ -20,6 +20,20 @@ public class CaseResolution : ScriptableObject
         "\n\n(IMPORTANT: make sure the first answer on the list is your '<b>true</b>' answer.)", 
         Icon = SdfIconType.Newspaper), Space(15)]
     public List<CaseAnswer> AllValidAnswers = new();
+
+
+
+    public bool Validate(List<TheorySlot> allSlot)
+    {
+        foreach (var slot in allSlot)
+        {
+            if (!slot.Check()) return false;  // si algunos de slot no cumple es falso
+        }
+        
+        // hay que fijar que estos slot si es que cumple en el case osea si mahchea con uno
+        
+        return true;
+    }
 }
 
 [Serializable]
@@ -30,5 +44,19 @@ public class CaseAnswer
     [TextArea(0,30)] public string Description;
     [ShowInInspector, DictionaryDrawerSettings(KeyLabel = "Role", ValueLabel = "Clues"), PropertySpace(10,15)] 
     public SerializedDictionary<Whodunnit, SerializedList<Clue>> Answer;
+
+
+    public bool Match(Dictionary<Whodunnit, SerializedList<Clue>> validateDict)
+    {
+        if(Answer.Count != validateDict.Count) return false;
+
+        foreach (var kvp in Answer)
+        {
+            Whodunnit requiredRole = kvp.Key;
+            var requiredClues = kvp.Value;
+        }
+
+        return false;  //// Hasta Aca 31/05
+    }
 }
 

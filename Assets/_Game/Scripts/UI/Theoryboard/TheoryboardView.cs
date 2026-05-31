@@ -20,6 +20,7 @@ public class TheoryboardView : MonoBehaviour
     [SerializeField] private Button m_previousCharacterButton, m_nextCharacterButton;
  
     
+    
     [Header("UI References")]
     [Space(10)]
     [Header("Root")]
@@ -27,12 +28,14 @@ public class TheoryboardView : MonoBehaviour
     [SerializeField] private Transform m_itemRoot;
     [SerializeField] private Transform m_charactersRoot;
     
+    [Header("Flyweight")]
+    [SerializeField] private ButtonSetting m_buttonSetting;
+    
     [Header("Extra UI")]
     [SerializeField] private FullScreenTipUI m_erroTip;
 
     [Header("Events")]
     [SerializeField] private EventChannel m_solverChannel;
-
 
 
     private IActivity _activity;
@@ -81,32 +84,26 @@ public class TheoryboardView : MonoBehaviour
 
 
     int _currentCharacter = 0;
-    public void LoadMarkedClues()
+    public void LoadMarkedClues()  // Load 从 note manager 已经登记的 在 evidence 有的 
     {
 
-        // Despawn(m_logRoot);
-        // Despawn(m_itemRoot);
-        // var markedLogs = TheoryMarkingPanel.Instance.PossibleEvidenceMarked.Where(x => x.Value.type == PageType.Character);
-        // var markedList = markedLogs.ToList();
-        // if(!markedList.Any()) CreateClueButton("No Logs marked \n(Click the star to mark)", m_logRoot, null, true);
-        // var markedItems = TheoryMarkingPanel.Instance.PossibleEvidenceMarked.Where(x => x.Value.type == PageType.Objects);
-        // var keyValuePairs = markedItems.ToList();
-        // if (!keyValuePairs.Any()) CreateClueButton("No Objects marked \n(Click the star to mark)", m_itemRoot, null, true);
-        //
-        // SwitchCharacter();
-        //
-        // if ( TheoryMarkingPanel.Instance.PossibleEvidenceMarked.Count <= 0) return;
-        // foreach (var log in markedList) 
-        // {
-        //     // CreateClueButton(log.Value.displayName, m_logRoot, log.Value.IsProof);
-        //    
-        // }
-        // foreach (var item in keyValuePairs)
-        // {
-        //    // CreateClueButton(item.Value.displayName, m_itemRoot, item.Value.IsProof);
-        //   
-        // }
-
+        Despawn(m_logRoot);
+        Despawn(m_itemRoot);
+        var allMarked = TheoryMarkingPanel.Instance.MarkedEvidences;
+        
+        var markedLogs = allMarked.Where(e => e is DialogueFragmentNote).ToList();
+        
+        if (markedLogs.Count == 0)
+        {
+            CreateClueButton("No Logs marked \n(Click the star to mark)", m_logRoot, null, true);
+        }
+        else
+        {
+            foreach (var log in markedLogs)
+            {
+                CreateClueButton(log.displayName, m_logRoot, null); 
+            }
+        }
     }
 
     private void SwitchCharacter(int nextOrPrevious = 0)
@@ -138,27 +135,23 @@ public class TheoryboardView : MonoBehaviour
         CreateClueButton(character.npcName, m_charactersRoot, new(character,new List<Whodunnit>(character.possibleRoles)), isCharacter: true);
     }
 
-    public ButtonFactoryObject CreateClueButton(string text, Transform parent, Tuple<Clue,List<Whodunnit>> proof, bool placeholder = false, bool isCharacter = false)
+    private ButtonFactoryObject CreateClueButton(string text, Transform parent, Tuple<Clue,List<Whodunnit>> proof, bool placeholder = false, bool isCharacter = false)
     {
-        // var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
-        //     clueButtonSetting,
-        //     Vector3.zero,
-        //     Quaternion.identity,
-        //     parent
-        // );
-        //
-        // button.SetText(text);
-        // if (placeholder) 
-        // {
-        //     button.SetInteractable(false);
-        //     return button;
-        // }
-        // button.SetInteractable(true);
-        // button.SetBoard(boardRoots);
-        // button.SetView(this);
-        // button.SetProof(proof);
-        // button.SetCharacter(isCharacter);
-        // button.MoveToLast();
+        var button = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
+            m_buttonSetting,
+            Vector3.zero,
+            Quaternion.identity,
+            parent
+        );
+        
+        button.SetText(text);
+        if (placeholder) 
+        {
+            button.SetInteractable(false);
+            return button;
+        }
+        button.SetInteractable(true);
+        button.MoveToLast();
         return null;
     }
 
@@ -169,11 +162,7 @@ public class TheoryboardView : MonoBehaviour
             FlyweightFactory.Instance.Return(f);
         }
     }
-
-
-   
     
-
     public async UniTask ShowError(string solveTxt)
     {
         // var oldText = solveText.text;

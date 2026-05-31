@@ -30,7 +30,6 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     [ShowInInspector, ReadOnly] private int _leftAttempts;
     [SerializeField] private int m_maxSolveAttempts;
     [Header("Case")]
-    [SerializeField] private List<TheoryboardReasonRequired> m_caseReasonRequired;
     [SerializeField] private CaseResolution m_caseResolution;
     [Header("Text Base")] 
     [SerializeField, TextArea(3, 10)]
@@ -156,21 +155,10 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     {
         
     }
-
-  
-  
-}
-
-
-public class TheoryboardReasonRequired : MonoBehaviour
-{
-    [SerializeField] private List<Whodunnit> m_acceptedWhodunnits = new List<Whodunnit>();
-    
-    public bool Accept(Whodunnit w) => m_acceptedWhodunnits.Contains(w);
-    
-    
     
 }
+
+
 
 
 public enum Whodunnit

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 
 public class EvidenceDataBase : Singleton<EvidenceDataBase>
 { 
-    private readonly Dictionary<SerializableGuid,Evidence> _evidencesSaved = new Dictionary<SerializableGuid,Evidence>();
+    [ShowInInspector,ReadOnly]private readonly Dictionary<SerializableGuid,Evidence> _evidencesSaved = new Dictionary<SerializableGuid,Evidence>();
     
     public T GetOrCreate<T>(SerializableGuid guid, Func<T> creator) where T : Evidence
     {
@@ -17,9 +18,15 @@ public class EvidenceDataBase : Singleton<EvidenceDataBase>
 
         return newEvidence;
     }
+
+
+
     
     public bool TryGet(SerializableGuid guid, out Evidence evidence)
     {
         return _evidencesSaved.TryGetValue(guid, out evidence);
     }
+    
+    
+    
 }

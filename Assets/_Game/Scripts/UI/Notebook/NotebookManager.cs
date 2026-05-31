@@ -577,27 +577,84 @@ public class DialogueNote : Note
 public abstract class Evidence
 {
     public SerializableGuid guid;
-
     public PageType type;
-
     public string displayName;
-    
-    protected Evidence(string displayName,SerializableGuid guid)
+    public Whodunnit whodunnits; // puede ser list y puede ser para varios
+    public Clue representerClue;
+    protected Evidence(string displayName,SerializableGuid guid,Whodunnit proofs)
     {
         this.displayName = displayName;
         this.guid = guid;
+        whodunnits = proofs;
     }
-
-    public virtual string GetButtonText()
-    {
-        return displayName;
-    }
-
+    
     public virtual string GetInfo()
     {
         return string.Empty;
     }
 }
+
+public class TheorySlot : MonoBehaviour
+{
+    [SerializeField] private Whodunnit m_whodunnitRequired; // este slot que tipo necesita
+    [SerializeField] private string m_displayName;
+    private Whodunnit _currentWhodunnit;
+    public Whodunnit CurrentWhodunnit;
+    private Evidence _currentEvidenceHolder;
+
+    public Clue GetCurrentClue()
+    {
+        return _currentEvidenceHolder?.representerClue;
+    }
+    public bool Check()
+    {
+        return _currentEvidenceHolder != null && m_whodunnitRequired == _currentWhodunnit;
+    }
+    public void SetEvidence(Evidence evidence, Whodunnit incomingType)
+    {
+        _currentEvidenceHolder = evidence;
+        _currentWhodunnit = incomingType;
+    }
+}
+
+public class TheoryValidator : MonoBehaviour
+{
+    [SerializeField] private List<TheorySlot> m_allSlot = new();
+    [SerializeField] private CaseResolution m_currentCaseResolution;
+    private bool Validate()
+    {
+        Dictionary<Whodunnit, List<Clue>> playerSubmission = null;
+        foreach (var slot in m_allSlot)
+        {
+            if (!slot.Check()) return false;
+            Clue clue = slot.GetCurrentClue();
+            if (clue == null)
+            {
+                Debug.LogWarning("Warning: Check The Clue When Created Evidence / if is a Evidence not Important.. Ignore This ");
+                continue;
+            }
+
+            playerSubmission ??= new Dictionary<Whodunnit, List<Clue>>();
+
+            if (!playerSubmission.ContainsKey(slot.CurrentWhodunnit))
+            {
+                playerSubmission[slot.CurrentWhodunnit] = new List<Clue>();
+            }
+            
+            playerSubmission[slot.CurrentWhodunnit].Add(clue);
+        }
+        
+        foreach (var caseAnswer in m_currentCaseResolution.AllValidAnswers)
+        {
+            
+            
+             
+        }
+        return true;
+    }
+   
+}
+
 
 public class DialogueFragmentNote : Evidence
 {
@@ -605,7 +662,7 @@ public class DialogueFragmentNote : Evidence
 
     public readonly Dialogue Dialogue;
 
-    public DialogueFragmentNote(string displayName,SerializableGuid guid,DialogueNode node, Dialogue dialogue) : base(displayName,guid)
+    public DialogueFragmentNote(string displayName,SerializableGuid guid,Whodunnit proofs,DialogueNode node, Dialogue dialogue) : base(displayName,guid, proofs)
     {
         Node = node;
         Dialogue = dialogue;
