@@ -25,6 +25,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [Header("Notebook Core Events")]
     [SerializeField] private NoteEvent note; // record 
     [SerializeField] private BoolEventChannel m_updatePoi;
+    [SerializeField] private EventChannel m_refreshTree;
     
     #endregion
     
@@ -151,6 +152,8 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         AudioManager.Instance.SelectSFX(SFXType.Player, "Open");
         takeOutNotebookChannel.Raise(representer);
         ShowLayout(0);
+        
+        m_refreshTree?.Raise();
         
     }
 

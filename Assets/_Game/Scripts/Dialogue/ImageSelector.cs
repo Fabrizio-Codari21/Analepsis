@@ -39,5 +39,10 @@ public class ImageSelector : MonoBehaviour
         var values = CalculateRotation(amount);
         baseImage.transform.Rotate(0, 0, values[index]);
     }
+
+    public void SetFill(float target)
+    {
+        baseImage.fillAmount = target;
+    }
     
 }

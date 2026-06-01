@@ -169,8 +169,7 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
             {
                 _currentDialoguer.SetAnimation(node.characterReaction != Reaction.None ? node.characterReaction : Reaction.Idle);
 
-                await m_dialogueView.PlayDialogueText(node.dialogueText, token,
-                    _currentDialoguer.Dialogue.dialogueColor);
+                await m_dialogueView.PlayNpcDialogue(node, token, _currentDialoguer.Dialogue.dialogueColor);
                 // mas que nada para que no siga "hablando" cuando el diálogo ya termino de reproducirse.
                 _currentDialoguer.SetAnimation(Reaction.Idle);
             }

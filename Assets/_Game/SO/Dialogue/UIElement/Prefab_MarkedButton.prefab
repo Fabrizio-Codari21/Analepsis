@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8484009091485894553}
   - component: {fileID: 357989951341691149}
   - component: {fileID: 8433563627459653805}
-  - component: {fileID: 4765146697894461137}
   - component: {fileID: 7565964714366067896}
+  - component: {fileID: 865645870111014174}
   m_Layer: 5
   m_Name: Prefab_MarkedButton
   m_TagString: Untagged
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -73,7 +73,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
@@ -122,25 +122,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4765146697894461137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2685460362376502478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b08e48db8dc04f65bda7928eb7499242, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_rectTransform: {fileID: 4894246779610503794}
-  m_button: {fileID: 8433563627459653805}
-  subButton: {fileID: 0}
-  m_text: {fileID: 0}
-  _view: {fileID: 0}
-  proof: 
-  m_buttonImage: {fileID: 357989951341691149}
 --- !u!114 &7565964714366067896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,3 +140,19 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6296ce6377774ec4db6a09cf0ea5e505, type: 3}
   - {fileID: 21300000, guid: b177eed13df901d4fb8e67212a99553b, type: 3}
   - {fileID: 21300000, guid: 5a4ff932b9cdc5c4a9c5cf56c7182ea2, type: 3}
+--- !u!114 &865645870111014174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2685460362376502478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d61d393994d47ebbdea1b586984171c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_rectTransform: {fileID: 4894246779610503794}
+  m_button: {fileID: 8433563627459653805}
+  m_text: {fileID: 0}
+  m_buttonImage: {fileID: 357989951341691149}

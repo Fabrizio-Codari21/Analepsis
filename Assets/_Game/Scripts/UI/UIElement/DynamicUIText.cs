@@ -35,7 +35,6 @@ public class DynamicUIText : FactoryUIObject
         m_rectTransform.sizeDelta = new Vector2(finalWidth, finalHeight + (compensate * m_text.fontSize));
         m_rectTransform.anchoredPosition = Vector2.zero;
         currentSize = new Vector2(finalWidth, finalHeight);
-        //m_rectTransform.sizeDelta = currentSize;
     }
     public override void OnSpawn()
     {
