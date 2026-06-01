@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueColor: {r: 0, g: 0, b: 0, a: 0}
   startingNode:
-    dialogueText: 
+    dialogueText: No
     characterEmotion: 0
     characterReaction: 0
     doesItProveAnything: 0
     isKey: 0
-    responses: []
+    responses:
+    - rid: 767062219271962644
     isRootNode: 1
     editorPosition: {x: 300, y: 200}
     guid:
@@ -46,4 +47,16 @@ MonoBehaviour:
   _hiddenProof: 
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 767062219271962644
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Okey
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 534, y: 213}

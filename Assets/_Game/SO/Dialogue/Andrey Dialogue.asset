@@ -158,22 +158,310 @@ MonoBehaviour:
       Part3: 405430694
       Part4: 3257180410
     tag: 
+  - dialogueText: Who's lying?
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 767062219271962632
+    - rid: 767062219271962633
+    isRootNode: 0
+    editorPosition: {x: 1028.7688, y: -28.920502}
+    guid:
+      Part1: 3005462273
+      Part2: 1186196420
+      Part3: 3619405476
+      Part4: 2018895431
+    tag: 
+  - dialogueText: I can tell from a mile away when someone is unpleasable, she's
+      a lost couse as far as I'm concerned
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 767062219271962635
+    isRootNode: 0
+    editorPosition: {x: 1606.9999, y: -103.63126}
+    guid:
+      Part1: 3644508348
+      Part2: 1196827177
+      Part3: 70828988
+      Part4: 2055379135
+    tag: 
+  - dialogueText: She's one of those people that won't change their mind about something,
+      no matter the evidence against it.
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 767062219271962637
+    isRootNode: 0
+    editorPosition: {x: 2505.9998, y: -103.63126}
+    guid:
+      Part1: 3036664030
+      Part2: 1257445403
+      Part3: 1589302673
+      Part4: 1385208169
+    tag: 
+  - dialogueText: Why though, you weren't even here during lunch
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 767062219271962639
+    isRootNode: 0
+    editorPosition: {x: 1598, y: -385}
+    guid:
+      Part1: 1052829987
+      Part2: 1289779477
+      Part3: 388250795
+      Part4: 1008944790
+    tag: 
+  - dialogueText: 'That''s dangerous.
+
+      And admirable.'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 767062219271962641
+    isRootNode: 0
+    editorPosition: {x: 2419, y: -385}
+    guid:
+      Part1: 3737222326
+      Part2: 1121306442
+      Part3: 2996202407
+      Part4: 396023909
+    tag: 
+  - dialogueText: Who do you take me for!?
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 767062219271962643
+    isRootNode: 0
+    editorPosition: {x: 2923, y: -385}
+    guid:
+      Part1: 594107815
+      Part2: 1257147919
+      Part3: 559302833
+      Part4: 3749320976
+    tag: 
   _hiddenProof: 0400000003000000
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 6774952466358992965
+    - rid: 767062219271962630
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Hiya, lovely hotel
+        responseText: Sheesh...
         nextNode:
           rid: -2
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 777, y: 110.99999}
+        editorPosition: {x: 3883, y: 372}
+    - rid: 767062219271962631
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Who's lying?
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062219271962632
+        - rid: 767062219271962633
+        isRootNode: 0
+        editorPosition: {x: 1028.7688, y: -28.920502}
+        guid:
+          Part1: 3005462273
+          Part2: 1186196420
+          Part3: 3619405476
+          Part4: 2018895431
+        tag: 
+    - rid: 767062219271962632
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Oh, I am
+        nextNode:
+          rid: 767062219271962638
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1325, y: -385}
+    - rid: 767062219271962633
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: That reporter, Alexandra
+        nextNode:
+          rid: 767062219271962634
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1324.9999, y: -103.63126}
+    - rid: 767062219271962634
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: I can tell from a mile away when someone is unpleasable, she's
+          a lost couse as far as I'm concerned
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062219271962635
+        isRootNode: 0
+        editorPosition: {x: 1606.9999, y: -103.63126}
+        guid:
+          Part1: 3644508348
+          Part2: 1196827177
+          Part3: 70828988
+          Part4: 2055379135
+        tag: 
+    - rid: 767062219271962635
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: How so?
+        nextNode:
+          rid: 767062219271962636
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2271.9998, y: -103.63126}
+    - rid: 767062219271962636
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: She's one of those people that won't change their mind about
+          something, no matter the evidence against it.
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062219271962637
+        isRootNode: 0
+        editorPosition: {x: 2505.9998, y: -103.63126}
+        guid:
+          Part1: 3036664030
+          Part2: 1257445403
+          Part3: 1589302673
+          Part4: 1385208169
+        tag: 
+    - rid: 767062219271962637
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Huh, good to know...
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3240, y: -104}
+    - rid: 767062219271962638
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Why though, you weren't even here during lunch
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062219271962639
+        isRootNode: 0
+        editorPosition: {x: 1598, y: -385}
+        guid:
+          Part1: 1052829987
+          Part2: 1289779477
+          Part3: 388250795
+          Part4: 1008944790
+        tag: 
+    - rid: 767062219271962639
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: I thought the best way to access stuff would be to lie
+        nextNode:
+          rid: 767062219271962640
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1996, y: -385}
+    - rid: 767062219271962640
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'That''s dangerous.
+
+          And admirable.'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062219271962641
+        isRootNode: 0
+        editorPosition: {x: 2419, y: -385}
+        guid:
+          Part1: 3737222326
+          Part2: 1121306442
+          Part3: 2996202407
+          Part4: 396023909
+        tag: 
+    - rid: 767062219271962641
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Are you keen on lying?
+        nextNode:
+          rid: 767062219271962642
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2659, y: -385}
+    - rid: 767062219271962642
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Who do you take me for!?
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062219271962643
+        isRootNode: 0
+        editorPosition: {x: 2923, y: -385}
+        guid:
+          Part1: 594107815
+          Part2: 1257147919
+          Part3: 559302833
+          Part4: 3749320976
+        tag: 
+    - rid: 767062219271962643
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Sorry...
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3202, y: -385}
+    - rid: 6774952466358992965
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: I heard you're a great cook
+        nextNode:
+          rid: 767062219271962631
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 743.7688, y: -28.920502}
     - rid: 6774952466358992967
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -301,7 +589,8 @@ MonoBehaviour:
         characterReaction: 0
         doesItProveAnything: 0
         isKey: 0
-        responses: []
+        responses:
+        - rid: 767062219271962630
         isRootNode: 0
         editorPosition: {x: 3621, y: 372}
         guid:

@@ -365,6 +365,16 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 767062219271962646
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Thanks!
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2372, y: 1048}
     - rid: 6774952781063389253
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -1205,7 +1215,8 @@ MonoBehaviour:
         characterReaction: 0
         doesItProveAnything: 0
         isKey: 1
-        responses: []
+        responses:
+        - rid: 767062219271962646
         isRootNode: 0
         editorPosition: {x: 2048, y: 1048}
         guid:

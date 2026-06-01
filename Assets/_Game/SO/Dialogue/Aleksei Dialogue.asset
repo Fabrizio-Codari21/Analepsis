@@ -154,12 +154,153 @@ MonoBehaviour:
       Part3: 3008323730
       Part4: 425362122
     tag: 
+  - dialogueText: Oh, fun! I've always admired an inquisitive man
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 767062219271962627
+    isRootNode: 0
+    editorPosition: {x: 3526, y: 25}
+    guid:
+      Part1: 862484953
+      Part2: 1290569314
+      Part3: 1072531848
+      Part4: 3471224199
+    tag: 
+  - dialogueText: It's all right darling, we all secrets
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 767062219271962626
+    isRootNode: 0
+    editorPosition: {x: 3526, y: 226}
+    guid:
+      Part1: 4112438073
+      Part2: 1192836931
+      Part3: 2316540604
+      Part4: 2755046529
+    tag: 
+  - dialogueText: 'Well now that you mention it...
+
+      I haven''t noticed anything!
+
+      But
+      I do have the feeling that someone is following me, probably one of my crazy
+      fans'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 767062219271962629
+    isRootNode: 0
+    editorPosition: {x: 4236, y: 25}
+    guid:
+      Part1: 3907445809
+      Part2: 1207827194
+      Part3: 2436301958
+      Part4: 3896184877
+    tag: 
   _hiddenProof: 
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 767062219271962624
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Oh, fun! I've always admired an inquisitive man
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062219271962627
+        isRootNode: 0
+        editorPosition: {x: 3526, y: 25}
+        guid:
+          Part1: 862484953
+          Part2: 1290569314
+          Part3: 1072531848
+          Part4: 3471224199
+        tag: 
+    - rid: 767062219271962625
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: It's all right darling, we all secrets
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062219271962626
+        isRootNode: 0
+        editorPosition: {x: 3526, y: 226}
+        guid:
+          Part1: 4112438073
+          Part2: 1192836931
+          Part3: 2316540604
+          Part4: 2755046529
+        tag: 
+    - rid: 767062219271962626
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: I guess we do
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3861, y: 226}
+    - rid: 767062219271962627
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Have you noticed anything weird?
+        nextNode:
+          rid: 767062219271962628
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3914, y: 25}
+    - rid: 767062219271962628
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Well now that you mention it...
+
+          I haven''t noticed
+          anything!
+
+          But I do have the feeling that someone is following
+          me, probably one of my crazy fans'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062219271962629
+        isRootNode: 0
+        editorPosition: {x: 4236, y: 25}
+        guid:
+          Part1: 3907445809
+          Part2: 1207827194
+          Part3: 2436301958
+          Part4: 3896184877
+        tag: 
+    - rid: 767062219271962629
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Interesting...
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4827, y: 25}
     - rid: 6774952781063389271
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -350,18 +491,18 @@ MonoBehaviour:
       data:
         responseText: I'm an investigator of sorts
         nextNode:
-          rid: -2
+          rid: 767062219271962624
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3242, y: 34.000015}
+        editorPosition: {x: 3242, y: 24.880035}
     - rid: 6774952781063389283
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: New Response
+        responseText: I'm just, wandering
         nextNode:
-          rid: -2
+          rid: 767062219271962625
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3242, y: 200}
+        editorPosition: {x: 3242.0005, y: 200.00003}
