@@ -67,6 +67,11 @@ public class FlashbackManager : MonoBehaviour
         var fb = _currentItem.flashbackInfo;
         NotebookManager.Instance.UpdateFlashbackInfo(_currentItem,fb.info);
 
+        foreach (var item in m_GoInFlashback)
+        {
+            item.SetActive(true);
+        }
+
         if (!fb.characterPrefab || !fb.key) return;
 
         var t = TransformKeyManager.Instance.GetTransform(fb.key);
@@ -85,28 +90,23 @@ public class FlashbackManager : MonoBehaviour
         {
             textComponent.Init(fb.info);
         }
-
-
-        foreach (var item in m_GoInFlashback)
-        {
-            item.SetActive(true);
-        }
     }
 
 
     private void Despawn()
     {
         Debug.Log("Despawn");
+
+        foreach (var item in m_GoInFlashback)
+        {
+            item.SetActive(false);
+        }
+
         if (!_currentItem.flashbackInfo.characterPrefab) return;
 
         Destroy(_flashbackObject.gameObject);
         _flashbackObject = null;
         _currentItem = null;
-        
-        foreach (var item in m_GoInFlashback)
-        {
-            item.SetActive(false);
-        }
     }
     private void FsmSetup()
     {
