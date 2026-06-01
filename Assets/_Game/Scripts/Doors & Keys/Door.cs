@@ -10,7 +10,8 @@ public class Door : MonoBehaviour
     public Collider doorObject;
     public float openingDegrees, openingDuration, closedShakeIntensity;
     public Vector2 interactRange;
-    public bool overrideUnlock;
+    public LockState overrideLock;
+
 
     BoxCollider _col;
     void Start()
@@ -57,7 +58,7 @@ public class Door : MonoBehaviour
         var seq = Sequence.Create();
 
         // Si esta desbloqueada, se abre y cierra rotándose y desactiva la colisión de la puerta.
-        if(unlocked || overrideUnlock)
+        if((unlocked && overrideLock is not LockState.Lock) || overrideLock is LockState.Unlock)
         {
             _ = seq.Group(Tween.LocalRotation(
             doorObject.gameObject.transform,
@@ -79,4 +80,11 @@ public class Door : MonoBehaviour
 
         await seq;
     }
+}
+
+public enum LockState
+{
+    None,
+    Lock,
+    Unlock,
 }
