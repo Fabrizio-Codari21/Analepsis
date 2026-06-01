@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueColor: {r: 0, g: 0, b: 0, a: 0}
   startingNode:
-    dialogueText: 
+    dialogueText: Don't interrupt me please
     characterEmotion: 0
     characterReaction: 0
     doesItProveAnything: 0
-    responses: []
+    isKey: 0
+    responses:
+    - rid: 6774952781063389271
     isRootNode: 1
     editorPosition: {x: 300, y: 200}
     guid:
@@ -32,6 +34,7 @@ MonoBehaviour:
     characterEmotion: 0
     characterReaction: 0
     doesItProveAnything: 0
+    isKey: 0
     responses: []
     isRootNode: 1
     editorPosition: {x: 300, y: 200}
@@ -41,7 +44,324 @@ MonoBehaviour:
       Part3: 588551583
       Part4: 305309663
     tag: 
+  - dialogueText: 'No, wait!
+
+      You aren''t really interrupting anything...
+
+      I''m
+      supposed to be working but I just can''t seem to concentrate right now!
+
+      I''m
+      perpetually surrounded by distractions!'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 6774952781063389273
+    - rid: 6774952781063389274
+    isRootNode: 0
+    editorPosition: {x: 842, y: 200}
+    guid:
+      Part1: 121336126
+      Part2: 1108950013
+      Part3: 2249797309
+      Part4: 2547815713
+    tag: 
+  - dialogueText: 'My magnum opus of course!
+
+      I came to this hotel in the middle
+      of nowhere to help me focus
+
+      Art isn''t done in between parties and drugs,
+      or so my acquaintances insisted before draggin me here with their constant
+      negging...'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 6774952781063389276
+    isRootNode: 0
+    editorPosition: {x: 1685, y: 200}
+    guid:
+      Part1: 122495793
+      Part2: 1107580802
+      Part3: 2868873098
+      Part4: 766361834
+    tag: 
+  - dialogueText: 'Honestly I don''t know why anyone would ever want to come here!
+
+      There''s
+      absolutely nothing to be found in the barren wasteland.
+
+      Come to think
+      of it, what are <b>you<\b> doing here?'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 6774952781063389282
+    - rid: 6774952781063389283
+    isRootNode: 0
+    editorPosition: {x: 2719, y: 200}
+    guid:
+      Part1: 1638892124
+      Part2: 1148913163
+      Part3: 1816418959
+      Part4: 2822193649
+    tag: 
+  - dialogueText: 'Oh yeah, I can''t catch a break from all the fame...
+
+      It''s
+      hard, you know? Everyone wanting to look at you, take pictures of you, interview
+      you
+
+      It''s always about you- I mean me. Honestly honey? I don''t know
+      how I do it'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 6774952781063389279
+    isRootNode: 0
+    editorPosition: {x: 1684.9999, y: 431}
+    guid:
+      Part1: 4181029613
+      Part2: 1275199733
+      Part3: 2353852820
+      Part4: 4211439072
+    tag: 
+  - dialogueText: 'What''s worse is I cannot for the life of me get rid of the paparazzis!
+      Even here!
+
+      I just heard that damn camera shutter. If I ever find them
+      I have a word or two to say to whoever is taking pictures! at my! spiritual!
+      retreat!'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 6774952781063389281
+    isRootNode: 0
+    editorPosition: {x: 2499, y: 431}
+    guid:
+      Part1: 1866444140
+      Part2: 1318639581
+      Part3: 3008323730
+      Part4: 425362122
+    tag: 
   _hiddenProof: 
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6774952781063389271
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Oh sorry, I'll be leaving
+        nextNode:
+          rid: 6774952781063389272
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 578, y: 200}
+    - rid: 6774952781063389272
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'No, wait!
+
+          You aren''t really interrupting anything...
+
+          I''m
+          supposed to be working but I just can''t seem to concentrate right now!
+
+          I''m
+          perpetually surrounded by distractions!'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 6774952781063389273
+        - rid: 6774952781063389274
+        isRootNode: 0
+        editorPosition: {x: 842, y: 200}
+        guid:
+          Part1: 121336126
+          Part2: 1108950013
+          Part3: 2249797309
+          Part4: 2547815713
+        tag: 
+    - rid: 6774952781063389273
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Working on what?
+        nextNode:
+          rid: 6774952781063389275
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1446, y: 200}
+    - rid: 6774952781063389274
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Distractions?
+        nextNode:
+          rid: 6774952781063389278
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1446, y: 431}
+    - rid: 6774952781063389275
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'My magnum opus of course!
+
+          I came to this hotel
+          in the middle of nowhere to help me focus
+
+          Art isn''t done in
+          between parties and drugs, or so my acquaintances insisted before draggin
+          me here with their constant negging...'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 6774952781063389276
+        isRootNode: 0
+        editorPosition: {x: 1685, y: 200}
+        guid:
+          Part1: 122495793
+          Part2: 1107580802
+          Part3: 2868873098
+          Part4: 766361834
+        tag: 
+    - rid: 6774952781063389276
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Uhm...
+        nextNode:
+          rid: 6774952781063389277
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2509, y: 200}
+    - rid: 6774952781063389277
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Honestly I don''t know why anyone would ever want to come
+          here!
+
+          There''s absolutely nothing to be found in the barren
+          wasteland.
+
+          Come to think of it, what are <b>you<\b> doing here?'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 6774952781063389282
+        - rid: 6774952781063389283
+        isRootNode: 0
+        editorPosition: {x: 2719, y: 200}
+        guid:
+          Part1: 1638892124
+          Part2: 1148913163
+          Part3: 1816418959
+          Part4: 2822193649
+        tag: 
+    - rid: 6774952781063389278
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Oh yeah, I can''t catch a break from all the fame...
+
+          It''s
+          hard, you know? Everyone wanting to look at you, take pictures of you,
+          interview you
+
+          It''s always about you- I mean me. Honestly honey?
+          I don''t know how I do it'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 6774952781063389279
+        isRootNode: 0
+        editorPosition: {x: 1684.9999, y: 431}
+        guid:
+          Part1: 4181029613
+          Part2: 1275199733
+          Part3: 2353852820
+          Part4: 4211439072
+        tag: 
+    - rid: 6774952781063389279
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: So...
+        nextNode:
+          rid: 6774952781063389280
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2289, y: 431}
+    - rid: 6774952781063389280
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'What''s worse is I cannot for the life of me get rid of the
+          paparazzis! Even here!
+
+          I just heard that damn camera shutter.
+          If I ever find them I have a word or two to say to whoever is taking pictures!
+          at my! spiritual! retreat!'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 6774952781063389281
+        isRootNode: 0
+        editorPosition: {x: 2499, y: 431}
+        guid:
+          Part1: 1866444140
+          Part2: 1318639581
+          Part3: 3008323730
+          Part4: 425362122
+        tag: 
+    - rid: 6774952781063389281
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: I'll... let you know if I hear anything
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3359.9995, y: 430.99994}
+    - rid: 6774952781063389282
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: I'm an investigator of sorts
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3242, y: 34.000015}
+    - rid: 6774952781063389283
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: New Response
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3242, y: 200}
