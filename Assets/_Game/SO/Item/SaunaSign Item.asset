@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebf765b1b1104798829942b575348486, type: 3}
+  m_Name: SaunaSign Item
+  m_EditorClassIdentifier: 
+  renderCameraScaleMax: 1
+  renderCameraScaleMin: 1
+  gameObject: {fileID: 4812978782986017369, guid: 8a46f5a9b4ee38b49845063769efe448, type: 3}
+  guid:
+    Part1: 2535010050
+    Part2: 1104389271
+    Part3: 1982902180
+    Part4: 1282611973
+  Name: Sauna Sign
+  sprite: {fileID: 0}
+  baseClue: This was placed in front of one of the doors upstairs.
+  pois:
+  - poiId: Open
+    description: The sign says it's open... but the door doesn't seem to budge in
+      the slightest. That's odd...
+  - poiId: Sauna
+    description: Apparently this door leads to this hotel's sauna.
+  flashbackInfo:
+    info: 'Someone replaced an old door sign with this one.
+
+      Why would they
+      make it say "Open" when it''s clearly not?
+
+      I wonder if someone else
+      saw anything...'
+    characterPrefab: {fileID: -3991744081947586821, guid: d1d63782f3a122943a2a5b2161d98b6e, type: 3}
+    key: {fileID: 11400000, guid: 6140069eef82a4e4f8e6d09165289d03, type: 2}
+    offset: {x: 0, y: 0, z: 0}
+  doesItProveAnything: 04000000
+  keyInfo:
+    isKey: 0

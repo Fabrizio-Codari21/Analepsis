@@ -140,6 +140,16 @@ public sealed class DialogueGraphNode : Node
         proofFoldOut.Add(proofField);
         extensionContainer.Add(proofFoldOut);
 
+        Toggle isKeyField = new Toggle("Is this a Key?")
+        {
+            value = false,
+        };
+        isKeyField.RegisterValueChangedCallback(evt =>
+        {
+            NodeData.isKey = evt.newValue;
+        });
+        extensionContainer.Add(isKeyField);
+
 
 
         if (!nodeData.isRootNode)

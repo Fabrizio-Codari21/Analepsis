@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebf765b1b1104798829942b575348486, type: 3}
+  m_Name: Camera Item
+  m_EditorClassIdentifier: 
+  renderCameraScaleMax: 2
+  renderCameraScaleMin: 1.3
+  gameObject: {fileID: 4812978782986017369, guid: 9e63f30f0a1689b489d6d25207d3f589, type: 3}
+  guid:
+    Part1: 2997497531
+    Part2: 1174696267
+    Part3: 2945297319
+    Part4: 2925226968
+  Name: Camera
+  sprite: {fileID: 0}
+  baseClue: An expensive-looking photographing camera.
+  pois:
+  - poiId: Label
+    description: 'The label reads "Leica Standard Model E",  presumably the brand
+      and model of the camera.
+
+      It''s hard to make any conclusions without
+      knowing about cameras.'
+  - poiId: Lens
+    description: 'Peeking through the lens shows a very clear and detailed image.
+
+      This
+      must be used by a professional...'
+  - poiId: Film
+    description: 'It seems like about half of the film has already been used.
+
+      Unfortunately,
+      there''s probably no way to reveal photos in this hotel...
+
+'
+  flashbackInfo:
+    info: 'Whoever used this was taking pictures of someone sitting over that table.
+
+      I
+      wonder if the people there saw anything...'
+    characterPrefab: {fileID: -3991744081947586821, guid: d1d63782f3a122943a2a5b2161d98b6e, type: 3}
+    key: {fileID: 11400000, guid: ca822d1f877c08f44a6c81a3f579a5db, type: 2}
+    offset: {x: 0, y: 0, z: 0}
+  doesItProveAnything: 
+  keyInfo:
+    isKey: 0

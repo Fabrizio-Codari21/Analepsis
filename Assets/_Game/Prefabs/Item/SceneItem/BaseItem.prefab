@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &715214896839513508
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4287636575186883550}
+  - component: {fileID: 7160578262679879879}
+  m_Layer: 0
+  m_Name: FlashbackKey
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4287636575186883550
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715214896839513508}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.6532805, y: -0.2706006, z: -0.6532805, w: 0.2706004}
+  m_LocalPosition: {x: 3.54, y: 3.54, z: 0}
+  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7254360738549260050}
+  m_LocalEulerAnglesHint: {x: 0, y: -225, z: 90}
+--- !u!114 &7160578262679879879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715214896839513508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50adff924bcd46438758336842304bfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: {fileID: 11400000, guid: b8408bc1681fc864e80129cd2815d44b, type: 2}
 --- !u!1 &1358151898602314509
 GameObject:
   m_ObjectHideFlags: 0
@@ -39,6 +84,7 @@ Transform:
   m_Children:
   - {fileID: 2844394405375748889}
   - {fileID: 2635674145558379188}
+  - {fileID: 4287636575186883550}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &6320881110189953256
@@ -141,6 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae01f2d72cf640b3a6534ceda082d55e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportIfOverlapping: {fileID: 0}
 --- !u!114 &5725795764577087302
 MonoBehaviour:
   m_ObjectHideFlags: 0

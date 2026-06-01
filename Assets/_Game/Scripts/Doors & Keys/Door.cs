@@ -1,15 +1,17 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using PrimeTween;
+using System.Linq;
 
 [RequireComponent(typeof(BoxCollider))]
 public class Door : MonoBehaviour
 {
-    public Item requiredToOpen;
+    public Clue requiredToOpen;
     public Collider doorObject;
     public float openingDegrees, openingDuration, closedShakeIntensity;
     public Vector2 interactRange;
-    public bool overrideLock;
+    public LockState overrideLock;
+
 
     BoxCollider _col;
     void Start()
@@ -28,15 +30,26 @@ public class Door : MonoBehaviour
     // analizaste el objeto por completo) te deja desbloquear la puerta.
     private void OnTriggerEnter(Collider collider)
     {
-        _ = ToggleDoor(
-            true, 
-            requiredToOpen == null || 
-            (requiredToOpen != null && requiredToOpen.keyInfo.isKey &&
-            NotebookManager.Instance.GetItemFlashbackInfo(requiredToOpen) != string.Empty));
+        _ = ToggleDoor(true, CheckKey(requiredToOpen));
     }
     private void OnTriggerExit(Collider other)
     {
         _ = ToggleDoor(false);
+    }
+
+    public bool CheckKey(Clue clue)
+    {
+        if(clue == null) return true;
+
+        if (clue is Item)
+        {
+            var c = (Item)clue;
+            return c.keyInfo.isKey &&
+            NotebookManager.Instance.GetItemFlashbackInfo(c) != string.Empty;
+        }            
+        else if (clue is Dialogue)
+            return NotebookManager.Instance.StartedDialogues.Any(x => x.GetFullDialogue() == clue && x.IsKey());
+        else return false;
     }
 
     public async UniTask ToggleDoor(bool open = true, bool unlocked = true) 
@@ -45,7 +58,7 @@ public class Door : MonoBehaviour
         var seq = Sequence.Create();
 
         // Si esta desbloqueada, se abre y cierra rotándose y desactiva la colisión de la puerta.
-        if(unlocked && !overrideLock)
+        if((unlocked && overrideLock is not LockState.Lock) || overrideLock is LockState.Unlock)
         {
             _ = seq.Group(Tween.LocalRotation(
             doorObject.gameObject.transform,
@@ -67,4 +80,11 @@ public class Door : MonoBehaviour
 
         await seq;
     }
+}
+
+public enum LockState
+{
+    None,
+    Lock,
+    Unlock,
 }
