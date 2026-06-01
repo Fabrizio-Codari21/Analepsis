@@ -4,7 +4,6 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
-using UnityEditor.Timeline;
 
 public class NotebookManager : Singleton<NotebookManager>, IActivity
 {

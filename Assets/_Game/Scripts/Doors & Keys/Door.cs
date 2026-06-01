@@ -6,7 +6,7 @@ using System.Linq;
 [RequireComponent(typeof(BoxCollider))]
 public class Door : MonoBehaviour
 {
-    public Clue requiredToOpen;
+    public IClue requiredToOpen;
     public Collider doorObject;
     public float openingDegrees, openingDuration, closedShakeIntensity;
     public Vector2 interactRange;
@@ -37,7 +37,7 @@ public class Door : MonoBehaviour
         _ = ToggleDoor(false);
     }
 
-    public bool CheckKey(Clue clue)
+    public bool CheckKey(IClue clue)
     {
         if(clue == null) return true;
 
@@ -47,9 +47,11 @@ public class Door : MonoBehaviour
             return c.keyInfo.isKey &&
             NotebookManager.Instance.GetItemFlashbackInfo(c) != string.Empty;
         }            
-        else if (clue is Dialogue)
-            return NotebookManager.Instance.StartedDialogues.Any(x => x.GetFullDialogue() == clue && x.IsKey());
-        else return false;
+        // else if (clue is Dialogue)
+        //     return NotebookManager.Instance.StartedDialogues.Any(x => x.GetFullDialogue() == clue && x.IsKey());
+        // else return false;
+
+        return true;
     }
 
     public async UniTask ToggleDoor(bool open = true, bool unlocked = true) 
@@ -57,7 +59,7 @@ public class Door : MonoBehaviour
 
         var seq = Sequence.Create();
 
-        // Si esta desbloqueada, se abre y cierra rotándose y desactiva la colisión de la puerta.
+        // Si esta desbloqueada, se abre y cierra rotï¿½ndose y desactiva la colisiï¿½n de la puerta.
         if((unlocked && overrideLock is not LockState.Lock) || overrideLock is LockState.Unlock)
         {
             _ = seq.Group(Tween.LocalRotation(
