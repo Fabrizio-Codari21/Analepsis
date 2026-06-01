@@ -4,6 +4,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
+using UnityEditor.Timeline;
 
 public class NotebookManager : Singleton<NotebookManager>, IActivity
 {
@@ -593,7 +594,7 @@ public class DialogueFragmentNote : Evidence
 {
     public readonly DialogueNode Node;
     
-    public DialogueFragmentNote(string displayName, Whodunnit proofs, DialogueNode node) : base(displayName, node != null ? node.guid : SerializableGuid.Empty, proofs, node) 
+    public DialogueFragmentNote(string displayName, SerializableGuid guid,Whodunnit proofs, DialogueNode node) : base(displayName, guid, proofs, node) 
     {
         Node = node;
     }

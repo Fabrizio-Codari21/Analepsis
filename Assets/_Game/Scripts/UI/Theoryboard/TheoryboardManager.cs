@@ -136,7 +136,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
 
     private void CaseSuccess()
     {
-        
+        m_view.Tip("WIINNNNNNNNN").Forget();
     }
 
     private void CaseFail()

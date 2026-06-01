@@ -20,14 +20,7 @@ public class EvidenceRepresentButton : DraggableButton<Evidence>
     
     
     
-    protected override void Insert(Transform slotTransform)
-    {
-    
-        base.Insert(slotTransform);
-        
-        _onDragEndedCallback?.Invoke();
-    }
-    
+  
     
     public override void Despawn()
     {

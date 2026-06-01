@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 public class EvidenceDataBase : Singleton<EvidenceDataBase>
 { 
-    [ShowInInspector,ReadOnly]private readonly Dictionary<SerializableGuid,Evidence> _evidencesSaved = new Dictionary<SerializableGuid,Evidence>();
+    [ShowInInspector,ReadOnly] private readonly Dictionary<SerializableGuid,Evidence> _evidencesSaved = new Dictionary<SerializableGuid,Evidence>();
     
     public T GetOrCreate<T>(SerializableGuid guid, Func<T> creator) where T : Evidence
     {
         if (_evidencesSaved.TryGetValue(guid, out var evidence))
         {
+            Debug.Log(evidence.displayName);
             return (T)evidence;
         }
         var newEvidence = creator();
@@ -18,9 +20,6 @@ public class EvidenceDataBase : Singleton<EvidenceDataBase>
 
         return newEvidence;
     }
-
-
-
     
     public bool TryGet(SerializableGuid guid, out Evidence evidence)
     {

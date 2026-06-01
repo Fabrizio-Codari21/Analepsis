@@ -95,67 +95,103 @@ public class TreePage : NotebookPage
         
         SpawnConnectionsRecursively(runtimeRoot);
     }
-    private void SpawnNodesRecursively(TreeNode node, int level)
+  private void SpawnNodesRecursively(TreeNode node, int level)
+{
+    if (node == null) return;
+
+    Vector2 localUiPos = new Vector2(node.X * baseHorizontalSpacing, -level * levelVerticalDistance);
+  
+    if (node.IsLocked)
     {
-        if (node == null) return;
-
-        Vector2 localUiPos = new Vector2(node.X * baseHorizontalSpacing, -level * levelVerticalDistance);
-      
-        if (node.IsLocked)
+        Image lockedImg = Instantiate(m_lockImage, m_treeRoot);
+        lockedImg.transform.localScale = Vector3.one;
+        lockedImg.transform.localPosition = localUiPos;
+        lockedImg.gameObject.name = $"Locked_Node_Lvl{level}";
+        lockedImg.color = m_lockColor;
+        
+        _images.Add(lockedImg);
+    }
+    else
+    {
+        if (node.Source is DialogueNode npcNode)
         {
-            Image lockedImg = Instantiate(m_lockImage, m_treeRoot);
-            lockedImg.transform.localScale = Vector3.one;
-            lockedImg.transform.localPosition = localUiPos;
-            lockedImg.gameObject.name = $"Locked_Node_Lvl{level}";
-            lockedImg.color = m_lockColor;
+            // 💡 1. 确定这个节点的【初始默认名字】
+            string defaultName = npcNode.PreviousResponse != null 
+                ? npcNode.PreviousResponse.responseText 
+                : "Beginning"; // 🎯 满足你的需求：一开始如果没有改过，最上面就叫 "Beginning"
+
+            // 💡 2. 从数据库获取或创建数据
+            var fragmentEvidenceToMark = EvidenceDataBase.Instance.GetOrCreate(
+                npcNode.guid, 
+                () => new DialogueFragmentNote(defaultName, npcNode.guid, npcNode.doesItProveAnything, npcNode)
+            );
+
+            // 💡 3. 生成主按钮并【彻底清理】对象池事件残留
+            ButtonWithSubButton button = FlyweightFactory.Instance.Spawn<ButtonWithSubButton>(m_nodeButton, Vector3.zero, Quaternion.identity, m_treeRoot);
+            button.RemoveAllListeners(); 
             
-            _images.Add(lockedImg);
-        }
-        else
-        {
-            if (node.Source is DialogueNode npcNode)
+            // 🎯 核心修复：按钮文字直接读取数据层最新的 displayName！
+            button.SetText(fragmentEvidenceToMark.displayName);
+            
+            // 💡 4. 配置 SubButton（Mark 状态按钮）并清理残留
+            var subButton = button.AddSubButton();
+            subButton.RemoveAllListeners(); 
+            
+            // 🎯 根据之前有没有 Mark 的真实状态来初始化 UI 视觉
+            bool isAlreadyMarked = m_checkIfMarked.Request(fragmentEvidenceToMark.guid);
+            subButton.PlayAnimation(isAlreadyMarked);
+            
+            subButton.AddListener(() =>
             {
-                string nodeName = npcNode.PreviousResponse != null ? npcNode.PreviousResponse.responseText : "Beginning";
-
-                var fragmentEvidenceToMark = EvidenceDataBase.Instance.GetOrCreate(npcNode.guid, () => new DialogueFragmentNote(nodeName, npcNode.doesItProveAnything, npcNode));
-                ButtonWithSubButton button = FlyweightFactory.Instance.Spawn<ButtonWithSubButton>(m_nodeButton, Vector3.zero, Quaternion.identity, m_treeRoot);
+                // 实时检查当前的 Mark 状态
+                bool currentMarkedState = m_checkIfMarked.Request(fragmentEvidenceToMark.guid);
                 
-                button.SetText(fragmentEvidenceToMark.displayName);
-                var subButton = button.AddSubButton();
-                
-                bool isAlreadyMarked = m_checkIfMarked.Request(fragmentEvidenceToMark.guid);
-                subButton.PlayAnimation(isAlreadyMarked);
-                subButton.AddListener(() =>
+                if (currentMarkedState)
                 {
-                    bool wasMarked = m_checkIfMarked.Request(fragmentEvidenceToMark.guid);
+                    // 如果之前已经是 Mark 状态，说明玩家现在点击是想【取消 Mark】
                     m_sentNoteToTheoryBoardEvent?.Raise(fragmentEvidenceToMark);
-                    subButton.PlayAnimation(!wasMarked);
-                });
-                
-                
-                button.transform.localPosition = localUiPos;
-                button.gameObject.name = $"Unlocked_Node_Lvl{level}";
-                
-                button.AddListener(() =>
+                    subButton.PlayAnimation(false); 
+                }
+                else
                 {
-                    OnNodeButtonClicked(npcNode.dialogueText).Forget();
-                });
-                
-                _spawnedFlyweights.Add(button);
-                
-            }
+                    // 如果之前没有 Mark，说明玩家想【激活 Mark 并改名】
+                    m_sentNoteToTheoryBoardEvent?.Raise(fragmentEvidenceToMark);
+                }
+            });
+            
+            // 5. 绑定主按钮点击事件（显示对话文本）
+            button.transform.localPosition = localUiPos;
+
+            // ==================== 🔍 DEBUG 诊断名字注入 ====================
+            // 获取这个物理 GameObject 实例在内存中的哈希码（代表其真实的物理身份）
+            int instanceId = button.gameObject.GetHashCode();
+            
+            // 打印到控制台，以便你在切 NPC 时观察它的数据传递
+            Debug.Log($"[TreePage Debug] Lvl:{level} | Data Name:{fragmentEvidenceToMark.displayName} | IsMarked Data:{isAlreadyMarked} | UI Object Hash:{instanceId}");
+
+            // 强行修改场景 Hierarchy 里的名字：[层级]-[数据层的真正名字]-[当前物体的物理内存标识]
+            button.gameObject.name = $"Lvl{level}_{fragmentEvidenceToMark.displayName}_ObjHash_{instanceId}";
+            // =============================================================
+            
+            button.AddListener(() =>
+            {
+                OnNodeButtonClicked(npcNode.dialogueText).Forget();
+            });
+            
+            _spawnedFlyweights.Add(button);
         }
-        
-        foreach (var child in node.Children) SpawnNodesRecursively(child, level + 1);
-        
     }
     
+    // 递归子节点
+    foreach (var child in node.Children) 
+    {
+        SpawnNodesRecursively(child, level + 1);
+    }
+}
     
     private void RefreshTree()
     {
-        if (_activeNote == null) return;
-        DespawnUI();
-        BuildTree(_activeNote).Forget();
+        
     }
 
     private void DespawnUI()
