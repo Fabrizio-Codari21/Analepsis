@@ -24,8 +24,9 @@ MonoBehaviour:
     - rid: 6774952781063389258
     - rid: 6774952781063389268
     - rid: 6774952781063389292
+    - rid: 6774952781063389317
     isRootNode: 1
-    editorPosition: {x: 276, y: 166}
+    editorPosition: {x: 272, y: 128}
     guid:
       Part1: 801923639
       Part2: 1285914272
@@ -283,6 +284,81 @@ MonoBehaviour:
       Part3: 2993961088
       Part4: 2788573545
     tag: 
+  - dialogueText: 'Haven''t you heard?
+
+      He''s this up and coming politician,
+      quite the contentious person'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 6774952781063389303
+    isRootNode: 0
+    editorPosition: {x: 1211.2875, y: 771}
+    guid:
+      Part1: 221279732
+      Part2: 1220487631
+      Part3: 2312350385
+      Part4: 2414502260
+    tag: 
+  - dialogueText: 'Yeah, I''m not one to gossip, but it seems the governent isn''t
+      very fond of him.
+
+      As for me, I quite like having a prestigue guest,
+      I wonder what made him choose us...'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 6774952781063389316
+    isRootNode: 0
+    editorPosition: {x: 1924, y: 771}
+    guid:
+      Part1: 1928340226
+      Part2: 1170109666
+      Part3: 1316327562
+      Part4: 260398614
+    tag: 
+  - dialogueText: 'Oh, I''m so glad to hear!
+
+      You know, Andrey hasn''t been
+      feeling the best lately and that news would really cheer him up.
+
+      Would
+      you mind telling him?'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 6774952781063389318
+    isRootNode: 0
+    editorPosition: {x: 1204, y: 1048}
+    guid:
+      Part1: 308867213
+      Part2: 1320209817
+      Part3: 3588333485
+      Part4: 1335350961
+    tag: 
+  - dialogueText: 'There, I''ve opened up the kitchen.
+
+      Go right ahead and
+      tell him.'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 1
+    responses: []
+    isRootNode: 0
+    editorPosition: {x: 2048, y: 1048}
+    guid:
+      Part1: 2583858688
+      Part2: 1244362920
+      Part3: 3981891749
+      Part4: 731673015
+    tag: 
   _hiddenProof: 
   references:
     version: 2
@@ -490,19 +566,29 @@ MonoBehaviour:
         unlockIfTrue: 1
         targetDialogue: {fileID: 11400000, guid: 4e81753c414a9a341a506c339bc23f0a, type: 2}
         isTalkDialogueNode:
-          dialogueText: 
+          dialogueText: 'No, wait!
+
+            You aren''t really interrupting anything...
+
+            I''m
+            supposed to be working but I just can''t seem to concentrate right now!
+
+            I''m
+            perpetually surrounded by distractions!'
           characterEmotion: 0
           characterReaction: 0
           doesItProveAnything: 0
           isKey: 0
-          responses: []
-          isRootNode: 1
-          editorPosition: {x: 300, y: 200}
+          responses:
+          - rid: 6774952781063389304
+          - rid: 6774952781063389305
+          isRootNode: 0
+          editorPosition: {x: 842, y: 200}
           guid:
-            Part1: 1876034031
-            Part2: 1266233403
-            Part3: 588551583
-            Part4: 305309663
+            Part1: 121336126
+            Part2: 1108950013
+            Part3: 2249797309
+            Part4: 2547815713
           tag: 
     - rid: 6774952781063389270
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
@@ -525,7 +611,7 @@ MonoBehaviour:
         - rid: 6774952781063389286
         - rid: 6774952781063389287
         isRootNode: 0
-        editorPosition: {x: 1179, y: 356.99997}
+        editorPosition: {x: 1179, y: 357}
         guid:
           Part1: 2555944989
           Part2: 1144976354
@@ -664,7 +750,7 @@ MonoBehaviour:
       data:
         responseText: What's up with Oleg?
         nextNode:
-          rid: -2
+          rid: 6774952781063389302
         dialogueTopic: 
         m_conditions:
         - rid: 6774952781063389297
@@ -804,3 +890,337 @@ MonoBehaviour:
           Part3: 623996333
           Part4: 1959634253
         tag: 
+    - rid: 6774952781063389302
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Haven''t you heard?
+
+          He''s this up and coming politician,
+          quite the contentious person'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 6774952781063389303
+        isRootNode: 0
+        editorPosition: {x: 1211.2875, y: 771}
+        guid:
+          Part1: 221279732
+          Part2: 1220487631
+          Part3: 2312350385
+          Part4: 2414502260
+        tag: 
+    - rid: 6774952781063389303
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: You don't say...
+        nextNode:
+          rid: 6774952781063389315
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1699, y: 771}
+    - rid: 6774952781063389304
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Working on what?
+        nextNode:
+          rid: 6774952781063389306
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1446, y: 200}
+    - rid: 6774952781063389305
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Distractions?
+        nextNode:
+          rid: 6774952781063389307
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1446, y: 431}
+    - rid: 6774952781063389306
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'My magnum opus of course!
+
+          I came to this hotel
+          in the middle of nowhere to help me focus
+
+          Art isn''t done in
+          between parties and drugs, or so my acquaintances insisted before draggin
+          me here with their constant negging...'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 6774952781063389308
+        isRootNode: 0
+        editorPosition: {x: 1685, y: 200}
+        guid:
+          Part1: 122495793
+          Part2: 1107580802
+          Part3: 2868873098
+          Part4: 766361834
+        tag: 
+    - rid: 6774952781063389307
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Oh yeah, I can''t catch a break from all the fame...
+
+          It''s
+          hard, you know? Everyone wanting to look at you, take pictures of you,
+          interview you
+
+          It''s always about you- I mean me. Honestly honey?
+          I don''t know how I do it'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 6774952781063389309
+        isRootNode: 0
+        editorPosition: {x: 1684.9999, y: 431}
+        guid:
+          Part1: 4181029613
+          Part2: 1275199733
+          Part3: 2353852820
+          Part4: 4211439072
+        tag: 
+    - rid: 6774952781063389308
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Uhm...
+        nextNode:
+          rid: 6774952781063389310
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2509, y: 200}
+    - rid: 6774952781063389309
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: So...
+        nextNode:
+          rid: 6774952781063389311
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2289, y: 431}
+    - rid: 6774952781063389310
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Honestly I don''t know why anyone would ever want to come
+          here!
+
+          There''s absolutely nothing to be found in the barren
+          wasteland.
+
+          Come to think of it, what are <b>you<\b> doing here?'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 6774952781063389312
+        - rid: 6774952781063389313
+        isRootNode: 0
+        editorPosition: {x: 2719, y: 200}
+        guid:
+          Part1: 1638892124
+          Part2: 1148913163
+          Part3: 1816418959
+          Part4: 2822193649
+        tag: 
+    - rid: 6774952781063389311
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'What''s worse is I cannot for the life of me get rid of the
+          paparazzis! Even here!
+
+          I just heard that damn camera shutter.
+          If I ever find them I have a word or two to say to whoever is taking pictures!
+          at my! spiritual! retreat!'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 6774952781063389314
+        isRootNode: 0
+        editorPosition: {x: 2499, y: 431}
+        guid:
+          Part1: 1866444140
+          Part2: 1318639581
+          Part3: 3008323730
+          Part4: 425362122
+        tag: 
+    - rid: 6774952781063389312
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: I'm an investigator of sorts
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3242, y: 34.000015}
+    - rid: 6774952781063389313
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: New Response
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3242, y: 200}
+    - rid: 6774952781063389314
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: I'll... let you know if I hear anything
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3359.9995, y: 430.99994}
+    - rid: 6774952781063389315
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Yeah, I''m not one to gossip, but it seems the governent isn''t
+          very fond of him.
+
+          As for me, I quite like having a prestigue
+          guest, I wonder what made him choose us...'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 6774952781063389316
+        isRootNode: 0
+        editorPosition: {x: 1924, y: 771}
+        guid:
+          Part1: 1928340226
+          Part2: 1170109666
+          Part3: 1316327562
+          Part4: 260398614
+        tag: 
+    - rid: 6774952781063389316
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Who knows, truly
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2509, y: 771}
+    - rid: 6774952781063389317
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: I heard lunch was lovely
+        nextNode:
+          rid: 6774952781063389319
+        dialogueTopic: 
+        m_conditions:
+        - rid: 6774952781063389320
+        alreadyDisplayed: 0
+        editorPosition: {x: 932.99994, y: 1048.4512}
+    - rid: 6774952781063389318
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Not at all!
+        nextNode:
+          rid: 6774952781063389321
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1838, y: 1048}
+    - rid: 6774952781063389319
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Oh, I''m so glad to hear!
+
+          You know, Andrey hasn''t
+          been feeling the best lately and that news would really cheer him up.
+
+          Would
+          you mind telling him?'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 6774952781063389318
+        isRootNode: 0
+        editorPosition: {x: 1204, y: 1048}
+        guid:
+          Part1: 308867213
+          Part2: 1320209817
+          Part3: 3588333485
+          Part4: 1335350961
+        tag: 
+    - rid: 6774952781063389320
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: 89cdbcac6674ef748a2334d6de5a8fce, type: 2}
+        isTalkDialogueNode:
+          dialogueText: 'Lucklily I''m not anymore!
+
+            My fingers would
+            cram if I had to put into words the inadequacy with which the Chef made
+            lunch today.
+
+            That borshch was truly abhorrent...'
+          characterEmotion: 0
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 6774952781063389333
+          isRootNode: 0
+          editorPosition: {x: 2920, y: 462}
+          guid:
+            Part1: 3941858783
+            Part2: 1303965904
+            Part3: 1164245432
+            Part4: 1086083098
+          tag: 
+    - rid: 6774952781063389321
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'There, I''ve opened up the kitchen.
+
+          Go right ahead
+          and tell him.'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 1
+        responses: []
+        isRootNode: 0
+        editorPosition: {x: 2048, y: 1048}
+        guid:
+          Part1: 2583858688
+          Part2: 1244362920
+          Part3: 3981891749
+          Part4: 731673015
+        tag: 
+    - rid: 6774952781063389333
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Yeah... lucky you...
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3601, y: 462}
