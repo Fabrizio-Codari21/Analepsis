@@ -66,6 +66,9 @@ public class FlashbackManager : MonoBehaviour
         
         var fb = _currentItem.flashbackInfo;
         NotebookManager.Instance.UpdateFlashbackInfo(_currentItem,fb.info);
+
+        if (!fb.characterPrefab || !fb.key) return;
+
         var t = TransformKeyManager.Instance.GetTransform(fb.key);
 
         if (!t)
@@ -94,8 +97,8 @@ public class FlashbackManager : MonoBehaviour
     private void Despawn()
     {
         Debug.Log("Despawn");
-        
-        
+        if (!_currentItem.flashbackInfo.characterPrefab) return;
+
         Destroy(_flashbackObject.gameObject);
         _flashbackObject = null;
         _currentItem = null;
