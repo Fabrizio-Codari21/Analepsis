@@ -359,6 +359,25 @@ MonoBehaviour:
       Part3: 3981891749
       Part4: 731673015
     tag: 
+  - dialogueText: 'Oh you haven''t heard? We have some top tier guests this evening!
+
+      Oleg,
+      a politician in the midst of his campaign and Aleksei, a once quite popular
+      artist.'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 1630672535616487501
+    isRootNode: 0
+    editorPosition: {x: 3658, y: -50}
+    guid:
+      Part1: 2805659445
+      Part2: 1183585811
+      Part3: 1197842849
+      Part4: 3398019176
+    tag: 
   _hiddenProof: 
   references:
     version: 2
@@ -375,10 +394,95 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 2372, y: 1048}
+    - rid: 1630672535616487424
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Did Oleg had anything to do with it?
+        nextNode:
+          rid: 1630672535616487426
+        dialogueTopic: 
+        m_conditions:
+        - rid: 1630672535616487425
+        alreadyDisplayed: 0
+        editorPosition: {x: 1725, y: 575}
+    - rid: 1630672535616487425
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: a218568596dfcf9419f1f4c8eb4ff384, type: 2}
+        isTalkDialogueNode:
+          dialogueText: Sorry, I'm bussy right now
+          characterEmotion: 0
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses: []
+          isRootNode: 1
+          editorPosition: {x: 300, y: 200}
+          guid:
+            Part1: 2540284652
+            Part2: 1122114976
+            Part3: 221771931
+            Part4: 3608616113
+          tag: 
+    - rid: 1630672535616487426
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Not that I''ve heard, and you know how much I hate to gossip.
+
+          Why''d
+          you say so?'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 6774952781063389294
+        isRootNode: 0
+        editorPosition: {x: 2062, y: 567}
+        guid:
+          Part1: 1835650083
+          Part2: 1116989002
+          Part3: 330040960
+          Part4: 909379228
+        tag: 
+    - rid: 1630672535616487500
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Oh you haven''t heard? We have some top tier guests this evening!
+
+          Oleg,
+          a politician in the midst of his campaign and Aleksei, a once quite popular
+          artist.'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 1630672535616487501
+        isRootNode: 0
+        editorPosition: {x: 3658, y: -50}
+        guid:
+          Part1: 2805659445
+          Part2: 1183585811
+          Part3: 1197842849
+          Part4: 3398019176
+        tag: 
+    - rid: 1630672535616487501
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Well color me intrigued then.
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4248, y: -47}
     - rid: 6774952781063389253
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Oh, I'm just passing by
+        responseText: Oh, I'm just passing by.
         nextNode:
           rid: 6774952781063389256
         dialogueTopic: 
@@ -388,7 +492,7 @@ MonoBehaviour:
     - rid: 6774952781063389256
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: Thats odd... There's not much stuff to do around here
+        dialogueText: Thats odd... There's not much stuff to do around here.
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -417,7 +521,7 @@ MonoBehaviour:
     - rid: 6774952781063389258
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Hi, I'd like a room please
+        responseText: Hi, I'd like a room please.
         nextNode:
           rid: 6774952781063389259
         dialogueTopic: 
@@ -431,7 +535,7 @@ MonoBehaviour:
           quite near our beautiful, temporarelly in reparations, sauna!
 
           Dinner
-          will be served at 7pm'
+          will be served at 7pm.'
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -450,7 +554,7 @@ MonoBehaviour:
     - rid: 6774952781063389260
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: I'm looking forward to trying out the food
+        responseText: I'm looking forward to trying out the food.
         nextNode:
           rid: 6774952781063389263
         dialogueTopic: 
@@ -472,7 +576,7 @@ MonoBehaviour:
       data:
         dialogueText: "Oh, a few guests went in and decided to have too much fun!
           Ha-ha! \nDon't worry, they won't be invited again. We'll repair it as soon
-          as we find the keys"
+          as we find the keys."
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -511,7 +615,7 @@ MonoBehaviour:
       data:
         responseText: Tell me more, pressure from what?
         nextNode:
-          rid: 6774952781063389266
+          rid: 1630672535616487500
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
@@ -519,7 +623,7 @@ MonoBehaviour:
     - rid: 6774952781063389265
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: I'll let you know if I see them
+        responseText: I'll let you know if I see them.
         nextNode:
           rid: -2
         dialogueTopic: 
@@ -533,7 +637,7 @@ MonoBehaviour:
 
           Oleg,
           a politician in the midst of his campaign and Aleksei, a once quite popular
-          artist'
+          artist.'
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -541,7 +645,7 @@ MonoBehaviour:
         responses:
         - rid: 6774952781063389267
         isRootNode: 0
-        editorPosition: {x: 3681, y: -408.24}
+        editorPosition: {x: 3680.9995, y: -405.98865}
         guid:
           Part1: 722697724
           Part2: 1280739601
@@ -551,13 +655,13 @@ MonoBehaviour:
     - rid: 6774952781063389267
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Well color me intrigued then
+        responseText: Well color me intrigued then.
         nextNode:
           rid: -2
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 4268, y: -408}
+        editorPosition: {x: 4272, y: -408}
     - rid: 6774952781063389268
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -612,14 +716,14 @@ MonoBehaviour:
           paintings of his in a while.
 
           Maybe he got demotivated after
-          that publication'
+          that publication.'
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
         isKey: 0
         responses:
         - rid: 6774952781063389286
-        - rid: 6774952781063389287
+        - rid: 1630672535616487424
         isRootNode: 0
         editorPosition: {x: 1179, y: 357}
         guid:
@@ -676,7 +780,7 @@ MonoBehaviour:
       data:
         responseText: Did Oleg had anything to do with it?
         nextNode:
-          rid: 6774952781063389298
+          rid: -2
         dialogueTopic: 
         m_conditions:
         - rid: 6774952781063389290
@@ -779,7 +883,7 @@ MonoBehaviour:
     - rid: 6774952781063389294
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: There seems to be some tention between them
+        responseText: There seems to be some tention between them.
         nextNode:
           rid: 6774952781063389300
         dialogueTopic: 
@@ -827,34 +931,13 @@ MonoBehaviour:
             Part3: 221771931
             Part4: 3608616113
           tag: 
-    - rid: 6774952781063389298
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: 'Not that I''ve heard, and you know how much I hate to gossip.
-
-          Why''d
-          you say so?'
-        characterEmotion: 0
-        characterReaction: 0
-        doesItProveAnything: 0
-        isKey: 0
-        responses:
-        - rid: 6774952781063389294
-        isRootNode: 0
-        editorPosition: {x: 2062, y: 567}
-        guid:
-          Part1: 1835650083
-          Part2: 1116989002
-          Part3: 330040960
-          Part4: 909379228
-        tag: 
     - rid: 6774952781063389299
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: 'Normally I would deny entry to such queer folk
+        dialogueText: 'Normally I would deny entry to such queer folk.
 
           But,
-          you have admit, the man is talented
+          you have admit, the man is talented.
 
           Oh how I dream of him making
           a painting with this hotel for all the world to see...'
@@ -906,7 +989,7 @@ MonoBehaviour:
         dialogueText: 'Haven''t you heard?
 
           He''s this up and coming politician,
-          quite the contentious person'
+          quite the contentious person.'
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -1124,7 +1207,7 @@ MonoBehaviour:
     - rid: 6774952781063389316
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Who knows, truly
+        responseText: Who knows, truly.
         nextNode:
           rid: -2
         dialogueTopic: 
@@ -1134,7 +1217,7 @@ MonoBehaviour:
     - rid: 6774952781063389317
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: I heard lunch was lovely
+        responseText: I heard lunch was lovely.
         nextNode:
           rid: 6774952781063389319
         dialogueTopic: 
