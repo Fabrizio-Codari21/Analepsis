@@ -45,7 +45,7 @@ public class Item : Clue
 public class ItemPOIData
 {
     public string poiId;
-    [TextArea]
+    [TextArea(0,10)]
     public string description;
     
     
