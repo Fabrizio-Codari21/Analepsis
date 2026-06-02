@@ -228,12 +228,57 @@ MonoBehaviour:
       Part3: 774738603
       Part4: 1317134527
     tag: 
+  - dialogueText: Well my dear, like opening a can of food before it's its moment
+      to be devoured, I wouldn't want to spoil the surpise.
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 1630672535616487503
+    isRootNode: 0
+    editorPosition: {x: 2977.008, y: 89.400024}
+    guid:
+      Part1: 43449678
+      Part2: 1305780782
+      Part3: 2148272541
+      Part4: 4168384564
+    tag: 
   _hiddenProof: 
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1630672535616487502
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Well my dear, like opening a can of food before it's its moment
+          to be devoured, I wouldn't want to spoil the surpise.
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 1630672535616487503
+        isRootNode: 0
+        editorPosition: {x: 2977.008, y: 89.400024}
+        guid:
+          Part1: 43449678
+          Part2: 1305780782
+          Part3: 2148272541
+          Part4: 4168384564
+        tag: 
+    - rid: 1630672535616487503
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: All right then. keep your secrets.
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3747.2, y: 97.450005}
     - rid: 6774952739558129733
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -267,7 +312,7 @@ MonoBehaviour:
     - rid: 6774952781063389324
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Please do
+        responseText: Please do.
         nextNode:
           rid: 6774952781063389330
         dialogueTopic: 
@@ -320,7 +365,7 @@ MonoBehaviour:
         dialogueText: 'Ha! Bold, I like it.
 
           Sure, I''ll tell you something
-          about myself'
+          about myself.'
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -341,7 +386,7 @@ MonoBehaviour:
         dialogueText: 'All right, mister Mistery...
 
           We have some stuff
-          in common, you and I'
+          in common, you and I.'
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -365,7 +410,7 @@ MonoBehaviour:
           tastiest stories around here.
 
           Ironic, isn''t it? given my previous
-          job'
+          job.'
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -409,7 +454,7 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: Well my dear, like opening a can of food before it's its moment
-          to be devoured, I wouldn't want to spoil the surpise
+          to be devoured, I wouldn't want to spoil the surpise.
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -447,7 +492,7 @@ MonoBehaviour:
     - rid: 6774952781063389336
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: All right then, keep your secrets
+        responseText: All right then, keep your secrets.
         nextNode:
           rid: -2
         dialogueTopic: 
@@ -469,7 +514,7 @@ MonoBehaviour:
       data:
         responseText: Can you tell me more?
         nextNode:
-          rid: 6774952781063389332
+          rid: 1630672535616487502
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
@@ -550,7 +595,7 @@ MonoBehaviour:
     - rid: 6774952781063389344
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: 'Oh, don''t worry! I''ll make sure to <b>catch<\b> him red
+        dialogueText: 'Oh, don''t worry! I''ll make sure to <b>catch</b> him red
           handed next time.
 
           That''s all, just a few more pictures and
