@@ -9,6 +9,10 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
     Transform _originalTransform;
     int _originalHierarchyPosition;
     private Canvas _canvas;
+
+    protected T Data;
+    
+    private ISlotData<T> _myCurrentDataBase;
     
     
     public void OnBeginDrag(PointerEventData eventData)
@@ -42,7 +46,6 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
     {
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
-
         foreach (RaycastResult result in results)
         {
             if(result.gameObject == null || result.gameObject == gameObject) continue;
@@ -51,33 +54,26 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
                 Debug.Log($" DraggleButton : no has slot");
                 continue;
             }
-            if (!acceptor.CanAccept())
-            {
-                Debug.LogWarning($"   DraggleButton : has slot but is block");
-                continue;
-            }
             
-            T myData = GetButtonData();
-            if (myData == null)
+          
+            if (Data == null)
             {
                 Debug.LogError($"   {gameObject.name}  GetButtonData() Return Null");
                 continue;
             }
-
             
-            if (!acceptor.CheckSlotAdapt(myData))
+            if (!acceptor.CheckSlotAdapt(Data))
             {
                 Debug.LogWarning($"  Diferente Type");
                 continue;
             }
             
-            if (!acceptor.ReplaceData(myData))
+            if (!acceptor.ReplaceData(Data))
             {
                 Debug.LogWarning($" Has Something");
                 continue;
             }
-
-            Insert(acceptor.SlotTransform);
+            
             return;
         }
 
@@ -89,7 +85,8 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
         transform.SetSiblingIndex(_originalHierarchyPosition);
     }
     
-    protected abstract T GetButtonData();
+    public virtual void SetData(T data) => Data = data;
+    
     private void SetDraggedPosition(PointerEventData data)
     {
         if (_canvas == null) return;
@@ -99,32 +96,20 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
         if (draggingPlane != null) m_rectTransform.rotation = draggingPlane.rotation;
     }
     
-    
-    
-    protected virtual void Insert(Transform slotTransform)
-    {
-        transform.position = slotTransform.position;
-        
-        transform.rotation = slotTransform.rotation;
-        
-        transform.SetParent(slotTransform, true);
-      
-    }
-}
-
-public interface ISlotAcceptor
-{
-    Transform SlotTransform { get; }
-
-    bool CanAccept();
-
-    void ClearSlot();
 }
 
 
-public interface ISlotData<T> : ISlotAcceptor
+public interface ISlotData<T>
 {
     bool ReplaceData(T data);
 
     bool CheckSlotAdapt(T data);
+    
+    Transform SlotTransform { get; }
+    
+    void ClearSlot();
+    
+    public bool ClearOnRemove();
+
+
 }

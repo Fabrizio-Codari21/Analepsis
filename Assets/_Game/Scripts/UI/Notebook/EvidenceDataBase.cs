@@ -15,7 +15,6 @@ public class EvidenceDataBase : Singleton<EvidenceDataBase>
             return (T)evidence;
         }
         var newEvidence = creator();
-
         _evidencesSaved.Add(guid, newEvidence);
 
         return newEvidence;

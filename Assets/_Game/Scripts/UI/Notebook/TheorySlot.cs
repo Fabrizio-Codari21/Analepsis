@@ -8,6 +8,7 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
  
     [SerializeField] private RectTransform m_receiveTransform;
     [SerializeField] private TMP_Text m_text;
+    [SerializeField] private bool removeOnClear = true;
     private Evidence _currentEvidenceHolder;
     
     [SerializeField] private ButtonSetting m_draggableButton;
@@ -61,14 +62,11 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
         Debug.Log(m_identity.ProofTypeNeed.ToString());
         return data.whodunnits == m_identity.ProofTypeNeed;
     }
-
-    public bool CanAccept()
-    {
-        return true;
-    }
-
+    
     public void ClearSlot()
     {
         _currentEvidenceHolder = null;
     }
+
+    public bool ClearOnRemove() => removeOnClear;
 }

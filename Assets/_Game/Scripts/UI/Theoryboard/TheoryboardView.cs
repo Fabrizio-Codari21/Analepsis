@@ -142,17 +142,13 @@ public class TheoryboardView : MonoBehaviour
     {
         Despawn();
         var allMarked = TheoryMarkingPanel.Instance.MarkedEvidences;
-        
         var markedLogs = allMarked.Where(e => e is DialogueFragmentNote).ToList();
-
         if (markedLogs.Count <= 0) return;
         foreach (var log in markedLogs)
         {
             var button = CreateClueButton(log.displayName, m_logRoot,log); 
-            button.InitializeCallback(LoadMarkedClues);
             _flyweights.Add(button);
         }
-
     }
 
     private void SwitchCharacter(int nextOrPrevious = 0)
@@ -193,7 +189,7 @@ public class TheoryboardView : MonoBehaviour
             parent
         );
         
-        button.SetEvidence(evidence);
+        button.SetData(evidence);
         button.SetText(text);
         button.SetInteractable(true);
         button.MoveToLast();
@@ -206,9 +202,17 @@ public class TheoryboardView : MonoBehaviour
     {
         foreach (var f in _flyweights)
         {
-            if (f != null)FlyweightFactory.Instance.Return(f);
+            if (f != null) FlyweightFactory.Instance.Return(f);
         }
         _flyweights.Clear();    
+    }
+    
+    private void Despawn(IFlyweight flyweight)
+    {
+        var has = _flyweights.Contains(flyweight);
+        if (!has) return;
+        FlyweightFactory.Instance.Return(flyweight);
+        _flyweights.Remove(flyweight);
     }
     
     public async UniTask ShowError(string solveTxt)
