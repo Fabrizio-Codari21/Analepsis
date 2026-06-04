@@ -125,7 +125,7 @@ public class TheoryboardView : MonoBehaviour
     {
         foreach (var slot in _allRuntimeSlots.Where(slot => slot != null))
         {
-            slot.SetEvidence(null); 
+            // slot.SetEvidence(null); 
             
             EvidenceRepresentButton residualButton = slot.GetComponentInChildren<EvidenceRepresentButton>();
             if (residualButton == null) continue;
@@ -189,7 +189,6 @@ public class TheoryboardView : MonoBehaviour
             parent
         );
         
-        button.SetData(evidence);
         button.SetText(text);
         button.SetInteractable(true);
         button.MoveToLast();
@@ -240,6 +239,5 @@ public class TheoryboardView : MonoBehaviour
         
     }
 
-
-
 }
+

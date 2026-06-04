@@ -1,10 +1,16 @@
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 
 public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
 {
+
+    #region Case
+
     [ReadOnly,ShowInInspector] private CaseSlotIdentity m_identity;
+    
+    #endregion
  
     [SerializeField] private RectTransform m_receiveTransform;
     [SerializeField] private TMP_Text m_text;
@@ -12,6 +18,13 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
     private Evidence _currentEvidenceHolder;
     
     [SerializeField] private ButtonSetting m_draggableButton;
+    
+    
+    List<IFlyweight> m_visualButtones = new List<IFlyweight>();
+    List<Evidence> m_evidences = new List<Evidence>();
+
+    #region Case
+    
     public bool Check(CaseSlot slotRule)
     {
         if (slotRule == null) return false;
@@ -34,39 +47,47 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
         m_text.text = m_identity.Description;
     }
 
-    public void SetEvidence(Evidence evidence)
-    {
-        _currentEvidenceHolder = evidence;
-    }
+    #endregion
     
-
-    public Transform SlotTransform => m_receiveTransform;
     
-    public bool ReplaceData(Evidence data)
-    {
-        if (data.whodunnits != m_identity.ProofTypeNeed) return false;
-        
-        if (_currentEvidenceHolder != null)
-        {
-            if (data.representerClue == _currentEvidenceHolder.representerClue) return false;
-            
-        }
-        ClearSlot();
-        _currentEvidenceHolder = data;
-        return true;
-    }
+    #region ISlotData<Evidence>
 
+    public bool ClearOnRemove => removeOnClear;
     public bool CheckSlotAdapt(Evidence data)
     {
-        Debug.Log(data.whodunnits.ToString());
-        Debug.Log(m_identity.ProofTypeNeed.ToString());
         return data.whodunnits == m_identity.ProofTypeNeed;
     }
-    
-    public void ClearSlot()
+
+    public bool AddOrReplaceData(Evidence data)
     {
-        _currentEvidenceHolder = null;
+       if(!CheckSlotAdapt(data)) return false;
+       
+       if (m_evidences.Count > 0) ClearSlot();
+       m_evidences.Add(data);
+       
+       EvidenceRepresentButton newButton = FlyweightFactory.Instance.Spawn<EvidenceRepresentButton>(
+           m_draggableButton, 
+           Vector3.zero, 
+           Quaternion.identity, 
+           m_receiveTransform
+       );
+       newButton.SetText(data.displayName);
+       newButton.InitData(data,this);
+       newButton.MoveToLast();
+       m_visualButtones.Add(newButton);
+
+       return true;
     }
 
-    public bool ClearOnRemove() => removeOnClear;
+    public void ClearSlot()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void RemoveData(Evidence data)
+    {
+       if(!m_evidences.Contains(data)) return;
+       
+    }
+    #endregion
 }

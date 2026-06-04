@@ -10,9 +10,16 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
     int _originalHierarchyPosition;
     private Canvas _canvas;
 
-    protected T Data;
+    private T _data;
     
     private ISlotData<T> _myCurrentDataBase;
+
+
+    public void InitData(T data, ISlotData<T> myCurrentBase)
+    {
+        _data = data;
+        _myCurrentDataBase =  myCurrentBase;
+    }
     
     
     public void OnBeginDrag(PointerEventData eventData)
@@ -56,19 +63,19 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
             }
             
           
-            if (Data == null)
+            if (_data == null)
             {
                 Debug.LogError($"   {gameObject.name}  GetButtonData() Return Null");
                 continue;
             }
             
-            if (!acceptor.CheckSlotAdapt(Data))
+            if (!acceptor.CheckSlotAdapt(_data))
             {
                 Debug.LogWarning($"  Diferente Type");
                 continue;
             }
             
-            if (!acceptor.ReplaceData(Data))
+            if (!acceptor.AddOrReplaceData(_data))
             {
                 Debug.LogWarning($" Has Something");
                 continue;
@@ -85,7 +92,6 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
         transform.SetSiblingIndex(_originalHierarchyPosition);
     }
     
-    public virtual void SetData(T data) => Data = data;
     
     private void SetDraggedPosition(PointerEventData data)
     {
@@ -101,15 +107,13 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
 
 public interface ISlotData<T>
 {
-    bool ReplaceData(T data);
-
     bool CheckSlotAdapt(T data);
     
-    Transform SlotTransform { get; }
-    
+    bool AddOrReplaceData(T data);
     void ClearSlot();
     
-    public bool ClearOnRemove();
+    bool ClearOnRemove { get; }
+    void RemoveData(T data);
 
 
 }
