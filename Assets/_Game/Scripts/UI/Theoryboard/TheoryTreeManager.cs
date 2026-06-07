@@ -141,12 +141,7 @@ public class TheoryTreeManager : MonoBehaviour, IActivity
         await this.AsyncLoader("LoseScene");
     }
 
-    public async UniTask ConsumeAttempt(string solveText)
-    {
-        attemptsLeft--;
-        if (attemptsLeft > 0) await view.ShowError(solveText);
-        else await FailCase();
-    }
+
 
     private void ResetScrollAndScale()
     {

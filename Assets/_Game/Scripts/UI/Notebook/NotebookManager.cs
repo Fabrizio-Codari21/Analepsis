@@ -64,8 +64,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [Header("Character Data")]
     [ShowInInspector,ReadOnly] public HashSet<NpcIdentity> FoundCharacters { get; } = new();
     [SerializeField] private NpcEvent m_onNpcFound;
-
- 
+    
     public void AddCharacter(NpcIdentity npc)
     {
         if (!FoundCharacters.Add(npc)) return;
@@ -604,4 +603,12 @@ public class DialogueFragmentNote : Evidence
     {
         return Node != null ? Node.dialogueText : string.Empty;
     }
+}
+
+public class NpcEvidence : Evidence
+{
+    protected NpcEvidence(string displayName, SerializableGuid guid, Whodunnit proofs, NpcIdentity representerClue) : base(displayName, guid, proofs, representerClue)
+    {
+    }
+    
 }

@@ -33,7 +33,13 @@ public class ButtonFactoryObject : FactoryUIObject
     public void AddListener(UnityAction listener) => m_button.onClick.AddListener(listener);
 
     public void RemoveAllListeners() => m_button.onClick.RemoveAllListeners();
-    
+
+    public void Center()
+    {
+        m_rectTransform.anchoredPosition = Vector2.zero; 
+        m_rectTransform.localPosition = Vector3.zero;
+        m_rectTransform.localRotation = Quaternion.identity;
+    }
     public void PlayAnimation(bool show)
     {
         Debug.Log("Try Play" + gameObject.name);

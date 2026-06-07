@@ -5,34 +5,29 @@ using UnityEngine;
 
 public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
 {
-
     #region Case
-
-    [ReadOnly,ShowInInspector] private CaseSlotIdentity m_identity;
-    
+    [ReadOnly, ShowInInspector] private CaseSlotIdentity m_identity;
     #endregion
  
     [SerializeField] private RectTransform m_receiveTransform;
     [SerializeField] private TMP_Text m_text;
     [SerializeField] private bool removeOnClear = true;
+    
     private Evidence _currentEvidenceHolder;
-    
     [SerializeField] private ButtonSetting m_draggableButton;
-    
-    
-    List<IFlyweight> m_visualButtones = new List<IFlyweight>();
-    List<Evidence> m_evidences = new List<Evidence>();
+ 
+    private readonly Dictionary<SerializableGuid, EvidenceRepresentButton> _buttonMap = new Dictionary<SerializableGuid, EvidenceRepresentButton>();
 
     #region Case
     
-    public bool Check(CaseSlot slotRule)
+    public bool Check(CaseSlot slotRule) // Solution Check
     {
         if (slotRule == null) return false;
-        if (_currentEvidenceHolder != null && slotRule.Identity.ProofTypeNeed!= _currentEvidenceHolder.whodunnits)
-        {
-            return false;
-        }
-        IClue playerPlacedClue = _currentEvidenceHolder?.representerClue;
+        if (_currentEvidenceHolder == null) return false;
+        
+        if (_currentEvidenceHolder.whodunnits != m_identity.ProofTypeNeed) { return false; }
+        
+        IClue playerPlacedClue = _currentEvidenceHolder.representerClue;
         return slotRule.Validate(slotRule.Identity.ProofTypeNeed, playerPlacedClue);
     }
     
@@ -46,48 +41,84 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
         m_identity = identity;
         m_text.text = m_identity.Description;
     }
-
     #endregion
     
-    
     #region ISlotData<Evidence>
-
     public bool ClearOnRemove => removeOnClear;
+
     public bool CheckSlotAdapt(Evidence data)
     {
-        return data.whodunnits == m_identity.ProofTypeNeed;
+        if (data == null) return false;
+        var result =  !_buttonMap.ContainsKey(data.guid);
+        
+        if(!result) Debug.Log("No Aceepte");
+        return result;
     }
 
-    public bool AddOrReplaceData(Evidence data)
+    public bool ReplaceData(Evidence data)
     {
-       if(!CheckSlotAdapt(data)) return false;
-       
-       if (m_evidences.Count > 0) ClearSlot();
-       m_evidences.Add(data);
-       
-       EvidenceRepresentButton newButton = FlyweightFactory.Instance.Spawn<EvidenceRepresentButton>(
-           m_draggableButton, 
-           Vector3.zero, 
-           Quaternion.identity, 
-           m_receiveTransform
-       );
-       newButton.SetText(data.displayName);
-       newButton.InitData(data,this);
-       newButton.MoveToLast();
-       m_visualButtones.Add(newButton);
+        if (!CheckSlotAdapt(data)) return false;
 
-       return true;
-    }
+        if (_buttonMap.Count > 0)
+        {
+            Debug.Log("Contain Data Clear Now");
+            ClearSlot();
+        }
+        
+        Debug.Log("Remplace Data");
+        _currentEvidenceHolder = data; 
+        EvidenceRepresentButton newButton = FlyweightFactory.Instance.Spawn<EvidenceRepresentButton>(m_draggableButton, Vector3.zero, Quaternion.identity, m_receiveTransform);
+        newButton.SetText(data.displayName);
+        newButton.InitData(data, this); 
+        newButton.MoveToLast();
+        newButton.Center();
+        newButton.transform.SetParent(m_receiveTransform,false);
+        _buttonMap.Add(data.guid, newButton);
 
-    public void ClearSlot()
-    {
-        throw new System.NotImplementedException();
+        return true;
     }
 
     public void RemoveData(Evidence data)
     {
-       if(!m_evidences.Contains(data)) return;
+        if (data == null)
+        {
+            Debug.Log("No Has Data");
+            return;
+        }
+        
+        if (_buttonMap.TryGetValue(data.guid, out var targetButton))
+        {
+            if (targetButton != null) FlyweightFactory.Instance.Return(targetButton);
+            _buttonMap.Remove(data.guid);
+            
+            Debug.Log("Remove Data");
+        }
+        else
+        {
+            Debug.Log("No Has Data nI bUTTON");
+        }
        
+        if (_currentEvidenceHolder != null && _currentEvidenceHolder.guid == data.guid)
+        {
+            _currentEvidenceHolder = null;
+        }
     }
+
+    public void ClearSlot()
+    {
+        foreach (var button in _buttonMap.Values) if (button != null) FlyweightFactory.Instance.Return(button);
+        _buttonMap.Clear();
+        _currentEvidenceHolder = null;
+        
+        
+        Debug.Log("Clear Data");
+    }
+    
+   
     #endregion
+
+    private void OnDestroy()
+    {
+       if(FlyweightFactory.HasInstance) ClearSlot();
+    }
 }

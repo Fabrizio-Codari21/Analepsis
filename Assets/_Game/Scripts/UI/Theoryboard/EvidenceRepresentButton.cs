@@ -5,8 +5,4 @@ public class EvidenceRepresentButton : DraggableButton<Evidence>
 {
     
     
-    
-    
-
-    
 }
