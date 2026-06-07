@@ -28,8 +28,9 @@ MonoBehaviour:
     responses:
     - rid: 767062219271962644
     - rid: 3046478613006778468
+    - rid: 3046478613006778511
     isRootNode: 1
-    editorPosition: {x: 303, y: 191}
+    editorPosition: {x: 135.0954, y: 189.25099}
     guid:
       Part1: 3894623799
       Part2: 1148273472
@@ -170,9 +171,10 @@ MonoBehaviour:
         nextNode:
           rid: 3046478613006778471
         dialogueTopic: 
-        m_conditions: []
+        m_conditions:
+        - rid: 3046478613006778513
         alreadyDisplayed: 0
-        editorPosition: {x: 947, y: 90}
+        editorPosition: {x: 819.9975, y: 58.999966}
     - rid: 3046478613006778468
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -180,9 +182,10 @@ MonoBehaviour:
         nextNode:
           rid: 3046478613006778469
         dialogueTopic: 
-        m_conditions: []
+        m_conditions:
+        - rid: 3046478613006778514
         alreadyDisplayed: 0
-        editorPosition: {x: 947, y: 493.27917}
+        editorPosition: {x: 809, y: 293}
     - rid: 3046478613006778469
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -378,3 +381,104 @@ MonoBehaviour:
           Part3: 39248061
           Part4: 1598397460
         tag: 
+    - rid: 3046478613006778511
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(He doesn''t trust me at all now...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions:
+        - rid: 3046478613006778515
+        alreadyDisplayed: 0
+        editorPosition: {x: 819, y: 517}
+    - rid: 3046478613006778513
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 0
+        targetDialogue: {fileID: 11400000}
+        isTalkDialogueNode:
+          dialogueText: 'If that''s the case, from one spy to another, none of this
+            shouldn''t be of your concern.
+
+            You''re smart, I respect
+            that, so I''ll tell you this: we''re not here to kill anyone.
+
+            i''ll
+            let this slide, but if you dare enter here again... let''s just say it
+            will no longer be a murder "attempt", if you get my drift.'
+          characterEmotion: 0
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 3046478613006778470
+          isRootNode: 0
+          editorPosition: {x: 1406, y: 372.8804}
+          guid:
+            Part1: 2855662127
+            Part2: 1111791029
+            Part3: 3840308662
+            Part4: 1349355998
+          tag: 
+    - rid: 3046478613006778514
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 0
+        targetDialogue: {fileID: 11400000}
+        isTalkDialogueNode:
+          dialogueText: 'If that''s the case, from one spy to another, none of this
+            shouldn''t be of your concern.
+
+            You''re smart, I respect
+            that, so I''ll tell you this: we''re not here to kill anyone.
+
+            i''ll
+            let this slide, but if you dare enter here again... let''s just say it
+            will no longer be a murder "attempt", if you get my drift.'
+          characterEmotion: 0
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 3046478613006778470
+          isRootNode: 0
+          editorPosition: {x: 1406, y: 372.8804}
+          guid:
+            Part1: 2855662127
+            Part2: 1111791029
+            Part3: 3840308662
+            Part4: 1349355998
+          tag: 
+    - rid: 3046478613006778515
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000}
+        isTalkDialogueNode:
+          dialogueText: 'If that''s the case, from one spy to another, none of this
+            shouldn''t be of your concern.
+
+            You''re smart, I respect
+            that, so I''ll tell you this: we''re not here to kill anyone.
+
+            i''ll
+            let this slide, but if you dare enter here again... let''s just say it
+            will no longer be a murder "attempt", if you get my drift.'
+          characterEmotion: 0
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 3046478613006778470
+          isRootNode: 0
+          editorPosition: {x: 1406, y: 372.8804}
+          guid:
+            Part1: 2855662127
+            Part2: 1111791029
+            Part3: 3840308662
+            Part4: 1349355998
+          tag: 
