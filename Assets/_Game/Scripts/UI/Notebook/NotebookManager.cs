@@ -16,7 +16,6 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private EventChannel popEvent;
     #endregion
     
-    
     #region Event
     [Header("Takeout and Put Events")]
     [SerializeField] private TakeableEvent takeOutNotebookChannel; // cuando saca
@@ -25,14 +24,11 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private NoteEvent note; // record 
     [SerializeField] private BoolEventChannel m_updatePoi;
     [SerializeField] private EventChannel m_refreshTree;
-    
     #endregion
-    
     
     #region General
     [SerializeField] private NotebookRepresenter representer;
     [ReadOnly,ShowInInspector] private PageType _currentPageType;
-    
     
     #endregion
     
@@ -62,7 +58,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     #region Character
 
     [Header("Character Data")]
-    [ShowInInspector,ReadOnly] public HashSet<NpcIdentity> FoundCharacters { get; } = new();
+    [ShowInInspector,ReadOnly] public HashSet<NpcIdentity> FoundCharacters { get; } = new();  // Save Data
     [SerializeField] private NpcEvent m_onNpcFound;
     
     public void AddCharacter(NpcIdentity npc)
@@ -71,7 +67,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         m_onNpcFound?.Raise(npc);
     }
     
-    public List<DialogueNote> GetDialoguesFor(NpcIdentity npcIdentity)
+    public List<DialogueNote> GetDialoguesFor(NpcIdentity npcIdentity)  // Save Data
     {
         if (_npcTalkedDialogue != null && _npcTalkedDialogue.TryGetValue(npcIdentity, out var list))
         {
@@ -569,46 +565,4 @@ public class DialogueNote : Note
         
         return SerializableGuid.Empty;
     }
-}
-[Serializable]
-public class Evidence
-{
-    public SerializableGuid guid;
-    public string displayName;
-    public Whodunnit whodunnits; // puede ser list y puede ser para varios
-    public IClue representerClue;
-    protected Evidence(string displayName,SerializableGuid guid,Whodunnit proofs,IClue representerClue)
-    {
-        this.displayName = displayName;
-        this.guid = guid;
-        this.representerClue = representerClue;
-        whodunnits = proofs;
-    }
-    
-    public virtual string GetInfo()
-    {
-        return string.Empty;
-    }
-}
-
-public class DialogueFragmentNote : Evidence
-{
-    public readonly DialogueNode Node;
-    
-    public DialogueFragmentNote(string displayName, SerializableGuid guid,Whodunnit proofs, DialogueNode node) : base(displayName, guid, proofs, node) 
-    {
-        Node = node;
-    }
-    public override string GetInfo()
-    {
-        return Node != null ? Node.dialogueText : string.Empty;
-    }
-}
-
-public class NpcEvidence : Evidence
-{
-    protected NpcEvidence(string displayName, SerializableGuid guid, Whodunnit proofs, NpcIdentity representerClue) : base(displayName, guid, proofs, representerClue)
-    {
-    }
-    
 }

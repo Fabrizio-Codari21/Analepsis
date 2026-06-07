@@ -86,7 +86,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         m_view = Instantiate(m_view,transform);
         _cachedSlotsInScene = m_view.InitializeBoardArchitecture(m_caseResolution);
         m_openTheoryBoardChannel.OnEventRaised += Open;
-        m_openTheoryBoardChannel.OnEventRaised += m_view.LoadMarkedClues;
+  
         inputReaderBoard.Close += Close;
         
         m_solveCaseEvent.OnEventRaised += SolveCase;
@@ -98,7 +98,6 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     private void OnDestroy()
     {
         m_openTheoryBoardChannel.OnEventRaised -= Open;
-        m_openTheoryBoardChannel.OnEventRaised -= m_view.LoadMarkedClues;
         inputReaderBoard.Close -= Close;
         m_solveCaseEvent.OnEventRaised -= SolveCase;
         
@@ -158,16 +157,13 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     }
     
 }
-
-
-
-
+[System.Flags]
 public enum Whodunnit
 {
-    NoProof,
-    Victim,
-    Killer,
-    Motive,
-    Weapon,
-    Place,
+    NoProof = 0,
+    Victim  = 1 << 0, 
+    Killer  = 1 << 1, 
+    Motive  = 1 << 2,  
+    Weapon  = 1 << 3,  
+    Place   = 1 << 4
 }

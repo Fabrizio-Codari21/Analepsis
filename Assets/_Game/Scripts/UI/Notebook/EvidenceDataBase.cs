@@ -11,7 +11,7 @@ public class EvidenceDataBase : Singleton<EvidenceDataBase>
     {
         if (_evidencesSaved.TryGetValue(guid, out var evidence))
         {
-            Debug.Log(evidence.displayName);
+            Debug.Log("Guid");
             return (T)evidence;
         }
         var newEvidence = creator();

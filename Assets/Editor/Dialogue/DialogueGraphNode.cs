@@ -111,30 +111,19 @@ public sealed class DialogueGraphNode : Node
         reactionFoldOut.Add(reactionField);
         extensionContainer.Add(reactionFoldOut);
 
+     
         Foldout proofFoldOut = new Foldout()
         {
             text = "What can it prove?",
             value = false,
         };
 
-        PopupField<Whodunnit> proofField = 
-        new PopupField<Whodunnit>("What can it prove?")
-        {
-            value = nodeData.doesItProveAnything,
-            choices = new List<Whodunnit> 
-            { 
-                Whodunnit.NoProof,
-                Whodunnit.Victim,
-                Whodunnit.Killer,
-                Whodunnit.Motive,
-                Whodunnit.Weapon,
-                Whodunnit.Place,
-            }
-        };
-
+        
+        EnumFlagsField proofField = new EnumFlagsField("What can it prove?", nodeData.doesItProveAnything);
+        
         proofField.RegisterValueChangedCallback(evt =>
         {
-            NodeData.doesItProveAnything = evt.newValue;
+            NodeData.doesItProveAnything = (Whodunnit)evt.newValue;
         });
 
         proofFoldOut.Add(proofField);
@@ -142,7 +131,7 @@ public sealed class DialogueGraphNode : Node
 
         Toggle isKeyField = new Toggle("Is this a Key?")
         {
-            value = false,
+            value = nodeData.isKey
         };
         isKeyField.RegisterValueChangedCallback(evt =>
         {

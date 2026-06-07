@@ -28,6 +28,7 @@ MonoBehaviour:
     characterEmotion: 2
     characterReaction: 0
     doesItProveAnything: 1
+    isKey: 0
     responses:
     - rid: 5324356914828017934
     - rid: 5324356914828017935
@@ -46,6 +47,7 @@ MonoBehaviour:
     characterEmotion: 2
     characterReaction: 0
     doesItProveAnything: 1
+    isKey: 0
     responses:
     - rid: 5324356914828017934
     - rid: 5324356914828017935
@@ -65,6 +67,7 @@ MonoBehaviour:
     characterEmotion: 1
     characterReaction: 2
     doesItProveAnything: 0
+    isKey: 0
     responses:
     - rid: 5324356914828017937
     isRootNode: 0
@@ -85,6 +88,7 @@ MonoBehaviour:
     characterEmotion: 2
     characterReaction: 6
     doesItProveAnything: 1
+    isKey: 0
     responses:
     - rid: 5324356914828017938
     isRootNode: 0
@@ -103,6 +107,7 @@ MonoBehaviour:
     characterEmotion: 1
     characterReaction: 2
     doesItProveAnything: 0
+    isKey: 0
     responses:
     - rid: 5324356914828018100
     isRootNode: 0
@@ -121,6 +126,7 @@ MonoBehaviour:
     characterEmotion: 2
     characterReaction: 2
     doesItProveAnything: 3
+    isKey: 0
     responses:
     - rid: 3832489796472668237
     isRootNode: 0
@@ -140,6 +146,7 @@ MonoBehaviour:
     characterEmotion: 2
     characterReaction: 8
     doesItProveAnything: 3
+    isKey: 0
     responses:
     - rid: 3832489796472668239
     isRootNode: 0
@@ -149,6 +156,121 @@ MonoBehaviour:
       Part2: 1204049579
       Part3: 4253290647
       Part4: 2435381390
+    tag: 
+  - dialogueText: "Welcome to the Trivyag Hotel. I'm the owner and boss of this establishment.
+      \nCould I interest you in renting a room, perhaps?"
+    characterEmotion: 2
+    characterReaction: 0
+    doesItProveAnything: 1
+    isKey: 0
+    responses:
+    - rid: 5324356914828017934
+    - rid: 5324356914828017935
+    - rid: 5324356914828017936
+    isRootNode: 1
+    editorPosition: {x: 219.39366, y: 197}
+    guid:
+      Part1: 1937822994
+      Part2: 1324108327
+      Part3: 4257149341
+      Part4: 2611195353
+    tag: 
+  - dialogueText: "Oh... Nothing that you should worry about, really. \nIt's just...
+      I seem to have lost the keys to my car. It's a fancy new model and I've barely
+      had a chance to drive it yet.\nI doubt you're gonna find them around here,
+      but if you find out something... please let me know."
+    characterEmotion: 1
+    characterReaction: 2
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 5324356914828017937
+    isRootNode: 0
+    editorPosition: {x: 1400.5004, y: 280.49997}
+    guid:
+      Part1: 1756710703
+      Part2: 1229670118
+      Part3: 834325127
+      Part4: 1991192220
+    tag: About keys
+  - dialogueText: '...Well, if that''s the case, I should ask you to leave.
+
+      However,
+      it would be uncouth to let you go out there, with such a terrible storm going
+      on.
+
+      You may stay, but please, don''t go anywhere past this reception.'
+    characterEmotion: 2
+    characterReaction: 6
+    doesItProveAnything: 4
+    isKey: 0
+    responses:
+    - rid: 5324356914828017938
+    isRootNode: 0
+    editorPosition: {x: 1424, y: -49.000027}
+    guid:
+      Part1: 1703566582
+      Part2: 1202352971
+      Part3: 3294678954
+      Part4: 865554740
+    tag: 
+  - dialogueText: 'Oh, please ignore her. She has the tendency to become... histerical...
+      at the least convenient moments.
+
+      She can make up stories, accuse people
+      of unproper behaviour... I highly advice you remain from trusting her.'
+    characterEmotion: 1
+    characterReaction: 2
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 5324356914828018100
+    isRootNode: 0
+    editorPosition: {x: 1355.668, y: 509.25046}
+    guid:
+      Part1: 2547384374
+      Part2: 1283484775
+      Part3: 3713609364
+      Part4: 931363781
+    tag: 
+  - dialogueText: 'Look, just because she''s all shy doesn''t mean that you should
+      underestimate her.
+
+      Like all foreigners, she can be deceivingly cunning
+      and mischievous if no-one puts her in her place.'
+    characterEmotion: 2
+    characterReaction: 2
+    doesItProveAnything: 3
+    isKey: 0
+    responses:
+    - rid: 3832489796472668237
+    isRootNode: 0
+    editorPosition: {x: 2501, y: 509}
+    guid:
+      Part1: 3554429002
+      Part2: 1292925238
+      Part3: 3304785556
+      Part4: 2785673951
+    tag: 
+  - dialogueText: 'I... never said she was a foreigner. Don''t you dare put words
+      in my mouth... I mean, I''d rather you abstained from spreading such misinformation.
+
+      Any
+      inconvenient you may have with her is something the two of you should deal
+      with.'
+    characterEmotion: 2
+    characterReaction: 8
+    doesItProveAnything: 3
+    isKey: 0
+    responses:
+    - rid: 3832489796472668239
+    isRootNode: 0
+    editorPosition: {x: 3718, y: 462}
+    guid:
+      Part1: 3921425750
+      Part2: 1290022786
+      Part3: 3428983194
+      Part4: 4117224209
     tag: 
   hiddenProof: 01000000
   references:
@@ -167,6 +289,7 @@ MonoBehaviour:
         characterEmotion: 2
         characterReaction: 2
         doesItProveAnything: 3
+        isKey: 0
         responses:
         - rid: 3832489796472668237
         isRootNode: 0
@@ -199,6 +322,7 @@ MonoBehaviour:
         characterEmotion: 2
         characterReaction: 8
         doesItProveAnything: 3
+        isKey: 0
         responses:
         - rid: 3832489796472668239
         isRootNode: 0
@@ -280,6 +404,7 @@ MonoBehaviour:
         characterEmotion: 1
         characterReaction: 2
         doesItProveAnything: 0
+        isKey: 0
         responses:
         - rid: 5324356914828017937
         isRootNode: 0
@@ -303,7 +428,8 @@ MonoBehaviour:
           this reception.'
         characterEmotion: 2
         characterReaction: 6
-        doesItProveAnything: 1
+        doesItProveAnything: 5
+        isKey: 0
         responses:
         - rid: 5324356914828017938
         isRootNode: 0
@@ -330,6 +456,7 @@ MonoBehaviour:
           characterEmotion: 0
           characterReaction: 0
           doesItProveAnything: 0
+          isKey: 0
           responses:
           - rid: 5324356914828018092
           - rid: 5324356914828018093
@@ -369,6 +496,7 @@ MonoBehaviour:
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
+        isKey: 0
         responses:
         - rid: 5324356914828018097
         isRootNode: 0
@@ -391,6 +519,7 @@ MonoBehaviour:
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
+        isKey: 0
         responses:
         - rid: 5324356914828018098
         isRootNode: 0
@@ -433,6 +562,7 @@ MonoBehaviour:
         characterEmotion: 1
         characterReaction: 2
         doesItProveAnything: 0
+        isKey: 0
         responses:
         - rid: 5324356914828018100
         isRootNode: 0

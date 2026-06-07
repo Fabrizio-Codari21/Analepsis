@@ -24,9 +24,8 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
     {
         if (slotRule == null) return false;
         if (_currentEvidenceHolder == null) return false;
-        
-        if (_currentEvidenceHolder.whodunnits != m_identity.ProofTypeNeed) { return false; }
-        
+        if (!_currentEvidenceHolder.whodunnits.HasFlag(m_identity.ProofTypeNeed)) { return false; }
+    
         IClue playerPlacedClue = _currentEvidenceHolder.representerClue;
         return slotRule.Validate(slotRule.Identity.ProofTypeNeed, playerPlacedClue);
     }
@@ -48,11 +47,12 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
 
     public bool CheckSlotAdapt(Evidence data)
     {
-        if (data == null) return false;
-        var result =  !_buttonMap.ContainsKey(data.guid);
+        if (data == null || m_identity == null) return false;
+    
         
-        if(!result) Debug.Log("No Aceepte");
-        return result;
+        // if (!data.whodunnits.HasFlag(m_identity.ProofTypeNeed)) return false;
+    
+        return !_buttonMap.ContainsKey(data.guid);
     }
 
     public bool ReplaceData(Evidence data)

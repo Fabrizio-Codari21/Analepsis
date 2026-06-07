@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
-using System.Linq;
+
 
 
 public class DialogueManager : Singleton<DialogueManager>,IActivity
@@ -138,9 +137,18 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         var token = _dialogueCts.Token;
     
         m_dialogueView.ClearResponses();
-        if (node.doesItProveAnything != 0)
+        if (node.doesItProveAnything != Whodunnit.NoProof)
         {
-            _currentDialoguer?.Dialogue.DiscoverProof(node.doesItProveAnything);
+            foreach (Whodunnit proof in Enum.GetValues(typeof(Whodunnit)))
+            {
+                if (proof == Whodunnit.NoProof) continue;
+
+           
+                if (node.doesItProveAnything.HasFlag(proof))
+                {
+                    _currentDialoguer?.Dialogue.DiscoverProof(proof);
+                }
+            }
         }
 
        
