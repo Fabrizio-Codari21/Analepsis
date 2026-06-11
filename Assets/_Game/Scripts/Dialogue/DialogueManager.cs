@@ -127,7 +127,7 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
             _currentDialoguer.LookAt, 
             _currentDialoguer.Player);
 
-        await PlayDialogueNode(dialogable.Dialogue.startingNode);
+        await PlayDialogueNode(dialogable.Dialogue.startingNode.SelectAltDialogue());
 
     }
 
