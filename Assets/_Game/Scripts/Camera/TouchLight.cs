@@ -8,6 +8,8 @@ public class TouchLight : MonoBehaviour,ITouch
 
     public event Action OnFocus;
     public event Action OnUnfocus;
+    public event Action<float> OnUpdateDistance;
+
     public void Focus()
     {
       
@@ -22,5 +24,10 @@ public class TouchLight : MonoBehaviour,ITouch
     {
         if(!m_light) return;
         m_light.enabled = !m_light.enabled;
+    }
+
+    public void UpdateDistance(float dist)
+    {
+        
     }
 }

@@ -14,11 +14,11 @@ public class DialogueNode : INode
     public Reaction characterReaction;
     public Whodunnit doesItProveAnything;
     public bool isKey;
-    [ShowIf("isRootNode")] public AltDialoguePath altDialoguePath;
 
     [SerializeReference] public List<DialogueResponse> responses;
     public bool isRootNode = true;
     [HideInInspector] public Vector2 editorPosition;
+    [ShowIf("isRootNode")] public AltDialoguePath altDialoguePath;
 
     [Header("ID")]
     public SerializableGuid guid = SerializableGuid.NewGuid();

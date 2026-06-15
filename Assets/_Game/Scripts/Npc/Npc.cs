@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Rendering.Universal;
@@ -30,6 +31,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
    {
        NewDialogue(m_defaultDialogue);
        OnFocus += SpawnName;
+       OnUpdateDistance += UpdateOffset;
        OnUnfocus += DespawnName;
        OnStart += DespawnName;
        m_tip.tip = $"Should I talk to {m_npcIdentity.npcName}? ";
@@ -54,17 +56,23 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
 
    public void Focus()
    {
-
         OnFocus?.Invoke();
    }
 
    public void Unfocus()
    {
-
         OnUnfocus?.Invoke();
    }
+
+   public void UpdateDistance(float dist)
+   {
+       OnUpdateDistance?.Invoke(dist);
+   }
+
    public event Action OnStart;
    public event Action OnEnd;
+   public event Action<float> OnUpdateDistance;
+
    public void InteractStart()
    {
       var state = GetCurrentState();
@@ -100,9 +108,18 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
       };
    }
 
-   #endregion
+    public void UpdateOffset(float dist)
+    {
+        if(_text != null)
+            _text.transform.position = transform.position + new Vector3(
+            0,
+            Mathf.Lerp(0.5f, m_textPositionOffset.y, dist),
+            0);
+    }
 
-   private void Speck()
+    #endregion
+
+    private void Speck()
    {
       m_dialogueEvent.Raise(this);
     }
@@ -234,6 +251,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
         }
         //print("Set anim parameter " + parameter.name + " to " + value);
     }
+
 }
 
 

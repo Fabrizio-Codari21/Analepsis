@@ -80,6 +80,7 @@ public class Interacter : MonoBehaviour
         ResetInteract();
         _lastInteractable = interactable;
         interactable.Focus();
+        interactable.UpdateDistance(distanceToHit);
         m_focusEvent.Raise(interactable);
     }
     

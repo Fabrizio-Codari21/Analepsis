@@ -11,6 +11,7 @@ public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
     public event Action OnEnd;
     public event Action OnFocus;
     public event Action OnUnfocus;
+    public event Action<float> OnUpdateDistance;
     
     private List<Tip> tips = new();
 
@@ -150,6 +151,11 @@ public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
             tipOverride = GetTip(),
             tipColor = Color.white
         };
+    }
+
+    public void UpdateDistance(float dist)
+    {
+        OnUpdateDistance?.Invoke(dist);
     }
 }
 

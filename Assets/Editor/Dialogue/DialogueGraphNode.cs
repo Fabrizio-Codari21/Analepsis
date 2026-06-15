@@ -214,7 +214,8 @@ public sealed class DialogueGraphNode : Node
                 0,
                 formatLabel,
                 formatLabel
-            ){ value = nodeData.altDialoguePath.condition };
+            )
+            { value = nodeData.altDialoguePath.condition };
             condNodeField.RegisterValueChangedCallback(evt =>
             {
                 NodeData.altDialoguePath.condition = evt.newValue;

@@ -38,7 +38,9 @@ public class TouchCamera : MonoBehaviour,IActivity,ITouch
 
    public event Action OnFocus;
    public event Action OnUnfocus;
-   public void Focus()
+    public event Action<float> OnUpdateDistance;
+
+    public void Focus()
    {
      Debug.Log("Focus , NEED EFFECT ON FOCUS");
      OnFocus?.Invoke();
@@ -53,4 +55,9 @@ public class TouchCamera : MonoBehaviour,IActivity,ITouch
    {
       m_pushEvent?.Raise(this);
    }
+
+    public void UpdateDistance(float dist)
+    {
+        throw new NotImplementedException();
+    }
 }

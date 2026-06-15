@@ -18,6 +18,7 @@ public class TextComponent : MonoBehaviour
     {
         _focus = GetComponent<IFocus>();
         _focus.OnFocus += TryToSpawnText;
+        _focus.OnUpdateDistance += UpdateOffset;
         
         if (despawnOnUnFocus)
         {
@@ -34,6 +35,7 @@ public class TextComponent : MonoBehaviour
         if (_focus == null) return;
         _focus.OnFocus -= TryToSpawnText;
         _focus.OnUnfocus -= DespawnText;
+        _focus.OnUpdateDistance -= UpdateOffset;
     }
 
     private void TryToSpawnText() => _ = SpawnText(); 
@@ -57,6 +59,14 @@ public class TextComponent : MonoBehaviour
         //
         // _exitText.SetText("[Press 'F' to leave the flashback.]", 2f, Color.cyan);
         // await _exitText.PlayTypeWriterEffect();
+    }
+
+    public void UpdateOffset(float dist)
+    {
+        _text.transform.position = transform.position + new Vector3(
+            0, 
+            Mathf.Lerp(0.5f, m_offset.y, dist), 
+            0);
     }
 
     private void DespawnText()
