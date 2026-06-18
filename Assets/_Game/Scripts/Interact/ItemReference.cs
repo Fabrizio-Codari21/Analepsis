@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class ItemReference : MonoBehaviour
@@ -16,6 +17,7 @@ public class ItemReference : MonoBehaviour
         _interact = GetComponent<IInteractable>();
         _interact.OnFocus += SpawnName;
         _interact.OnUnfocus  += DespawnName;
+        _interact.OnUpdateDistance += UpdateOffset;
         _interact.OnStart += DespawnName;
         _interact.OnStart += RecordItem;
         _tipProvider = GetComponent<ITipProvider>();
@@ -32,6 +34,13 @@ public class ItemReference : MonoBehaviour
     {
        if(_text) FlyweightFactory.Instance.Return(_text);
        _text =  null;
+    }
+
+
+    public void UpdateOffset(float dist)
+    {
+        if (_text != null)
+            _text.transform.position = transform.position + Mathf.Lerp(0.5f, m_textPositionOffset.y, dist).AsY();
     }
 
     private void RecordItem()

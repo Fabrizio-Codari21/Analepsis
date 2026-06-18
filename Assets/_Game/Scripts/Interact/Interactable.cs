@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -70,11 +71,13 @@ public class Interactable : MonoBehaviour, IInteractable , IConditionCheck
             _canTeleport = false;
         },
         cancelCondition: () => !enabled);
+
     }
     private void OnDisable()
     {
         _canTeleport = true;
     }
+
 
     #endregion
 

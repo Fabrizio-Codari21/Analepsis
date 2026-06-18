@@ -111,12 +111,9 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
     public void UpdateOffset(float dist)
     {
         if(_text != null)
-            _text.transform.position = transform.position + new Vector3(
-            0,
-            Mathf.Lerp(0.5f, m_textPositionOffset.y, dist),
-            0);
+            _text.transform.position = transform.position + Mathf.Lerp(0.5f, m_textPositionOffset.y, dist).AsY();
     }
-
+    
     #endregion
 
     private void Speck()

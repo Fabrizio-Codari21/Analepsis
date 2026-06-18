@@ -63,10 +63,8 @@ public class TextComponent : MonoBehaviour
 
     public void UpdateOffset(float dist)
     {
-        _text.transform.position = transform.position + new Vector3(
-            0, 
-            Mathf.Lerp(0.5f, m_offset.y, dist), 
-            0);
+        if(_text != null)
+            _text.transform.position = transform.position + Mathf.Lerp(0.5f, m_offset.y, dist).AsY();
     }
 
     private void DespawnText()
