@@ -11,9 +11,9 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
     public Clue requiredToOpen;
     public Collider doorObject;
     public float openingDegrees, openingDuration, closedShakeIntensity;
-    public Vector2 interactRange;
+    public Vector2 proximityRange;
     public LockState overrideLock;
-
+    public Tip openTip { get; private set; } = new Tip($"Open?", TipOrder.InteractionType);
 
     BoxCollider _col;
 
@@ -21,11 +21,10 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
     {
         _col = GetComponent<BoxCollider>();
         _col.isTrigger = true;
-        _col.size = new Vector3(interactRange.x, doorObject.transform.localScale.y, interactRange.y);
+        _col.size = new Vector3(proximityRange.x, doorObject.transform.localScale.y, proximityRange.y);
        
-        OnEnd += Open;
-        if(TryGetComponent<ITipProvider>(out var tp))
-            tp.AddTip(new Tip($"Open?", TipOrder.InteractionType));
+        //OnEnd += Open;
+        //if(TryGetComponent<ITipProvider>(out var tp)) tp.AddTip(openTip);
 
     }
 
@@ -37,6 +36,10 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
     // Por ahora, si no tiene llave, si llegaste a ver el flashback de la llave (es decir que
     // analizaste el objeto por completo) o si llegaste a X dialogo te deja desbloquear la puerta.
     private void Open()
+    {
+        _ = ToggleDoor(true, CheckKey(requiredToOpen));
+    }
+    private void OnTriggerEnter(Collider other)
     {
         _ = ToggleDoor(true, CheckKey(requiredToOpen));
     }

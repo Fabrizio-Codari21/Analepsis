@@ -365,7 +365,12 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
             existingDialogue.UpdateLog(newDialogue);
             newDialogue = existingDialogue;
         }
-        else NotebookManager.Instance.StartedDialogues.Add(newDialogue);
+        else
+        {
+            if (!newDialogue.GetFullDialogue().isNotClue) 
+                NotebookManager.Instance.StartedDialogues.Add(newDialogue);
+            else NotebookManager.Instance.StartedDialogues.Insert(0, newDialogue);
+        }
 
         // esto esta muy desprolijo y muy impreciso, pero por ahora deberia alcanzar
         if (_currentDialoguer is SimpleDialoguer && newDialogue.GetFullDialogue().isNotClue)
@@ -373,7 +378,7 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
             var d = _currentDialoguer as SimpleDialoguer;
             if (d.canBeDisabled && newDialogue.IsKey())
             {
-                d.disableDialogue = true;
+                d.DisableDialogue = true;
             }
         }
 

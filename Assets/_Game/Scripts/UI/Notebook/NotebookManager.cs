@@ -48,9 +48,11 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     public DialogueNote GetDialogueNote(KeyValuePair<NpcIdentity, List<LogNote>> character)
     {
         var d = StartedDialogues[FoundCharacters.ToList().IndexOf(character)];
+        var plus = StartedDialogues.Where(x => x.GetFullDialogue().isNotClue).Count();
 
-        //if (d.GetFullDialogue().isNotClue) return null;
-        return d;
+
+            return StartedDialogues[StartedDialogues.IndexOf(d) + plus];
+
     }
 
 

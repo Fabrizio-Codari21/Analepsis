@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -28,13 +29,26 @@ public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
 
     private void Start()
     {
-        OnFocus += SpawnName;
-        OnUnfocus += DespawnName;
-        OnUpdateDistance += UpdateOffset;
-        OnStart += DespawnName;
-        OnStart += StartDialogue;
+        var interact = GetComponents<IInteractable>().Where(i => i != this);
+        if (interact.Any())
+            foreach (var i in interact)
+            {
+                i.OnFocus += SpawnName;
+                i.OnUnfocus += DespawnName;
+                i.OnUpdateDistance += UpdateOffset;
+                i.OnStart += DespawnName;
+                i.OnStart += StartDialogue;
 
-        AddTip(new Tip(interactText, TipOrder.InteractionType));
+                i.AddTip(new Tip(interactText, TipOrder.InteractionType));
+            }
+
+        //OnFocus += SpawnName;
+        //OnUnfocus += DespawnName;
+        //OnUpdateDistance += UpdateOffset;
+        //OnStart += DespawnName;
+        //OnStart += StartDialogue;
+
+        //AddTip(new Tip(interactText, TipOrder.InteractionType));
     }
 
     public void Focus()
@@ -124,10 +138,10 @@ public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
 
     public List<ICondition> Conditions { get; } = new();
 
-    public bool disableDialogue { get; set; } = false;
+    public bool DisableDialogue { get; set; } = false;
     public InteractionState GetCurrentState()
     {
-        if (disableDialogue) return new InteractionState{ canInteract = false, tipOverride = "", };
+        if (DisableDialogue) return new InteractionState{ canInteract = false, tipOverride = "", };
         
         foreach (var condition in Conditions)
         {
