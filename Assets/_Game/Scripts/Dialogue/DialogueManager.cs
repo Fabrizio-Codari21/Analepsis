@@ -95,6 +95,20 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         
         
         m_dialogueEvent.OnEventRaised += SpeakTo;
+
+        // para que tenga un valor default
+        //_currentDialoguer = new Npc() { NpcName = "Mr. Default"};
+        //_currentDialoguer.NewDialogue(new Dialogue()
+        //{
+        //    name = "Default_Dialogue",
+        //    isNotClue = true,
+        //    startingNode = new DialogueNode()
+        //    {
+        //        dialogueText = "Hi! I'm Mr. Default and you forgot to assign me.",
+        //        responses = { new DialogueResponse() { responseText = "[Leave]"} }
+        //    },
+        //    _hiddenProof = new(),
+        //});
     }
 
 
@@ -111,6 +125,10 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
     {
         m_pushActivity.Raise(this);
 
+        //_currentDialoguer = (dialogable.Dialogue.isNotClue && _currentDialoguer != null) 
+        //    ? _currentDialoguer 
+        //    : dialogable;
+
         _currentDialoguer = dialogable;
         _currentDialoguer.Dialogue._hiddenProof.Clear();
         m_dialogueView.ClearDialogues();
@@ -123,9 +141,9 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
 
         await m_dialogueView.UnfoldDialogue(
             true, 
-            _currentDialoguer.ID.makesEyeContact,
-            _currentDialoguer.LookAt, 
-            _currentDialoguer.Player);
+            _currentDialoguer.ID ? _currentDialoguer.ID.makesEyeContact : false,
+            _currentDialoguer.LookAt ?? null, 
+            _currentDialoguer.Player ?? null);
 
         await PlayDialogueNode(dialogable.Dialogue.startingNode.SelectAltDialogue());
 
@@ -165,6 +183,7 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
                         : Reaction.Idle);
 
             await m_dialogueView.PlayDialogueText(node.dialogueText, token, _currentDialoguer.Dialogue.dialogueColor);
+            
             // mas que nada para que no siga "hablando" cuando el diálogo ya termino de reproducirse.
             _currentDialoguer.SetAnimation(Reaction.Idle);
         }
@@ -194,7 +213,7 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
             //if (_currentDialoguer.FirstTimeSpeaking) response.alreadyDisplayed = false;
             string tagToDisplay = string.Empty;
             bool wasUnlocked = false;
-            if (NotebookManager.Instance.FoundCharacters.ContainsKey(_currentDialoguer.ID))
+            if (_currentDialoguer.ID && NotebookManager.Instance.FoundCharacters.ContainsKey(_currentDialoguer.ID))
             {
                 if (response.IsNewResponse())
                 {
@@ -305,28 +324,32 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         AudioManager.Instance.SelectSFX(SFXType.Player, "FlipBackwards");
         _ = AudioManager.Instance.ChangeMusicState(MusicState.Default);
 
+
         string title = $"{_currentDialoguer.NpcName.Possessive()} account" + (withTopic
         ? $" -\n About {_topic.FirstCharacterToLower()}"
         : " -\n No clear topic");
 
         List<string> rec = new(_manualRecords);
-        if (_manualRecords.Count <= 0 && !_recordChanged && _previousDialoguer == _currentDialoguer) 
+        if (_manualRecords.Count <= 0 && !_recordChanged && _previousDialoguer == _currentDialoguer)
             _manualRecords = _previousRecords;
 
         var finalLog = new LogNote(
-            title, 
-            _recordText.Segmented(), 
-            _manualRecords.Segmented(), 
+            title,
+            _recordText.Segmented(),
+            _manualRecords.Segmented(),
             _currentDialoguer.Dialogue.DoesItProveAnything()
         );
 
-        LogNote sameLogIfUnique = (LogNote)NotebookManager.Instance.ReturnIfUnique(finalLog, _currentDialoguer.ID);
-        if (finalLog == sameLogIfUnique)
+        if(_currentDialoguer.ID && !_currentDialoguer.Dialogue.isNotClue)
         {
-            finalLog.ChangeRecord(rec);
-            NotebookManager.Instance.AddLogToCharacter(_currentDialoguer.ID, finalLog);
+            LogNote sameLogIfUnique = (LogNote)NotebookManager.Instance.ReturnIfUnique(finalLog, _currentDialoguer.ID);
+            if (finalLog == sameLogIfUnique)
+            {
+                finalLog.ChangeRecord(rec);
+                NotebookManager.Instance.AddLogToCharacter(_currentDialoguer.ID, finalLog);
+            }
+            else sameLogIfUnique.UpdateLog(finalLog);
         }
-        else sameLogIfUnique.UpdateLog(finalLog);
 
         // aca se guardan las cosas nuevas para el arbol
         var newDialogue = new DialogueNote(
@@ -337,13 +360,26 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         var existingDialogue = NotebookManager.Instance.StartedDialogues
             .FirstOrDefault(x => x.GetFullDialogue() == newDialogue.GetFullDialogue());
 
-        if (existingDialogue != default) existingDialogue.UpdateLog(newDialogue);
+        if (existingDialogue != default)
+        {
+            existingDialogue.UpdateLog(newDialogue);
+            newDialogue = existingDialogue;
+        }
         else NotebookManager.Instance.StartedDialogues.Add(newDialogue);
-        //
+
+        // esto esta muy desprolijo y muy impreciso, pero por ahora deberia alcanzar
+        if (_currentDialoguer is SimpleDialoguer && newDialogue.GetFullDialogue().isNotClue)
+        {
+            var d = _currentDialoguer as SimpleDialoguer;
+            if (d.canBeDisabled && newDialogue.IsKey())
+            {
+                d.disableDialogue = true;
+            }
+        }
 
         _currentDialoguer.SetFace(_currentDialoguer.DefaultEmotion);
         _currentDialoguer.ResetAnimation();
-        if (_currentDialoguer.FirstTimeSpeaking)
+        if (_currentDialoguer.FirstTimeSpeaking && !_currentDialoguer.Dialogue.isNotClue)
         {
             NotebookManager.Instance.AddCharacter(_currentDialoguer.ID);           
             _currentDialoguer.FirstTimeSpeaking = false;

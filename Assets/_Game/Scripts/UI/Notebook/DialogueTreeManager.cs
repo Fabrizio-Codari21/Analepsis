@@ -123,14 +123,12 @@ public class DialogueTreeManager : Singleton<DialogueTreeManager>, IActivity
                     treeScroll.verticalNormalizedPosition = 0;
                     treeScroll.horizontalNormalizedPosition = 0;
                     treeParent.localScale = _scrollScale;
-                    await BuildTree(_manager.StartedDialogues
-                        [_manager.FoundCharacters.ToList().IndexOf(character)]);
+                    await BuildTree(_manager.GetDialogueNote(character));
                 });
             }
             if(openingCharacter != default)
-                await BuildTree(_manager.StartedDialogues
-                        [_manager.FoundCharacters.ToList().IndexOf(
-                            _manager.FoundCharacters.First(x => x.Key == openingCharacter))]);
+                await BuildTree(_manager.GetDialogueNote(
+                    _manager.FoundCharacters.First(x => x.Key == openingCharacter)));
         }
         else
         {

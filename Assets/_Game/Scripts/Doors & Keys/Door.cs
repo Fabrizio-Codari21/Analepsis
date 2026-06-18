@@ -46,7 +46,7 @@ public class Door : MonoBehaviour
             var c = (Item)clue;
             return c.keyInfo.isKey &&
             NotebookManager.Instance.GetItemFlashbackInfo(c) != string.Empty;
-        }            
+        }
         else if (clue is Dialogue)
             return NotebookManager.Instance.StartedDialogues.Any(x => x.GetFullDialogue() == clue && x.IsKey());
         else return false;

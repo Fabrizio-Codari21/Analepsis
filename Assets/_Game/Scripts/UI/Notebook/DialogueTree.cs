@@ -74,6 +74,8 @@ public class DialogueTree : MonoBehaviour
             
             foreach (var character in _manager.FoundCharacters)
             {
+                if (character.Key == null) return;
+
                 var button = representer.CreateCustomButton(
                     character.Key.npcName,
                     characterParent,
@@ -85,11 +87,13 @@ public class DialogueTree : MonoBehaviour
                     ClearText();
                     DeleteTree();
                     ResetScrollAndScale(); 
-                    await BuildTree(_manager.StartedDialogues[_manager.FoundCharacters.ToList().IndexOf(character)]);
+                    await BuildTree(_manager.GetDialogueNote(character));
                 });
             }
             
-            if(openingCharacter != default) await BuildTree(_manager.StartedDialogues[_manager.FoundCharacters.ToList().IndexOf(_manager.FoundCharacters.First(x => x.Key == openingCharacter))]);
+            if(openingCharacter != default) 
+                await BuildTree(_manager.GetDialogueNote(
+                    _manager.FoundCharacters.First(x => x.Key == openingCharacter)));
         }
         else
         {
@@ -198,6 +202,7 @@ public class DialogueTree : MonoBehaviour
 
     public async UniTask BuildTree(DialogueNote dialogue)
     {
+        print(dialogue != null);
         _currentDialogue = dialogue.GetFullDialogue();
         _unlockedDialogue = dialogue.GetUnlockedDialogue();
         await AddLevel(new(){ _currentDialogue.startingNode }, Vector3.zero + _scrollOffset, 1);

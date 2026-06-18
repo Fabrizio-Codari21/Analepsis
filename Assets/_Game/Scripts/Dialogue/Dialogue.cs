@@ -17,7 +17,11 @@ public class Dialogue : Clue
     public DialogueNode startingNode;
     public List<DialogueNode> allNodes =  new List<DialogueNode>();
 
-    [ReadOnly] public List<Whodunnit> _hiddenProof = new();
+    [Space(15)] 
+    [InfoBox("Mark true if you want to use this for something other than a character's normal dialogue.")]
+    public bool isNotClue = false;
+
+    [Space(15), ReadOnly] public List<Whodunnit> _hiddenProof = new();
     public void DiscoverProof(Whodunnit proof)
     {
         if (_hiddenProof.Contains(proof)) return;

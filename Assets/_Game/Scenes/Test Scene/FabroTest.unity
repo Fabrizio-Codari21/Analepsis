@@ -35315,7 +35315,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f30bfedca61ec0442ba9a2840ac2de87, type: 2}
     - target: {fileID: 3983119378213845215, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       propertyPath: overrideLock
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3983119378213845215, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       propertyPath: openingDegrees
@@ -35328,7 +35328,7 @@ PrefabInstance:
     - target: {fileID: 3983119378213845215, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       propertyPath: requiredToOpen
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 0d07ea88ab31fd842b6b518027a0ab1f, type: 2}
     - target: {fileID: 3983119378213845215, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       propertyPath: interactRange.x
       value: 3
@@ -35355,12 +35355,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6596414493152622081, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       propertyPath: m_Name
-      value: Bedroom 5 Door
+      value: Dimitri Door
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6596414493152622081, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1879850228}
   m_SourcePrefab: {fileID: 100100000, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
 --- !u!4 &982527573 stripped
 Transform:
@@ -71943,6 +71946,30 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 012048beaf80a2941b5e9f43001b2829, type: 3}
   m_PrefabInstance: {fileID: 1878884488}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1879850225 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6596414493152622081, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
+  m_PrefabInstance: {fileID: 980734486}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1879850228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879850225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c255d4e57353cba4db71da210ff777a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcName: 
+  localDialogue: {fileID: 11400000, guid: 0d07ea88ab31fd842b6b518027a0ab1f, type: 2}
+  m_dialogueEvent: {fileID: 11400000, guid: 07b85288ccaec794a97830de8622f55a, type: 2}
+  interactText: Open?
+  textSetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
+  textOffset: {x: 0, y: 1.6, z: 0}
+  canBeDisabled: 1
 --- !u!4 &1880341888 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5dd960cb4ecca464badf7da00944c6ce, type: 3}

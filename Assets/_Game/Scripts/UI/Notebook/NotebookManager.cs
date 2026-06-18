@@ -45,7 +45,15 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     public Dictionary<NpcIdentity, List<LogNote>> FoundCharacters => _characterLogs;
     List<DialogueNote> _startedDialogues = new();
     public List<DialogueNote> StartedDialogues => _startedDialogues;
-   
+    public DialogueNote GetDialogueNote(KeyValuePair<NpcIdentity, List<LogNote>> character)
+    {
+        var d = StartedDialogues[FoundCharacters.ToList().IndexOf(character)];
+
+        //if (d.GetFullDialogue().isNotClue) return null;
+        return d;
+    }
+
+
     public void ClearMarkEvent() => enableMarkEvent = delegate { };
 
     
