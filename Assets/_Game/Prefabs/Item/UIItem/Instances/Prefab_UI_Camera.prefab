@@ -124,11 +124,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3157157693180730046, guid: f9c45e42de110654d8abe4782cd312ce, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00018
+      value: 0.000784
       objectReference: {fileID: 0}
     - target: {fileID: 3157157693180730046, guid: f9c45e42de110654d8abe4782cd312ce, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.00317
+      value: 0.001566
       objectReference: {fileID: 0}
     - target: {fileID: 3157157693180730046, guid: f9c45e42de110654d8abe4782cd312ce, type: 3}
       propertyPath: m_LocalRotation.w
@@ -203,7 +203,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.25, y: 1.25, z: 1}
+  m_Size: {x: 0.25, y: 1, z: 2}
   m_Center: {x: -0.25, y: 0, z: 0}
 --- !u!4 &3274797634150509934 stripped
 Transform:
@@ -650,6 +650,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 4b41ca1ffa40e3b4e9a6c91e4f62a951, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e639a1844475d1e4a9198314080ef94a, type: 2}
     - target: {fileID: -5754084199372789682, guid: 4b41ca1ffa40e3b4e9a6c91e4f62a951, type: 3}
       propertyPath: m_Mesh
       value: 
