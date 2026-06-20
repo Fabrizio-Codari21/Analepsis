@@ -15,16 +15,17 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
     public LockState overrideLock;
     public Tip openTip { get; private set; } = new Tip($"Open?", TipOrder.InteractionType);
 
-    BoxCollider _col;
+    BoxCollider _col, _doorCol;
 
     void Start()
     {
         _col = GetComponent<BoxCollider>();
         _col.isTrigger = true;
-        _col.size = new Vector3(proximityRange.x, doorObject.transform.localScale.y, proximityRange.y);
-       
-        //OnEnd += Open;
-        //if(TryGetComponent<ITipProvider>(out var tp)) tp.AddTip(openTip);
+        _doorCol = doorObject as BoxCollider;
+        _col.size = _doorCol.size.ZToY().Times(_doorCol.gameObject.transform.localScale * 1.1f);
+
+        OnEnd += Open;
+        if (TryGetComponent<ITipProvider>(out var tp)) tp.AddTip(openTip);
 
     }
 
@@ -39,10 +40,10 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
     {
         _ = ToggleDoor(true, CheckKey(requiredToOpen));
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        _ = ToggleDoor(true, CheckKey(requiredToOpen));
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    _ = ToggleDoor(true, CheckKey(requiredToOpen));
+    //}
     private void OnTriggerExit(Collider other)
     {
         _ = ToggleDoor(false);
@@ -76,6 +77,10 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
             new Vector3(-90, 0, open ? openingDegrees : 0),
             openingDuration,
             ease: Ease.OutCirc));
+
+            _col.size = open
+                ? new Vector3(proximityRange.x, doorObject.transform.localScale.y, proximityRange.y)
+                : _doorCol.size.ZToY().Times(_doorCol.gameObject.transform.localScale * 1.1f);
 
             doorObject.enabled = !open;
         }

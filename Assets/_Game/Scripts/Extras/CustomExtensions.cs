@@ -324,6 +324,9 @@ public static class CustomExtensions
     // Para multiplicar todos los valores de un vector.
     public static Vector3 Times(this Vector3 a, Vector3 b) => new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
 
+    // Convierte Z a Y para cuando una cosa tiene los ejes cruzados.
+    public static Vector3 ZToY(this Vector3 a) => new Vector3(a.x, a.z, a.y);
+
     #endregion
 
     #region UI UTILITIES

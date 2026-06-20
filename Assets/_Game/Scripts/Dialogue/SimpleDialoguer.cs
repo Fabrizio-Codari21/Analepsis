@@ -39,7 +39,7 @@ public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
                 i.OnStart += DespawnName;
                 i.OnStart += StartDialogue;
 
-                i.AddTip(new Tip(interactText, TipOrder.InteractionType));
+                //i.AddTip(new Tip(interactText, TipOrder.InteractionType));
             }
 
         //OnFocus += SpawnName;
