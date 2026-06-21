@@ -13,6 +13,10 @@ public sealed class DialogueGraphNode : Node
     public Port InputPort;
     public Port OutputPort;
     private DialogueGraphView _graphView;
+    private AltDialogueSearchWindow _searchWindowProvider;
+    private VisualElement altDialogueContainer;
+    public Foldout nodeFoldOut;
+    public Foldout altDialogueFoldOut;
     public DialogueGraphNode(DialogueNode nodeData, DialogueGraphView graphView)
     {
         if (!nodeData.isRootNode)
@@ -53,7 +57,7 @@ public sealed class DialogueGraphNode : Node
 
         extensionContainer.Add(tagField);
 
-        Foldout nodeFoldOut = new Foldout()
+        nodeFoldOut = new Foldout()
         {
             text = "Custom Details",
             value = false,
@@ -167,8 +171,6 @@ public sealed class DialogueGraphNode : Node
         isKeyFoldOut.Add(isKeyField);
         nodeFoldOut.Add(isKeyFoldOut);
 
-        extensionContainer.Add(nodeFoldOut);
-
         if (!nodeData.isRootNode)
         {
             InputPort = InstantiatePort(
@@ -185,113 +187,16 @@ public sealed class DialogueGraphNode : Node
         {
             // Para evitar complicaciones, hice que los dialogos alternativos solo se puedan asignar
             // al nodo inicial por ahora.
-            Foldout altDialogueFoldOut = new Foldout()
+            altDialogueFoldOut = new Foldout()
             {
                 text = "Could this dialogue change?",
                 value = false,
             };
-
-            //SerializedObject pathClass = new SerializedObject(nodeData.altDialoguePaths);
-            //SerializedProperty paths = pathClass.FindProperty("Paths");
-
-            //PropertyField altDialogueField = new PropertyField(paths)
-            //{
-            //    name = "Add alternative dialogues",
-            //};
-            //altDialogueField.Bind(pathClass);
-
-            Func<DialogueNode, string> formatLabel = n => {
-                if (n == null) return "Select a Node";
-                string preview = string.IsNullOrEmpty(n.dialogueText) ? "Empty" : n.dialogueText;
-                if (preview.Length > 50) preview = preview[..50] + "...";
-                return $"[{n.tag}] {preview}";
-            };
-            var initialChoices = nodeData.altDialoguePath.dialogueReference?.allNodes ?? new List<DialogueNode>();
-
-            PopupField<DialogueNode> condNodeField =
-            new PopupField<DialogueNode>("If we've reached this point...", 
-                initialChoices,
-                0,
-                formatLabel,
-                formatLabel
-            )
-            { value = nodeData.altDialoguePath.condition };
-            condNodeField.RegisterValueChangedCallback(evt =>
-            {
-                NodeData.altDialoguePath.condition = evt.newValue;
-            });
-
-            PopupField<DialogueNode> skipToField =
-            new PopupField<DialogueNode>("... we skip to this point...",
-                initialChoices,
-                0,
-                formatLabel,
-                formatLabel
-            )
-            { value = nodeData.altDialoguePath.skipTo };
-            skipToField.RegisterValueChangedCallback(evt =>
-            {
-                NodeData.altDialoguePath.skipTo = evt.newValue;
-            });
-
-            // esto despues tiene que cambiarse
-            ObjectField dialogueRefField = new ObjectField("Select dialogue (placeholder)")
-            {
-                objectType = typeof(Dialogue),
-                value = nodeData.altDialoguePath.dialogueReference,
-            };
-            dialogueRefField.RegisterValueChangedCallback(evt =>
-            {
-                NodeData.altDialoguePath.dialogueReference = (Dialogue)evt.newValue;
-                UpdatePopupOptions();
-                EditorUtility.SetDirty(Selection.activeObject);
-            });
-
-            TextField altDialogueField = new TextField("... and have them say:")
-            {
-                multiline = true,
-                value = nodeData.altDialoguePath.altDialogue,
-            };
-            altDialogueField.RegisterValueChangedCallback(evt =>
-            {
-                NodeData.altDialoguePath.altDialogue = evt.newValue;
-            });
-
-
-            void UpdatePopupOptions()
-            {
-                if (nodeData.altDialoguePath.dialogueReference != null
-                    && nodeData.altDialoguePath.dialogueReference.allNodes != null)
-                {
-                    var nodes = nodeData.altDialoguePath.dialogueReference.allNodes;
-
-                    condNodeField.choices = nodes;
-                    skipToField.choices = nodes;
-
-                    if (nodeData.altDialoguePath.condition != null && nodes.Contains(nodeData.altDialoguePath.condition))
-                        condNodeField.value = nodeData.altDialoguePath.condition;
-                    else if (nodes.Count > 0) condNodeField.index = 0;
-
-                    if (nodeData.altDialoguePath.skipTo != null && nodes.Contains(nodeData.altDialoguePath.skipTo))
-                        skipToField.value = nodeData.altDialoguePath.skipTo;
-                    else if (nodes.Count > 0) skipToField.index = 0;
-                }
-                else
-                {
-                    condNodeField.choices = new List<DialogueNode>();
-                    condNodeField.value = null;
-
-                    skipToField.choices = new List<DialogueNode>();
-                    skipToField.value = null;
-                }
-            }
-
-            altDialogueFoldOut.Add(dialogueRefField);
-            altDialogueFoldOut.Add(condNodeField);
-            altDialogueFoldOut.Add(skipToField);
-            altDialogueFoldOut.Add(altDialogueField);
-            nodeFoldOut.Add(altDialogueFoldOut);
+            GenerateAltDialogueUI();
         }
+
+        extensionContainer.Add(nodeFoldOut);
+
         OutputPort = InstantiatePort(
             Orientation.Horizontal,
             Direction.Output,
@@ -325,7 +230,172 @@ public sealed class DialogueGraphNode : Node
         RefreshExpandedState();
         RefreshPorts();
     }
-    
+
+    public void GenerateAltDialogueUI()
+    {
+        altDialogueContainer = new VisualElement
+        {
+            style =
+            {
+                flexDirection = FlexDirection.Column,
+                backgroundColor = new Color(.2f, 0f, 0.8f, 0.3f),
+                paddingLeft = 12,
+                paddingTop = 12,
+                paddingRight = 12,
+                paddingBottom = 10,
+                marginRight = 20,
+            }
+        };
+
+        //SerializedObject pathClass = new SerializedObject(nodeData.altDialoguePaths);
+        //SerializedProperty paths = pathClass.FindProperty("Paths");
+
+        //PropertyField altDialogueField = new PropertyField(paths)
+        //{
+        //    name = "Add alternative dialogues",
+        //};
+        //altDialogueField.Bind(pathClass);
+
+        //if(NodeData.altDialoguePath is AltDialoguePath path) // para volver rapido a que sea solo con un altDialogue
+        foreach (AltDialoguePath path in NodeData.altDialoguePaths)
+        {
+            Func<DialogueNode, string> formatLabel = n => {
+                if (n == null) return "Select a Node";
+                string preview = string.IsNullOrEmpty(n.dialogueText) ? "Empty" : n.dialogueText;
+                if (preview.Length > 50) preview = preview[..50] + "...";
+                return $"[{n.tag}] {preview}";
+            };
+            var initialChoices = _graphView.CurrentDialogue?.allNodes ?? new List<DialogueNode>();
+
+            PopupField<DialogueNode> condNodeField =
+            new PopupField<DialogueNode>("If we've reached this point...",
+                initialChoices,
+                0,
+                formatLabel,
+                formatLabel
+            )
+            { value = path.condition };
+            condNodeField.RegisterValueChangedCallback(evt =>
+            {
+                path.condition = evt.newValue;
+            });
+
+            PopupField<DialogueNode> skipToField =
+            new PopupField<DialogueNode>("... we skip to this point...",
+                initialChoices,
+                0,
+                formatLabel,
+                formatLabel
+            )
+            { value = path.skipTo };
+            skipToField.RegisterValueChangedCallback(evt =>
+            {
+                path.skipTo = evt.newValue;
+            });
+
+            // esto despues tiene que cambiarse
+            //ObjectField dialogueRefField = new ObjectField("Select dialogue (placeholder)")
+            //{
+            //    objectType = typeof(Dialogue),
+            //    value = _graphView.CurrentDialogue,
+            //};
+            //dialogueRefField.RegisterValueChangedCallback(evt =>
+            //{
+            //    path.dialogueReference = (Dialogue)evt.newValue;
+            //    UpdatePopupOptions();
+            //    EditorUtility.SetDirty(Selection.activeObject);
+            //});
+
+            TextField altDialogueField = new TextField("... and have them say:")
+            {
+                multiline = true,
+                value = path.altDialogue,
+            };
+            altDialogueField.RegisterValueChangedCallback(evt =>
+            {
+                path.altDialogue = evt.newValue;
+            });
+
+
+            void UpdatePopupOptions()
+            {
+                if (_graphView.CurrentDialogue != null
+                    && _graphView.CurrentDialogue.allNodes != null)
+                {
+                    var nodes = _graphView.CurrentDialogue.allNodes;
+
+                    condNodeField.choices = nodes;
+                    skipToField.choices = nodes;
+
+                    if (path.condition != null && nodes.Contains(path.condition))
+                        condNodeField.value = path.condition;
+                    else if (nodes.Count > 0) condNodeField.index = 0;
+
+                    if (path.skipTo != null && nodes.Contains(path.skipTo))
+                        skipToField.value = path.skipTo;
+                    else if (nodes.Count > 0) skipToField.index = 0;
+                }
+                else
+                {
+                    condNodeField.choices = new List<DialogueNode>();
+                    condNodeField.value = null;
+
+                    skipToField.choices = new List<DialogueNode>();
+                    skipToField.value = null;
+                }
+            }
+
+            VisualElement column = new VisualElement { style = { flexDirection = FlexDirection.Column, marginBottom = 5 } };
+
+            VisualElement header = new VisualElement
+            {
+                style =
+                {
+                    flexDirection = FlexDirection.Column,
+                    paddingBottom = 25,
+                }
+            };
+
+            Label label = new Label("<b>(Note: if there are multiple dialogues, lower ones will take priority.)</b>")
+            {
+                style = { paddingBottom = 15, fontSize = 13 }
+            };
+
+            Button removeBtn = new Button(() => {
+                NodeData.altDialoguePaths.Remove(path);
+                GenerateAltDialogueUI();
+                EditorUtility.SetDirty(Selection.activeObject);
+            })
+            { text = "X" };
+
+            if(NodeData.altDialoguePaths.First() != path) column.Add(header);
+            else if (NodeData.altDialoguePaths.Count > 1) column.Add(label);
+
+            //column.Add(dialogueRefField);
+            column.Add(condNodeField);
+            column.Add(skipToField);
+            column.Add(altDialogueField);
+            column.Add(removeBtn);
+
+            altDialogueContainer.Add(column);
+        }
+
+
+        Button addDialogueButton = new Button(AddAltDialogue)
+        { text = "+ Add Alt Dialogue", style = { marginRight = 25, } };
+        altDialogueFoldOut.Clear();
+        altDialogueFoldOut.Add(altDialogueContainer);
+        altDialogueFoldOut.Add(addDialogueButton);
+        nodeFoldOut.Add(altDialogueFoldOut);
+    }
+
+    private void AddAltDialogue()
+    {
+        Vector2 mousePos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);
+        _graphView.OpenAltDialogueSearchWindow(this, mousePos);
+        //extensionContainer.GetFirstOfType<Foldout>().text = $"Conditions ({ResponseData.m_conditions.Count})";
+    }
+
     public override void SetPosition(Rect newPos)
     {
         base.SetPosition(newPos);

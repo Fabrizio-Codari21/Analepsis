@@ -19,6 +19,7 @@ public class DialogueNode : INode
     public bool isRootNode = true;
     [HideInInspector] public Vector2 editorPosition;
     [ShowIf("isRootNode")] public AltDialoguePath altDialoguePath;
+    [SerializeReference] public List<AltDialoguePath> altDialoguePaths = new List<AltDialoguePath>();
 
     [Header("ID")]
     public SerializableGuid guid = SerializableGuid.NewGuid();
@@ -28,15 +29,20 @@ public class DialogueNode : INode
 
     public DialogueNode SelectAltDialogue()
     {
-        if (altDialoguePath.condition == null || altDialoguePath.dialogueReference == null
-            || !DialogueManager.Instance.CheckDialogue(altDialoguePath.condition.guid)) 
+        if (altDialoguePaths.All(x => x.condition == null) 
+            //|| altDialoguePaths.All(x => x.dialogueReference == null)
+            || altDialoguePaths.All(x => !DialogueManager.Instance.CheckDialogue(x.condition.guid))) 
             return this;
 
+        // Por organizacion, elijo el ultimo de los dialogos que hayas creado en el graph
+        // (habria que organizarse creandolos de menos a mas prioritario).
+        var path = altDialoguePaths.Last(x => DialogueManager.Instance.CheckDialogue(x.condition.guid));
+
         var newNode = new DialogueNode();
-        newNode.dialogueText = altDialoguePath.altDialogue;
-        newNode.responses = altDialoguePath.skipTo.responses;
-        newNode.characterEmotion = altDialoguePath.skipTo.characterEmotion; 
-        newNode.characterReaction = altDialoguePath.skipTo.characterReaction;
+        newNode.dialogueText = path.altDialogue;
+        newNode.responses = path.skipTo.responses;
+        newNode.characterEmotion = path.skipTo.characterEmotion; 
+        newNode.characterReaction = path.skipTo.characterReaction;
 
         return newNode;
     }
@@ -46,7 +52,7 @@ public class DialogueNode : INode
 public interface INode {}
 
 [Serializable]
-public struct AltDialoguePath
+public class AltDialoguePath
 {
     [TextArea(0, 20)] public string altDialogue;
     public Dialogue dialogueReference; //placeholder, esto despues se tendria que cambiar.

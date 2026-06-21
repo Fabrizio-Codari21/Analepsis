@@ -112,14 +112,19 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         }
         return note;
     }
-    
+
+    // Intenta devolver el dialogo perteneciente al nodo si este ya fue desbloqueado por el jugador.
+    public Dialogue TryGetParentDialogue(INode x, bool ifUnlocked = false) => ifUnlocked
+        ? StartedDialogues.FirstOrDefault(d => d.GetUnlockedDialogue().Contains(x)).GetFullDialogue()
+        : StartedDialogues.FirstOrDefault(d => d.GetFullDialogue().allNodes.Contains(x)).GetFullDialogue();
+
     #endregion
 
 
 
     #region  Unity Life
-    
- 
+
+
     private void Start()
     {
         // if (handler)

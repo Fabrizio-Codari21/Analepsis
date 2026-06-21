@@ -12,21 +12,35 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
     public Collider doorObject;
     public float openingDegrees, openingDuration, closedShakeIntensity;
     public Vector2 proximityRange;
+    public bool openIfRightNextToDoor;
     public LockState overrideLock;
     public Tip openTip { get; private set; } = new Tip($"Open?", TipOrder.InteractionType);
+    public Tip closeTip { get; private set; } = new Tip($"This door seems to be closed...", TipOrder.InteractionType);
 
     BoxCollider _col, _doorCol;
+    ITipProvider _tp;
+    Vector3 NormalDoorColSize 
+        => _doorCol.size.ZToY().PlusZ(_doorCol.size.y * 0.25f).Times(_doorCol.gameObject.transform.localScale * 1.1f);
 
     void Start()
     {
         _col = GetComponent<BoxCollider>();
         _col.isTrigger = true;
         _doorCol = doorObject as BoxCollider;
-        _col.size = _doorCol.size.ZToY().Times(_doorCol.gameObject.transform.localScale * 1.1f);
+        _col.size = NormalDoorColSize;
+
+        if (TryGetComponent<ITipProvider>(out _tp)) 
+        { 
+            _tp.AddTip(openTip);
+            OnUnfocus += ResetTip;
+        }
 
         OnEnd += Open;
-        if (TryGetComponent<ITipProvider>(out var tp)) tp.AddTip(openTip);
+        
 
+        //NotAction baseCondition = new(() => true, "Open?");
+        //baseCondition.m_checkAction = () => overrideLock != LockState.Lock;
+        //Conditions.Add(baseCondition);
     }
 
     void Update()
@@ -40,13 +54,14 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
     {
         _ = ToggleDoor(true, CheckKey(requiredToOpen));
     }
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    _ = ToggleDoor(true, CheckKey(requiredToOpen));
-    //}
+    private void OnTriggerEnter(Collider other)
+    {
+        if(openIfRightNextToDoor) _ = ToggleDoor(true, CheckKey(requiredToOpen));
+    }
     private void OnTriggerExit(Collider other)
     {
         _ = ToggleDoor(false);
+        ResetTip();
     }
 
     public bool CheckKey(Clue clue)
@@ -66,10 +81,10 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
 
     public async UniTask ToggleDoor(bool open = true, bool unlocked = true) 
     {
-
         var seq = Sequence.Create();
 
-        // Si esta desbloqueada, se abre y cierra rotándose y desactiva la colisión de la puerta.
+        // Si esta desbloqueada, se abre y cierra rotándose, desactivamos la colisión de la puerta
+        // y ajustamos el tamaño del trigger para que al salir de el se cierre la puerta.
         if((unlocked && overrideLock is not LockState.Lock) || overrideLock is LockState.Unlock)
         {
             _ = seq.Group(Tween.LocalRotation(
@@ -80,9 +95,13 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
 
             _col.size = open
                 ? new Vector3(proximityRange.x, doorObject.transform.localScale.y, proximityRange.y)
-                : _doorCol.size.ZToY().Times(_doorCol.gameObject.transform.localScale * 1.1f);
+                : NormalDoorColSize;
 
             doorObject.enabled = !open;
+
+            // Para que no siga figurando el texto despues de ya haber abierto la puerta.
+            Unfocus();
+            if (open) ResetTip();
         }
         // Si no, sacude la puerta como si tratara de abrirla pero no pudiera.
         else if (open)
@@ -92,9 +111,21 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
             new Vector3(0, 0, closedShakeIntensity),
             openingDuration,
             easeBetweenShakes: Ease.OutCirc));
+
+            _tp.ClearTip(); _tp?.AddTip(closeTip);
+            //Focus();
         }
 
         await seq;
+    }
+
+    public void ResetTip()
+    {
+        if(_tp != null)
+        {
+            _tp.ClearTip();
+            _tp.AddTip(openTip);
+        }
     }
 
     #region Interact
@@ -107,6 +138,7 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
     private List<Tip> tips = new();
     private DynamicText _text;
 
+    
     public List<ICondition> Conditions { get; } = new();
 
     public virtual void InteractStart()
@@ -118,7 +150,7 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
     public virtual void InteractEnd()
     {
         var state = GetCurrentState();
-        if (!state.canInteract) return;
+        if (!state.canInteract) return; 
         OnEnd?.Invoke();
     }
     public virtual void Focus()

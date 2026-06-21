@@ -55,7 +55,7 @@ public interface ICondition
 public class NotAction : ICondition
 {
     
-    Func<bool> m_checkAction;
+    public Func<bool> m_checkAction { get; set; }
     string _failureTip;
 
     public NotAction(Func<bool> checkAction, string failureTip = "I've run out of actions: time to solve the case...")

@@ -249,6 +249,10 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
         //print("Set anim parameter " + parameter.name + " to " + value);
     }
 
+    public void ClearTip()
+    {
+        tips.Clear();
+    }
 }
 
 

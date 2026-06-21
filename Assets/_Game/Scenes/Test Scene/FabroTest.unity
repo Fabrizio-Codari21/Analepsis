@@ -63672,6 +63672,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 259461266}
     m_Modifications:
+    - target: {fileID: 323472657127744410, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
+      propertyPath: m_Center.x
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 323472657127744410, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
+      propertyPath: m_Center.y
+      value: -0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 323472657127744410, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2056919398615393036, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -63755,6 +63767,10 @@ PrefabInstance:
     - target: {fileID: 3983119378213845215, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       propertyPath: proximityRange.y
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983119378213845215, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
+      propertyPath: openIfRightNextToDoor
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4245821067154573185, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       propertyPath: m_LocalScale.x
@@ -121637,7 +121653,7 @@ MonoBehaviour:
   npcName: 
   localDialogue: {fileID: 11400000, guid: 0d07ea88ab31fd842b6b518027a0ab1f, type: 2}
   m_dialogueEvent: {fileID: 11400000, guid: 07b85288ccaec794a97830de8622f55a, type: 2}
-  interactText: Open?
+  interactText: 
   textSetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
   textOffset: {x: 0, y: 1.6, z: 0}
   canBeDisabled: 1
