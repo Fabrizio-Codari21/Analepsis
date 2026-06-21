@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 public sealed class DialogueGraphNode : Node
@@ -310,6 +311,7 @@ public sealed class DialogueGraphNode : Node
             {
                 multiline = true,
                 value = path.altDialogue,
+                style = { paddingBottom = 10, }
             };
             altDialogueField.RegisterValueChangedCallback(evt =>
             {
@@ -356,10 +358,52 @@ public sealed class DialogueGraphNode : Node
                 }
             };
 
-            Label label = new Label("<b>(Note: if there are multiple dialogues, lower ones will take priority.)</b>")
+            Label mainLabel = new Label("<b>(Note: if there are multiple dialogues, higher index = higher priority.)</b>")
             {
-                style = { paddingBottom = 15, fontSize = 13 }
+                style = { paddingBottom = 25, fontSize = 13 }
             };
+            Label elementLabel = new Label($"<b>Dialogue {NodeData.altDialoguePaths.IndexOf(path)}</b>")
+            {
+                style = { paddingBottom = 10, fontSize = 10 }
+            };
+
+            VisualElement buttonRow = new VisualElement
+            {
+                style =
+                {
+                    flexDirection = FlexDirection.Row,
+                    alignItems = Align.Center,
+                } 
+            };
+
+            var index = NodeData.altDialoguePaths.IndexOf(path);
+            Button moveUpBtn = new Button(() => {
+                NodeData.altDialoguePaths.TrySwap(index, index - 1, out var exc);
+                GenerateAltDialogueUI();
+                EditorUtility.SetDirty(Selection.activeObject);
+            })
+            { text = "<<< Lower Priority"};
+            Button moveDownBtn = new Button(() => {
+                NodeData.altDialoguePaths.TrySwap(index, index + 1, out var exc);
+                GenerateAltDialogueUI();
+                EditorUtility.SetDirty(Selection.activeObject);
+            })
+            { text = "Increase Priority >>>"};
+            //Button topBtn = new Button(() => {
+            //    var index = NodeData.altDialoguePaths.IndexOf(path);
+            //    NodeData.altDialoguePaths.TrySwap(index, 0, out var exc);
+            //    GenerateAltDialogueUI();
+            //    EditorUtility.SetDirty(Selection.activeObject);
+            //})
+            //{ text = "MIN Priority" };
+            //Button bottomBtn = new Button(() => {
+            //    var index = NodeData.altDialoguePaths.IndexOf(path);
+            //    NodeData.altDialoguePaths.TrySwap(index, NodeData.altDialoguePaths.Count - 1, out var exc);
+            //    GenerateAltDialogueUI();
+            //    EditorUtility.SetDirty(Selection.activeObject);
+            //})
+            //{ text = "MAX Priority" };
+
 
             Button removeBtn = new Button(() => {
                 NodeData.altDialoguePaths.Remove(path);
@@ -369,12 +413,29 @@ public sealed class DialogueGraphNode : Node
             { text = "X" };
 
             if(NodeData.altDialoguePaths.First() != path) column.Add(header);
-            else if (NodeData.altDialoguePaths.Count > 1) column.Add(label);
+            else if (NodeData.altDialoguePaths.Count > 1) column.Add(mainLabel);
 
             //column.Add(dialogueRefField);
+            column.Add(elementLabel);
             column.Add(condNodeField);
             column.Add(skipToField);
             column.Add(altDialogueField);
+
+            if (NodeData.altDialoguePaths.Count > 1)
+            {
+                if(NodeData.altDialoguePaths.First() != path)
+                {
+                    //if(NodeData.altDialoguePaths.Count > 2) buttonRow.Add(topBtn);
+                    buttonRow.Add(moveUpBtn);
+                }
+                if (NodeData.altDialoguePaths.Last() != path)
+                {
+                    buttonRow.Add(moveDownBtn);
+                    //if (NodeData.altDialoguePaths.Count > 2) buttonRow.Add(bottomBtn);
+                }
+            }
+            column.Add(buttonRow);
+
             column.Add(removeBtn);
 
             altDialogueContainer.Add(column);
