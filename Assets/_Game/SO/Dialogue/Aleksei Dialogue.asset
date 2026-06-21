@@ -14582,7 +14582,7 @@ MonoBehaviour:
         dialogueText: '*mumbling* ...what? No, wait!
 
           Sorry, you aren''t
-          really interrupting anything... though I wish you were.
+          really interrupting anything... though I wish you <b>were</b>.
 
           I''m
           supposed to be working but I just... can''t seem to concentrate right now!
@@ -18138,14 +18138,11 @@ MonoBehaviour:
     - rid: 6774952781063389278
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: 'Oh yeah, I can''t catch a break from all the fame...
-
-          It''s
+        dialogueText: "Oh yeah, I can't catch a break from all the fame...\nIt's
           hard, you know? Everyone wanting to look at you, take pictures of you,
-          interview you...
-
-          It''s always about you- I mean me. Honestly
-          honey? I don''t know how I do it'
+          interview you...It's always about me- I mean you. \nHonestly, honey? Sometimes,
+          I don't even know how I do it. Anyone less than me would probably crumble
+          to such pressure in an instant."
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -19313,22 +19310,22 @@ MonoBehaviour:
     - rid: 6774952781063389279
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: So...
+        responseText: '[(Don''t bother interrupting him)]'
         nextNode:
           rid: 6774952781063389280
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 2261.2275, y: 431}
+        editorPosition: {x: 2486, y: 431}
     - rid: 6774952781063389280
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: 'What''s worse is I cannot for the life of me get rid of the
-          paparazzis! Even here!
+        dialogueText: 'What''s worse is, I cannot, for the life of me, get rid of
+          the paparazzis! Not even here!
 
-          I just heard that damn camera shutter.
-          If I ever find them I have a word or two to say to whoever is taking pictures!
-          at my! spiritual! retreat!'
+          I just <b>heard</b> that damn
+          camera shutter. If I ever find them, I have a word or two to say to whoever
+          is taking pictures! At my! Spiritual! Retreat!'
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -19336,7 +19333,7 @@ MonoBehaviour:
         responses:
         - rid: 6774952781063389281
         isRootNode: 0
-        editorPosition: {x: 2499, y: 431}
+        editorPosition: {x: 2841.5508, y: 431.00006}
         altDialoguePath:
           altDialogue: 
           dialogueReference: {fileID: 0}
@@ -20496,13 +20493,13 @@ MonoBehaviour:
     - rid: 6774952781063389281
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: I'll... let you know if I hear anything.
+        responseText: '[I''ll... let you know if I hear anything.]'
         nextNode:
           rid: -2
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3359.9995, y: 430.99994}
+        editorPosition: {x: 3774.1506, y: 431.00006}
     - rid: 6774952781063389282
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
