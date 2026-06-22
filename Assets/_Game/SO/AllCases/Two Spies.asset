@@ -19,23 +19,51 @@ MonoBehaviour:
       m_Keys: 01000000020000000300000004000000
       m_Values:
       - Items:
-        - {fileID: 11400000, guid: 5043c68b662704849a2d6d0baeae7a51, type: 2}
+        - rid: -2
       - Items:
-        - {fileID: 11400000, guid: 5043c68b662704849a2d6d0baeae7a51, type: 2}
+        - rid: -2
       - Items:
-        - {fileID: 11400000, guid: fe2cfe21de2f9b84b8f72e8aade2b0fe, type: 2}
+        - rid: -2
       - Items:
-        - {fileID: 11400000, guid: fe2cfe21de2f9b84b8f72e8aade2b0fe, type: 2}
+        - rid: -2
     AnswerRequirements:
       m_Keys: []
       m_Values: []
-  allSlots: []
-  ValidAnswers:
+  allSlots:
+  - {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+  - {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
+  validAnswers:
   - Name: 
     Description: 
     Answer:
       m_Keys: 
       m_Values: []
     AnswerRequirements:
-      m_Keys: []
-      m_Values: []
+      m_Keys:
+      - {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
+      - {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+      m_Values:
+      - Identity: {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
+        requieredClue:
+        - rid: 8019692079992537282
+        - rid: 8019692079992537301
+      - Identity: {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+        requieredClue:
+        - rid: 8019692079992537276
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 8019692079992537276
+      type: {class: 'ClueHolder`1[[NpcIdentity, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget: {fileID: 11400000, guid: 3d1ed14cbae37a747a7aae1676868042, type: 2}
+    - rid: 8019692079992537282
+      type: {class: 'ClueHolder`1[[NpcIdentity, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget: {fileID: 11400000, guid: ac34b3368edefcf43a55ef3aa2c9d431, type: 2}
+    - rid: 8019692079992537301
+      type: {class: 'ClueHolder`1[[NpcIdentity, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget: {fileID: 11400000, guid: a92984fab3971114f8ff115e44df5760, type: 2}

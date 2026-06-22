@@ -29,7 +29,7 @@ public class TheoryboardView : MonoBehaviour
     [ShowInInspector,ReadOnly]private int _currentCharacterIndex = 0;
     [ShowInInspector,ReadOnly]private readonly List<NpcIdentity> _cachedFoundCharacters = new List<NpcIdentity>();
     [SerializeField] private Transform m_itemRoot;
-    [SerializeField] private Transform m_charactersRoot;
+
     
     [Header("Extra UI")]
     [SerializeField] private FullScreenTipUI m_erroTip;

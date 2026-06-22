@@ -34,6 +34,7 @@ public class CharacterSlot : MonoBehaviour, ISlotData<Evidence>
         newButton.SetText(npcEvidence.displayName);
         newButton.InitData(npcEvidence, this); 
         newButton.MoveToLast();
+        newButton.transform.localPosition = Vector3.zero;
         m_buttonMap.Add(npcEvidence.guid, newButton);
     }
 

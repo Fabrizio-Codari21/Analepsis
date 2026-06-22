@@ -48,9 +48,8 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
     public bool CheckSlotAdapt(Evidence data)
     {
         if (data == null || m_identity == null) return false;
-    
         
-        // if (!data.whodunnits.HasFlag(m_identity.ProofTypeNeed)) return false;
+        if (!data.whodunnits.HasFlag(m_identity.ProofTypeNeed)) return false;
     
         return !_buttonMap.ContainsKey(data.guid);
     }
