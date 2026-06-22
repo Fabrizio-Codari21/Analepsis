@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 // Lo que pueden decir los NPC y como podemos responder a eso.
 [System.Serializable]
 public class DialogueNode : INode,IClue
@@ -28,3 +29,14 @@ public class DialogueNode : INode,IClue
 }
 
 public interface INode {}
+
+
+[Serializable]
+public class AltDialoguePath
+{
+    [TextArea(0, 20)] public string altDialogue;
+    public Dialogue dialogueReference; //placeholder, esto despues se tendria que cambiar.
+    public DialogueNode condition;
+    public DialogueNode skipTo;
+}
+
