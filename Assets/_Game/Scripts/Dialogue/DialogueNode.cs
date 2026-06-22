@@ -64,6 +64,10 @@ public class DialogueNode : INode,IClue
         return newNode;
 
     }[SerializeReference] public List<AltDialoguePath> altDialoguePaths = new List<AltDialoguePath>();
+    public SerializableGuid CompareGuid()
+    {
+        return guid;
+    }
 }
 
 public interface INode {}

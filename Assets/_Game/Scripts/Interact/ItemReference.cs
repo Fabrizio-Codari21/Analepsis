@@ -48,13 +48,6 @@ public class ItemReference : MonoBehaviour
         return m_itemReference;
     }
 
-    private void OnDestroy()
-    {
-         _interact.OnFocus -= SpawnName;
-        _interact.OnUnfocus  -= DespawnName;
-        _interact.OnStart -= DespawnName;
-        _interact.OnStart -= RecordItem;
-        
-    }
+  
 }
 

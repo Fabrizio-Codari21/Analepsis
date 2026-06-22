@@ -1,0 +1,134 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2479a5e0d70a6ce4f8eec2c9c7e59a78, type: 3}
+  m_Name: Level_1
+  m_EditorClassIdentifier: 
+  allSlots:
+  - {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+  - {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
+  - {fileID: 11400000, guid: ce4921e936d6bd649b74ec3d68b55a36, type: 2}
+  - {fileID: 11400000, guid: 0e8b5074229d22f4e8bbe37d60127085, type: 2}
+  validAnswers:
+  - Name: 
+    Description: La Maid mata al Boss con el Mani por sus Amenazas.
+    Answer:
+      m_Keys: 
+      m_Values: []
+    AnswerRequirements:
+      m_Keys:
+      - {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
+      - {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+      - {fileID: 11400000, guid: ce4921e936d6bd649b74ec3d68b55a36, type: 2}
+      - {fileID: 11400000, guid: 0e8b5074229d22f4e8bbe37d60127085, type: 2}
+      m_Values:
+      - Identity: {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
+        requieredClue:
+        - rid: 8019692083498713180
+      - Identity: {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+        requieredClue:
+        - rid: 8019692083498713173
+      - Identity: {fileID: 11400000, guid: ce4921e936d6bd649b74ec3d68b55a36, type: 2}
+        requieredClue:
+        - rid: 8019692083498713179
+      - Identity: {fileID: 11400000, guid: 0e8b5074229d22f4e8bbe37d60127085, type: 2}
+        requieredClue:
+        - rid: 8019692084982448231
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 8019692083498713173
+      type: {class: 'ClueHolder`1[[NpcIdentity, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget: {fileID: 11400000, guid: c09c834f14819bd48a8ef6c636a9342d, type: 2}
+    - rid: 8019692083498713179
+      type: {class: 'ClueHolder`1[[Item, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget: {fileID: 11400000, guid: 173ad9da7e8c29c4dbe387eae1450770, type: 2}
+    - rid: 8019692083498713180
+      type: {class: 'ClueHolder`1[[NpcIdentity, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget: {fileID: 11400000, guid: bde567ce90b36ef4ea3ed002cbe02bd1, type: 2}
+    - rid: 8019692084982448231
+      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget:
+          rid: 8019692084982448232
+    - rid: 8019692084982448232
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "Oh, I feel so sorry for her. \nShe seems to have found an
+          ill-intended <b>note</b> on a room threatening her.\nWhoever felt the need
+          to do something so cruel wasn't even brave enough to sign..."
+        characterEmotion: 5
+        characterReaction: 7
+        doesItProveAnything: 4
+        isKey: 0
+        responses:
+        - rid: 8019692084982448233
+        isRootNode: 0
+        editorPosition: {x: 1381.0895, y: 525}
+        guid:
+          Part1: 2099377356
+          Part2: 1175523789
+          Part3: 1618177925
+          Part4: 73563290
+        tag: 
+        altDialoguePaths: []
+    - rid: 8019692084982448233
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[What did the note say?]'
+        nextNode:
+          rid: 8019692084982448234
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2028.0895, y: 566}
+    - rid: 8019692084982448234
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Well, of course I didn''t want to get nosy on her.
+
+          I''ve
+          known her for a while and I''ve learned that the last thing you want is
+          to see her angry.
+
+          The things she could do to you if you dared
+          to do so... Better not learn what she''s sensitive about, that''s what
+          I say.'
+        characterEmotion: 2
+        characterReaction: 2
+        doesItProveAnything: 4
+        isKey: 0
+        responses:
+        - rid: 8019692084982448235
+        isRootNode: 0
+        editorPosition: {x: 2443, y: 587.501}
+        guid:
+          Part1: 2226755406
+          Part2: 1082339981
+          Part3: 3126597282
+          Part4: 3993757046
+        tag: 
+        altDialoguePaths: []
+    - rid: 8019692084982448235
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So she can get <b>scary</b>, you say...]'
+        nextNode:
+          rid: -2
+        dialogueTopic: the Maid's problem
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3324.42, y: 627}

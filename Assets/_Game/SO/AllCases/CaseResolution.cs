@@ -11,18 +11,7 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(fileName = "New Case", menuName = "Game/CaseResolution/NewCase")]
 public class CaseResolution : ScriptableObject  // Recipe
 {
-    /// <summary>
-    /// La lista tiene structs que contienen un caso (con clues asignadas a roles) 
-    /// mas su nombre y descripci�n (un string).
-    /// </summary>
-    [InfoBox("Make a new case by creating <b>ways to solve it</b>: " +
-        "\n\n<b>1)</b> Give your theory a <b>name</b> to identify it. " +
-        "\n<b>2)</b> Add a <b>description</b> of what the case would be." +
-        "\n<b>3)</b> Select which <b>clues</b> prove each aspect of the case (never use NoProof). " +
-        "\n\nRemember that you still have to assign <b>roles</b> to each NPC and <b>proof</b> to each clue." +
-        "\n\n(IMPORTANT: make sure the first answer on the list is your '<b>true</b>' answer.)", 
-        Icon = SdfIconType.Newspaper), Space(15)]
-    public List<CaseAnswer> AllValidAnswers = new();
+    
     
     
     public List<CaseSlotIdentity> allSlots = new();
@@ -101,22 +90,7 @@ public class CaseAnswer
     [DictionaryDrawerSettings(KeyLabel = "ID (Asset)", ValueLabel = "Case Slot", IsReadOnly = true)]
     [PropertySpace(10, 15)]
     public SerializedDictionary<CaseSlotIdentity, CaseSlot> AnswerRequirements = new();
-
-
-    public bool ValidateAnswer(Dictionary<CaseSlotIdentity, IClue> playerAnswer)
-    {
-        if (AnswerRequirements.Count != playerAnswer.Count) return false;
-
-        foreach (var kvp in AnswerRequirements)
-        {
-            CaseSlotIdentity target = kvp.Key;
-            CaseSlot rule =  kvp.Value;
-            if (!playerAnswer.TryGetValue(target, out IClue playerPlacedClue)) return false;
-            if (!rule.Validate(rule.Identity.ProofTypeNeed, playerPlacedClue)) return false; 
-        }
-
-        return true;
-    }
+    
     
     
 }

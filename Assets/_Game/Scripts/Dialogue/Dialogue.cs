@@ -56,6 +56,43 @@ public class Dialogue :SerializedScriptableObject
 
         Debug.Log($"<color=green>【GUID Actualizado Exitosamente】</color> Se han regenerado {updatedCount} GUIDs para el diálogo: <b>{name}</b>.");
     }
+    
+    
+       
+    [Button("Reset Proof)", ButtonSizes.Large)]
+    [InfoBox("Reset Proof To Motive", InfoMessageType.Info)]
+    public void  NodeProofReset()
+    {
+      
+
+       
+        if (startingNode != null)
+        {
+            startingNode.doesItProveAnything = Whodunnit.Motive;
+         
+            
+        }
+
+   
+        foreach (var node in allNodes)
+        {
+            if (node != null)
+            {
+               node.doesItProveAnything = Whodunnit.Motive;
+           
+                
+            }
+        }
+
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+        UnityEditor.AssetDatabase.SaveAssets();
+#endif
+     
+    }
+    
+    
+    
 }
 
 

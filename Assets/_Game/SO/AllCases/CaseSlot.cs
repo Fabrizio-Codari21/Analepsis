@@ -49,23 +49,25 @@ public class CaseSlot
 
     public bool Validate(Whodunnit w, IClue clue)
     {
+        string slotName = string.IsNullOrEmpty(SlotTitle) ? "Unknown Slot" : SlotTitle;
+
         if (Identity.ProofTypeNeed != w)
         {
-            Debug.Log("The ProofTypeNeed is wrong");
             return false;
         }
-        
-        if (requieredClue == null || requieredClue.Count == 0) return true;
-        
-        
+    
+        if (requieredClue == null || requieredClue.Count == 0) 
+        {
+            return true;
+        }
+    
         foreach (var holder in requieredClue)
         {
-            if (holder == null || holder.GetClue() != clue) continue;
-            Debug.Log("Has Neede Clue");
+            if (holder == null || holder.GetClue().CompareGuid() != clue.CompareGuid()) continue;
+            
             return true;
         }
         
-        Debug.Log("Need Clue");
         return false;
     }
 }

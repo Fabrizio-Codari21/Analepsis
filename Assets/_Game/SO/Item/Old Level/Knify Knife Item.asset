@@ -23,12 +23,14 @@ MonoBehaviour:
   Name: Knife
   sprite: {fileID: 21300000, guid: 7ac0d99de06d87f41a12c34d69f251c9, type: 3}
   baseClue: A bloodied knife
+  pois:
+  - poiId: Sauce
+    description: Tastes salty
   flashbackInfo:
     info: Clearly just sauce
     characterPrefab: {fileID: -3991744081947586821, guid: 12c7259cdc9ee8e4189a9a2e95de0e31, type: 3}
     key: {fileID: 11400000, guid: b8408bc1681fc864e80129cd2815d44b, type: 2}
     offset: {x: 0, y: 0, z: 0}
-  doesItProveAnything: 04000000
-  pois:
-  - poiId: Sauce
-    description: Tastes salty
+  doesItProveAnything: 4000008
+  keyInfo:
+    isKey: 0

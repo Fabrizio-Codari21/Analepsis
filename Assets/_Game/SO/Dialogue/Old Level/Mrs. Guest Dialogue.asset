@@ -29,7 +29,8 @@ MonoBehaviour:
       How about you sit down so we can talk about important stuff...?'
     characterEmotion: 1
     characterReaction: 0
-    doesItProveAnything: 0
+    doesItProveAnything: 4
+    isKey: 0
     responses:
     - rid: 5324356914828018101
     - rid: 5324356914828018102
@@ -42,11 +43,13 @@ MonoBehaviour:
       Part3: 75401349
       Part4: 3579792250
     tag: Beginning
+    altDialoguePaths: []
   allNodes:
   - dialogueText: 
     characterEmotion: 0
     characterReaction: 0
-    doesItProveAnything: 0
+    doesItProveAnything: 4
+    isKey: 0
     responses: []
     isRootNode: 1
     editorPosition: {x: 300, y: 200}
@@ -56,11 +59,13 @@ MonoBehaviour:
       Part3: 21519253
       Part4: 325114483
     tag: 
+    altDialoguePaths: []
   - dialogueText: OMG YES I WAS HOPING YOU WOULD ASK THAT! Have you heard the news
       about...
     characterEmotion: 0
     characterReaction: 0
-    doesItProveAnything: 0
+    doesItProveAnything: 4
+    isKey: 0
     responses:
     - rid: 5324356914828018104
     isRootNode: 0
@@ -71,6 +76,7 @@ MonoBehaviour:
       Part3: 2880297644
       Part4: 3179681027
     tag: 
+    altDialoguePaths: []
   - dialogueText: "And what an interesting bunch they are! \nYou see, the boss over
       there at the counter seems to be the least interesting of them, all grumpy
       and stone-faced.\nBetween him and the other guest, who looks like he swats
@@ -78,7 +84,8 @@ MonoBehaviour:
       kill me..."
     characterEmotion: 0
     characterReaction: 0
-    doesItProveAnything: 0
+    doesItProveAnything: 4
+    isKey: 0
     responses:
     - rid: 5324356914828018107
     isRootNode: 0
@@ -89,6 +96,7 @@ MonoBehaviour:
       Part3: 1536390333
       Part4: 30494059
     tag: 
+    altDialoguePaths: []
   - dialogueText: "Then, there's the help, which concerns me in a different fashion...\nThat
       girl over there, the maid... she seems so nervous, poor thing... I wonder what
       happened to her.\nAnd the chef back there... good lord, he looks like my ex-husband!
@@ -96,7 +104,8 @@ MonoBehaviour:
       was I..."
     characterEmotion: 0
     characterReaction: 0
-    doesItProveAnything: 0
+    doesItProveAnything: 4
+    isKey: 0
     responses:
     - rid: 5324356914828018108
     isRootNode: 0
@@ -107,6 +116,7 @@ MonoBehaviour:
       Part3: 2687288964
       Part4: 2726833926
     tag: 
+    altDialoguePaths: []
   hiddenProof: 
   references:
     version: 2
@@ -141,6 +151,7 @@ MonoBehaviour:
         characterEmotion: 4
         characterReaction: 2
         doesItProveAnything: 0
+        isKey: 0
         responses:
         - rid: 5324356914828018104
         isRootNode: 0
@@ -151,6 +162,7 @@ MonoBehaviour:
           Part3: 3824780930
           Part4: 2435732279
         tag: Useless Gossip
+        altDialoguePaths: []
     - rid: 5324356914828018104
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -172,6 +184,7 @@ MonoBehaviour:
         characterEmotion: 4
         characterReaction: 2
         doesItProveAnything: 0
+        isKey: 0
         responses:
         - rid: 5324356914828018107
         isRootNode: 0
@@ -182,6 +195,7 @@ MonoBehaviour:
           Part3: 1553846463
           Part4: 3527411740
         tag: The Boss and Mr. Guest
+        altDialoguePaths: []
     - rid: 5324356914828018106
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -223,6 +237,7 @@ MonoBehaviour:
         characterEmotion: 2
         characterReaction: 2
         doesItProveAnything: 3
+        isKey: 0
         responses:
         - rid: 5324356914828018108
         isRootNode: 0
@@ -233,3 +248,4 @@ MonoBehaviour:
           Part3: 3246485148
           Part4: 3596794833
         tag: The Maid and the Chef
+        altDialoguePaths: []

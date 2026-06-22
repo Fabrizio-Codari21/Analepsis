@@ -29,7 +29,14 @@ public static class UIElement
             await UniTask.NextFrame(token);
             token.ThrowIfCancellationRequested();
 
-            await t.PlayTypeWriterEffect(externalToken: token);
+            if (setting.Animated)
+            {
+                await t.PlayTypeWriterEffect(externalToken: token,typingSpeed: setting.Speed);
+            }
+            else
+            {
+                t.ShowFullText();
+            }
             return t;
         }
         catch (OperationCanceledException)

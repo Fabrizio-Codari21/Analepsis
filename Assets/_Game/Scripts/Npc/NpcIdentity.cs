@@ -41,6 +41,11 @@ public class NpcIdentity : ScriptableObject,IClue
 
         Debug.Log($"<color=green>【GUID Actualizado Exitosamente】</color> Se han regenerado {npcName} GUIDs para el diálogo: <b>{name}</b>.");
     }
+
+    public SerializableGuid CompareGuid()
+    {
+        return npcGuid;
+    }
 }
 
 

@@ -50,10 +50,43 @@ public class DialogueInspectorEditor : Editor
                 Debug.Log($"<color=green>【GUID Actualizado Exitosamente】</color> Se han regenerado {updatedCount} GUIDs para el diálogo: <b>{dialogue.name}</b>.");
             }
         }
+        
+        GUI.backgroundColor = new Color(0.5f, 0.9f, 0f);
+        
+        if (GUILayout.Button("Reset Proof)", GUILayout.Height(35)))
+        {
+           
+            if (EditorUtility.DisplayDialog("Reset Proof", 
+                    $"Seguro Reset Proof?", 
+                    "Sí, actualizar", "Cancelar"))
+            {
+                
+                if (dialogue.startingNode != null)
+                {
+                    dialogue.startingNode.doesItProveAnything = Whodunnit.Motive;
+                 
+                }
+
+         
+                foreach (var node in dialogue.allNodes)
+                {
+                    if (node != null)
+                    {
+                        node.doesItProveAnything = Whodunnit.Motive;
+                    }
+                }
+
+              
+                EditorUtility.SetDirty(dialogue);
+                AssetDatabase.SaveAssets();
+                
+            }
+        }
 
         GUI.backgroundColor = Color.white; 
 
         GUILayout.Space(5);
+        
 
  
         if (GUILayout.Button("Open Dialogue Graph", GUILayout.Height(30)))

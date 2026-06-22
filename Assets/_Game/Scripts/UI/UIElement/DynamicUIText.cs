@@ -51,6 +51,10 @@ public class DynamicUIText : FactoryUIObject
         _setToMaxWidth = setToMaxWidth;
         CalculateWidthAndHeight(out _currentSize, compensateLines);
     }
+    
+    
+    public void ShowFullText() => m_text.maxVisibleCharacters = m_text.text.Length;
+    
     public TMP_Text GetText() => m_text;
     public Vector2 GetSize() => _currentSize;
 

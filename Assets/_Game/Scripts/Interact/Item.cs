@@ -34,7 +34,11 @@ public class Item : ScriptableObject,IClue
     [Space(15), Header("CAN IT UNLOCK ANYTHING?")]
     public KeyItem keyInfo; // eventualmente esto podria guardar mas info relevante, por ahora es solo un bool.
 
-    
+
+    public SerializableGuid CompareGuid()
+    {
+        return guid;
+    }
 }
 
 [Serializable]
@@ -48,6 +52,6 @@ public class ItemPOIData
 
 public interface IClue
 {
-    
+    public SerializableGuid CompareGuid();
 }
 
