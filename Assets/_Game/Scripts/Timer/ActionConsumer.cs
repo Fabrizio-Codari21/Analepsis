@@ -26,7 +26,7 @@ public class ActionConsumer : MonoBehaviour,IAction
     private void Start()
     {
         _tipProvider.AddTip(new Tip(
-            $"[Costs {Cost} {"action".Plural(() => Cost > 1 || Cost <= 0)}.]",
+            $"<b>[Costs {Cost} {"action".Plural(() => Cost > 1 || Cost <= 0)}.]</b> ",
             TipOrder.ActionCost));
     }
 

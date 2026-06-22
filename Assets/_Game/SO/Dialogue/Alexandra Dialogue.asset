@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueColor: {r: 0, g: 0, b: 0, a: 0}
   startingNode:
-    dialogueText: Sorry, umm what's you deal?
-    characterEmotion: 0
+    dialogueText: Ok, so what's your deal?
+    characterEmotion: 2
     characterReaction: 0
     doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 6774952739558129733
     isRootNode: 1
-    editorPosition: {x: 265.8975, y: 145}
+    editorPosition: {x: 74, y: 145}
     altDialoguePath:
       altDialogue: 
       dialogueReference: {fileID: 0}
@@ -9798,8 +9798,8 @@ MonoBehaviour:
       data:
         dialogueText: Well my dear, like opening a can of food before it's its moment
           to be devoured, I wouldn't want to spoil the surpise.
-        characterEmotion: 0
-        characterReaction: 0
+        characterEmotion: 4
+        characterReaction: 2
         doesItProveAnything: 0
         isKey: 0
         responses:
@@ -10965,7 +10965,7 @@ MonoBehaviour:
     - rid: 1630672535616487503
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: All right then. keep your secrets.
+        responseText: '[All right then. keep your secrets.]'
         nextNode:
           rid: -2
         dialogueTopic: 
@@ -10975,57 +10975,57 @@ MonoBehaviour:
     - rid: 6774952739558129733
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: My deal?
+        responseText: '[(What the...) I''m sorry: My deal?]'
         nextNode:
           rid: 6774952781063389327
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 608, y: 145}
+        editorPosition: {x: 396.7495, y: 145.00002}
     - rid: 6774952781063389322
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: I can say the same to you
+        responseText: '[I can say the same to you]'
         nextNode:
           rid: 6774952781063389328
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 1335, y: 271}
+        editorPosition: {x: 1254, y: 253}
     - rid: 6774952781063389323
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: I'm here to figure something out
+        responseText: '[I''m... here to figure something out]'
         nextNode:
           rid: 6774952781063389329
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 1335, y: 62}
+        editorPosition: {x: 1254, y: 62}
     - rid: 6774952781063389324
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Please do.
+        responseText: '[Please do.]'
         nextNode:
           rid: 6774952781063389330
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 2024, y: 271}
+        editorPosition: {x: 1967.0002, y: 271}
     - rid: 6774952781063389325
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Were you a food critique?
+        responseText: '[Were you a food critique?]'
         nextNode:
           rid: 6774952781063389331
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 2641, y: 462}
+        editorPosition: {x: 2607.9375, y: 462}
     - rid: 6774952781063389326
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Why come here, though?
+        responseText: '[Why come here, though?]'
         nextNode:
           rid: 6774952781063389332
         dialogueTopic: 
@@ -11035,17 +11035,17 @@ MonoBehaviour:
     - rid: 6774952781063389327
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: Yeah, your deal, your story, why should I even keep talking
+        dialogueText: Yes, yes, your deal, your story, why should I even keep talking
           to you?
-        characterEmotion: 0
-        characterReaction: 0
+        characterEmotion: 2
+        characterReaction: 7
         doesItProveAnything: 0
         isKey: 0
         responses:
         - rid: 6774952781063389322
         - rid: 6774952781063389323
         isRootNode: 0
-        editorPosition: {x: 818, y: 145}
+        editorPosition: {x: 716, y: 145.00002}
         altDialoguePath:
           altDialogue: 
           dialogueReference: {fileID: 0}
@@ -12209,14 +12209,14 @@ MonoBehaviour:
 
           Sure, I''ll tell you something
           about myself.'
-        characterEmotion: 0
-        characterReaction: 0
+        characterEmotion: 4
+        characterReaction: 7
         doesItProveAnything: 0
         isKey: 0
         responses:
         - rid: 6774952781063389324
         isRootNode: 0
-        editorPosition: {x: 1668, y: 271}
+        editorPosition: {x: 1601, y: 271}
         altDialoguePath:
           altDialogue: 
           dialogueReference: {fileID: 0}
@@ -13380,14 +13380,14 @@ MonoBehaviour:
 
           We have some stuff
           in common, you and I.'
-        characterEmotion: 0
-        characterReaction: 0
+        characterEmotion: 1
+        characterReaction: 7
         doesItProveAnything: 0
         isKey: 0
         responses:
         - rid: 6774952781063389334
         isRootNode: 0
-        editorPosition: {x: 1668, y: 62}
+        editorPosition: {x: 1601, y: 13.439987}
         altDialoguePath:
           altDialogue: 
           dialogueReference: {fileID: 0}
@@ -14554,15 +14554,15 @@ MonoBehaviour:
 
           Ironic, isn''t it? given my previous
           job.'
-        characterEmotion: 0
-        characterReaction: 0
+        characterEmotion: 1
+        characterReaction: 2
         doesItProveAnything: 0
         isKey: 0
         responses:
         - rid: 6774952781063389325
         - rid: 6774952781063389326
         isRootNode: 0
-        editorPosition: {x: 2234, y: 271}
+        editorPosition: {x: 2177.0002, y: 271}
         altDialoguePath:
           altDialogue: 
           dialogueReference: {fileID: 0}
@@ -15729,8 +15729,8 @@ MonoBehaviour:
           today.
 
           That borshch was truly abhorrent...'
-        characterEmotion: 0
-        characterReaction: 0
+        characterEmotion: 5
+        characterReaction: 2
         doesItProveAnything: 0
         isKey: 0
         responses:
@@ -16898,14 +16898,14 @@ MonoBehaviour:
       data:
         dialogueText: Well my dear, like opening a can of food before it's its moment
           to be devoured, I wouldn't want to spoil the surpise.
-        characterEmotion: 0
-        characterReaction: 0
+        characterEmotion: 4
+        characterReaction: 2
         doesItProveAnything: 0
         isKey: 0
         responses:
         - rid: 6774952781063389336
         isRootNode: 0
-        editorPosition: {x: 2976.0508, y: 271}
+        editorPosition: {x: 2936, y: 302}
         altDialoguePath:
           altDialogue: 
           dialogueReference: {fileID: 0}
@@ -18065,17 +18065,17 @@ MonoBehaviour:
     - rid: 6774952781063389334
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: How so?
+        responseText: '[How so?]'
         nextNode:
           rid: 6774952781063389342
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 2031, y: 62}
+        editorPosition: {x: 1984, y: 62}
     - rid: 6774952781063389335
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Yeah... lucky you...
+        responseText: '[Yeah... lucky you...]'
         nextNode:
           rid: -2
         dialogueTopic: 
@@ -18085,7 +18085,7 @@ MonoBehaviour:
     - rid: 6774952781063389336
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: All right then, keep your secrets.
+        responseText: '[All right then, keep your secrets.]'
         nextNode:
           rid: -2
         dialogueTopic: 
@@ -18095,27 +18095,27 @@ MonoBehaviour:
     - rid: 6774952781063389337
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Show who?
+        responseText: '[Show who?]'
         nextNode:
           rid: 6774952781063389343
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 2687, y: -104}
+        editorPosition: {x: 2679, y: -104}
     - rid: 6774952781063389338
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Can you tell me more?
+        responseText: '[Can you tell me more?]'
         nextNode:
           rid: 1630672535616487502
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 2687, y: 62}
+        editorPosition: {x: 2679, y: 80}
     - rid: 6774952781063389339
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: What?
+        responseText: '[What?]'
         nextNode:
           rid: 6774952781063389344
         dialogueTopic: 
@@ -18125,7 +18125,7 @@ MonoBehaviour:
     - rid: 6774952781063389340
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Why did they called you that?
+        responseText: '[Why did they call you that?]'
         nextNode:
           rid: 6774952781063389345
         dialogueTopic: 
@@ -18135,7 +18135,7 @@ MonoBehaviour:
     - rid: 6774952781063389341
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Nothing...
+        responseText: '[Nothing...]'
         nextNode:
           rid: -2
         dialogueTopic: 
@@ -18145,19 +18145,19 @@ MonoBehaviour:
     - rid: 6774952781063389342
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: 'I''m in the midst of getting my biggest pubiclation yet!
+        dialogueText: 'I''m in the midst of getting my biggest publication yet!
 
           Something
-          so austanding that''ll surely shock''em all!'
-        characterEmotion: 0
-        characterReaction: 0
+          so outstanding that''ll surely shock''em all!'
+        characterEmotion: 4
+        characterReaction: 2
         doesItProveAnything: 0
         isKey: 0
         responses:
         - rid: 6774952781063389337
         - rid: 6774952781063389338
         isRootNode: 0
-        editorPosition: {x: 2241, y: 62}
+        editorPosition: {x: 2219, y: 41}
         altDialoguePath:
           altDialogue: 
           dialogueReference: {fileID: 0}
@@ -19320,15 +19320,15 @@ MonoBehaviour:
         dialogueText: 'My boss for once!
 
           I swear I had enough evidence
-          to libel that good for nothing bastard for life!'
-        characterEmotion: 0
-        characterReaction: 0
+          to libel that good-for-nothing bastard for life!'
+        characterEmotion: 4
+        characterReaction: 2
         doesItProveAnything: 0
         isKey: 0
         responses:
         - rid: 6774952781063389339
         isRootNode: 0
-        editorPosition: {x: 2949, y: -104}
+        editorPosition: {x: 2921, y: -132}
         altDialoguePath:
           altDialogue: 
           dialogueReference: {fileID: 0}
@@ -20493,14 +20493,14 @@ MonoBehaviour:
 
           That''s all, just a few more pictures and
           no one will ever call me obsessed again!'
-        characterEmotion: 0
-        characterReaction: 0
+        characterEmotion: 4
+        characterReaction: 2
         doesItProveAnything: 0
         isKey: 0
         responses:
         - rid: 6774952781063389340
         isRootNode: 0
-        editorPosition: {x: 3697.0005, y: -104.00003}
+        editorPosition: {x: 3707.3508, y: -173.0001}
         altDialoguePath:
           altDialogue: 
           dialogueReference: {fileID: 0}
@@ -21663,7 +21663,7 @@ MonoBehaviour:
         dialogueText: 'Huh?
 
           Call me what?'
-        characterEmotion: 0
+        characterEmotion: 2
         characterReaction: 0
         doesItProveAnything: 0
         isKey: 0
