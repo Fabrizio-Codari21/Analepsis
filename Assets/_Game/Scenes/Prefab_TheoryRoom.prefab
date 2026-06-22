@@ -573,6 +573,7 @@ GameObject:
   - component: {fileID: 2579309788896547011}
   - component: {fileID: 7593967906196283788}
   - component: {fileID: 241925233042976471}
+  - component: {fileID: 3181051471747196989}
   m_Layer: 0
   m_Name: Object
   m_TagString: Untagged
@@ -665,6 +666,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &3181051471747196989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304115916483170581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c22ea2d701c14f689bbd895b1732a856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_contentRoot: {fileID: 7694431418622236849}
+  m_draggableButton: {fileID: 11400000, guid: 174ee3c059403e14fa7cb8ef6fae3afe, type: 2}
+  m_clearOnRemove: 0
 --- !u!1 &1434174733614559031
 GameObject:
   m_ObjectHideFlags: 0
@@ -1405,6 +1421,7 @@ MonoBehaviour:
   m_slotPrefab: {fileID: 6912748427265644622, guid: 01671518fd3e208409b043ed7fd733d9, type: 3}
   m_slotGridRoot: {fileID: 6441932515079175767}
   m_logBackpackSlot: {fileID: 139147430158738153}
+  m_itemSlots: {fileID: 3181051471747196989}
   m_characterSlot: {fileID: 2325166964243933633}
   m_itemRoot: {fileID: 7694431418622236849}
   m_charactersRoot: {fileID: 7676155135532116383}

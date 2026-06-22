@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public class NotebookButton : MonoBehaviour
 {
     [SerializeField] private Button m_button;
-    
+
+    [SerializeField] private Image m_icon;
     public event Action OnClick =  delegate { };
     
     private void Start()
@@ -14,5 +15,11 @@ public class NotebookButton : MonoBehaviour
         {
            OnClick?.Invoke();
         });
+    }
+
+
+    public void SetImage(Sprite sprite)
+    {
+        m_icon.sprite = sprite;
     }
 }

@@ -29,7 +29,7 @@ public class Item : ScriptableObject,IClue
     public FlashbackInfo flashbackInfo;
 
     [Space(15), Header("WHAT DOES IT PROVE?")]
-    [SerializeField] List<Whodunnit> doesItProveAnything;
+    [SerializeField] public Whodunnit doesItProveAnything;
 
     [Space(15), Header("CAN IT UNLOCK ANYTHING?")]
     public KeyItem keyInfo; // eventualmente esto podria guardar mas info relevante, por ahora es solo un bool.
@@ -43,7 +43,6 @@ public class ItemPOIData
     public string poiId;
     [TextArea(0,10)]
     public string description;
-    
     
 }
 

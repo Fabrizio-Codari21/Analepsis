@@ -20,3 +20,12 @@ public class Evidence
         return string.Empty;
     }
 }
+
+public class ItemEvidence : Evidence
+{
+    public readonly Item item;
+    public ItemEvidence(string displayName, SerializableGuid guid, Whodunnit proofs, Item item) : base(displayName, guid, proofs, item)
+    {
+        
+    }
+}

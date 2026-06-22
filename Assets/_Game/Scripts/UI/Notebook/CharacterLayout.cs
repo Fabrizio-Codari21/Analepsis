@@ -121,4 +121,13 @@ public class CharacterLayout : NotebookLayout
             m_onCharacterSelected?.Raise(_lastSelectedNpc);
         }
     }
+
+
+    public override void Hide()
+    {
+        _rightEmptyPage.Hide();
+        _leftEmptyPage.Hide();
+        characterNotebookPage.Hide();
+        treePage.Hide();
+    }
 }

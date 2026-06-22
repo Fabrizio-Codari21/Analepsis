@@ -17,7 +17,7 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     [Header("Activity")]
     [SerializeField] private IActivityEvent m_pushEvent;
     [SerializeField] private EventChannel m_popEvent;
-
+    [SerializeField] private BoolEventChannel enableCursor;
     [Header("UI Setting")]
     [SerializeField] private TMP_InputField m_inputField;
     [SerializeField] private TMP_Text m_tipText;
@@ -123,6 +123,8 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     {
         if (m_panel == null) return;
         
+        m_pushEvent.Raise(this);
+        
         SetRandomTipForCurrentEvidence();
         m_background.SetActive(true);
         Tween.StopAll(m_panel.gameObject.transform);
@@ -163,6 +165,7 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     private async UniTask FoldPanel()
     {
         if (m_panel == null) return;
+        m_popEvent.Raise();
         Tween.StopAll(m_panel.gameObject.transform);
 
         var seq = Sequence.Create();
@@ -191,9 +194,12 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     public event Action OnResume;
     public event Action OnPause;
     public event Action OnStop;
-    
-    public void Resume() { }
-    public void Pause() { }
+
+    public void Resume()
+    {
+        enableCursor.Raise(true);
+    }
+    public void Pause() {  enableCursor.Raise(false);}
     public void Stop() { }
 
     public bool CanPopWithKey()

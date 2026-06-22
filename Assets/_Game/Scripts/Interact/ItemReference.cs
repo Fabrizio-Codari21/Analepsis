@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ItemReference : MonoBehaviour
@@ -9,6 +10,7 @@ public class ItemReference : MonoBehaviour
     private ITipProvider _tipProvider;
     private DynamicText _text;
     [SerializeField] private NoteEvent  noteEvent;
+    [SerializeField] private ItemEventChannel m_addItemEvent;
     
     private void Start()
     {
@@ -37,6 +39,7 @@ public class ItemReference : MonoBehaviour
     private void RecordItem()
     {
         noteEvent.Raise(new ItemNote($"Inspected {m_itemReference.Name}", m_itemReference));
+        m_addItemEvent.Raise(m_itemReference);
     }
     
     
@@ -44,10 +47,14 @@ public class ItemReference : MonoBehaviour
     {
         return m_itemReference;
     }
-    
-    
-    
-    
-    
+
+    private void OnDestroy()
+    {
+         _interact.OnFocus -= SpawnName;
+        _interact.OnUnfocus  -= DespawnName;
+        _interact.OnStart -= DespawnName;
+        _interact.OnStart -= RecordItem;
+        
+    }
 }
 

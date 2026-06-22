@@ -64,7 +64,6 @@ public class CharacterNotebookPage : NotebookPage
     {
         if (!newNpc) return;
         if (_instantiatedButtons.Contains(newNpc)) return;
-
         CreateButtonInstance(newNpc);
     }
 
@@ -76,4 +75,3 @@ public class CharacterNotebookPage : NotebookPage
         _instantiatedButtons.Add(npc);
     }
 }
-

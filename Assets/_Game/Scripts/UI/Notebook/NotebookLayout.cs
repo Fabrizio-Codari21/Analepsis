@@ -5,6 +5,7 @@ public  abstract class NotebookLayout : MonoBehaviour
     
     public int index;
 
+    public Sprite layoutIcon;
     public abstract void Initialize(Transform leftRoot, Transform rightRoot);
     public virtual void Show()
     {

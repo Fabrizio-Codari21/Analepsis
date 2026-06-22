@@ -39,6 +39,7 @@ public class NotebookRepresenter : MonoBehaviour,ITakeable
             m_controller.AddLayout(layout);   // Creo Layout
             
             var newButton = Instantiate(m_layoutButtonPrefab, m_buttonSwitchLayoutRoot);
+            newButton.SetImage(layout.layoutIcon);
             newButton.OnClick += () => m_controller.TryShowLayoutFor(layout);  // Crear button para swichtear a ese layout
         }
     }

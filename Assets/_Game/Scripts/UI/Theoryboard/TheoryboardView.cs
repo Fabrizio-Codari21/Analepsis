@@ -23,7 +23,8 @@ public class TheoryboardView : MonoBehaviour
     
     [Header("UI References (Roots)")]
     [Space(10)]
-    [SerializeField] private EvidenceDataSlots m_logBackpackSlot; 
+    [SerializeField] private EvidenceDataSlots m_logBackpackSlot;
+    [SerializeField] private EvidenceDataSlots m_itemSlots;
     [SerializeField] private CharacterSlot m_characterSlot;
     [ShowInInspector,ReadOnly]private int _currentCharacterIndex = 0;
     [ShowInInspector,ReadOnly]private readonly List<NpcIdentity> _cachedFoundCharacters = new List<NpcIdentity>();
@@ -110,6 +111,7 @@ public class TheoryboardView : MonoBehaviour
     {
         m_logBackpackSlot.ClearSlot(); 
         m_characterSlot.ClearSlot();
+        m_itemSlots.ClearSlot();
     }
 
     public void LoadMarkedClues() 
@@ -120,10 +122,21 @@ public class TheoryboardView : MonoBehaviour
         m_logBackpackSlot.ClearSlot();
         
         var allMarked = TheoryMarkingPanel.Instance.MarkedEvidences;
-        var markedLogs = allMarked.Where(e => e is DialogueFragmentNote).ToList();
-        if (markedLogs.Count <= 0) return;
+        var enumerable = allMarked.ToList();
+        var markedLogs = enumerable.Where(e => e is DialogueFragmentNote).ToList();
+        var markedItem = enumerable.Where(e => e is ItemEvidence) .ToList();
+        if (markedLogs.Count > 0)
+        {
+            
+            foreach (var log in markedLogs) m_logBackpackSlot.ReplaceData(log);
+        }
+
+        if (markedItem.Count > 0)
+        {
+            foreach (var item in markedItem) m_itemSlots.ReplaceData(item);
+        }
       
-        foreach (var log in markedLogs) m_logBackpackSlot.ReplaceData(log);
+        
         
     }
     

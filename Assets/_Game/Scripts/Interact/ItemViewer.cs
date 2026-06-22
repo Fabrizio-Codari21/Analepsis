@@ -13,7 +13,6 @@ public class ItemViewer : MonoBehaviour
             NotebookManager.Instance.UnlockPoi(m_item, poiId);
             var poiData = m_item.pois.Find(x => x.poiId == poiId);
             poiEventChannel.Raise(poiData.description);
-
         }
     }
 }

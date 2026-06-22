@@ -7,8 +7,7 @@ public class ItemPOI : POI
     public string poiId;
     private Renderer _renderer;
     private ItemViewer _viewer;
- 
-
+    
     private void Start()
     {
         _viewer = GetComponentInParent<ItemViewer>();

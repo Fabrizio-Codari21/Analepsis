@@ -412,7 +412,7 @@ public class ItemNote : Note
         guid = _item.guid;  
     }
 
-    public List<string> FullInfo()
+    private List<string> FullInfo()
     {
         List<string> fullContent = new List<string>();
         var unlockedDescriptions = NotebookManager.Instance.GetUnlockedPoiDescriptions(_item);
@@ -427,14 +427,7 @@ public class ItemNote : Note
         return fullContent;
     }
     
-
-    // public override  UniTask Show(NotebookRepresenter representer, CancellationToken token)
-    // {
-    //     // representer.CreateImage(_item.sprite);
-    //     //
-    //     //
-    //     // await representer.PlayText(FullInfo(), token);
-    // }
+ 
     public override string GetInfo() => FullInfo().AsString();
 }
 

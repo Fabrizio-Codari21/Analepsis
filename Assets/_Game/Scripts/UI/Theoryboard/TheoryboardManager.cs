@@ -12,7 +12,6 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     [Header("Core")]
     [SerializeField] private TheoryboardView m_view;
     [SerializeField] private BoardInputReader inputReaderBoard;
-    [SerializeField] private TheoryValidator m_validator;
     #region Event
     [Header("Events")]
     
@@ -34,13 +33,11 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     [SerializeField] private CaseResolution m_caseResolution;
     [Header("Data")]
     [ShowInInspector,ReadOnly] private List<TheorySlot> _cachedSlotsInScene = new List<TheorySlot>();
-   
     [Header("Text Base")] 
     [SerializeField, TextArea(3, 10)]
     private string m_baseTextOnTrySolver;
     [Header("Test Panel")]
     [SerializeField] private bool isInstaWin = false;
-    
     
 
     #region IActivity
@@ -100,7 +97,6 @@ public class TheoryboardManager : MonoBehaviour, IActivity
         m_openTheoryBoardChannel.OnEventRaised -= Open;
         inputReaderBoard.Close -= Close;
         m_solveCaseEvent.OnEventRaised -= SolveCase;
-        
     }
 
     #endregion
