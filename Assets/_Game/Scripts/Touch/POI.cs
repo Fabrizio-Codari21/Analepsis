@@ -7,6 +7,8 @@ public class POI : MonoBehaviour,ITouch
 {
     public event Action OnFocus;
     public event Action OnUnfocus;
+    public event Action<float> OnUpdateDistance;
+
     public virtual void Focus()
     {
     
@@ -21,5 +23,10 @@ public class POI : MonoBehaviour,ITouch
     public virtual void Touch()
     {
         Debug.Log("Touch");
+    }
+
+    public void UpdateDistance(float dist)
+    {
+        throw new NotImplementedException();
     }
 }

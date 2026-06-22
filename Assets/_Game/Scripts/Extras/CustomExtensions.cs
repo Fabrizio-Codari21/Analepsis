@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -294,6 +295,38 @@ public static class CustomExtensions
         }
         else return pluralize() ? irregularPlural : s;
     }
+
+    #endregion
+
+    #region VECTOR UTILITIES
+
+    // Para devolver un vector vacio con tu float como parametro o agregar ese float a un vector existente.
+    public static Vector3 AsX(this float x, Vector3 of = default)
+    {
+        if (of == default) of = Vector3.zero;
+        return new Vector3(x, of.y, of.z);
+    }
+    public static Vector3 AsY(this float y, Vector3 of = default)
+    {
+        if (of == default) of = Vector3.zero;
+        return new Vector3(of.x, y, of.z);
+    }
+    public static Vector3 AsZ(this float z, Vector3 of = default)
+    {
+        if (of == default) of = Vector3.zero;
+        return new Vector3(of.x, of.y, z);
+    }
+
+    // Para sumarle algo a un vector solo en un eje.
+    public static Vector3 PlusX(this Vector3 to, float x) => new Vector3((to.x + x), to.y, to.z);
+    public static Vector3 PlusY(this Vector3 to, float y) => new Vector3(to.x, (to.y + y), to.z);
+    public static Vector3 PlusZ(this Vector3 to, float z) => new Vector3(to.x, to.y, (to.z + z));
+
+    // Para multiplicar todos los valores de un vector.
+    public static Vector3 Times(this Vector3 a, Vector3 b) => new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
+
+    // Convierte Z a Y para cuando una cosa tiene los ejes cruzados.
+    public static Vector3 ZToY(this Vector3 a) => new Vector3(a.x, a.z, a.y);
 
     #endregion
 

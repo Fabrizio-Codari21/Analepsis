@@ -173,7 +173,8 @@ public sealed class DialogueResponseGraphNode : Node
                     0,
                     formatLabel, 
                     formatLabel  
-                );
+                )
+                { value = nodeCond.isTalkDialogueNode };
 
                 void UpdatePopupOptions()
                 {

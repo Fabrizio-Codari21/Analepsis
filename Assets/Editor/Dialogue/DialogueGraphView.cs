@@ -12,6 +12,7 @@ public sealed class DialogueGraphView : GraphView
     private Dictionary<DialogueResponse, DialogueResponseGraphNode> responseNodeMap = new();
     private DialogueSearchWindow searchWindow;
     private ConditionSearchWindow _sharedConditionSearchWindow;
+    private AltDialogueSearchWindow _sharedDialogueSearchWindow;
     private EditorWindow editorWindow;
     private bool isLoadingGraph;
     public event Func<bool> OnAddingNextNode = delegate { return default; };
@@ -61,6 +62,14 @@ public sealed class DialogueGraphView : GraphView
 
         _sharedConditionSearchWindow.Init(node);
         SearchWindow.Open(new SearchWindowContext(mousePos), _sharedConditionSearchWindow);
+    }
+    public void OpenAltDialogueSearchWindow(DialogueGraphNode node, Vector2 mousePos)
+    {
+        if (_sharedDialogueSearchWindow == null)
+            _sharedDialogueSearchWindow = ScriptableObject.CreateInstance<AltDialogueSearchWindow>();
+
+        _sharedDialogueSearchWindow.Init(node);
+        SearchWindow.Open(new SearchWindowContext(mousePos), _sharedDialogueSearchWindow);
     }
     private void DeleteSelectionCallback(string operationName, AskUser askUser)
     {
