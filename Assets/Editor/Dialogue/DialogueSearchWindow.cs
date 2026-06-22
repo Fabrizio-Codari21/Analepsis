@@ -161,11 +161,11 @@ public class AltDialogueSearchWindow : ScriptableObject, ISearchWindowProvider
         var tree = new List<SearchTreeEntry>
         {
             new SearchTreeGroupEntry(new GUIContent("Create an Alternative Dialogue"), 0),
-            new SearchTreeEntry(new GUIContent("New Alt Dialogue"))
-            {
-                level = 1,
-                userData = typeof(AltDialoguePath)
-            },
+            // new SearchTreeEntry(new GUIContent("New Alt Dialogue"))
+            // {
+            //     level = 1,
+            //     userData = typeof(AltDialoguePath)
+            // },
         };
         return tree;
     }
@@ -173,9 +173,9 @@ public class AltDialogueSearchWindow : ScriptableObject, ISearchWindowProvider
     public bool OnSelectEntry(SearchTreeEntry entry, SearchWindowContext context)
     {
         if (entry.userData is not System.Type type) return false;
-        var newAlt = (AltDialoguePath)System.Activator.CreateInstance(type);
-        _node.NodeData.altDialoguePaths.Add(newAlt);
-        _node.GenerateAltDialogueUI();
+        // var newAlt = (AltDialoguePath)System.Activator.CreateInstance(type);
+        // _node.NodeData.altDialoguePaths.Add(newAlt);
+        // _node.GenerateAltDialogueUI();
         return true;
     }
 }
