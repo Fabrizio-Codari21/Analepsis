@@ -131,21 +131,22 @@ public class DialogueView : MonoBehaviour
 
         if (isResponse) return; //por ahora hago que las respuestas del player no se puedan resaltar.
 
-        var b = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
-            m_recordButton, 
-            Vector3.zero, 
-            Quaternion.identity, 
-            t.transform);
+        //// descomentar cuando tengamos un proposito para el subrayado
+        //var b = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(
+        //    m_recordButton, 
+        //    Vector3.zero, 
+        //    Quaternion.identity, 
+        //    t.transform);
 
-        if (b.TryGetComponent<ImageSelector>(out var select)) 
-            select.SetSprite((int)(t.GetSize().y / m_dialogueTextSetting.size));
+        //if (b.TryGetComponent<ImageSelector>(out var select)) 
+        //    select.SetSprite((int)(t.GetSize().y / m_dialogueTextSetting.size));
 
-        b.SetFill(0f);
-        if (IsAlreadyRecorded.Invoke(content)) b.PlayImageFill(1f, color: new(0.55f,0.4f,0.5f,0.6f)).Forget();
-        b.AddListener(() =>
-        {            
-            RecordRequested?.Invoke(content, b);           
-        });
+        //b.SetFill(0f);
+        //if (IsAlreadyRecorded.Invoke(content)) b.PlayImageFill(1f, color: new(0.55f,0.4f,0.5f,0.6f)).Forget();
+        //b.AddListener(() =>
+        //{            
+        //    RecordRequested?.Invoke(content, b);           
+        //});
         
         
     }
