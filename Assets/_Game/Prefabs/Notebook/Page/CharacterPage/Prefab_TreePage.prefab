@@ -279,10 +279,15 @@ MonoBehaviour:
   zoomSpeed: 5
   minScale: 1
   maxScale: 5
+  zoomSmoothing: 10
   m_treeRoot: {fileID: 7233744284641288336}
   m_nodeButton: {fileID: 11400000, guid: 8fb7a69773db1294ab2c402736036fa2, type: 2}
   arrowImage: {fileID: 2345275029603621582, guid: e306ce7911138604088dc8d9573d7e67, type: 3}
-  angleOffset: 70
+  angleOffset: 60
+  m_arrowStepDistance: 50
+  spreadIntensity: 0.8
+  extraYDropIntensity: 0
+  arrowPadding: 60
   m_lockColor: {r: 0.4, g: 0, b: 0.1, a: 1}
   m_lockImage: {fileID: 5739135816376137315, guid: 03674bcbdfc06424fb8467817538f49f, type: 3}
   m_dynamicTextSetting: {fileID: 11400000, guid: b152a322092e3344587f1658f8b9e87a, type: 2}
@@ -294,6 +299,7 @@ MonoBehaviour:
   m_sentNoteToTheoryBoardEvent: {fileID: 11400000, guid: 6548c59b460c2404c95482bca179f721, type: 2}
   m_refreshTree: {fileID: 11400000, guid: ae85a3b4eaf4c5f4e92117dc5aa56a42, type: 2}
   m_checkIfMarked: {fileID: 11400000, guid: 59e993899d4328b4b9ac9dd105c28197, type: 2}
+  m_hoverDetector: {fileID: 6613459725941420495}
 --- !u!1 &4071706498315640437
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,6 +586,7 @@ GameObject:
   - component: {fileID: 3859153035091433452}
   - component: {fileID: 4447908961399410479}
   - component: {fileID: 2242134359759398809}
+  - component: {fileID: 6613459725941420495}
   m_Layer: 9
   m_Name: Viewport
   m_TagString: Untagged
@@ -658,6 +665,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!114 &6613459725941420495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8072878832347679178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcae524cdecd496e98a1b2e71cbcf610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8413432168651883848
 GameObject:
   m_ObjectHideFlags: 0

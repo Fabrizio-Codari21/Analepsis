@@ -463,6 +463,7 @@ public class TreeNode
   
 
     public bool IsLeaf => Children.Count == 0;
+    public RectTransform RuntimeRect { get; set; }
 
     public TreeNode(INode source,  bool isLocked = false)
     {

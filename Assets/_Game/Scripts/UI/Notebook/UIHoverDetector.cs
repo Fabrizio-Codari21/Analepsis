@@ -8,6 +8,7 @@ public class UIHoverDetector : MonoBehaviour,IPointerEnterHandler, IPointerExitH
     public void OnPointerEnter(PointerEventData eventData)
     {
         IsMouseHovering = true;
+        Debug.Log("OnPointerEnter");
     }
 
     public void OnPointerExit(PointerEventData eventData)
