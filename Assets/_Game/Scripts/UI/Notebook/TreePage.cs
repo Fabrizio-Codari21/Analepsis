@@ -17,6 +17,7 @@ public class TreePage : NotebookPage
     [SerializeField] private float minScale = 1f;
     [SerializeField] private float maxScale = 5f;
     [SerializeField] private float zoomSmoothing = 10f;
+
     [Header("UI REFERENCES")]
     [Space(5)]
     [Header("Button")]
@@ -51,6 +52,13 @@ public class TreePage : NotebookPage
     [SerializeField] private EventChannel m_refreshTree;
     [SerializeField] private Check m_checkIfMarked;
 
+    [Header("Hover Component")]
+    [SerializeField] private UIHoverDetector m_hoverDetector;
+
+
+    [SerializeField] private Vector3 centerPosition;
+    [SerializeField] private float centerScale = 1.0f;
+
     private DialogueNote _activeNote;
     private CancellationTokenSource _textCancellationTokenSource;
     private DynamicUIText _currentActiveText;
@@ -58,30 +66,10 @@ public class TreePage : NotebookPage
     private readonly List<IFlyweight> _spawnedFlyweights = new();
     private readonly List<ImageSelector> _arrow = new();
     private readonly List<Image> _images = new();
-    [SerializeField] private UIHoverDetector m_hoverDetector;
+    
     private float _currentScale = 1f;
     private float _targetScale = 1f;
-    private RectTransform _treeRootRect;
-    private RectTransform _viewportRect;
-    private Vector2 _firstNodeLocalPos = Vector2.zero;
-    
-    private void Awake()
-    {
-        if (m_treeRoot != null)
-        {
-            _treeRootRect = m_treeRoot as RectTransform;
-        }
 
-        if (m_scrollRect != null)
-        {
-            _viewportRect = m_scrollRect.viewport;
-            
-            if (_viewportRect == null)
-            {
-                _viewportRect = m_scrollRect.transform as RectTransform;
-            }
-        }
-    }
     private void Start()
     {
        m_onNpcSelected.OnEventRaised += ShowTreeFor;
@@ -90,10 +78,10 @@ public class TreePage : NotebookPage
 
     private void Update()
     {
-        if (!m_hoverDetector.IsMouseHovering) return;
+        if (m_hoverDetector == null || !m_hoverDetector.IsMouseHovering) return;
 
         HandleZoomToMouse();
-        HandleFocusToFirstNode();
+        Focus();
     }
     
     private void HandleZoomToMouse()
@@ -103,44 +91,63 @@ public class TreePage : NotebookPage
 
         if (Mathf.Abs(scrollInput) > 0.001f)
         {
-            
-            Debug.Log("<");
-            _targetScale += scrollInput * zoomSpeed;
+            _targetScale += scrollInput * zoomSpeed * Time.deltaTime;
             _targetScale = Mathf.Clamp(_targetScale, minScale, maxScale);
         }
-
-        if (_treeRootRect == null || _viewportRect == null) return;
-
         
-        Vector2 mousePosInScreen = Input.mousePosition;
-        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_treeRootRect, mousePosInScreen, null, out Vector2 mouseLocalBefore))
-            return;
+        Vector3 mouseWorldPosBefore = GetMouseWorldPosOnCanvas();
+        Vector3 mouseLocalPosBefore = m_treeRoot.InverseTransformPoint(mouseWorldPosBefore);
 
-   
-        float previousScale = _currentScale;
         _currentScale = Mathf.Lerp(_currentScale, _targetScale, Time.deltaTime * zoomSmoothing);
-        _treeRootRect.localScale = new Vector3(_currentScale, _currentScale, 1f);
+        m_treeRoot.localScale = new Vector3(_currentScale, _currentScale, 1f);
+        
+        Vector3 mouseWorldPosAfter = m_treeRoot.TransformPoint(mouseLocalPosBefore);
 
-       
-        Vector2 scaleRatioChange = mouseLocalBefore * (_currentScale - previousScale);
-        _treeRootRect.anchoredPosition -= scaleRatioChange;
+        Vector3 worldOffset = mouseWorldPosBefore - mouseWorldPosAfter;
+        Vector3 localOffset = m_treeRoot.parent.InverseTransformVector(worldOffset); 
+        
+        m_treeRoot.localPosition += localOffset;
     }
 
-    private void HandleFocusToFirstNode()
+    private void Focus()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            Debug.Log("FF");
-            if (_treeRootRect == null || _viewportRect == null) return;
-
-            
-            _targetScale = 1f;
-            _currentScale = 1f;
-            _treeRootRect.localScale = Vector3.one;
-            
-            _treeRootRect.anchoredPosition = -_firstNodeLocalPos;
+            ResetScrollAndScale();
         }
     }
+
+
+    private void ResetScrollAndScale()
+    {
+        if (m_treeRoot == null) return;
+
+
+        if (m_scrollRect != null)
+        {
+            m_scrollRect.StopMovement();
+        }
+
+      
+        m_treeRoot.localPosition = new Vector3(centerPosition.x, centerPosition.y, 0f);
+
+    
+        _targetScale = centerScale;
+        _currentScale = centerScale;
+        m_treeRoot.localScale = new Vector3(centerScale, centerScale, 1f);
+
+    }
+
+    private Vector3 GetMouseWorldPosOnCanvas()
+    {
+        RectTransform parentRect = m_treeRoot.GetComponent<RectTransform>();
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(parentRect, Input.mousePosition, Camera.main, out Vector3 worldPoint))
+        {
+            return worldPoint;
+        }
+        return m_treeRoot.position;
+    }
+
     private void OnDestroy()
     {
         m_onNpcSelected.OnEventRaised -= ShowTreeFor;
@@ -169,7 +176,8 @@ public class TreePage : NotebookPage
         if (runtimeRoot == null) return;
         
         ReingoldTilfordLayout.CalculatePositions(runtimeRoot);
-        _firstNodeLocalPos = new Vector2(runtimeRoot.X * baseHorizontalSpacing, 0f);
+        
+        
         
         SpawnNodesRecursively(runtimeRoot, 0);
 
@@ -177,14 +185,7 @@ public class TreePage : NotebookPage
         
         SpawnConnectionsRecursively(runtimeRoot);
         
-        if (_treeRootRect != null)
-        {
-            _targetScale = 1f;
-            _currentScale = 1f;
-            _treeRootRect.localScale = Vector3.one;
-            _treeRootRect.anchoredPosition = -_firstNodeLocalPos;
-        }
-        
+        ResetScrollAndScale();
     }
 
     private void SpawnNodesRecursively(TreeNode node, int level)
@@ -280,7 +281,6 @@ public class TreePage : NotebookPage
             parentHalfHeight = (node.RuntimeRect.rect.height * node.RuntimeRect.localScale.y) * 0.5f;
         }
    
-        // 【核心修复】：严格过滤子节点并按实际 X 坐标排序，确保排队座次 100% 正确
         var validChildren = node.Children
             .Where(c => c != null)
             .OrderBy(c => c.X)
@@ -310,16 +310,13 @@ public class TreePage : NotebookPage
                 t = Mathf.Lerp(-1f, 1f, normalize); 
             }
    
-            // 【下沉计算】：越靠近两侧（Abs(t)越大），起点越往下沉，利用面板配置的 extraYDropIntensity 控制
             float extraYDrop = Mathf.Abs(t) * extraYDropIntensity; 
    
-            // 起点：X轴依赖面板上的 spreadIntensity 均匀排开，Y轴加入下沉
             Vector2 arrowStartPos = parentCenter + new Vector2(
                 t * parentHalfWidth * spreadIntensity, 
                 -parentHalfHeight - extraYDrop
             );
    
-            // 终点：头顶对齐排开，拒绝死抠中心导致的交叉
             Vector2 arrowEndPos = childCenter + new Vector2(
                 t * childHalfWidth * spreadIntensity, 
                 childHalfHeight
@@ -341,7 +338,6 @@ public class TreePage : NotebookPage
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion arrowRotation = Quaternion.Euler(0f, 0f, angle - angleOffset);
        
-        // 使用面板上的 arrowPadding 控制缩进
         float walkableDistance = distance - (arrowPadding * 2f);
 
         if (walkableDistance <= 0)
