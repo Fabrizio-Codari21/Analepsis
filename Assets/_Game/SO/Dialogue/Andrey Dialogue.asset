@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueColor: {r: 0, g: 0, b: 0, a: 0}
   startingNode:
-    dialogueText: Hey there...
+    dialogueText: 'Humph... I assume Natalia gave you the key, huh?
+
+      Well,
+      I''m sorry to tell you that if you''re hungry, you''ll have to wait for dinner
+      just like every other guest.
+
+      So please, let me do my work.'
     characterEmotion: 1
     characterReaction: 1
     doesItProveAnything: 4
@@ -23,7 +29,7 @@ MonoBehaviour:
     - rid: 6774952466358992965
     - rid: 6774952466358992967
     isRootNode: 1
-    editorPosition: {x: -67.18002, y: 64.13759}
+    editorPosition: {x: 12, y: 192}
     altDialoguePath:
       altDialogue: 
       dialogueReference: {fileID: 0}
@@ -11264,7 +11270,7 @@ MonoBehaviour:
       Part4: 3749320976
     tag: 
   isNotClue: 0
-  _hiddenProof: 0400000003000000
+  _hiddenProof: 04000000
   references:
     version: 2
     RefIds:
@@ -11273,7 +11279,7 @@ MonoBehaviour:
     - rid: 767062219271962630
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Sheesh...
+        responseText: '[Sheesh...]'
         nextNode:
           rid: -2
         dialogueTopic: 
@@ -11283,7 +11289,7 @@ MonoBehaviour:
     - rid: 767062219271962631
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: Who's lying?
+        dialogueText: Heh.. Who's lying?
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -11292,7 +11298,7 @@ MonoBehaviour:
         - rid: 767062219271962632
         - rid: 767062219271962633
         isRootNode: 0
-        editorPosition: {x: 1028.7688, y: -28.920502}
+        editorPosition: {x: 1000, y: -73}
         altDialoguePath:
           altDialogue: 
           dialogueReference: {fileID: 0}
@@ -12452,7 +12458,7 @@ MonoBehaviour:
     - rid: 767062219271962632
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Oh, I am...
+        responseText: '[Oh, I am...]'
         nextNode:
           rid: 767062219271962638
         dialogueTopic: 
@@ -12462,13 +12468,13 @@ MonoBehaviour:
     - rid: 767062219271962633
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: That reporter, Alexandra.
+        responseText: '[That reporter, Alexandra.]'
         nextNode:
           rid: 767062219271962634
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 1324.9999, y: -103.63126}
+        editorPosition: {x: 1296, y: -104}
     - rid: 767062219271962634
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -13641,7 +13647,7 @@ MonoBehaviour:
     - rid: 767062219271962635
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: How so?
+        responseText: '[How so?]'
         nextNode:
           rid: 767062219271962636
         dialogueTopic: 
@@ -14820,7 +14826,7 @@ MonoBehaviour:
     - rid: 767062219271962637
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Huh, good to know...
+        responseText: '[Huh, good to know...]'
         nextNode:
           rid: -2
         dialogueTopic: 
@@ -15998,13 +16004,13 @@ MonoBehaviour:
     - rid: 767062219271962639
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: I thought the best way to access stuff would be to lie.
+        responseText: '[I thought the best way to access stuff would be to lie.]'
         nextNode:
           rid: 767062219271962640
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 1996, y: -385}
+        editorPosition: {x: 1985, y: -385}
     - rid: 767062219271962640
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -17178,7 +17184,7 @@ MonoBehaviour:
     - rid: 767062219271962641
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Are you keen on lying?
+        responseText: '[Are you keen on lying?]'
         nextNode:
           rid: 767062219271962642
         dialogueTopic: 
@@ -18356,7 +18362,7 @@ MonoBehaviour:
     - rid: 767062219271962643
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Sorry...
+        responseText: '[Sorry...]'
         nextNode:
           rid: -2
         dialogueTopic: 
@@ -18366,23 +18372,23 @@ MonoBehaviour:
     - rid: 6774952466358992965
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: I heard you're a great cook.
+        responseText: '[I heard you''re a great cook.]'
         nextNode:
           rid: 767062219271962631
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 743.7688, y: -28.920502}
+        editorPosition: {x: 691, y: -29}
     - rid: 6774952466358992967
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Hey, you seem tense.
+        responseText: '[Hey, you seem tense.]'
         nextNode:
           rid: 6774952466358992969
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 750.5502, y: 453.00006}
+        editorPosition: {x: 752, y: 453}
     - rid: 6774952466358992969
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -19556,7 +19562,7 @@ MonoBehaviour:
     - rid: 6774952466358992970
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: So you were a troop?
+        responseText: '[So you were a troop?]'
         nextNode:
           rid: 6774952466358992975
         dialogueTopic: 
@@ -19566,7 +19572,7 @@ MonoBehaviour:
     - rid: 6774952466358992971
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Thank you for your service.
+        responseText: '[Thank you for your service.]'
         nextNode:
           rid: 6774952466358992972
         dialogueTopic: 
@@ -20744,7 +20750,7 @@ MonoBehaviour:
     - rid: 6774952466358992973
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Sorry...
+        responseText: '[Sorry...]'
         nextNode:
           rid: -2
         dialogueTopic: 
@@ -21925,7 +21931,7 @@ MonoBehaviour:
     - rid: 6774952466358992976
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Charming fellow, aren't ya!
+        responseText: '[Charming fellow, aren''t ya!]'
         nextNode:
           rid: 6774952466358992979
         dialogueTopic: 
@@ -21935,7 +21941,7 @@ MonoBehaviour:
     - rid: 6774952466358992977
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: You... killed people?
+        responseText: '[You... killed people?]'
         nextNode:
           rid: 6774952466358992978
         dialogueTopic: 
@@ -24285,7 +24291,7 @@ MonoBehaviour:
     - rid: 6774952466358992980
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: What were you discharged for?
+        responseText: '[What were you discharged for?]'
         nextNode:
           rid: 6774952466358992982
         dialogueTopic: 
@@ -25474,7 +25480,7 @@ MonoBehaviour:
     - rid: 6774952466358992983
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: Crazy indeed, bye...
+        responseText: '[Crazy indeed, bye...]'
         nextNode:
           rid: -2
         dialogueTopic: 
