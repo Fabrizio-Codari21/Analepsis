@@ -19,12 +19,15 @@ public class NotebookRepresenter : MonoBehaviour,ITakeable
     [SerializeField] private Transform m_rightRoot;
     [SerializeField] private Transform m_buttonSwitchLayoutRoot;
    
+    [SerializeField] private Animator m_animator;
     
     [Header("Layout")]
     [SerializeField] private List<NotebookLayout> m_allLayout;
     
     [Header("UI Setting")]
     [SerializeField] private NotebookButton m_layoutButtonPrefab;
+    
+    private const string Open = "Hand_Open";  
     public void Initialize(NotebookManager controller)
     {
         m_controller = controller;
@@ -50,7 +53,8 @@ public class NotebookRepresenter : MonoBehaviour,ITakeable
     {
         transform.SetParent(takeRoot,false);
         gameObject.SetActive(true);
-        
+        m_animator.CrossFade(Open, 0.2f);
+
     }
     
     public void Release()
