@@ -16,7 +16,7 @@ public class Tip
 public enum TipOrder
 {
     Name,
-    InteractionType,
     ActionCost,
+    InteractionType,
     
 }
