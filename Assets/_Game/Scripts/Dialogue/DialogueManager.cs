@@ -251,10 +251,10 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         if (response.nextNode == null)
         {
             await m_dialogueView.UnfoldDialogue(
-                false, 
-                _currentDialoguer.ID.makesEyeContact,
-                _currentDialoguer.LookAt, 
-                _currentDialoguer.Player);
+                false,
+                _currentDialoguer.ID ? _currentDialoguer.ID.makesEyeContact : true,
+                _currentDialoguer.LookAt ?? default,
+                _currentDialoguer.Player ?? default);
 
             EndDialogue(response.HasTopic(out _topic));
             return;
@@ -278,7 +278,7 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
 
         if (response.nextNode != null)
         {
-            PlayDialogueNode(response.nextNode).Forget();
+            PlayDialogueNode(response.nextNode.SelectAltDialogue()).Forget();
         }
         else
         {

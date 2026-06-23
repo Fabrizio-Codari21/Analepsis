@@ -18,7 +18,6 @@ public class DialogueNode : INode
     [SerializeReference] public List<DialogueResponse> responses;
     public bool isRootNode = true;
     [HideInInspector] public Vector2 editorPosition;
-    [ShowIf("isRootNode")] public AltDialoguePath altDialoguePath;
     [SerializeReference] public List<AltDialoguePath> altDialoguePaths = new List<AltDialoguePath>();
 
     [Header("ID")]
@@ -55,7 +54,6 @@ public interface INode {}
 public class AltDialoguePath
 {
     [TextArea(0, 20)] public string altDialogue;
-    public Dialogue dialogueReference; //placeholder, esto despues se tendria que cambiar.
     public DialogueNode condition;
     public DialogueNode skipTo;
 }
