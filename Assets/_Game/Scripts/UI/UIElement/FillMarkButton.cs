@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class FillMarkButton : ButtonFactoryObject
 {
-    [SerializeField] protected Image m_buttonImage;  
+    [SerializeField] protected Image m_buttonImage; 
     public async UniTask PlayImageFill(float fill,float duration = 0.5f, Color color = default)
     {
         if (m_buttonImage == null) return;
@@ -15,4 +15,10 @@ public class FillMarkButton : ButtonFactoryObject
         _ = seq.Group(Tween.UIFillAmount(m_buttonImage, fill, duration, Ease.OutQuint));
         await seq;
     }
+
+
+    public void SetFill(bool fill = true) =>  m_buttonImage.fillAmount = fill ? 1 : 0;
+    
+    
+    
 }

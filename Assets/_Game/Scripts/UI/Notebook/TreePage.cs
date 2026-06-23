@@ -70,10 +70,12 @@ public class TreePage : NotebookPage
     private float _currentScale = 1f;
     private float _targetScale = 1f;
 
-    private void Start()
+    private void Awake()
     {
+        Debug.Log("TreePage Awake");
        m_onNpcSelected.OnEventRaised += ShowTreeFor;
        m_refreshTree.OnEventRaised += RefreshTree;
+       
     }
 
     private void Update()
@@ -157,15 +159,19 @@ public class TreePage : NotebookPage
     private void ShowTreeFor(NpcIdentity npcIdentity)
     {
         DespawnUI();
+
         var npcTrees = NotebookManager.Instance.GetDialoguesFor(npcIdentity);
+
         if (npcTrees is { Count: > 0 })
         {
-            BuildTree(npcTrees[0]).Forget();
+            _activeNote = npcTrees[0];
+
+            BuildTree(_activeNote).Forget();
         }
     }
-
     private async UniTask BuildTree(DialogueNote dialogueNote) 
     {
+        Debug.Log($"BuildTree Start: {dialogueNote}");
         if (dialogueNote == null || !dialogueNote.GetFullDialogue()) return;
         _activeNote = dialogueNote;
 
@@ -176,7 +182,6 @@ public class TreePage : NotebookPage
         if (runtimeRoot == null) return;
         
         ReingoldTilfordLayout.CalculatePositions(runtimeRoot);
-        
         
         
         SpawnNodesRecursively(runtimeRoot, 0);
@@ -392,7 +397,7 @@ public class TreePage : NotebookPage
 
     private void RefreshTree()
     {
-        if (_activeNote == null) return;
+        
         DespawnUI();
         BuildTree(_activeNote).Forget();
     }

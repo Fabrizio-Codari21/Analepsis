@@ -14,6 +14,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private NoteBookInputReader inputReaderNoteBook;
     [SerializeField] private IActivityEvent pushEvent;
     [SerializeField] private EventChannel popEvent;
+    
     #endregion
     
     #region Event
@@ -29,6 +30,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     #region General
     [SerializeField] private NotebookRepresenter representer;
     [ReadOnly,ShowInInspector] private PageType _currentPageType;
+    [SerializeField] private NpcEvent m_onCharacterSelected;
     
     #endregion
     
@@ -63,8 +65,15 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     
     public void AddCharacter(NpcIdentity npc)
     {
-        if (!FoundCharacters.Add(npc)) return;
+        bool isFirstCharacter = FoundCharacters.Count == 0;
+
+        if (!FoundCharacters.Add(npc))
+            return;
+
         m_onNpcFound?.Raise(npc);
+
+        if (isFirstCharacter)
+            m_onCharacterSelected?.Raise(npc);
     }
     
     public List<DialogueNote> GetDialoguesFor(NpcIdentity npcIdentity)  // Save Data
@@ -89,8 +98,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
  
     private void Start()
     {
-      
-       
+        
         inputReaderNoteBook.Close += Close;
         note.OnEventRaised += Record;
         m_openNotebookChannel.OnEventRaised += Open;
@@ -146,8 +154,6 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         AudioManager.Instance.SelectSFX(SFXType.Player, "Open");
         takeOutNotebookChannel.Raise(representer);
         ShowLayout(0);
-        
-        m_refreshTree?.Raise();
         
     }
 

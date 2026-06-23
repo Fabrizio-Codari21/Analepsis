@@ -107,6 +107,7 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
         if (_possibleEvidenceMarked.Contains(evidence.guid))
         {
             _possibleEvidenceMarked.Remove(evidence.guid);
+            m_refreshData?.Raise();
         }
         else
         {

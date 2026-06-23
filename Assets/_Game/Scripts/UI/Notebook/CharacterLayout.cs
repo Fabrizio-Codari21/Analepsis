@@ -43,7 +43,7 @@ public class CharacterLayout : NotebookLayout
         _rightEmptyPage.Hide();
     }
     
-    private void Start()
+    private void Awake()
     {
         m_onNpcFound.OnEventRaised += AddNewCharacter;
         m_onCharacterSelected.OnEventRaised += TrackLastSelected;
@@ -81,7 +81,7 @@ public class CharacterLayout : NotebookLayout
       
         if (NotebookManager.Instance != null)
         {
-            foreach (var npc in NotebookManager.Instance.FoundCharacters.Where(npc => npc != null && !_indexMap.ContainsKey(npc)))  // este es una defensa por la duda
+            foreach (var npc in NotebookManager.Instance.FoundCharacters.Where(npc => npc != null && !_indexMap.ContainsKey(npc)))  
             {
                 m_characters.Add(npc);
                 _indexMap.Add(npc, m_characters.Count - 1);

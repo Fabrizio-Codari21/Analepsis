@@ -3,13 +3,15 @@ using UnityEngine;
 
 public abstract class FactoryObject : MonoBehaviour, IFlyweight
 {
-    
+    public Action OnCleanUp;
     public virtual void OnSpawn()
     {
         gameObject.SetActive(true);  
     }
     public virtual void Despawn()
     {
+        OnCleanUp?.Invoke();
+        OnCleanUp = null;
         gameObject.SetActive(false);
     }
     public virtual void Free()

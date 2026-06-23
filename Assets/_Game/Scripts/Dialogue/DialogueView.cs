@@ -27,6 +27,8 @@ public class DialogueView : MonoBehaviour
     [SerializeField] private Check m_checkEvidence;
     [SerializeField] private EvidenceEvent m_evidenceEvent;
     [SerializeField] private Transform m_root;
+
+    [SerializeField] private EventChannel m_refreshData;
     
 
     private void Start()
@@ -172,28 +174,33 @@ public class DialogueView : MonoBehaviour
 
         if (b.TryGetComponent<ImageSelector>(out var select)) select.SetSprite((int)(t.GetSize().y / m_dialogueTextSetting.size));
 
+        bool isMarked = m_checkEvidence.Request(node.guid);
+        void RefreshVisual()
+        {
+            bool result = m_checkEvidence.Request(node.guid);
+            b.PlayImageFill(result ? 1 : 0).Forget();
+        }
+        b.SetFill(isMarked);
+        
+        if (m_refreshData != null)
+        {
+            m_refreshData.OnEventRaised += RefreshVisual;
 
-        var contain = m_checkEvidence.Request(node.guid);
-        select.SetFill(contain ? 1 : 0);
+            b.OnCleanUp += () =>
+            {
+                m_refreshData.OnEventRaised -= RefreshVisual;
+            };
+        }
 
         b.AddListener(() =>
         {
-            var has = m_checkEvidence.Request(node.guid);
-            
             string defaultName = node.PreviousResponse != null ? node.PreviousResponse.responseText : "Beginning";
-
             var fragmentEvidenceToMark = EvidenceDataBase.Instance.GetOrCreate(node.guid, () => new DialogueFragmentNote(defaultName, node.guid, node.doesItProveAnything, node));
-            if (has)
-            {
-                b.PlayImageFill(0).Forget();
-                m_evidenceEvent.Raise(fragmentEvidenceToMark);
-            }
-            else
-            {
-                b.PlayImageFill(1).Forget();
-                m_evidenceEvent.Raise(fragmentEvidenceToMark);
-            }
+            
+            m_evidenceEvent.Raise(fragmentEvidenceToMark);
         });
+        
+        
         
         
     }
