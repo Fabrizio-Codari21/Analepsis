@@ -186,15 +186,23 @@ public sealed class DialogueGraphNode : Node
         }
         else
         {
-            // Para evitar complicaciones, hice que los dialogos alternativos solo se puedan asignar
-            // al nodo inicial por ahora.
-            altDialogueFoldOut = new Foldout()
-            {
-                text = "Could this dialogue change?",
-                value = false,
-            };
-            GenerateAltDialogueUI();
+            // Para evitar complicaciones, podemos hacer que los dialogos alternativos solo se puedan
+            // asignar al nodo inicial.
+            //altDialogueFoldOut = new Foldout()
+            //{
+            //    text = "Could this dialogue change?",
+            //    value = false,
+            //};
+            //GenerateAltDialogueUI();
+
         }
+
+        altDialogueFoldOut = new Foldout()
+        {
+            text = "Could this dialogue change?",
+            value = false,
+        };
+        GenerateAltDialogueUI();
 
         extensionContainer.Add(nodeFoldOut);
 
