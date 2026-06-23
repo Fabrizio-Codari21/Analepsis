@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using PrimeTween;
-using System.Linq;
 using Sirenix.OdinInspector;
 
 [RequireComponent(typeof(BoxCollider))]
@@ -15,7 +14,6 @@ public class Door : MonoBehaviour
     public LockState overrideLock;
 
     
-
     [ValueDropdown(nameof(GetClueDropdownOptions))]
     [SerializeReference] 
     public IClueHolder requiredClue; 
