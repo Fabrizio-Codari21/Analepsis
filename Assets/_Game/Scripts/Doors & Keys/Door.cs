@@ -1,17 +1,48 @@
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using PrimeTween;
 using System.Linq;
+using Sirenix.OdinInspector;
 
 [RequireComponent(typeof(BoxCollider))]
 public class Door : MonoBehaviour
 {
-    public IClue requiredToOpen;
     public Collider doorObject;
     public float openingDegrees, openingDuration, closedShakeIntensity;
     public Vector2 interactRange;
     public LockState overrideLock;
+
+    
+
+    [ValueDropdown(nameof(GetClueDropdownOptions))]
+    [SerializeReference] 
+    public IClueHolder requiredClue; 
+    
+#if UNITY_EDITOR
+    
+    private IEnumerable<ValueDropdownItem<IClueHolder>> GetClueDropdownOptions()
+    {
+        var dropdownList = new List<ValueDropdownItem<IClueHolder>>();
+        
+        var allClues = ClueProvider.GetAvailableClues();
+
+        foreach (var clueItem in allClues)
+        {
+            string menuPath = clueItem.Text;
+            IClue clueValue = clueItem.Value;
+            
+            Type targetType = clueValue.GetType();
+            Type holderGenericType = typeof(ClueHolder<>).MakeGenericType(targetType);
+            IClueHolder wrapperInstance = (IClueHolder)Activator.CreateInstance(holderGenericType, clueValue);
+            
+            dropdownList.Add(new ValueDropdownItem<IClueHolder>(menuPath, wrapperInstance));
+        }
+
+        return dropdownList;
+    }
+#endif
 
 
     BoxCollider _col;
@@ -22,35 +53,30 @@ public class Door : MonoBehaviour
         _col.size = new Vector3(interactRange.x, doorObject.transform.localScale.y, interactRange.y);
     }
 
-    void Update()
-    {
-        
-    }
 
     // Por ahora, si no tiene llave o si llegaste a ver el flashback de la llave (es decir que
     // analizaste el objeto por completo) te deja desbloquear la puerta.
     private void OnTriggerEnter(Collider collider)
     {
-        _ = ToggleDoor(true, CheckKey(requiredToOpen));
+        _ = ToggleDoor(true, CheckKey(requiredClue.GetClue()));
     }
     private void OnTriggerExit(Collider other)
     {
         _ = ToggleDoor(false);
     }
 
-    public bool CheckKey(IClue clue)
+    private bool CheckKey(IClue clue)
     {
-        if(clue == null) return true;
 
         if (clue is Item)
         {
-            var c = (Item)clue;
-            return c.keyInfo.isKey &&
-            NotebookManager.Instance.GetItemFlashbackInfo(c) != string.Empty;
-        }            
-        // else if (clue is Dialogue)
-        //     return NotebookManager.Instance.StartedDialogues.Any(x => x.GetFullDialogue() == clue && x.IsKey());
-        // else return false;
+            return NotebookManager.Instance.CheckNote(clue.CompareGuid());
+        }
+
+        if (clue is DialogueNode)
+        {
+            return DialogueManager.Instance.CheckDialogue(clue.CompareGuid());
+        }
 
         return true;
     }
