@@ -9,7 +9,7 @@ using System.Collections.Generic;
 public class Door : MonoBehaviour, IInteractable, IConditionCheck
 {
     public Clue requiredToOpen;
-    public Collider doorObject;
+    public BoxCollider doorObject;
     public float openingDegrees, openingDuration, closedShakeIntensity;
     public Vector2 proximityRange;
     public bool openIfRightNextToDoor;
@@ -17,16 +17,15 @@ public class Door : MonoBehaviour, IInteractable, IConditionCheck
     public Tip openTip { get; private set; } = new Tip($"Open?", TipOrder.InteractionType);
     public Tip closeTip { get; private set; } = new Tip($"This door seems to be closed...", TipOrder.InteractionType);
 
-    BoxCollider _col, _doorCol;
+    BoxCollider _col;
     ITipProvider _tp;
     Vector3 NormalDoorColSize 
-        => _doorCol.size.ZToY().PlusZ(_doorCol.size.y * 0.25f).Times(_doorCol.gameObject.transform.localScale * 1.1f);
+        => doorObject.size.ZToY().PlusZ(doorObject.size.y * 0.25f).Times(doorObject.gameObject.transform.localScale * 1.1f);
 
     void Start()
     {
         _col = GetComponent<BoxCollider>();
         _col.isTrigger = true;
-        _doorCol = doorObject as BoxCollider;
         _col.size = NormalDoorColSize;
 
         if (TryGetComponent<ITipProvider>(out _tp)) 
