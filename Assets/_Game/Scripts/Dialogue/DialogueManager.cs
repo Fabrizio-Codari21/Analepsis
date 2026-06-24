@@ -113,7 +113,14 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
             dialogable.Dialogue.startingNode.PreviousResponse = null;
         }
 
-        await PlayDialogueNode(dialogable.Dialogue.startingNode);
+        if (dialogable.Dialogue != null && dialogable.Dialogue.startingNode != null)
+        {
+            await PlayDialogueNode(dialogable.Dialogue.startingNode.SelectAltDialogue());
+        }
+        else
+        {
+            await PlayDialogueNode(null);
+        }
 
     }
 
@@ -263,10 +270,10 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
             await UniTask.Delay(TimeSpan.FromSeconds(0.5f), cancellationToken: token);
         }
         catch (OperationCanceledException) { }
-
+       
         if (response.nextNode != null)
         {
-            PlayDialogueNode(response.nextNode).Forget();
+            PlayDialogueNode(response.nextNode.SelectAltDialogue()).Forget();
         }
         else
         {

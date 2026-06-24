@@ -31,7 +31,7 @@ MonoBehaviour:
     responses:
     - rid: 6774952781063389258
     isRootNode: 1
-    editorPosition: {x: 373.04575, y: 67.000015}
+    editorPosition: {x: 115, y: 67}
     guid:
       Part1: 801923639
       Part2: 1285914272
@@ -41,56 +41,41 @@ MonoBehaviour:
     altDialoguePaths:
     - rid: 3046478936985567327
   allNodes:
-  - dialogueText: Greetings! Welcome the our hotel, what can I do for you?
+  - dialogueText: Greetings! Welcome to our humble hotel, what can I do for you?
     characterEmotion: 4
-    characterReaction: 0
+    characterReaction: 2
     doesItProveAnything: 4
     isKey: 0
     responses:
-    - rid: 6774952781063389253
     - rid: 6774952781063389258
-    - rid: 6774952781063389268
-    - rid: 6774952781063389292
     isRootNode: 1
-    editorPosition: {x: 276, y: 166}
+    editorPosition: {x: 115, y: 67}
     guid:
       Part1: 801923639
       Part2: 1285914272
       Part3: 169959312
       Part4: 2761389138
     tag: 
-    altDialoguePaths: []
-  - dialogueText: Thats odd... There's not much stuff to do around here
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 6774952781063389257
-    - rid: 6774952781063389284
-    isRootNode: 0
-    editorPosition: {x: 1253, y: -408.24}
-    guid:
-      Part1: 2982223139
-      Part2: 1084376014
-      Part3: 4077460102
-      Part4: 2544384999
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: 'Fantastic! You can find your very own room number 2 upstairs,
-      quite near our beautiful, temporarelly in reparations, sauna!
+    altDialoguePaths:
+    - rid: 3046478936985567327
+  - dialogueText: 'Why, thank you for choosing us, sir! It''s great to see people
+      come in instead of passing by, for once.
 
-      Dinner
-      will be served at 7pm'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
+      You can find your very own
+      room no. 2 upstairs, quite near our beautiful, temporarily in reparations,
+      sauna!
+
+      Dinner will be served at 7pm, so please make yourself at home.'
+    characterEmotion: 4
+    characterReaction: 2
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 6774952781063389260
     - rid: 6774952781063389261
+    - rid: 3046478936985567324
     isRootNode: 0
-    editorPosition: {x: 1253, y: -51.23999}
+    editorPosition: {x: 1199, y: 67}
     guid:
       Part1: 4028658863
       Part2: 1280522940
@@ -98,34 +83,21 @@ MonoBehaviour:
       Part4: 985772993
     tag: 
     altDialoguePaths: []
-  - dialogueText: "Oh, a few guests went in and decided to have too much fun! Ha-ha!
-      \nDon't worry, they won't be invited again. We'll repair it as soon as we find
-      the keys"
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 6774952781063389265
-    isRootNode: 0
-    editorPosition: {x: 2591, y: 152.76001}
-    guid:
-      Part1: 1012819177
-      Part2: 1162638506
-      Part3: 3147358645
-      Part4: 705986296
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: I bet you'll be delighted. Our chef, Andrey, is such a fantastic
-      cook, I just hope the pressure doesn't... agitate him...
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
+  - dialogueText: 'Oh, I''m so glad to hear!
+
+      You know... our chef, Andrey,
+      hasn''t been feeling the best lately, and those news would <b>really</b> cheer
+      him up.
+
+      Would you mind telling him?'
+    characterEmotion: 4
+    characterReaction: 6
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 6774952781063389264
     isRootNode: 0
-    editorPosition: {x: 2591, y: -51.23999}
+    editorPosition: {x: 2390, y: 138}
     guid:
       Part1: 3035836761
       Part2: 1265355892
@@ -133,274 +105,41 @@ MonoBehaviour:
       Part4: 4244752949
     tag: 
     altDialoguePaths: []
-  - dialogueText: 'Oh you haven''t heard? We have some top tier guests this evening!
+  - dialogueText: 'There, I''ve opened up the kitchen: it''s right next to the dining
+      room behind me.
 
-      Oleg,
-      a politician in the midst of his campaign and Aleksei, a once quite popular
-      artist'
+      Go right ahead and tell him.'
     characterEmotion: 0
     characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 6774952781063389267
-    isRootNode: 0
-    editorPosition: {x: 3681, y: -408.24}
-    guid:
-      Part1: 722697724
-      Part2: 1280739601
-      Part3: 1576957063
-      Part4: 1757867502
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: 'Right! He''s this pretty famous artist.
-
-      Or at least he
-      was...
-
-      Now that I think of it I haven''t heard of any new paintings
-      of his in a while.
-
-      Maybe he got demotivated after that publication'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 6774952781063389286
-    - rid: 6774952781063389287
-    isRootNode: 0
-    editorPosition: {x: 1179, y: 356.99997}
-    guid:
-      Part1: 2555944989
-      Part2: 1144976354
-      Part3: 2709672358
-      Part4: 1246743225
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: 'Well, yes! But as of late the hotel has been getting more guests
-      than usual!
-
-      And by "as of late" I do mean today...
-
-      And by "usual"
-      I do mean zero...'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses: []
-    isRootNode: 0
-    editorPosition: {x: 2260.996, y: -407.99994}
-    guid:
-      Part1: 3514762631
-      Part2: 1103566297
-      Part3: 3602503331
-      Part4: 1515332628
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: Oh, I'd just hate to gossip!
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 6774952781063389288
-    isRootNode: 0
-    editorPosition: {x: 1962, y: 357}
-    guid:
-      Part1: 2145143534
-      Part2: 1212596299
-      Part3: 2942565505
-      Part4: 1884612623
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: 'Ok, fine I''ll tell you!
-
-      Some reporter started spreading
-      rumores about him being a sexual deviant! Gasp!
-
-      And a homosexual one
-      at that!'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 6774952781063389293
-    isRootNode: 0
-    editorPosition: {x: 2456, y: 357}
-    guid:
-      Part1: 3269285805
-      Part2: 1082998990
-      Part3: 3938144144
-      Part4: 2440207961
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: 'Not that I''ve heard, and you know how much I hate to gossip.
-
-      Why''d
-      you say so?'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 6774952781063389294
-    isRootNode: 0
-    editorPosition: {x: 2062, y: 567}
-    guid:
-      Part1: 1835650083
-      Part2: 1116989002
-      Part3: 330040960
-      Part4: 909379228
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: 'Oh let me guess, Oleg is jelous that Aleksei is getting the largest
-      room, right?
-
-      I knew it, I knew it, I knew it!
-
-      I knew I had to
-      find a way to make Aleksei liberate that room, there are hirearchies, you know?
-
-      What
-      will people say about my hotel if I can''t even give the best room to my most
-      distinguished guest!'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 6774952781063389295
-    isRootNode: 0
-    editorPosition: {x: 2919, y: 567}
-    guid:
-      Part1: 1748450147
-      Part2: 1172831568
-      Part3: 623996333
-      Part4: 1959634253
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: 'Normally I would deny entry to such queer folk
-
-      But, you
-      have admit, the man is talented
-
-      Oh how I dream of him making a painting
-      with this hotel for all the world to see...'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 6774952781063389296
-    isRootNode: 0
-    editorPosition: {x: 3244, y: 357}
-    guid:
-      Part1: 3588371253
-      Part2: 1297772373
-      Part3: 2993961088
-      Part4: 2788573545
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: 'Haven''t you heard?
-
-      He''s this up and coming politician,
-      quite the contentious person'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 6774952781063389303
-    isRootNode: 0
-    editorPosition: {x: 1211.2875, y: 771}
-    guid:
-      Part1: 221279732
-      Part2: 1220487631
-      Part3: 2312350385
-      Part4: 2414502260
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: 'Yeah, I''m not one to gossip, but it seems the governent isn''t
-      very fond of him.
-
-      As for me, I quite like having a prestigue guest,
-      I wonder what made him choose us...'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 6774952781063389316
-    isRootNode: 0
-    editorPosition: {x: 1924, y: 771}
-    guid:
-      Part1: 1928340226
-      Part2: 1170109666
-      Part3: 1316327562
-      Part4: 260398614
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: 'Oh, I''m so glad to hear!
-
-      You know, Andrey hasn''t been
-      feeling the best lately and that news would really cheer him up.
-
-      Would
-      you mind telling him?'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 6774952781063389318
-    isRootNode: 0
-    editorPosition: {x: 1204, y: 1048}
-    guid:
-      Part1: 308867213
-      Part2: 1320209817
-      Part3: 3588333485
-      Part4: 1335350961
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: 'There, I''ve opened up the kitchen.
-
-      Go right ahead and
-      tell him.'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
+    doesItProveAnything: 0
     isKey: 1
-    responses: []
-    isRootNode: 0
-    editorPosition: {x: 2048, y: 1048}
-    guid:
-      Part1: 2583858688
-      Part2: 1244362920
-      Part3: 3981891749
-      Part4: 731673015
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: 'Oh you haven''t heard? We have some top tier guests this evening!
-
-      Oleg,
-      a politician in the midst of his campaign and Aleksei, a once quite popular
-      artist.'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
     responses:
     - rid: 1630672535616487501
     isRootNode: 0
-    editorPosition: {x: 3658, y: -50}
+    editorPosition: {x: 3512, y: 32.99991}
     guid:
       Part1: 2805659445
       Part2: 1183585811
       Part3: 1197842849
       Part4: 3398019176
+    tag: 
+    altDialoguePaths: []
+  - dialogueText: "Oh, a few guests went in and decided to have too much fun! Ha-ha!
+      \nDon't worry, they won't be invited again. We'll repair it as soon as we find
+      the keys.\nPlease, let me know if you find them somewhere around here."
+    characterEmotion: 4
+    characterReaction: 2
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 6774952781063389265
+    isRootNode: 0
+    editorPosition: {x: 2429, y: 357.5}
+    guid:
+      Part1: 1012819177
+      Part2: 1162638506
+      Part3: 3147358645
+      Part4: 705986296
     tag: 
     altDialoguePaths: []
   - dialogueText: 'Well, yes! But as of late the hotel has been getting more guests
@@ -413,14 +152,14 @@ MonoBehaviour:
 
       But I knew this would all turn around one day! And
       now we''ve got some real VIP guests blessing us with their presence.'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
+    characterEmotion: 1
+    characterReaction: 6
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 3046478936985567307
     isRootNode: 0
-    editorPosition: {x: 2388, y: -153.99998}
+    editorPosition: {x: 2277.4006, y: -359.09998}
     guid:
       Part1: 1905733868
       Part2: 1129004607
@@ -433,15 +172,15 @@ MonoBehaviour:
       Oleg,
       a politician in the midst of his campaign and Aleksei, a once quite popular
       artist.'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
+    characterEmotion: 4
+    characterReaction: 2
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 3046478936985567308
     - rid: 3046478936985567309
     isRootNode: 0
-    editorPosition: {x: 3475.2947, y: -154}
+    editorPosition: {x: 3460.8672, y: -228.50003}
     guid:
       Part1: 4209125068
       Part2: 1305821517
@@ -459,40 +198,19 @@ MonoBehaviour:
 
       I''m not one to gossip, but maybe he got demotivated
       after that one article...'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
+    characterEmotion: 4
+    characterReaction: 2
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 3046478936985567310
     isRootNode: 0
-    editorPosition: {x: 4447.0376, y: -329.00003}
+    editorPosition: {x: 4444.6, y: -360.45}
     guid:
       Part1: 1261033585
       Part2: 1109877559
       Part3: 523396775
       Part4: 3925866868
-    tag: 
-    altDialoguePaths: []
-  - dialogueText: 'He''s this up and coming politician, quite the contentious person.
-      I''m not one to gossip, but it seems the governent isn''t very fond of him.
-
-      Either
-      way, as far as I''m concerned, I quite like having such a prestigious guest.
-      I wonder what made him choose us...'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 3046478936985567311
-    isRootNode: 0
-    editorPosition: {x: 4433, y: -41.626137}
-    guid:
-      Part1: 1084635640
-      Part2: 1239400926
-      Part3: 3848048305
-      Part4: 891342165
     tag: 
     altDialoguePaths: []
   - dialogueText: 'You see, some journalist once accused him of being a... deviant,
@@ -503,14 +221,14 @@ MonoBehaviour:
 
       Oh, how I dream
       of him making a painting with this hotel for all the world to see...!'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
+    characterEmotion: 1
+    characterReaction: 2
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 3046478936985567312
     isRootNode: 0
-    editorPosition: {x: 5259, y: -329}
+    editorPosition: {x: 5259.0015, y: -352.00012}
     guid:
       Part1: 3281136560
       Part2: 1341605581
@@ -522,15 +240,15 @@ MonoBehaviour:
       gossip.
 
       Why? Do you, perhaps... know who it was?'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
+    characterEmotion: 2
+    characterReaction: 6
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 3046478936985567313
     - rid: 3046478936985567314
     isRootNode: 0
-    editorPosition: {x: 6347.8516, y: -334.00006}
+    editorPosition: {x: 6342.2515, y: -354.7}
     guid:
       Part1: 171815091
       Part2: 1122010975
@@ -549,9 +267,9 @@ MonoBehaviour:
 
       What will people say about my hotel if I can''t
       even give the best room to my most <b>distinguished</b> guest!'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
+    characterEmotion: 4
+    characterReaction: 2
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 3046478936985567315
@@ -574,19 +292,40 @@ MonoBehaviour:
       If she''s here for a reason, I bet it must be something
       far more important than that... and in my hotel... Oh, my, I think I might
       faint...'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
+    characterEmotion: 1
+    characterReaction: 6
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 3046478936985567316
     isRootNode: 0
-    editorPosition: {x: 7261, y: -464}
+    editorPosition: {x: 7256.4014, y: -579.1381}
     guid:
       Part1: 2923304815
       Part2: 1273307586
       Part3: 3503069355
       Part4: 2428477677
+    tag: 
+    altDialoguePaths: []
+  - dialogueText: 'He''s this up and coming politician, quite the contentious person.
+      I''m not one to gossip, but it seems the governent isn''t very fond of him.
+
+      Either
+      way, as far as I''m concerned, I quite like having such a prestigious guest.
+      I wonder what made him choose us...'
+    characterEmotion: 1
+    characterReaction: 2
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 3046478936985567311
+    isRootNode: 0
+    editorPosition: {x: 4563.5, y: -80.00005}
+    guid:
+      Part1: 1084635640
+      Part2: 1239400926
+      Part3: 3848048305
+      Part4: 891342165
     tag: 
     altDialoguePaths: []
   hiddenProof: 
@@ -959,20 +698,25 @@ MonoBehaviour:
           there anything I can do for you?'
         dialogueReference: {fileID: 0}
         condition:
-          dialogueText: 'Fantastic! You can find your very own room number 2 upstairs,
-            quite near our beautiful, temporarelly in reparations, sauna!
+          dialogueText: 'Why, thank you for choosing us, sir! It''s great to see
+            people come in instead of passing by, for once.
 
-            Dinner
-            will be served at 7pm'
-          characterEmotion: 0
-          characterReaction: 0
+            You can
+            find your very own room no. 2 upstairs, quite near our beautiful, temporarily
+            in reparations, sauna!
+
+            Dinner will be served at 7pm, so
+            please make yourself at home.'
+          characterEmotion: 4
+          characterReaction: 2
           doesItProveAnything: 0
           isKey: 0
           responses:
           - rid: 6774952781063389260
           - rid: 6774952781063389261
+          - rid: 3046478936985567324
           isRootNode: 0
-          editorPosition: {x: 1253, y: -51.23999}
+          editorPosition: {x: 1199, y: 67}
           guid:
             Part1: 4028658863
             Part2: 1280522940
@@ -981,20 +725,25 @@ MonoBehaviour:
           tag: 
           altDialoguePaths: []
         skipTo:
-          dialogueText: 'Fantastic! You can find your very own room number 2 upstairs,
-            quite near our beautiful, temporarelly in reparations, sauna!
+          dialogueText: 'Why, thank you for choosing us, sir! It''s great to see
+            people come in instead of passing by, for once.
 
-            Dinner
-            will be served at 7pm'
-          characterEmotion: 0
-          characterReaction: 0
+            You can
+            find your very own room no. 2 upstairs, quite near our beautiful, temporarily
+            in reparations, sauna!
+
+            Dinner will be served at 7pm, so
+            please make yourself at home.'
+          characterEmotion: 4
+          characterReaction: 2
           doesItProveAnything: 0
           isKey: 0
           responses:
           - rid: 6774952781063389260
           - rid: 6774952781063389261
+          - rid: 3046478936985567324
           isRootNode: 0
-          editorPosition: {x: 1253, y: -51.23999}
+          editorPosition: {x: 1199, y: 67}
           guid:
             Part1: 4028658863
             Part2: 1280522940
@@ -1002,26 +751,6 @@ MonoBehaviour:
             Part4: 985772993
           tag: 
           altDialoguePaths: []
-    - rid: 6774952781063389253
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: Oh, I'm just passing by.
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 933, y: -560}
-    - rid: 6774952781063389257
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: May I inquire, what kind of people visit these parts?
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 2947, y: -560}
     - rid: 6774952781063389258
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -1148,394 +877,3 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 3039, y: 357.5}
-    - rid: 6774952781063389267
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: Well color me intrigued then.
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 4026, y: -560}
-    - rid: 6774952781063389268
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: So, about Aleksei...
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions:
-        - rid: 6774952781063389269
-        alreadyDisplayed: 0
-        editorPosition: {x: 928, y: 613}
-    - rid: 6774952781063389269
-      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
-      data:
-        conditionName: 
-        unlockIfTrue: 1
-        targetDialogue: {fileID: 11400000, guid: 4e81753c414a9a341a506c339bc23f0a, type: 2}
-        isTalkDialogueNode:
-          dialogueText: 'No, wait!
-
-            You aren''t really interrupting anything...
-
-            I''m
-            supposed to be working but I just can''t seem to concentrate right now!
-
-            I''m
-            perpetually surrounded by distractions!'
-          characterEmotion: 0
-          characterReaction: 0
-          doesItProveAnything: 0
-          isKey: 0
-          responses:
-          - rid: 6774952781063389304
-          - rid: 6774952781063389305
-          isRootNode: 0
-          editorPosition: {x: 842, y: 200}
-          guid:
-            Part1: 121336126
-            Part2: 1108950013
-            Part3: 2249797309
-            Part4: 2547815713
-          tag: 
-          altDialoguePaths: []
-    - rid: 6774952781063389284
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: So, there's usually not a lot of people?
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 1838, y: -560}
-    - rid: 6774952781063389286
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: What publication?
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 1761.1033, y: 622}
-    - rid: 6774952781063389287
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: Did Oleg had anything to do with it?
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions:
-        - rid: 6774952781063389290
-        alreadyDisplayed: 0
-        editorPosition: {x: 1730, y: 567}
-    - rid: 6774952781063389288
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: Nevermind...
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 2542, y: 622}
-    - rid: 6774952781063389290
-      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
-      data:
-        conditionName: 
-        unlockIfTrue: 1
-        targetDialogue: {fileID: 11400000, guid: a218568596dfcf9419f1f4c8eb4ff384, type: 2}
-        isTalkDialogueNode:
-          dialogueText: 
-          characterEmotion: 0
-          characterReaction: 0
-          doesItProveAnything: 0
-          isKey: 0
-          responses: []
-          isRootNode: 1
-          editorPosition: {x: 0, y: 0}
-          guid:
-            Part1: 2560409250
-            Part2: 1229972322
-            Part3: 3634322107
-            Part4: 1960341972
-          tag: 
-          altDialoguePaths: []
-    - rid: 6774952781063389292
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: What's up with Oleg?
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions:
-        - rid: 6774952781063389297
-        alreadyDisplayed: 0
-        editorPosition: {x: 947, y: 1168}
-    - rid: 6774952781063389293
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: Gasp is right!
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 3327, y: 622}
-    - rid: 6774952781063389294
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: There seems to be some tention between them.
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 2548, y: 876}
-    - rid: 6774952781063389295
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: '[Leave before she colapses]'
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 3617, y: 876}
-    - rid: 6774952781063389296
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: '[Leave before ruining the magic]'
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 4105, y: 622}
-    - rid: 6774952781063389297
-      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
-      data:
-        conditionName: 
-        unlockIfTrue: 1
-        targetDialogue: {fileID: 11400000, guid: a218568596dfcf9419f1f4c8eb4ff384, type: 2}
-        isTalkDialogueNode:
-          dialogueText: Sorry, I'm bussy right now
-          characterEmotion: 0
-          characterReaction: 0
-          doesItProveAnything: 0
-          isKey: 0
-          responses: []
-          isRootNode: 1
-          editorPosition: {x: 300, y: 200}
-          guid:
-            Part1: 2540284652
-            Part2: 1122114976
-            Part3: 221771931
-            Part4: 3608616113
-          tag: 
-          altDialoguePaths: []
-    - rid: 6774952781063389303
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: You don't say...
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 1713, y: 1168}
-    - rid: 6774952781063389304
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: Working on what?
-        nextNode:
-          rid: 6774952781063389306
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 1446, y: 200}
-    - rid: 6774952781063389305
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: Distractions?
-        nextNode:
-          rid: 6774952781063389307
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 1446, y: 431}
-    - rid: 6774952781063389306
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: 'My magnum opus of course!
-
-          I came to this hotel
-          in the middle of nowhere to help me focus
-
-          Art isn''t done in
-          between parties and drugs, or so my acquaintances insisted before draggin
-          me here with their constant negging...'
-        characterEmotion: 0
-        characterReaction: 0
-        doesItProveAnything: 0
-        isKey: 0
-        responses:
-        - rid: 6774952781063389308
-        isRootNode: 0
-        editorPosition: {x: 1685, y: 200}
-        guid:
-          Part1: 122495793
-          Part2: 1107580802
-          Part3: 2868873098
-          Part4: 766361834
-        tag: 
-        altDialoguePaths: []
-    - rid: 6774952781063389307
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: 'Oh yeah, I can''t catch a break from all the fame...
-
-          It''s
-          hard, you know? Everyone wanting to look at you, take pictures of you,
-          interview you
-
-          It''s always about you- I mean me. Honestly honey?
-          I don''t know how I do it'
-        characterEmotion: 0
-        characterReaction: 0
-        doesItProveAnything: 0
-        isKey: 0
-        responses:
-        - rid: 6774952781063389309
-        isRootNode: 0
-        editorPosition: {x: 1684.9999, y: 431}
-        guid:
-          Part1: 4181029613
-          Part2: 1275199733
-          Part3: 2353852820
-          Part4: 4211439072
-        tag: 
-        altDialoguePaths: []
-    - rid: 6774952781063389308
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: Uhm...
-        nextNode:
-          rid: 6774952781063389310
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 2509, y: 200}
-    - rid: 6774952781063389309
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: So...
-        nextNode:
-          rid: 6774952781063389311
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 2289, y: 431}
-    - rid: 6774952781063389310
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: 'Honestly I don''t know why anyone would ever want to come
-          here!
-
-          There''s absolutely nothing to be found in the barren
-          wasteland.
-
-          Come to think of it, what are <b>you<\b> doing here?'
-        characterEmotion: 0
-        characterReaction: 0
-        doesItProveAnything: 0
-        isKey: 0
-        responses:
-        - rid: 6774952781063389312
-        - rid: 6774952781063389313
-        isRootNode: 0
-        editorPosition: {x: 2719, y: 200}
-        guid:
-          Part1: 1638892124
-          Part2: 1148913163
-          Part3: 1816418959
-          Part4: 2822193649
-        tag: 
-        altDialoguePaths: []
-    - rid: 6774952781063389311
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: 'What''s worse is I cannot for the life of me get rid of the
-          paparazzis! Even here!
-
-          I just heard that damn camera shutter.
-          If I ever find them I have a word or two to say to whoever is taking pictures!
-          at my! spiritual! retreat!'
-        characterEmotion: 0
-        characterReaction: 0
-        doesItProveAnything: 0
-        isKey: 0
-        responses:
-        - rid: 6774952781063389314
-        isRootNode: 0
-        editorPosition: {x: 2499, y: 431}
-        guid:
-          Part1: 1866444140
-          Part2: 1318639581
-          Part3: 3008323730
-          Part4: 425362122
-        tag: 
-        altDialoguePaths: []
-    - rid: 6774952781063389312
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: I'm an investigator of sorts
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 3242, y: 34.000015}
-    - rid: 6774952781063389313
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: New Response
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 3242, y: 200}
-    - rid: 6774952781063389314
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: I'll... let you know if I hear anything
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 3359.9995, y: 430.99994}
-    - rid: 6774952781063389316
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: Who knows, truly.
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 2523, y: 1168}
-    - rid: 6774952781063389318
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: Not at all!
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 1852, y: 1445}
