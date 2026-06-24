@@ -173,9 +173,21 @@ public class AltDialogueSearchWindow : ScriptableObject, ISearchWindowProvider
     public bool OnSelectEntry(SearchTreeEntry entry, SearchWindowContext context)
     {
         if (entry.userData is not System.Type type) return false;
+     
         var newAlt = (AltDialoguePath)System.Activator.CreateInstance(type);
-        // _node.NodeData.altDialoguePaths.Add(newAlt);
-        // _node.GenerateAltDialogueUI();
+
+        if (_node?.NodeData == null) return false;
+        _node.NodeData.altDialoguePaths.Add(newAlt);
+            
+       
+        if (Selection.activeObject != null)
+        {
+            EditorUtility.SetDirty(Selection.activeObject);
+        }
+            
+         
+        _node.GenerateAltDialogueUI();
         return true;
+
     }
 }
