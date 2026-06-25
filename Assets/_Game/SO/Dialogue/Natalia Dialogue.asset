@@ -22,9 +22,9 @@ MonoBehaviour:
     responses:
     - rid: 6774952781063389258
     isRootNode: 1
-    editorPosition: {x: 368.60638, y: 67.00004}
+    editorPosition: {x: 273, y: 57}
     altDialoguePaths:
-    - rid: 3046478936985567327
+    - rid: 3046479020823150701
     guid:
       Part1: 801923639
       Part2: 1285914272
@@ -40,9 +40,9 @@ MonoBehaviour:
     responses:
     - rid: 6774952781063389258
     isRootNode: 1
-    editorPosition: {x: 288, y: 66.99999}
+    editorPosition: {x: 273, y: 57}
     altDialoguePaths:
-    - rid: 3046478936985567327
+    - rid: 3046479020823150701
     guid:
       Part1: 801923639
       Part2: 1285914272
@@ -681,7 +681,7 @@ MonoBehaviour:
           Part3: 2633351612
           Part4: 1809174617
         tag: 
-    - rid: 3046478936985567327
+    - rid: 3046479020823150701
       type: {class: AltDialoguePath, ns: , asm: Assembly-CSharp}
       data:
         altDialogue: 'Welcome once again, sir; I hope you''re enjoying your stay!
@@ -689,20 +689,25 @@ MonoBehaviour:
           Is
           there anything I can do for you?'
         condition:
-          dialogueText: 'Fantastic! You can find your very own room number 2 upstairs,
-            quite near our beautiful, temporarelly in reparations, sauna!
+          dialogueText: 'Why, thank you for choosing us, sir! It''s great to see
+            people come in instead of passing by, for once.
 
-            Dinner
-            will be served at 7pm'
-          characterEmotion: 0
-          characterReaction: 0
+            You can
+            find your very own room no. 2 upstairs, quite near our beautiful, temporarily
+            in reparations, sauna!
+
+            Dinner will be served at 7pm, so
+            please make yourself at home.'
+          characterEmotion: 4
+          characterReaction: 2
           doesItProveAnything: 0
           isKey: 0
           responses:
           - rid: 6774952781063389260
           - rid: 6774952781063389261
+          - rid: 3046478936985567324
           isRootNode: 0
-          editorPosition: {x: 1253, y: -51.23999}
+          editorPosition: {x: 1199, y: 67}
           altDialoguePaths: []
           guid:
             Part1: 4028658863
@@ -711,20 +716,25 @@ MonoBehaviour:
             Part4: 985772993
           tag: 
         skipTo:
-          dialogueText: 'Fantastic! You can find your very own room number 2 upstairs,
-            quite near our beautiful, temporarelly in reparations, sauna!
+          dialogueText: 'Why, thank you for choosing us, sir! It''s great to see
+            people come in instead of passing by, for once.
 
-            Dinner
-            will be served at 7pm'
-          characterEmotion: 0
-          characterReaction: 0
+            You can
+            find your very own room no. 2 upstairs, quite near our beautiful, temporarily
+            in reparations, sauna!
+
+            Dinner will be served at 7pm, so
+            please make yourself at home.'
+          characterEmotion: 4
+          characterReaction: 2
           doesItProveAnything: 0
           isKey: 0
           responses:
           - rid: 6774952781063389260
           - rid: 6774952781063389261
+          - rid: 3046478936985567324
           isRootNode: 0
-          editorPosition: {x: 1253, y: -51.23999}
+          editorPosition: {x: 1199, y: 67}
           altDialoguePaths: []
           guid:
             Part1: 4028658863
