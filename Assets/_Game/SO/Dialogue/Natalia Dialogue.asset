@@ -1231,7 +1231,14 @@ MonoBehaviour:
     - rid: 767062761356918898
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: Yes?
+        dialogueText: 'Well, I always prefer to have the chef surprise us with whatever
+          idea he comes up with.
+
+          All that I can say is that it will be
+          delicious; I guarantee it.
+
+          Though, if you have any allergies,
+          it''s probably best if you tell me in advance.'
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -1240,7 +1247,7 @@ MonoBehaviour:
         - rid: 767062761356918899
         - rid: 767062761356918901
         isRootNode: 0
-        editorPosition: {x: 2356, y: 194}
+        editorPosition: {x: 2333, y: 147.50005}
         altDialoguePaths: []
         guid:
           Part1: 1434144360
@@ -1257,14 +1264,14 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 2640, y: 194.00002}
+        editorPosition: {x: 2973, y: 147.50005}
     - rid: 767062761356918900
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: Oh I hope you like it, I really do. You see, our chef, Andrey,
-          hasn't been feeling the best lately. The hotel is never really busy but
-          he seems to be contantly stressed out! Like a poor creature sensing a looming
-          threat...
+        dialogueText: "Oh I hope you like it, I really do! \nBy the way... You see,
+          our chef, Andrey, hasn't been feeling his best lately. \nThe hotel is never
+          really busy but he seems to be contantly stressed out! Like a poor creature
+          sensing a looming threat..."
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -1272,7 +1279,7 @@ MonoBehaviour:
         responses:
         - rid: 767062761356918907
         isRootNode: 0
-        editorPosition: {x: 2972.9995, y: 194}
+        editorPosition: {x: 3305.9998, y: 147.50005}
         altDialoguePaths: []
         guid:
           Part1: 2712483526
@@ -1283,14 +1290,14 @@ MonoBehaviour:
     - rid: 767062761356918901
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[People have been saying some stuff.]'
+        responseText: '[People have been saying some... stuff.]'
         nextNode:
           rid: 767062761356918904
         dialogueTopic: 
         m_conditions:
         - rid: 767062761356918902
         alreadyDisplayed: 0
-        editorPosition: {x: 2639.9995, y: 359.99997}
+        editorPosition: {x: 2952, y: 314}
     - rid: 767062761356918902
       type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
       data:
@@ -1331,7 +1338,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3562.0005, y: 359.99997}
+        editorPosition: {x: 3894.9998, y: 313.50006}
     - rid: 767062761356918904
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -1344,7 +1351,7 @@ MonoBehaviour:
         responses:
         - rid: 767062761356918903
         isRootNode: 0
-        editorPosition: {x: 2985, y: 360}
+        editorPosition: {x: 3317.9998, y: 313.50006}
         altDialoguePaths: []
         guid:
           Part1: 2590038319
@@ -1364,7 +1371,7 @@ MonoBehaviour:
         responses:
         - rid: 767062761356918908
         isRootNode: 0
-        editorPosition: {x: 3839.0005, y: 360}
+        editorPosition: {x: 4172, y: 313.50006}
         altDialoguePaths: []
         guid:
           Part1: 904673742
@@ -1382,7 +1389,7 @@ MonoBehaviour:
         m_conditions:
         - rid: 767062761356918916
         alreadyDisplayed: 0
-        editorPosition: {x: 2931, y: 825.498}
+        editorPosition: {x: 2973, y: 825}
     - rid: 767062761356918907
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -1392,7 +1399,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 4229, y: 194}
+        editorPosition: {x: 4109, y: 118.73978}
     - rid: 767062761356918908
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -1402,7 +1409,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 4403, y: 360}
+        editorPosition: {x: 4735.9995, y: 313.50006}
     - rid: 767062761356918909
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -1412,17 +1419,17 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 5072.001, y: 193.99995}
+        editorPosition: {x: 4869, y: 119}
     - rid: 767062761356918910
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[It doesn''t]'
+        responseText: '[Well... It doesn''t]'
         nextNode:
           rid: 767062761356918914
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3540, y: 825}
+        editorPosition: {x: 3582, y: 825}
     - rid: 767062761356918911
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -1432,12 +1439,17 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 4750, y: 827}
+        editorPosition: {x: 4823, y: 825}
     - rid: 767062761356918912
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: So, yeah! If you do hear anything about the food, and I do
-          mean anything, please let me know.
+        dialogueText: 'So, yeah! If you do hear anything about the food, please let
+          me know.
+
+          And I do mean <b>anything</b>.
+
+          Don''t hold
+          back.'
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
@@ -1445,7 +1457,7 @@ MonoBehaviour:
         responses:
         - rid: 767062761356918909
         isRootNode: 0
-        editorPosition: {x: 4439, y: 194}
+        editorPosition: {x: 4338, y: 119}
         altDialoguePaths: []
         guid:
           Part1: 1474971684
@@ -1463,7 +1475,7 @@ MonoBehaviour:
         isKey: 0
         responses: []
         isRootNode: 0
-        editorPosition: {x: 4619, y: 360}
+        editorPosition: {x: 4952, y: 313.50006}
         altDialoguePaths: []
         guid:
           Part1: 2914108386
@@ -1484,7 +1496,7 @@ MonoBehaviour:
         responses:
         - rid: 767062761356918911
         isRootNode: 0
-        editorPosition: {x: 3748, y: 827}
+        editorPosition: {x: 3833, y: 825}
         altDialoguePaths: []
         guid:
           Part1: 3311561262
@@ -1503,7 +1515,7 @@ MonoBehaviour:
         responses:
         - rid: 767062761356918910
         isRootNode: 0
-        editorPosition: {x: 3231, y: 825}
+        editorPosition: {x: 3273, y: 825}
         altDialoguePaths: []
         guid:
           Part1: 3981898683
@@ -1976,13 +1988,13 @@ MonoBehaviour:
     - rid: 6774952781063389260
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[About the food.]'
+        responseText: '[What''s on the menu for dinner?]'
         nextNode:
           rid: 767062761356918898
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 1998, y: 3}
+        editorPosition: {x: 1968, y: 122}
     - rid: 6774952781063389261
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -2035,4 +2047,4 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 2931, y: 621}
+        editorPosition: {x: 2973, y: 621}
