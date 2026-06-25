@@ -28,14 +28,14 @@ public class CharacterLayout : NotebookLayout
 
     public override void Initialize(Transform leftRoot, Transform rightRoot)
     {
-        characterNotebookPage = Instantiate(characterNotebookPage, leftRoot);
+        characterNotebookPage = Instantiate(characterNotebookPage, rightRoot);
         characterNotebookPage.Hide();
         
         _leftEmptyPage = Instantiate(emptyPagePrefab, leftRoot);
         _leftEmptyPage.SetReason(leftEmptyReason);
         _leftEmptyPage.Hide();
 
-        treePage = Instantiate(treePage, rightRoot);
+        treePage = Instantiate(treePage, leftRoot);
         treePage.Hide();
         
         _rightEmptyPage = Instantiate(emptyPagePrefab, rightRoot);

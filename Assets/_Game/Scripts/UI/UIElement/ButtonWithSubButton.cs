@@ -10,7 +10,6 @@ public class ButtonWithSubButton : ButtonFactoryObject
     private readonly List<IFlyweight> _myChildren = new List<IFlyweight>();
 
 
-   
 
     public override void Despawn()
     {
@@ -26,7 +25,6 @@ public class ButtonWithSubButton : ButtonFactoryObject
     public ButtonFactoryObject AddSubButton()
     {
         var sub = FlyweightFactory.Instance.Spawn<ButtonFactoryObject>(m_subButtonSetting,Vector3.zero, Quaternion.identity, m_subButtonRoot);
-        
         
         _myChildren.Add(sub);
 

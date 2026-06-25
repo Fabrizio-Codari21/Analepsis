@@ -39,19 +39,14 @@ public class TreePage : NotebookPage
     [SerializeField] private Color m_lockColor = new (0.4f, 0, 0.1f, 0.1f);
     [SerializeField] private Image m_lockImage;
     
-    [Header("Text")]
-    [SerializeField] private DynamicTextSetting m_dynamicTextSetting;
-    [SerializeField] private ScrollRect m_scrollRect;
-    [SerializeField] private Transform m_textRoot;
-    [SerializeField] private float m_textWidth = 150f;
-    [SerializeField] private float m_textSize = 12f;
+  
     
     [Header("Event")] 
     [SerializeField] private NpcEvent m_onNpcSelected;
     [SerializeField] private EvidenceEvent  m_sentNoteToTheoryBoardEvent;
     [SerializeField] private EventChannel m_refreshTree;
     [SerializeField] private Check m_checkIfMarked;
-
+    [SerializeField] private StringEventChannel m_raiseTreeInfo;
     [Header("Hover Component")]
     [SerializeField] private UIHoverDetector m_hoverDetector;
 
@@ -60,8 +55,6 @@ public class TreePage : NotebookPage
     [SerializeField] private float centerScale = 1.0f;
 
     private DialogueNote _activeNote;
-    private CancellationTokenSource _textCancellationTokenSource;
-    private DynamicUIText _currentActiveText;
     
     private readonly List<IFlyweight> _spawnedFlyweights = new();
     private readonly List<ImageSelector> _arrow = new();
@@ -123,13 +116,7 @@ public class TreePage : NotebookPage
     private void ResetScrollAndScale()
     {
         if (m_treeRoot == null) return;
-
-
-        if (m_scrollRect != null)
-        {
-            m_scrollRect.StopMovement();
-        }
-
+        
       
         m_treeRoot.localPosition = new Vector3(centerPosition.x, centerPosition.y, 0f);
 
@@ -258,7 +245,7 @@ public class TreePage : NotebookPage
                 
                 button.AddListener(() =>
                 {
-                    OnNodeButtonClicked(npcNode.dialogueText).Forget();
+                    OnNodeButtonClicked(npcNode.dialogueText);
                 });
                 
                 _spawnedFlyweights.Add(button);
@@ -423,59 +410,16 @@ public class TreePage : NotebookPage
         _images.Clear();
     }
     
-    private async UniTask OnNodeButtonClicked(string contentText)
+    private void OnNodeButtonClicked(string contentText)
     {
-        CancelAndDisposeToken();
-        _textCancellationTokenSource = new CancellationTokenSource();
-        
-        if (_currentActiveText != null)
-        {
-            FlyweightFactory.Instance.Return(_currentActiveText);
-            _currentActiveText = null;
-        }
+       
+        m_raiseTreeInfo.Raise(contentText);
+    }
+
+
+    
+
  
-        await PlayText(contentText, _textCancellationTokenSource.Token, sizeOverride: m_textSize);
-    }
-
-    private void CancelAndDisposeToken()
-    {
-        if (_textCancellationTokenSource == null) return;
-        _textCancellationTokenSource.Cancel();
-        _textCancellationTokenSource.Dispose();
-        _textCancellationTokenSource = null;
-    }
-
-    private async UniTask PlayText(string text, CancellationToken token, Transform parent = null, float sizeOverride = 0) 
-    {
-        if (token.IsCancellationRequested) return;
-        if (text == null) return;
-        
-        _currentActiveText = FlyweightFactory.Instance.Spawn<DynamicUIText>(
-            m_dynamicTextSetting, 
-            Vector3.zero, 
-            Quaternion.identity, 
-            parent != null ? parent : m_textRoot
-        );
-        
-        _currentActiveText.SetText(
-            text, 
-            !Mathf.Approximately(sizeOverride, 0) ? sizeOverride : m_dynamicTextSetting.size, 
-            m_dynamicTextSetting.color, 
-            m_textWidth, 
-            true
-        );
-        _currentActiveText.ToLast();
-
-        await UniTask.NextFrame(token);
-        try
-        {
-            await _currentActiveText.PlayTypeWriterEffect(externalToken: token);
-        }
-        catch (OperationCanceledException)
-        {
-        }
-    }
-
     private TreeNode BuildRuntimeTreeRecursively(DialogueNode configNode, TreeNode parentRtNode)
     {
         if (configNode == null) return null;

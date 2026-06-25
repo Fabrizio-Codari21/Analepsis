@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 // Lo que pueden decir los NPC y como podemos responder a eso.
 [System.Serializable]
-public class DialogueNode : INode
+public class DialogueNode : INode,IClue
 {
     [TextArea(0,20)] public string dialogueText;
     public Emotion characterEmotion;
@@ -46,6 +46,10 @@ public class DialogueNode : INode
         return newNode;
     }
 
+    public SerializableGuid CompareGuid()
+    {
+        return guid;
+    }
 }
 
 public interface INode {}
