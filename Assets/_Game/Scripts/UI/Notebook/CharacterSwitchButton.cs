@@ -1,17 +1,20 @@
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class CharacterSwitchButton : MonoBehaviour
 {
     [SerializeField] private Button m_switchButton;
     [SerializeField] private NpcEvent m_onCharacterSelectedChannel;
-    [SerializeField] private TMP_Text m_characterName;
+    [SerializeField] private Image m_characterImage;
     private NpcIdentity _identity;
     public void Init(NpcIdentity identity)
     {
         _identity = identity;
-        m_characterName.text = identity.npcName;
+        // m_characterName.text = identity.npcName;
+        m_characterImage.sprite = identity.filePhoto;
         m_switchButton.onClick.RemoveAllListeners();
         m_switchButton.onClick.AddListener(Switch);
     }
@@ -21,5 +24,13 @@ public class CharacterSwitchButton : MonoBehaviour
         {
             m_onCharacterSelectedChannel.Raise(_identity);
         }
+    }
+    
+    public void AddListener(UnityAction listener) => m_switchButton.onClick.AddListener(listener);
+
+
+    private void OnDestroy()
+    {
+        m_switchButton.onClick.RemoveAllListeners();
     }
 }

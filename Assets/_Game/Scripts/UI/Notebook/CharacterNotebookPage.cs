@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using PrimeTween;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,8 @@ public class CharacterNotebookPage : NotebookPage
     [SerializeField] private Image m_characterIcon;
     [SerializeField] private TMP_Text m_text;
 
+    [SerializeField] private GameObject m_characterSelectionPanel;
+    [SerializeField] private Button m_panelUnfoldButton;
     [Header("Button Setting")]
     [SerializeField] private Transform m_buttonRoot;
     [SerializeField] private CharacterSwitchButton m_button;
@@ -22,6 +25,8 @@ public class CharacterNotebookPage : NotebookPage
     [SerializeField] private StringEventChannel m_receiveNodeInfo;
     
     private readonly HashSet<NpcIdentity> _instantiatedButtons = new();
+    
+    
     
     
     [Header("Text")]
@@ -39,6 +44,22 @@ public class CharacterNotebookPage : NotebookPage
         m_onCharacterSelected.OnEventRaised += SwitchCharacter;
         m_onNpcAdded.OnEventRaised += AddNpc;
         m_receiveNodeInfo.OnEventRaised += ShowInfo;
+      
+    }
+
+
+    private void OnEnable()
+    {
+        m_panelUnfoldButton.onClick.AddListener(() =>
+        {
+            UnfoldPanel().Forget();
+        });
+    }
+
+    private void OnDisable()
+    {
+        m_characterSelectionPanel.gameObject.SetActive(false);
+        m_panelUnfoldButton.onClick.RemoveAllListeners();
     }
 
     private void OnDestroy()
@@ -46,6 +67,7 @@ public class CharacterNotebookPage : NotebookPage
         m_onCharacterSelected.OnEventRaised -= SwitchCharacter;
         m_onNpcAdded.OnEventRaised -= AddNpc;
         m_receiveNodeInfo.OnEventRaised -= ShowInfo;
+        
     }
 
     private void SwitchCharacter(NpcIdentity key)
@@ -95,6 +117,10 @@ public class CharacterNotebookPage : NotebookPage
     {
         var buttonInstance = Instantiate(m_button, m_buttonRoot);
         buttonInstance.Init(npc);
+        buttonInstance.AddListener(() =>
+        {
+            FoldPanel().Forget();
+        });
         _instantiatedButtons.Add(npc);
     }
     
@@ -137,5 +163,31 @@ public class CharacterNotebookPage : NotebookPage
         {
         }
     }
+    
+    private async UniTask UnfoldPanel()
+    {
+        
+        m_characterSelectionPanel.SetActive(true);
+        Tween.StopAll(m_characterSelectionPanel.gameObject.transform);
+        var seq = Sequence.Create();
+       
+        m_characterSelectionPanel.gameObject.transform.localScale = new Vector3(0, 1, 1);
+        await seq.Group(Tween.ScaleX( m_characterSelectionPanel.gameObject.transform, 1f, 0.3f, Ease.OutBack));
+        await seq;
+    }
+    
+    private async UniTask FoldPanel()
+    {
+        if ( m_characterSelectionPanel == null) return;
+        Tween.StopAll( m_characterSelectionPanel.gameObject.transform);
+
+        var seq = Sequence.Create();
+        await seq.Group(Tween.ScaleX( m_characterSelectionPanel.gameObject.transform, 0f, 0.2f, Ease.InQuad));
+        
+        await seq;
+        
+        m_characterSelectionPanel.SetActive(false);
+    }
+
 
 }
