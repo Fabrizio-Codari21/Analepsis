@@ -247,10 +247,10 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         if (response.nextNode == null && _currentDialoguer != null)
         {
             await m_dialogueView.UnfoldDialogue(
-                false, 
-                _currentDialoguer.ID.makesEyeContact,
-                _currentDialoguer.LookAt, 
-                _currentDialoguer.Player);
+                false,
+                _currentDialoguer.ID ? _currentDialoguer.ID.makesEyeContact : true,
+                _currentDialoguer.LookAt ?? default,
+                _currentDialoguer.Player ?? default);
 
             EndDialogue();
             return;

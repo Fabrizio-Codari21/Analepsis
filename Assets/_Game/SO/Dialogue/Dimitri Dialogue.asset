@@ -12,15 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
   m_Name: Dimitri Dialogue
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   dialogueColor: {r: 0, g: 0, b: 0, a: 0}
   startingNode:
     dialogueText: 'How the... *sigh* I knew the code was too easy to guess.
@@ -32,61 +23,46 @@ MonoBehaviour:
       your deal? Are you a reporter? A spy? An officer? What should I do with you?'
     characterEmotion: 2
     characterReaction: 0
-    doesItProveAnything: 4
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 767062219271962644
     - rid: 3046478613006778468
     isRootNode: 1
     editorPosition: {x: 135.0954, y: 189.25099}
-    guid:
-      Part1: 3894623799
-      Part2: 1148273472
-      Part3: 897015966
-      Part4: 2381907516
-    tag: 
     altDialoguePaths:
     - rid: 3046478908010004712
-  allNodes:
-  - dialogueText: 
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses: []
-    isRootNode: 1
-    editorPosition: {x: 300, y: 200}
     guid:
       Part1: 3894623799
       Part2: 1148273472
       Part3: 897015966
       Part4: 2381907516
     tag: 
-    altDialoguePaths: []
-  - dialogueText: 'If that''s the case, from one spy to another, none of this shouldn''t
-      be of your concern.
+  allNodes:
+  - dialogueText: 'How the... *sigh* I knew the code was too easy to guess.
 
-      You''re smart, I respect that, so I''ll tell you
-      this: we''re not here to kill anyone.
+      Oh,
+      well, at least it wasn''t <b>him</b> who figured it out.
 
-      i''ll let this slide, but if you
-      dare enter here again... let''s just say it will no longer be a murder "attempt",
-      if you get my drift.'
-    characterEmotion: 0
+      So what''s
+      your deal? Are you a reporter? A spy? An officer? What should I do with you?'
+    characterEmotion: 2
     characterReaction: 0
-    doesItProveAnything: 4
+    doesItProveAnything: 0
     isKey: 0
     responses:
-    - rid: 3046478613006778470
-    isRootNode: 0
-    editorPosition: {x: 1406, y: 372.8804}
+    - rid: 767062219271962644
+    - rid: 3046478613006778468
+    isRootNode: 1
+    editorPosition: {x: 135.0954, y: 189.25099}
+    altDialoguePaths:
+    - rid: 3046478908010004712
     guid:
-      Part1: 2855662127
-      Part2: 1111791029
-      Part3: 3840308662
-      Part4: 1349355998
+      Part1: 3894623799
+      Part2: 1148273472
+      Part3: 897015966
+      Part4: 2381907516
     tag: 
-    altDialoguePaths: []
   - dialogueText: 'So he trusts you, then. And yet he felt like he had no reason
       to tell me about you.
 
@@ -95,20 +71,23 @@ MonoBehaviour:
 
       Ok, so then you must have come here
       looking for something. Be quick.'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
+    characterEmotion: 1
+    characterReaction: 6
+    doesItProveAnything: 0
     isKey: 0
-    responses: []
+    responses:
+    - rid: 3046478613006778473
+    - rid: 3046478613006778474
+    - rid: 3046478613006778475
     isRootNode: 0
-    editorPosition: {x: 1312.8689, y: 44.562626}
+    editorPosition: {x: 1175, y: -6.11998}
+    altDialoguePaths: []
     guid:
       Part1: 86385421
       Part2: 1187369203
       Part3: 2302744214
       Part4: 3982707328
     tag: 
-    altDialoguePaths: []
   - dialogueText: 'Well, you''re the first and only person to come into this room,
       so nothing''s gone wrong so far.
 
@@ -117,80 +96,90 @@ MonoBehaviour:
 
       This is
       a very serious business for me, alright?'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
+    characterEmotion: 1
+    characterReaction: 6
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 3046478613006778477
     isRootNode: 0
     editorPosition: {x: 2248.6045, y: -355.39243}
+    altDialoguePaths: []
     guid:
       Part1: 2757100495
       Part2: 1337091679
       Part3: 2331423645
       Part4: 1363973298
     tag: 
-    altDialoguePaths: []
-  - dialogueText: '...Please tell me you''re joking. There must have been a good
-      reason for Oleg to let you in, and clearly your smarts are not it.
-
-      Look,
-      just... stay out of this, alright? Clearly you''re not very well prepared,
-      and you could easily get caught in the crossfire, so it''s better if you don''t
-      get involved.'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
-    isKey: 0
-    responses:
-    - rid: 3046478613006778478
-    isRootNode: 0
-    editorPosition: {x: 2222.6602, y: 205}
-    guid:
-      Part1: 194430029
-      Part2: 1159268048
-      Part3: 39248061
-      Part4: 1598397460
-    tag: 
-    altDialoguePaths: []
   - dialogueText: 'Then do me a favour and remind him that I said MANY TIMES that
       I would be the one taking care of that.
 
       And make sure that he keeps
-      in mind that he''s in debt with me, and that he''s still alive for a reason.'
-    characterEmotion: 0
-    characterReaction: 0
-    doesItProveAnything: 4
+      in mind that he''s in debt with me, and that he''s still <b>alive</b> for a
+      reason.'
+    characterEmotion: 3
+    characterReaction: 2
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 3046478613006778479
     isRootNode: 0
-    editorPosition: {x: 2236.56, y: -57}
+    editorPosition: {x: 2249, y: -66}
+    altDialoguePaths: []
     guid:
       Part1: 3989213569
       Part2: 1292918822
       Part3: 1822912920
       Part4: 1958942294
     tag: 
-    altDialoguePaths: []
-  - dialogueText: Blocked Dialogue
-    characterEmotion: 0
+  - dialogueText: '...Please tell me you''re joking. There must have been a good
+      reason for Oleg to let you in, and clearly your intelligence is not it.
+
+      Look,
+      just... stay out of this, alright? Clearly you''re not very well prepared,
+      and you could easily get caught in the crossfire, so it''s better if you don''t
+      get involved.'
+    characterEmotion: 2
     characterReaction: 0
-    doesItProveAnything: 4
+    doesItProveAnything: 0
     isKey: 0
     responses:
-    - rid: 3046478705303748727
+    - rid: 3046478613006778478
     isRootNode: 0
-    editorPosition: {x: 483.99997, y: 710.05}
-    guid:
-      Part1: 2523955536
-      Part2: 1322336570
-      Part3: 3461400224
-      Part4: 3965308414
-    tag: 
+    editorPosition: {x: 2222.6602, y: 205}
     altDialoguePaths: []
-  hiddenProof: 
+    guid:
+      Part1: 194430029
+      Part2: 1159268048
+      Part3: 39248061
+      Part4: 1598397460
+    tag: 
+  - dialogueText: 'If that''s the case, from one spy to another, none of this shouldn''t
+      be of your concern.
+
+      You''re smart, I respect that, so I''ll tell you
+      this: we''re not here to kill anyone.
+
+      i''ll let this slide, but if you
+      dare enter here again... let''s just say it will no longer be a murder "attempt",
+      get what I''m saying?.'
+    characterEmotion: 3
+    characterReaction: 7
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 3046478613006778470
+    isRootNode: 0
+    editorPosition: {x: 1259, y: 495.00003}
+    altDialoguePaths: []
+    guid:
+      Part1: 2855662127
+      Part2: 1111791029
+      Part3: 3840308662
+      Part4: 1349355998
+    tag: 
+  isNotClue: 0
+  _hiddenProof: 
   references:
     version: 2
     RefIds:
@@ -238,13 +227,13 @@ MonoBehaviour:
         - rid: 3046478613006778470
         isRootNode: 0
         editorPosition: {x: 1259, y: 495.00003}
+        altDialoguePaths: []
         guid:
           Part1: 2855662127
           Part2: 1111791029
           Part3: 3840308662
           Part4: 1349355998
         tag: 
-        altDialoguePaths: []
     - rid: 3046478613006778470
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -276,13 +265,13 @@ MonoBehaviour:
         - rid: 3046478613006778475
         isRootNode: 0
         editorPosition: {x: 1175, y: -6.11998}
+        altDialoguePaths: []
         guid:
           Part1: 86385421
           Part2: 1187369203
           Part3: 2302744214
           Part4: 3982707328
         tag: 
-        altDialoguePaths: []
     - rid: 3046478613006778473
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -332,13 +321,13 @@ MonoBehaviour:
         - rid: 3046478613006778477
         isRootNode: 0
         editorPosition: {x: 2248.6045, y: -355.39243}
+        altDialoguePaths: []
         guid:
           Part1: 2757100495
           Part2: 1337091679
           Part3: 2331423645
           Part4: 1363973298
         tag: 
-        altDialoguePaths: []
     - rid: 3046478613006778477
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -386,13 +375,13 @@ MonoBehaviour:
         - rid: 3046478613006778479
         isRootNode: 0
         editorPosition: {x: 2249, y: -66}
+        altDialoguePaths: []
         guid:
           Part1: 3989213569
           Part2: 1292918822
           Part3: 1822912920
           Part4: 1958942294
         tag: 
-        altDialoguePaths: []
     - rid: 3046478613006778481
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -411,13 +400,13 @@ MonoBehaviour:
         - rid: 3046478613006778478
         isRootNode: 0
         editorPosition: {x: 2222.6602, y: 205}
+        altDialoguePaths: []
         guid:
           Part1: 194430029
           Part2: 1159268048
           Part3: 39248061
           Part4: 1598397460
         tag: 
-        altDialoguePaths: []
     - rid: 3046478613006778513
       type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
       data:
@@ -442,13 +431,13 @@ MonoBehaviour:
           - rid: 3046478613006778470
           isRootNode: 0
           editorPosition: {x: 1406, y: 372.8804}
+          altDialoguePaths: []
           guid:
             Part1: 2855662127
             Part2: 1111791029
             Part3: 3840308662
             Part4: 1349355998
           tag: 
-          altDialoguePaths: []
     - rid: 3046478613006778514
       type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
       data:
@@ -473,13 +462,13 @@ MonoBehaviour:
           - rid: 3046478613006778470
           isRootNode: 0
           editorPosition: {x: 1406, y: 372.8804}
+          altDialoguePaths: []
           guid:
             Part1: 2855662127
             Part2: 1111791029
             Part3: 3840308662
             Part4: 1349355998
           tag: 
-          altDialoguePaths: []
     - rid: 3046478705303748727
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -495,7 +484,6 @@ MonoBehaviour:
       data:
         altDialogue: "Did you really not get the message? \nLet's see if you get
           it now: 10, 9, 8, 7..."
-        dialogueReference: {fileID: 0}
         condition:
           dialogueText: 'If that''s the case, from one spy to another, none of this
             shouldn''t be of your concern.
@@ -514,13 +502,13 @@ MonoBehaviour:
           - rid: 3046478613006778470
           isRootNode: 0
           editorPosition: {x: 1406, y: 372.8804}
+          altDialoguePaths: []
           guid:
             Part1: 2855662127
             Part2: 1111791029
             Part3: 3840308662
             Part4: 1349355998
           tag: 
-          altDialoguePaths: []
         skipTo:
           dialogueText: Blocked Dialogue
           characterEmotion: 0
@@ -531,10 +519,10 @@ MonoBehaviour:
           - rid: 3046478705303748727
           isRootNode: 0
           editorPosition: {x: 483.99997, y: 710.05}
+          altDialoguePaths: []
           guid:
             Part1: 2523955536
             Part2: 1322336570
             Part3: 3461400224
             Part4: 3965308414
           tag: 
-          altDialoguePaths: []

@@ -12,52 +12,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
   m_Name: Natalia Dialogue
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   dialogueColor: {r: 0, g: 0, b: 0, a: 0}
   startingNode:
     dialogueText: Greetings! Welcome to our humble hotel, what can I do for you?
     characterEmotion: 4
     characterReaction: 2
-    doesItProveAnything: 4
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 6774952781063389258
     isRootNode: 1
-    editorPosition: {x: 115, y: 67}
+    editorPosition: {x: 368.60638, y: 67.00004}
+    altDialoguePaths:
+    - rid: 3046478936985567327
     guid:
       Part1: 801923639
       Part2: 1285914272
       Part3: 169959312
       Part4: 2761389138
     tag: 
-    altDialoguePaths:
-    - rid: 3046478936985567327
   allNodes:
   - dialogueText: Greetings! Welcome to our humble hotel, what can I do for you?
     characterEmotion: 4
     characterReaction: 2
-    doesItProveAnything: 4
+    doesItProveAnything: 0
     isKey: 0
     responses:
     - rid: 6774952781063389258
     isRootNode: 1
-    editorPosition: {x: 115, y: 67}
+    editorPosition: {x: 288, y: 66.99999}
+    altDialoguePaths:
+    - rid: 3046478936985567327
     guid:
       Part1: 801923639
       Part2: 1285914272
       Part3: 169959312
       Part4: 2761389138
     tag: 
-    altDialoguePaths:
-    - rid: 3046478936985567327
   - dialogueText: 'Why, thank you for choosing us, sir! It''s great to see people
       come in instead of passing by, for once.
 
@@ -76,13 +67,13 @@ MonoBehaviour:
     - rid: 3046478936985567324
     isRootNode: 0
     editorPosition: {x: 1199, y: 67}
+    altDialoguePaths: []
     guid:
       Part1: 4028658863
       Part2: 1280522940
       Part3: 2166873217
       Part4: 985772993
     tag: 
-    altDialoguePaths: []
   - dialogueText: 'Oh, I''m so glad to hear!
 
       You know... our chef, Andrey,
@@ -97,14 +88,14 @@ MonoBehaviour:
     responses:
     - rid: 6774952781063389264
     isRootNode: 0
-    editorPosition: {x: 2390, y: 138}
+    editorPosition: {x: 2396.0002, y: 150.00015}
+    altDialoguePaths: []
     guid:
       Part1: 3035836761
       Part2: 1265355892
       Part3: 2035803023
       Part4: 4244752949
     tag: 
-    altDialoguePaths: []
   - dialogueText: 'There, I''ve opened up the kitchen: it''s right next to the dining
       room behind me.
 
@@ -116,14 +107,14 @@ MonoBehaviour:
     responses:
     - rid: 1630672535616487501
     isRootNode: 0
-    editorPosition: {x: 3512, y: 32.99991}
+    editorPosition: {x: 3518.0005, y: 174.00015}
+    altDialoguePaths: []
     guid:
       Part1: 2805659445
       Part2: 1183585811
       Part3: 1197842849
       Part4: 3398019176
     tag: 
-    altDialoguePaths: []
   - dialogueText: "Oh, a few guests went in and decided to have too much fun! Ha-ha!
       \nDon't worry, they won't be invited again. We'll repair it as soon as we find
       the keys.\nPlease, let me know if you find them somewhere around here."
@@ -134,14 +125,14 @@ MonoBehaviour:
     responses:
     - rid: 6774952781063389265
     isRootNode: 0
-    editorPosition: {x: 2429, y: 357.5}
+    editorPosition: {x: 2430.0002, y: 466.00012}
+    altDialoguePaths: []
     guid:
       Part1: 1012819177
       Part2: 1162638506
       Part3: 3147358645
       Part4: 705986296
     tag: 
-    altDialoguePaths: []
   - dialogueText: 'Well, yes! But as of late the hotel has been getting more guests
       than usual!
 
@@ -159,14 +150,14 @@ MonoBehaviour:
     responses:
     - rid: 3046478936985567307
     isRootNode: 0
-    editorPosition: {x: 2277.4006, y: -359.09998}
+    editorPosition: {x: 2373.8672, y: -228.50003}
+    altDialoguePaths: []
     guid:
       Part1: 1905733868
       Part2: 1129004607
       Part3: 2633351612
       Part4: 1809174617
     tag: 
-    altDialoguePaths: []
   - dialogueText: 'Oh you haven''t heard? We have some top tier guests this evening!
 
       Oleg,
@@ -181,13 +172,13 @@ MonoBehaviour:
     - rid: 3046478936985567309
     isRootNode: 0
     editorPosition: {x: 3460.8672, y: -228.50003}
+    altDialoguePaths: []
     guid:
       Part1: 4209125068
       Part2: 1305821517
       Part3: 2972826264
       Part4: 2031857102
     tag: 
-    altDialoguePaths: []
   - dialogueText: 'Right! He''s this pretty famous artist.
 
       Or at least he
@@ -206,13 +197,13 @@ MonoBehaviour:
     - rid: 3046478936985567310
     isRootNode: 0
     editorPosition: {x: 4444.6, y: -360.45}
+    altDialoguePaths: []
     guid:
       Part1: 1261033585
       Part2: 1109877559
       Part3: 523396775
       Part4: 3925866868
     tag: 
-    altDialoguePaths: []
   - dialogueText: 'You see, some journalist once accused him of being a... deviant,
       if you get what I''m saying.
 
@@ -229,13 +220,13 @@ MonoBehaviour:
     - rid: 3046478936985567312
     isRootNode: 0
     editorPosition: {x: 5259.0015, y: -352.00012}
+    altDialoguePaths: []
     guid:
       Part1: 3281136560
       Part2: 1341605581
       Part3: 2692599953
       Part4: 2335719801
     tag: 
-    altDialoguePaths: []
   - dialogueText: 'Not as far as I''ve heard... though you know how much I hate to
       gossip.
 
@@ -249,13 +240,13 @@ MonoBehaviour:
     - rid: 3046478936985567314
     isRootNode: 0
     editorPosition: {x: 6342.2515, y: -354.7}
+    altDialoguePaths: []
     guid:
       Part1: 171815091
       Part2: 1122010975
       Part3: 4256102025
       Part4: 267813150
     tag: 
-    altDialoguePaths: []
   - dialogueText: 'Oh, let me guess, you say that because Oleg is jealous that Aleksei
       is getting the largest room, right?
 
@@ -275,13 +266,13 @@ MonoBehaviour:
     - rid: 3046478936985567315
     isRootNode: 0
     editorPosition: {x: 7287.587, y: -251}
+    altDialoguePaths: []
     guid:
       Part1: 2642126672
       Part2: 1264286908
       Part3: 2451570350
       Part4: 3378827760
     tag: 
-    altDialoguePaths: []
   - dialogueText: 'Well, she IS a reporter, and she casually seems to be in a place
       full of celebrities, so... I guess that is not a bad theory is it?
 
@@ -300,13 +291,13 @@ MonoBehaviour:
     - rid: 3046478936985567316
     isRootNode: 0
     editorPosition: {x: 7256.4014, y: -579.1381}
+    altDialoguePaths: []
     guid:
       Part1: 2923304815
       Part2: 1273307586
       Part3: 3503069355
       Part4: 2428477677
     tag: 
-    altDialoguePaths: []
   - dialogueText: 'He''s this up and coming politician, quite the contentious person.
       I''m not one to gossip, but it seems the governent isn''t very fond of him.
 
@@ -320,15 +311,16 @@ MonoBehaviour:
     responses:
     - rid: 3046478936985567311
     isRootNode: 0
-    editorPosition: {x: 4563.5, y: -80.00005}
+    editorPosition: {x: 4433, y: -41.626137}
+    altDialoguePaths: []
     guid:
       Part1: 1084635640
       Part2: 1239400926
       Part3: 3848048305
       Part4: 891342165
     tag: 
-    altDialoguePaths: []
-  hiddenProof: 
+  isNotClue: 0
+  _hiddenProof: 
   references:
     version: 2
     RefIds:
@@ -348,14 +340,14 @@ MonoBehaviour:
         responses:
         - rid: 1630672535616487501
         isRootNode: 0
-        editorPosition: {x: 3512, y: 32.99991}
+        editorPosition: {x: 3518.0005, y: 174.00015}
+        altDialoguePaths: []
         guid:
           Part1: 2805659445
           Part2: 1183585811
           Part3: 1197842849
           Part4: 3398019176
         tag: 
-        altDialoguePaths: []
     - rid: 1630672535616487501
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -365,7 +357,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 4131, y: 161.5}
+        editorPosition: {x: 4137, y: 174.00015}
     - rid: 3046478936985567307
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -375,7 +367,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3189.0005, y: -395}
+        editorPosition: {x: 3169.8674, y: -228.50003}
     - rid: 3046478936985567308
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -415,7 +407,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 5617.82, y: -100.00004}
+        editorPosition: {x: 5311, y: -41.626137}
     - rid: 3046478936985567312
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -483,13 +475,13 @@ MonoBehaviour:
         - rid: 3046478936985567309
         isRootNode: 0
         editorPosition: {x: 3460.8672, y: -228.50003}
+        altDialoguePaths: []
         guid:
           Part1: 4209125068
           Part2: 1305821517
           Part3: 2972826264
           Part4: 2031857102
         tag: 
-        altDialoguePaths: []
     - rid: 3046478936985567318
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -511,13 +503,13 @@ MonoBehaviour:
         - rid: 3046478936985567310
         isRootNode: 0
         editorPosition: {x: 4444.6, y: -360.45}
+        altDialoguePaths: []
         guid:
           Part1: 1261033585
           Part2: 1109877559
           Part3: 523396775
           Part4: 3925866868
         tag: 
-        altDialoguePaths: []
     - rid: 3046478936985567319
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -534,14 +526,14 @@ MonoBehaviour:
         responses:
         - rid: 3046478936985567311
         isRootNode: 0
-        editorPosition: {x: 4563.5, y: -80.00005}
+        editorPosition: {x: 4433, y: -41.626137}
+        altDialoguePaths: []
         guid:
           Part1: 1084635640
           Part2: 1239400926
           Part3: 3848048305
           Part4: 891342165
         tag: 
-        altDialoguePaths: []
     - rid: 3046478936985567320
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -562,13 +554,13 @@ MonoBehaviour:
         - rid: 3046478936985567312
         isRootNode: 0
         editorPosition: {x: 5259.0015, y: -352.00012}
+        altDialoguePaths: []
         guid:
           Part1: 3281136560
           Part2: 1341605581
           Part3: 2692599953
           Part4: 2335719801
         tag: 
-        altDialoguePaths: []
     - rid: 3046478936985567321
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -585,13 +577,13 @@ MonoBehaviour:
         - rid: 3046478936985567314
         isRootNode: 0
         editorPosition: {x: 6342.2515, y: -354.7}
+        altDialoguePaths: []
         guid:
           Part1: 171815091
           Part2: 1122010975
           Part3: 4256102025
           Part4: 267813150
         tag: 
-        altDialoguePaths: []
     - rid: 3046478936985567322
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -615,13 +607,13 @@ MonoBehaviour:
         - rid: 3046478936985567315
         isRootNode: 0
         editorPosition: {x: 7287.587, y: -251}
+        altDialoguePaths: []
         guid:
           Part1: 2642126672
           Part2: 1264286908
           Part3: 2451570350
           Part4: 3378827760
         tag: 
-        altDialoguePaths: []
     - rid: 3046478936985567323
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -643,13 +635,13 @@ MonoBehaviour:
         - rid: 3046478936985567316
         isRootNode: 0
         editorPosition: {x: 7256.4014, y: -579.1381}
+        altDialoguePaths: []
         guid:
           Part1: 2923304815
           Part2: 1273307586
           Part3: 3503069355
           Part4: 2428477677
         tag: 
-        altDialoguePaths: []
     - rid: 3046478936985567324
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -659,7 +651,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 1852, y: -227.99997}
+        editorPosition: {x: 1997.9998, y: -162.99997}
     - rid: 3046478936985567325
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -681,14 +673,14 @@ MonoBehaviour:
         responses:
         - rid: 3046478936985567307
         isRootNode: 0
-        editorPosition: {x: 2277.4006, y: -359.09998}
+        editorPosition: {x: 2373.8672, y: -228.50003}
+        altDialoguePaths: []
         guid:
           Part1: 1905733868
           Part2: 1129004607
           Part3: 2633351612
           Part4: 1809174617
         tag: 
-        altDialoguePaths: []
     - rid: 3046478936985567327
       type: {class: AltDialoguePath, ns: , asm: Assembly-CSharp}
       data:
@@ -696,61 +688,50 @@ MonoBehaviour:
 
           Is
           there anything I can do for you?'
-        dialogueReference: {fileID: 0}
         condition:
-          dialogueText: 'Why, thank you for choosing us, sir! It''s great to see
-            people come in instead of passing by, for once.
+          dialogueText: 'Fantastic! You can find your very own room number 2 upstairs,
+            quite near our beautiful, temporarelly in reparations, sauna!
 
-            You can
-            find your very own room no. 2 upstairs, quite near our beautiful, temporarily
-            in reparations, sauna!
-
-            Dinner will be served at 7pm, so
-            please make yourself at home.'
-          characterEmotion: 4
-          characterReaction: 2
+            Dinner
+            will be served at 7pm'
+          characterEmotion: 0
+          characterReaction: 0
           doesItProveAnything: 0
           isKey: 0
           responses:
           - rid: 6774952781063389260
           - rid: 6774952781063389261
-          - rid: 3046478936985567324
           isRootNode: 0
-          editorPosition: {x: 1199, y: 67}
+          editorPosition: {x: 1253, y: -51.23999}
+          altDialoguePaths: []
           guid:
             Part1: 4028658863
             Part2: 1280522940
             Part3: 2166873217
             Part4: 985772993
           tag: 
-          altDialoguePaths: []
         skipTo:
-          dialogueText: 'Why, thank you for choosing us, sir! It''s great to see
-            people come in instead of passing by, for once.
+          dialogueText: 'Fantastic! You can find your very own room number 2 upstairs,
+            quite near our beautiful, temporarelly in reparations, sauna!
 
-            You can
-            find your very own room no. 2 upstairs, quite near our beautiful, temporarily
-            in reparations, sauna!
-
-            Dinner will be served at 7pm, so
-            please make yourself at home.'
-          characterEmotion: 4
-          characterReaction: 2
+            Dinner
+            will be served at 7pm'
+          characterEmotion: 0
+          characterReaction: 0
           doesItProveAnything: 0
           isKey: 0
           responses:
           - rid: 6774952781063389260
           - rid: 6774952781063389261
-          - rid: 3046478936985567324
           isRootNode: 0
-          editorPosition: {x: 1199, y: 67}
+          editorPosition: {x: 1253, y: -51.23999}
+          altDialoguePaths: []
           guid:
             Part1: 4028658863
             Part2: 1280522940
             Part3: 2166873217
             Part4: 985772993
           tag: 
-          altDialoguePaths: []
     - rid: 6774952781063389258
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -783,13 +764,13 @@ MonoBehaviour:
         - rid: 3046478936985567324
         isRootNode: 0
         editorPosition: {x: 1199, y: 67}
+        altDialoguePaths: []
         guid:
           Part1: 4028658863
           Part2: 1280522940
           Part3: 2166873217
           Part4: 985772993
         tag: 
-        altDialoguePaths: []
     - rid: 6774952781063389260
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -799,7 +780,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 1997.6504, y: 133.35}
+        editorPosition: {x: 2004.0004, y: 145.0001}
     - rid: 6774952781063389261
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -809,7 +790,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 2037, y: 357.5}
+        editorPosition: {x: 2038.0004, y: 466.00012}
     - rid: 6774952781063389262
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -824,14 +805,14 @@ MonoBehaviour:
         responses:
         - rid: 6774952781063389265
         isRootNode: 0
-        editorPosition: {x: 2429, y: 357.5}
+        editorPosition: {x: 2430.0002, y: 466.00012}
+        altDialoguePaths: []
         guid:
           Part1: 1012819177
           Part2: 1162638506
           Part3: 3147358645
           Part4: 705986296
         tag: 
-        altDialoguePaths: []
     - rid: 6774952781063389263
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -849,14 +830,14 @@ MonoBehaviour:
         responses:
         - rid: 6774952781063389264
         isRootNode: 0
-        editorPosition: {x: 2390, y: 138}
+        editorPosition: {x: 2396.0002, y: 150.00015}
+        altDialoguePaths: []
         guid:
           Part1: 3035836761
           Part2: 1265355892
           Part3: 2035803023
           Part4: 4244752949
         tag: 
-        altDialoguePaths: []
     - rid: 6774952781063389264
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -866,7 +847,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3238, y: -5.0000916}
+        editorPosition: {x: 3175.0005, y: 174.00015}
     - rid: 6774952781063389265
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -876,4 +857,4 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3039, y: 357.5}
+        editorPosition: {x: 3040.0002, y: 466.00012}
