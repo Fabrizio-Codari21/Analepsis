@@ -1247,7 +1247,7 @@ MonoBehaviour:
         - rid: 767062761356918899
         - rid: 767062761356918901
         isRootNode: 0
-        editorPosition: {x: 2333, y: 147.50005}
+        editorPosition: {x: 2409, y: 171}
         altDialoguePaths: []
         guid:
           Part1: 1434144360
@@ -1264,7 +1264,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 2973, y: 147.50005}
+        editorPosition: {x: 3049, y: 171}
     - rid: 767062761356918900
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -1279,7 +1279,7 @@ MonoBehaviour:
         responses:
         - rid: 767062761356918907
         isRootNode: 0
-        editorPosition: {x: 3305.9998, y: 147.50005}
+        editorPosition: {x: 3382, y: 171}
         altDialoguePaths: []
         guid:
           Part1: 2712483526
@@ -1297,7 +1297,7 @@ MonoBehaviour:
         m_conditions:
         - rid: 767062761356918902
         alreadyDisplayed: 0
-        editorPosition: {x: 2952, y: 314}
+        editorPosition: {x: 3040, y: 337}
     - rid: 767062761356918902
       type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
       data:
@@ -1319,7 +1319,7 @@ MonoBehaviour:
           doesItProveAnything: 0
           isKey: 0
           responses:
-          - rid: 767062761356918871
+          - rid: 3046479026605260875
           isRootNode: 0
           editorPosition: {x: 4076, y: 664}
           altDialoguePaths: []
@@ -1338,7 +1338,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3894.9998, y: 313.50006}
+        editorPosition: {x: 3971, y: 337}
     - rid: 767062761356918904
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -1351,7 +1351,7 @@ MonoBehaviour:
         responses:
         - rid: 767062761356918903
         isRootNode: 0
-        editorPosition: {x: 3317.9998, y: 313.50006}
+        editorPosition: {x: 3394, y: 337}
         altDialoguePaths: []
         guid:
           Part1: 2590038319
@@ -1371,7 +1371,7 @@ MonoBehaviour:
         responses:
         - rid: 767062761356918908
         isRootNode: 0
-        editorPosition: {x: 4172, y: 313.50006}
+        editorPosition: {x: 4248, y: 337}
         altDialoguePaths: []
         guid:
           Part1: 904673742
@@ -1399,7 +1399,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 4109, y: 118.73978}
+        editorPosition: {x: 4185, y: 142}
     - rid: 767062761356918908
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -1409,7 +1409,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 4735.9995, y: 313.50006}
+        editorPosition: {x: 4812, y: 337}
     - rid: 767062761356918909
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -1419,7 +1419,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 4869, y: 119}
+        editorPosition: {x: 4945, y: 142}
     - rid: 767062761356918910
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -1457,7 +1457,7 @@ MonoBehaviour:
         responses:
         - rid: 767062761356918909
         isRootNode: 0
-        editorPosition: {x: 4338, y: 119}
+        editorPosition: {x: 4414, y: 142}
         altDialoguePaths: []
         guid:
           Part1: 1474971684
@@ -1472,10 +1472,10 @@ MonoBehaviour:
         characterEmotion: 0
         characterReaction: 0
         doesItProveAnything: 0
-        isKey: 0
+        isKey: 1
         responses: []
         isRootNode: 0
-        editorPosition: {x: 4952, y: 313.50006}
+        editorPosition: {x: 5028, y: 337}
         altDialoguePaths: []
         guid:
           Part1: 2914108386
@@ -1946,6 +1946,16 @@ MonoBehaviour:
             Part3: 2166873217
             Part4: 985772993
           tag: 
+    - rid: 3046479026605260875
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Note to self: be careful with the food.)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5025.5, y: 735}
     - rid: 6774952781063389258
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -1994,7 +2004,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 1968, y: 122}
+        editorPosition: {x: 2044, y: 145}
     - rid: 6774952781063389261
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
