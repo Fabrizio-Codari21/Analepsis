@@ -49,13 +49,14 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
     {
         OnPause?.Invoke();
         m_inputReader?.SetEnable(false);
-        m_dialogueView?.gameObject.SetActive(false);
+       
         if (m_inputReader) m_inputReader.Skip -= Skip;
         m_cursorEnable.Raise(false);
     }
 
     public void Stop()
-    {
+    { 
+        m_dialogueView?.gameObject.SetActive(false);
        OnStop?.Invoke();
        Pause();
     }
