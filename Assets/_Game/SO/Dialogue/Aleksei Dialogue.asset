@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
   m_Name: Aleksei Dialogue
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   dialogueColor: {r: 0, g: 0, b: 0, a: 0}
   startingNode:
     dialogueText: '*mumbling* Don''t interrupt me, please.'
@@ -240,8 +249,7 @@ MonoBehaviour:
       Part3: 3008323730
       Part4: 425362122
     tag: 
-  isNotClue: 0
-  _hiddenProof: 
+  hiddenProof: 
   references:
     version: 2
     RefIds:
@@ -258,7 +266,7 @@ MonoBehaviour:
         responses:
         - rid: 767062219271962627
         isRootNode: 0
-        editorPosition: {x: 3513.0005, y: 10.550037}
+        editorPosition: {x: 3537.6248, y: 0.4464193}
         altDialoguePaths: []
         guid:
           Part1: 862484953
@@ -304,7 +312,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3914, y: 25}
+        editorPosition: {x: 3938.6248, y: 14.446425}
     - rid: 767062219271962628
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -322,7 +330,7 @@ MonoBehaviour:
         responses:
         - rid: 767062219271962629
         isRootNode: 0
-        editorPosition: {x: 4292, y: 25}
+        editorPosition: {x: 4316.624, y: 14.446425}
         altDialoguePaths: []
         guid:
           Part1: 3907445809
@@ -339,7 +347,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 4905, y: 25}
+        editorPosition: {x: 4929.624, y: 14.446425}
     - rid: 3046478928603512907
       type: {class: AltDialoguePath, ns: , asm: Assembly-CSharp}
       data:
@@ -412,7 +420,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 6330, y: 25}
+        editorPosition: {x: 6354.6245, y: 14.446425}
     - rid: 3046478928603512909
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -432,7 +440,7 @@ MonoBehaviour:
         responses:
         - rid: 3046478928603512908
         isRootNode: 0
-        editorPosition: {x: 5190, y: 25}
+        editorPosition: {x: 5214.624, y: 14.446425}
         altDialoguePaths: []
         guid:
           Part1: 4270014954
@@ -638,7 +646,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3209, y: 25}
+        editorPosition: {x: 3233.6248, y: 14.446425}
     - rid: 6774952781063389283
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:

@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
   m_Name: Oleg Dialogue
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   dialogueColor: {r: 0, g: 0, b: 0, a: 0}
   startingNode:
     dialogueText: 'Excuse you, sir: you''re in MY bedroom right now.
@@ -27,8 +36,7 @@ MonoBehaviour:
     - rid: 3046478613006778441
     isRootNode: 1
     editorPosition: {x: 54, y: 170}
-    altDialoguePaths:
-    - rid: 3046478908010004713
+    altDialoguePaths: []
     guid:
       Part1: 2540284652
       Part2: 1122114976
@@ -216,8 +224,7 @@ MonoBehaviour:
       Part3: 4047279270
       Part4: 4184659917
     tag: 
-  isNotClue: 0
-  _hiddenProof: 
+  hiddenProof: 
   references:
     version: 2
     RefIds:
@@ -244,7 +251,7 @@ MonoBehaviour:
         m_conditions:
         - rid: 3046478613006778453
         alreadyDisplayed: 0
-        editorPosition: {x: 620, y: 244}
+        editorPosition: {x: 621.15015, y: 329.1}
     - rid: 3046478613006778442
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:

@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
   m_Name: Alexandra Dialogue
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   dialogueColor: {r: 0, g: 0, b: 0, a: 0}
   startingNode:
     dialogueText: Ok, so what's your deal?
@@ -436,8 +445,7 @@ MonoBehaviour:
       Part3: 2145914507
       Part4: 4209414012
     tag: 
-  isNotClue: 0
-  _hiddenProof: 
+  hiddenProof: 
   references:
     version: 2
     RefIds:
@@ -446,7 +454,7 @@ MonoBehaviour:
     - rid: 1630672535616487502
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: 'Oh, sorry, my bad: I used to be a <b>food</b> critique, hence
+        dialogueText: 'Oh, sorry, my bad: I used to be a <b>food</b> critic, hence
           the <b>delicious</b> thing... Nevermind, it was bad anyways.
 
           Luckily
@@ -981,7 +989,7 @@ MonoBehaviour:
     - rid: 6774952781063389331
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: 'Oh, sorry, my bad: I used to be a <b>food</b> critique, hence
+        dialogueText: 'Oh, sorry, my bad: I used to be a <b>food</b> critic, hence
           the <b>delicious</b> thing... Nevermind, it was bad anyways.
 
           Luckily
