@@ -18,9 +18,9 @@ public class AudioManager : Singleton<AudioManager>
         _ = ChangeMusicState(MusicState.Default, true);
     }
 
-    public void SelectSFX(SFXType type, string id = "") 
+    public void SelectSfx(SFXType type, string id = "") 
         => SFX[type]?.PlaySelectedSource(id);
-    public void RandomSFX(SFXType type, bool continuously = false, Func<bool> cancelIf = default)
+    public void RandomSfx(SFXType type, bool continuously = false, Func<bool> cancelIf = default)
         => SFX[type]?.PlayRandomSource(continuously, cancelIf);
 
 

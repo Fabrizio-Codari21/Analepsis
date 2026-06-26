@@ -151,7 +151,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private void Open()
     {
         pushEvent.Raise(this);
-        AudioManager.Instance.SelectSFX(SFXType.Player, "Open");
+        AudioManager.Instance.SelectSfx(SFXType.Player, "Open");
         takeOutNotebookChannel.Raise(representer);
         ShowLayout(0);
         
@@ -161,7 +161,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     {
         popEvent.Raise();
 
-        AudioManager.Instance.SelectSFX(SFXType.Player, "Close");
+        AudioManager.Instance.SelectSfx(SFXType.Player, "Close");
         putInNotebookChannel.Raise(representer);
  
     }

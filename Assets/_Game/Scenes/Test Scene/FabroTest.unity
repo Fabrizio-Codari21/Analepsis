@@ -10963,6 +10963,17 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -3850348313639580453, guid: eb1e7a2df1d9dfb418a2ef0162e69021, type: 3}
+--- !u!114 &174592011 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1971889630598646755, guid: 43f24e5dc3ca6db45b74fe971c735128, type: 3}
+  m_PrefabInstance: {fileID: 1729245835}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e51c748c9c6414f971eef7a0d1968e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &174822453 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f64368a2c49c84843838a39993aad99b, type: 3}
@@ -93640,7 +93651,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1340831878}
   - component: {fileID: 1340831881}
-  - component: {fileID: 1340831880}
   - component: {fileID: 1340831879}
   m_Layer: 0
   m_Name: Diegestive Render Camera
@@ -93708,14 +93718,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!81 &1340831880
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1340831877}
-  m_Enabled: 1
 --- !u!20 &1340831881
 Camera:
   m_ObjectHideFlags: 0
@@ -110805,7 +110807,7 @@ MonoBehaviour:
   SFX:
     m_Keys: 01000000
     m_Values:
-    - {fileID: 0}
+    - {fileID: 174592011}
   Music:
     m_Keys: 0000000001000000
     m_Values:

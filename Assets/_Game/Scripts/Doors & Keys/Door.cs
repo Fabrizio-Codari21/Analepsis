@@ -66,6 +66,7 @@ public class Door : MonoBehaviour
     private bool CheckKey(IClue clue)
     {
 
+        if (clue == null) return true;
         if (clue is Item)
         {
             return NotebookManager.Instance.CheckNote(clue.CompareGuid());

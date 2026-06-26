@@ -84,7 +84,7 @@ public class MarkingPanelView : MonoBehaviour, IActivity
             _newClueName = default;
             _currentClue = null;
             OnMarking -= Mark;
-            AudioManager.Instance.SelectSFX(SFXType.Player, "FlipBackwards");
+            AudioManager.Instance.SelectSfx(SFXType.Player, "FlipBackwards");
             await UnfoldPanel(false);
             popEvent.Raise();
             Destroy(gameObject);

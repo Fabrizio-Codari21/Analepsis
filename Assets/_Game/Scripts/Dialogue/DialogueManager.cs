@@ -100,7 +100,7 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
 
       
 
-        AudioManager.Instance.SelectSFX(SFXType.Player, "FlipForwards");
+        AudioManager.Instance.SelectSfx(SFXType.Player, "FlipForwards");
         _ = AudioManager.Instance.ChangeMusicState(MusicState.Dialogue);
 
         await m_dialogueView.UnfoldDialogue(
@@ -294,7 +294,7 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
 
     private void EndDialogue()
     {
-        AudioManager.Instance.SelectSFX(SFXType.Player, "FlipBackwards");
+        AudioManager.Instance.SelectSfx(SFXType.Player, "FlipBackwards");
         _ = AudioManager.Instance.ChangeMusicState(MusicState.Default);
         
 

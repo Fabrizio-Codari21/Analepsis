@@ -156,7 +156,7 @@ public class TreePage : NotebookPage
             BuildTree(_activeNote).Forget();
         }
     }
-    private async UniTask BuildTree(DialogueNote dialogueNote) 
+    private async UniTask BuildTree(DialogueNote dialogueNote,bool resetView = true) 
     {
         Debug.Log($"BuildTree Start: {dialogueNote}");
         if (dialogueNote == null || !dialogueNote.GetFullDialogue()) return;
@@ -177,7 +177,7 @@ public class TreePage : NotebookPage
         
         SpawnConnectionsRecursively(runtimeRoot);
         
-        ResetScrollAndScale();
+        if(resetView) ResetScrollAndScale();
     }
 
     private void SpawnNodesRecursively(TreeNode node, int level)
@@ -212,7 +212,7 @@ public class TreePage : NotebookPage
 
                 ButtonWithSubButton button = FlyweightFactory.Instance.Spawn<ButtonWithSubButton>(m_nodeButton, Vector3.zero, Quaternion.identity, m_treeRoot);
                 button.RemoveAllListeners(); 
-                button.SetText(fragmentEvidenceToMark.displayName);
+                button.SetText(defaultName); // nombre de boton
                 
                 node.RuntimeRect = button.transform as RectTransform;
                 
@@ -386,7 +386,7 @@ public class TreePage : NotebookPage
     {
         
         DespawnUI();
-        BuildTree(_activeNote).Forget();
+        BuildTree(_activeNote,false).Forget();
     }
 
     private void DespawnUI()
