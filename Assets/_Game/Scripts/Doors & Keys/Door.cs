@@ -13,17 +13,36 @@ public class Door : MonoBehaviour
     public Vector2 interactRange;
     public LockState overrideLock;
 
-    
+    [InlineButton(nameof(ClearRequiredClue), "Clear")]
     [ValueDropdown(nameof(GetClueDropdownOptions))]
     [SerializeReference] 
     public IClueHolder requiredClue; 
     
 #if UNITY_EDITOR
     
+    private void ClearRequiredClue()
+    {
+        
+        UnityEditor.Undo.RecordObject(this, "Clear Required Clue");
+        
+        requiredClue = null;
+       
+        UnityEditor.EditorUtility.SetDirty(this);
+        
+        UnityEditor.SceneManagement.PrefabStage prefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+        if (prefabStage != null)
+        {
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(prefabStage.scene);
+        }
+        else if (gameObject.scene.IsValid())
+        {
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+        }
+    }
+
     private IEnumerable<ValueDropdownItem<IClueHolder>> GetClueDropdownOptions()
     {
         var dropdownList = new List<ValueDropdownItem<IClueHolder>>();
-        
         var allClues = ClueProvider.GetAvailableClues();
 
         foreach (var clueItem in allClues)
@@ -38,6 +57,7 @@ public class Door : MonoBehaviour
             dropdownList.Add(new ValueDropdownItem<IClueHolder>(menuPath, wrapperInstance));
         }
 
+        
         return dropdownList;
     }
 #endif
@@ -56,25 +76,28 @@ public class Door : MonoBehaviour
     // analizaste el objeto por completo) te deja desbloquear la puerta.
     private void OnTriggerEnter(Collider collider)
     {
-        _ = ToggleDoor(true, CheckKey(requiredClue.GetClue()));
+        
+        _ = ToggleDoor(true, CheckKey(requiredClue));
     }
     private void OnTriggerExit(Collider other)
     {
         _ = ToggleDoor(false);
     }
 
-    private bool CheckKey(IClue clue)
+    private bool CheckKey(IClueHolder clue)
     {
 
         if (clue == null) return true;
-        if (clue is Item)
+        
+        var c = clue.GetClue();
+        if (c is Item)
         {
-            return NotebookManager.Instance.CheckNote(clue.CompareGuid());
+            return NotebookManager.Instance.CheckNote(c.CompareGuid());
         }
 
-        if (clue is DialogueNode)
+        if (c is DialogueNode)
         {
-            return DialogueManager.Instance.CheckDialogue(clue.CompareGuid());
+            return DialogueManager.Instance.CheckDialogue(c.CompareGuid());
         }
 
         return true;
