@@ -12,6 +12,7 @@ public class Menu : MonoBehaviour,IActivity
 
     
     [SerializeField] private Button m_reloadButton;
+    [SerializeField] private Button m_menuButton;
     public bool CanPopWithKey() => m_canPop;
 
     [SerializeField] private bool m_canPop;
@@ -30,6 +31,7 @@ public class Menu : MonoBehaviour,IActivity
         m_button.onClick.AddListener(m_popEvent.Raise);
         
         m_reloadButton.onClick.AddListener(Reload);
+        m_menuButton.onClick.AddListener(GoToMenu);
         m_cursorEnableChannel?.Raise(true);
         OnResume?.Invoke();
     }
@@ -39,6 +41,7 @@ public class Menu : MonoBehaviour,IActivity
         gameObject.SetActive(false);
         m_button.onClick.RemoveAllListeners();
         m_reloadButton.onClick.RemoveAllListeners();
+        m_menuButton.onClick.RemoveAllListeners();
         m_cursorEnableChannel?.Raise(false);
         OnPause?.Invoke();
     }
@@ -54,6 +57,10 @@ public class Menu : MonoBehaviour,IActivity
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void GoToMenu()
+    {
+        _ = this.AsyncLoader("Menu");
+    }
 
     public void Quit()
     {

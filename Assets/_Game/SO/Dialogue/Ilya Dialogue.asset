@@ -562,13 +562,14 @@ MonoBehaviour:
     - rid: 3046478613006778501
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[Great job. (Wait... <b>"Target"</b>?)]'
+        responseText: '[Great job. (<b>"Target"</b>? <b>Trap</b>? Something''s up
+          here...)]'
         nextNode:
           rid: -2
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 5836, y: 318}
+        editorPosition: {x: 6148, y: 318}
     - rid: 3046478613006778502
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -705,15 +706,11 @@ MonoBehaviour:
     - rid: 3046478613006778509
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: 'So far, so good. The <b>target</b> has already gone upstairs,
-          and the door sign says it''s unlocked.
-
-          I''ve been really nice
-          to everyone and no-one seens to suspect a thing.
-
-          If things keep
-          going as planned, I''ll be in there right before dinner, ready to <b>complete
-          the task</b>...'
+        dialogueText: "So far, so good. The <b>target</b> has already gone upstairs,
+          and the door sign says it's unlocked, so it should be easy to get him to
+          fall for the <b>trap</b>. \nI've been really nice to everyone and no-one
+          seens to suspect a thing.\nIf things keep going as planned, I'll be in
+          there right before dinner, ready to <b>complete the task</b>..."
         characterEmotion: 4
         characterReaction: 2
         doesItProveAnything: 0
@@ -721,7 +718,7 @@ MonoBehaviour:
         responses:
         - rid: 3046478613006778501
         isRootNode: 0
-        editorPosition: {x: 5152, y: 318}
+        editorPosition: {x: 5161, y: 318}
         altDialoguePaths: []
         guid:
           Part1: 956334448
