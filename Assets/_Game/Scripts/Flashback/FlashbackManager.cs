@@ -25,11 +25,17 @@ public class FlashbackManager : MonoBehaviour
     DynamicText flashbackClueDisplay;
      
     private AsyncFiniteStateMachine<FlashbackState> _stateMachine;
-    
-    private void Start()
+
+    private void Awake()
     {
         FsmSetup();
+    }
+
+    private void Start()
+    {
+        _ = _stateMachine.TransitionTo(FlashbackState.Inactive);
         m_leaveFlashback.transform.localPosition += new Vector3(0, UIManager.Instance.AspectRatioOffset(), 0);
+        
     }
     
     private void SetCurrentItem(Item item) => _currentItem = item;

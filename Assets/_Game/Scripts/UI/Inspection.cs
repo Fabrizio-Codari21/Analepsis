@@ -44,10 +44,7 @@ public class Inspection : MonoBehaviour, IActivity
     private bool _hasFlashback = false;
 
     private ItemReference _currentItem;
-
-    /// <summary>
-    /// 当前 Hover 的对象
-    /// </summary>
+    
     private ITouch _currentTouch;
 
     private void Start()
@@ -92,8 +89,8 @@ public class Inspection : MonoBehaviour, IActivity
 
         var inspectItem = _currentItem.GetInspectItem();
         
-        var item = Instantiate(inspectItem.gameObject, m_inspectRoot);
-        item.transform.localScale *= UIManager.Instance.AspectRatioScale();
+        
+        Instantiate(inspectItem.gameObject, m_inspectRoot);
 
         _maxScale = inspectItem.renderCameraScaleMax;
         _minScale = inspectItem.renderCameraScaleMin;
