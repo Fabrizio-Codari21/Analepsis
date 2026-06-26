@@ -91,10 +91,18 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
     }
     private async UniTaskVoid Speak(IDialogable dialogable)   
     {
+       
+        if (dialogable == null)
+        {
+            return;
+        }
         m_pushActivity.Raise(this);
 
         _currentDialoguer = dialogable;
-        _currentDialoguer.Dialogue.hiddenProof.Clear();
+        if (_currentDialoguer.Dialogue != null)
+        {
+            _currentDialoguer.Dialogue.hiddenProof?.Clear();
+        }
         m_dialogueView.ClearDialogues();
         m_dialogueView.SetSpeakerName(dialogable.NpcName);
 
@@ -103,9 +111,10 @@ public class DialogueManager : Singleton<DialogueManager>,IActivity
         AudioManager.Instance.SelectSfx(SFXType.Player, "FlipForwards");
         _ = AudioManager.Instance.ChangeMusicState(MusicState.Dialogue);
 
+        bool makesEyeContact = _currentDialoguer.ID == null || _currentDialoguer.ID.makesEyeContact;
         await m_dialogueView.UnfoldDialogue(
             true, 
-            _currentDialoguer.ID.makesEyeContact,
+            makesEyeContact ,
             _currentDialoguer.LookAt, 
             _currentDialoguer.Player);
         

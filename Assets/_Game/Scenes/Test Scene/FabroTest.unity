@@ -69890,7 +69890,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3983119378213845215, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       propertyPath: requiredClue
-      value: 8019692163708223797
+      value: 8019692170345971794
       objectReference: {fileID: 0}
     - target: {fileID: 3983119378213845215, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       propertyPath: openingDegrees
@@ -70431,6 +70431,10 @@ PrefabInstance:
     - target: {fileID: 3983119378213845215, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       propertyPath: 'managedReferences[8019692163708223799]'
       value: Assembly-CSharp DialogueResponse
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983119378213845215, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
+      propertyPath: 'managedReferences[8019692170345971794]'
+      value: 'Assembly-CSharp ClueHolder`1[[Item, Assembly-CSharp]]'
       objectReference: {fileID: 0}
     - target: {fileID: 3983119378213845215, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       propertyPath: managedReferences[8019692117163770149].tag
@@ -72664,6 +72668,10 @@ PrefabInstance:
       propertyPath: managedReferences[8019692163708223799].responseText
       value: '[Oh right, of course! (Leave promptly)]'
       objectReference: {fileID: 0}
+    - target: {fileID: 3983119378213845215, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
+      propertyPath: managedReferences[8019692170345971794].m_clueTarget
+      value: 
+      objectReference: {fileID: 11400000, guid: 2644e5ade1590fd48a3faefc742741ba, type: 2}
     - target: {fileID: 3983119378213845215, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       propertyPath: managedReferences[8019692117163770150].dialogueTopic
       value: 
@@ -76057,9 +76065,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8745030176328732766, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 980734488}
-    - targetCorrespondingSourceObject: {fileID: 8745030176328732766, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 980734492}
   m_SourcePrefab: {fileID: 100100000, guid: 7cdb7e384e4443940b37ca1f892ead4e, type: 3}
 --- !u!1 &980734487 stripped
 GameObject:
@@ -76087,25 +76092,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.94114685, y: 0.23802628, z: 2.0049686}
   m_Center: {x: 0.47057295, y: -0.017093208, z: 0.037101872}
---- !u!114 &980734492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 980734487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c255d4e57353cba4db71da210ff777a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  npcName: 
-  localDialogue: {fileID: 11400000, guid: 0d07ea88ab31fd842b6b518027a0ab1f, type: 2}
-  m_dialogueEvent: {fileID: 11400000, guid: 07b85288ccaec794a97830de8622f55a, type: 2}
-  interactText: Open?
-  textSetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
-  textOffset: {x: 0, y: 1.6, z: 0}
-  canBeDisabled: 1
 --- !u!4 &982527573 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 012048beaf80a2941b5e9f43001b2829, type: 3}

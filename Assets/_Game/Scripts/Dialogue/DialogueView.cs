@@ -59,7 +59,7 @@ public class DialogueView : MonoBehaviour
         Despawn(m_conversationRoot);
     }
    
-    public async UniTask UnfoldDialogue(bool isOpening, bool makesEyeContact = true, MultiAimConstraint npc = default, MultiAimConstraint player = default)
+    public async UniTask UnfoldDialogue(bool isOpening, bool makesEyeContact = true, MultiAimConstraint npc = null, MultiAimConstraint player = null)
     {
         if (m_root == null) return;
         Tween.StopAll(m_root.gameObject.transform);
@@ -70,12 +70,13 @@ public class DialogueView : MonoBehaviour
         {
             m_root.gameObject.transform.localScale = new Vector3(1, 0, 1) * scale;
             _ = seq.Group(Tween.ScaleY(m_root.gameObject.transform, scale, 0.3f, Ease.OutBack));
-            if (npc != default && player != default && makesEyeContact) _ = MakeEyeContact(npc, player, 1, 0.9f); 
+            
+            if (npc != null && player != null && makesEyeContact) _ = MakeEyeContact(npc, player, 1, 0.9f); 
         }
         else
         {
             _ = seq.Group(Tween.ScaleY(m_root.gameObject.transform, 0f, 0.2f, Ease.InQuad));
-            if (npc != default && player != default && makesEyeContact) _ = MakeEyeContact(npc, player, 1, 0);
+            if (npc != null && player != null && makesEyeContact) _ = MakeEyeContact(npc, player, 1, 0);
 
         }
         await seq;
