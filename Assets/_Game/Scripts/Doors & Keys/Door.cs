@@ -18,10 +18,12 @@ public class Door : MonoBehaviour
     [SerializeReference] 
     public IClueHolder requiredClue; 
     
-#if UNITY_EDITOR
+
     
     private void ClearRequiredClue()
     {
+        
+#if UNITY_EDITOR
         
         UnityEditor.Undo.RecordObject(this, "Clear Required Clue");
         
@@ -38,11 +40,14 @@ public class Door : MonoBehaviour
         {
             UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
         }
+#endif
+
     }
 
     private IEnumerable<ValueDropdownItem<IClueHolder>> GetClueDropdownOptions()
     {
         var dropdownList = new List<ValueDropdownItem<IClueHolder>>();
+#if UNITY_EDITOR
         var allClues = ClueProvider.GetAvailableClues();
 
         foreach (var clueItem in allClues)
@@ -57,10 +62,11 @@ public class Door : MonoBehaviour
             dropdownList.Add(new ValueDropdownItem<IClueHolder>(menuPath, wrapperInstance));
         }
 
-        
-        return dropdownList;
-    }
 #endif
+        return dropdownList;
+        
+    }
+
 
 
     BoxCollider _col;
