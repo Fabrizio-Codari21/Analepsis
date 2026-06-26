@@ -29,10 +29,8 @@ public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
 
     private void Start()
     {
-        var interact = GetComponents<IInteractable>().Where(i => i != this);
-        if (interact.Any())
-            foreach (var i in interact)
-            {
+        var i= GetComponent<IInteractable>();
+       
                 i.OnFocus += SpawnName;
                 i.OnUnfocus += DespawnName;
                 i.OnUpdateDistance += UpdateOffset;
@@ -40,7 +38,7 @@ public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
                 i.OnStart += StartDialogue;
 
                 i.AddTip(new Tip(interactText, TipOrder.InteractionType));
-            }
+            
 
         //OnFocus += SpawnName;
         //OnUnfocus += DespawnName;
