@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 7f9ae67ea7e41c14a9170e57eab2d9ce, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: 0c18e11fb07ef0943a73f2617958864f, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 4ae172ac5fd84ef4cbdec486e84fb0d7, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -1582,7 +1582,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: 356df1c6fdec5d448a5bf3c93a679cf1, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 6190227545543688625, guid: ea565f285f337d94f939e7e8ea6769e1, type: 3}
+      objectReference: {fileID: -3985145636982271741, guid: f675ea1758ebc864a81076aa3ba62bcd, type: 3}
     - target: {fileID: 919132149155446097, guid: 356df1c6fdec5d448a5bf3c93a679cf1, type: 3}
       propertyPath: m_Name
       value: Wall High Corner Convex (3)
@@ -5598,7 +5598,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: 356df1c6fdec5d448a5bf3c93a679cf1, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 6190227545543688625, guid: ea565f285f337d94f939e7e8ea6769e1, type: 3}
+      objectReference: {fileID: -3985145636982271741, guid: f675ea1758ebc864a81076aa3ba62bcd, type: 3}
     - target: {fileID: 919132149155446097, guid: 356df1c6fdec5d448a5bf3c93a679cf1, type: 3}
       propertyPath: m_Name
       value: Wall High Corner Convex (2)
@@ -6136,6 +6136,10 @@ PrefabInstance:
     - target: {fileID: 8376222681170754020, guid: c7bd4870432e89046983a9bb81d9b084, type: 3}
       propertyPath: m_Intensity
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376222681170754020, guid: c7bd4870432e89046983a9bb81d9b084, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6725,6 +6729,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8640533545271269916, guid: a86f48ced54c0f048be81bdbae705365, type: 3}
   m_PrefabInstance: {fileID: 1786103139000962362}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &453689130
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.327
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.187
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.45
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ee7ad93869ce5e84081f9bd8cf3d2a73, type: 2}
+    - target: {fileID: 919132149155446097, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
+      propertyPath: m_Name
+      value: BeerKeg
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e22acf6eeee0e5545a83f53142ada2f0, type: 3}
 --- !u!1 &464692012
 GameObject:
   m_ObjectHideFlags: 0
@@ -7982,7 +8051,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: 356df1c6fdec5d448a5bf3c93a679cf1, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 6190227545543688625, guid: ea565f285f337d94f939e7e8ea6769e1, type: 3}
+      objectReference: {fileID: -3985145636982271741, guid: f675ea1758ebc864a81076aa3ba62bcd, type: 3}
     - target: {fileID: 919132149155446097, guid: 356df1c6fdec5d448a5bf3c93a679cf1, type: 3}
       propertyPath: m_Name
       value: Wall High Corner Convex (1)
@@ -9010,7 +9079,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: 356df1c6fdec5d448a5bf3c93a679cf1, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 6190227545543688625, guid: ea565f285f337d94f939e7e8ea6769e1, type: 3}
+      objectReference: {fileID: -3985145636982271741, guid: f675ea1758ebc864a81076aa3ba62bcd, type: 3}
     - target: {fileID: 919132149155446097, guid: 356df1c6fdec5d448a5bf3c93a679cf1, type: 3}
       propertyPath: m_Name
       value: Wall High Corner Convex (5)
@@ -9486,6 +9555,10 @@ PrefabInstance:
     - target: {fileID: 8376222681170754020, guid: c7bd4870432e89046983a9bb81d9b084, type: 3}
       propertyPath: m_Intensity
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376222681170754020, guid: c7bd4870432e89046983a9bb81d9b084, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10046,6 +10119,10 @@ PrefabInstance:
     - target: {fileID: 7973491216836029752, guid: 07a51c99c50d6064989278aaea583dda, type: 3}
       propertyPath: m_Intensity
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7973491216836029752, guid: 07a51c99c50d6064989278aaea583dda, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7973491216836029755, guid: 07a51c99c50d6064989278aaea583dda, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12879,6 +12956,10 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 8376222681170754020, guid: c7bd4870432e89046983a9bb81d9b084, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14208,6 +14289,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1586967059994457347, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1782253823297978952, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -14231,6 +14316,10 @@ PrefabInstance:
     - target: {fileID: 2500570954000331165, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_Name
       value: Theory Room (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2569863631457794800, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2634264641492050105, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: manager
@@ -14327,6 +14416,10 @@ PrefabInstance:
     - target: {fileID: 3890821306616863267, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4365083091603459658, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4488877855873287675, guid: befa31a139608e842a8bc3e24b38cdfe, type: 3}
       propertyPath: m_Value
@@ -15824,7 +15917,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: b01864ba62138a64f848c7c35fbb3809, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -2400012641967565677, guid: dcea73edede954945bd5381b4f02f08b, type: 3}
+      objectReference: {fileID: 3709237603970076483, guid: dce06684af38e7e4bb8f9a269a6dd550, type: 3}
     - target: {fileID: 919132149155446097, guid: b01864ba62138a64f848c7c35fbb3809, type: 3}
       propertyPath: m_Name
       value: Wall High Door Frame (1)
@@ -15992,7 +16085,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -18249,7 +18342,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: cfec0e95d64d6804aa37bbfb0408c17c, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -2912369540512527581, guid: d3b3b7c99079daa49aea9392cee75ad8, type: 3}
+      objectReference: {fileID: -5575019311541230741, guid: d0a34e507da3f104d8c746f27d666c0f, type: 3}
     - target: {fileID: 919132149155446097, guid: cfec0e95d64d6804aa37bbfb0408c17c, type: 3}
       propertyPath: m_Name
       value: Wall High Window (1)
@@ -18499,7 +18592,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: 356df1c6fdec5d448a5bf3c93a679cf1, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 6190227545543688625, guid: ea565f285f337d94f939e7e8ea6769e1, type: 3}
+      objectReference: {fileID: -3985145636982271741, guid: f675ea1758ebc864a81076aa3ba62bcd, type: 3}
     - target: {fileID: 919132149155446097, guid: 356df1c6fdec5d448a5bf3c93a679cf1, type: 3}
       propertyPath: m_Name
       value: Wall High Corner Convex (4)
@@ -18547,7 +18640,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -391.50024, y: 0}
+  m_AnchoredPosition: {x: -0.00024414062, y: 0}
   m_SizeDelta: {x: 783, y: 300}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!4 &1270206053 stripped
@@ -20009,7 +20102,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: cfec0e95d64d6804aa37bbfb0408c17c, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -2912369540512527581, guid: d3b3b7c99079daa49aea9392cee75ad8, type: 3}
+      objectReference: {fileID: -5575019311541230741, guid: d0a34e507da3f104d8c746f27d666c0f, type: 3}
     - target: {fileID: 919132149155446097, guid: cfec0e95d64d6804aa37bbfb0408c17c, type: 3}
       propertyPath: m_Name
       value: Wall High Window (2)
@@ -20263,7 +20356,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: b01864ba62138a64f848c7c35fbb3809, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -2400012641967565677, guid: dcea73edede954945bd5381b4f02f08b, type: 3}
+      objectReference: {fileID: 3709237603970076483, guid: dce06684af38e7e4bb8f9a269a6dd550, type: 3}
     - target: {fileID: 919132149155446097, guid: b01864ba62138a64f848c7c35fbb3809, type: 3}
       propertyPath: m_Name
       value: Wall High Door Frame (3)
@@ -20463,6 +20556,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8750798718740859142, guid: 74b2f5eaa66bc204cadd09e51297cd48, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 74b2f5eaa66bc204cadd09e51297cd48, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6700001
@@ -20522,6 +20619,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 74b2f5eaa66bc204cadd09e51297cd48, type: 3}
       propertyPath: m_Name
       value: Toda la barra
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 74b2f5eaa66bc204cadd09e51297cd48, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8513859187771203891, guid: 74b2f5eaa66bc204cadd09e51297cd48, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20741,7 +20846,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: b01864ba62138a64f848c7c35fbb3809, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -2400012641967565677, guid: dcea73edede954945bd5381b4f02f08b, type: 3}
+      objectReference: {fileID: 3709237603970076483, guid: dce06684af38e7e4bb8f9a269a6dd550, type: 3}
     - target: {fileID: 919132149155446097, guid: b01864ba62138a64f848c7c35fbb3809, type: 3}
       propertyPath: m_Name
       value: Wall High Door Frame (2)
@@ -30038,7 +30143,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1634724725}
   m_Direction: 0
   m_Value: 1
-  m_Size: 0.9999994
+  m_Size: 0.9999996
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -30442,7 +30547,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: cfec0e95d64d6804aa37bbfb0408c17c, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -2912369540512527581, guid: d3b3b7c99079daa49aea9392cee75ad8, type: 3}
+      objectReference: {fileID: -5575019311541230741, guid: d0a34e507da3f104d8c746f27d666c0f, type: 3}
     - target: {fileID: 919132149155446097, guid: cfec0e95d64d6804aa37bbfb0408c17c, type: 3}
       propertyPath: m_Name
       value: Wall High Window
@@ -30830,7 +30935,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: b01864ba62138a64f848c7c35fbb3809, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -2400012641967565677, guid: dcea73edede954945bd5381b4f02f08b, type: 3}
+      objectReference: {fileID: 3709237603970076483, guid: dce06684af38e7e4bb8f9a269a6dd550, type: 3}
     - target: {fileID: 919132149155446097, guid: b01864ba62138a64f848c7c35fbb3809, type: 3}
       propertyPath: m_Name
       value: Wall High Door Frame
@@ -32027,6 +32132,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 54e418d47addafd49a30e79a53291f0e, type: 3}
       propertyPath: m_Name
       value: RepisaBotellas (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 54e418d47addafd49a30e79a53291f0e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2224991115594128492, guid: 54e418d47addafd49a30e79a53291f0e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105942255639846811, guid: 54e418d47addafd49a30e79a53291f0e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -39981,3 +40098,4 @@ SceneRoots:
   - {fileID: 362641674}
   - {fileID: 1395834100}
   - {fileID: 1968308600}
+  - {fileID: 453689130}
