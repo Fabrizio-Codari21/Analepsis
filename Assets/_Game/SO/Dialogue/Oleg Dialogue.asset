@@ -26,7 +26,7 @@ MonoBehaviour:
     dialogueText: 'Excuse you, sir: you''re in MY bedroom right now.
 
       You must
-      have gotten the wrong room number. Please leave.'
+      have gotten the wrong room number. Please, leave.'
     characterEmotion: 3
     characterReaction: 7
     doesItProveAnything: 0
@@ -38,16 +38,16 @@ MonoBehaviour:
     editorPosition: {x: 54, y: 170}
     altDialoguePaths: []
     guid:
-      Part1: 2540284652
-      Part2: 1122114976
-      Part3: 221771931
-      Part4: 3608616113
+      Part1: 1205371044
+      Part2: 1334103531
+      Part3: 122334377
+      Part4: 200998729
     tag: 
   allNodes:
   - dialogueText: 'Excuse you, sir: you''re in MY bedroom right now.
 
       You must
-      have gotten the wrong room number. Please leave.'
+      have gotten the wrong room number. Please, leave.'
     characterEmotion: 3
     characterReaction: 7
     doesItProveAnything: 0
@@ -57,13 +57,12 @@ MonoBehaviour:
     - rid: 3046478613006778441
     isRootNode: 1
     editorPosition: {x: 54, y: 170}
-    altDialoguePaths:
-    - rid: 3046478908010004713
+    altDialoguePaths: []
     guid:
-      Part1: 2540284652
-      Part2: 1122114976
-      Part3: 221771931
-      Part4: 3608616113
+      Part1: 1205371044
+      Part2: 1334103531
+      Part3: 122334377
+      Part4: 200998729
     tag: 
   - dialogueText: 'Is that so? Well, I don''t suppose your presence will be causing
       me any problems... otherwise you probably wouldn''t have been able to get this
@@ -224,6 +223,48 @@ MonoBehaviour:
       Part3: 4047279270
       Part4: 4184659917
     tag: 
+  - dialogueText: "You were lied to, then. \nIt's already bad enough that I had to
+      lose my suite to some... filthy artist; I'm not going to negotiate with a mere
+      commoner like you.\nYou better find another room... or sleep downstairs, for
+      all I care."
+    characterEmotion: 3
+    characterReaction: 7
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 3046479065253413001
+    isRootNode: 0
+    editorPosition: {x: 1021.02264, y: 318}
+    altDialoguePaths: []
+    guid:
+      Part1: 2754526002
+      Part2: 1138548354
+      Part3: 498545549
+      Part4: 1940995327
+    tag: 
+  - dialogueText: 'It''s what I get for trusting in the integrity of such a miserable
+      establishment.
+
+      You''d think that they would understand the idea of "reservation",
+      regardless of how late one may arrive...
+
+      But I guess that was too much
+      to ask from a host who seemingly doesn''t even know numbers...'
+    characterEmotion: 1
+    characterReaction: 2
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 3046479065253413003
+    isRootNode: 0
+    editorPosition: {x: 2254, y: 395}
+    altDialoguePaths: []
+    guid:
+      Part1: 4043970722
+      Part2: 1242736572
+      Part3: 4036692107
+      Part4: 387059162
+    tag: 
   hiddenProof: 
   references:
     version: 2
@@ -237,21 +278,19 @@ MonoBehaviour:
         nextNode:
           rid: 3046478613006778445
         dialogueTopic: 
-        m_conditions:
-        - rid: 3046478613006778452
+        m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 620, y: 62}
+        editorPosition: {x: 599.0001, y: 86.99997}
     - rid: 3046478613006778441
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[Oh, my bad. (leave)] '
+        responseText: '[I was told that my room was <b>no. 2</b>...]'
         nextNode:
-          rid: -2
+          rid: 3046479065253412997
         dialogueTopic: 
-        m_conditions:
-        - rid: 3046478613006778453
+        m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 621.15015, y: 329.1}
+        editorPosition: {x: 599.15015, y: 298.00003}
     - rid: 3046478613006778442
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -352,66 +391,6 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 4832.035, y: -263.9999}
-    - rid: 3046478613006778452
-      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
-      data:
-        conditionName: 
-        unlockIfTrue: 0
-        targetDialogue: {fileID: 11400000}
-        isTalkDialogueNode:
-          dialogueText: '...yeah, sure. And I suppose you''re now expecting me to
-            "be cooperative" so that you may "protect me" from a "menace".
-
-            Pro
-            tip, kid: if you''re going to try and spy a major figure, make sure not
-            to use the oldest trick from the book first.
-
-            Do yourself
-            a favour and get out of my sight.'
-          characterEmotion: 0
-          characterReaction: 0
-          doesItProveAnything: 0
-          isKey: 0
-          responses: []
-          isRootNode: 0
-          editorPosition: {x: 5233.0815, y: -167}
-          altDialoguePaths: []
-          guid:
-            Part1: 1483341751
-            Part2: 1304408155
-            Part3: 2813616060
-            Part4: 1763568454
-          tag: 
-    - rid: 3046478613006778453
-      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
-      data:
-        conditionName: 
-        unlockIfTrue: 0
-        targetDialogue: {fileID: 11400000}
-        isTalkDialogueNode:
-          dialogueText: '...yeah, sure. And I suppose you''re now expecting me to
-            "be cooperative" so that you may "protect me" from a "menace".
-
-            Pro
-            tip, kid: if you''re going to try and spy a major figure, make sure not
-            to use the oldest trick from the book first.
-
-            Do yourself
-            a favour and get out of my sight.'
-          characterEmotion: 0
-          characterReaction: 0
-          doesItProveAnything: 0
-          isKey: 0
-          responses: []
-          isRootNode: 0
-          editorPosition: {x: 5233.0815, y: -167}
-          altDialoguePaths: []
-          guid:
-            Part1: 1483341751
-            Part2: 1304408155
-            Part3: 2813616060
-            Part4: 1763568454
-          tag: 
     - rid: 3046478613006778455
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -617,59 +596,72 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 3221, y: 157}
-    - rid: 3046478705303748725
+    - rid: 3046479065253412997
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "You were lied to, then. \nIt's already bad enough that I had
+          to lose my suite to some... filthy artist; I'm not going to negotiate with
+          a mere commoner like you.\nYou better find another room... or sleep downstairs,
+          for all I care."
+        characterEmotion: 3
+        characterReaction: 7
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 3046479065253413001
+        isRootNode: 0
+        editorPosition: {x: 1021.02264, y: 318}
+        altDialoguePaths: []
+        guid:
+          Part1: 2754526002
+          Part2: 1138548354
+          Part3: 498545549
+          Part4: 1940995327
+        tag: 
+    - rid: 3046479065253413001
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[(I think I''ve lost my chances with him...)]'
+        responseText: '[So, you should be in another room?] '
+        nextNode:
+          rid: 3046479065253413002
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1869.9999, y: 364.159}
+    - rid: 3046479065253413002
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'It''s what I get for trusting in the integrity of such a miserable
+          establishment.
+
+          You''d think that they would understand the idea
+          of "reservation", regardless of how late one may arrive...
+
+          But
+          I guess that was too much to ask from a host who seemingly doesn''t even
+          know numbers...'
+        characterEmotion: 1
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 3046479065253413003
+        isRootNode: 0
+        editorPosition: {x: 2254, y: 395}
+        altDialoguePaths: []
+        guid:
+          Part1: 4043970722
+          Part2: 1242736572
+          Part3: 4036692107
+          Part4: 387059162
+        tag: 
+    - rid: 3046479065253413003
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(It certainly is strange...)]'
         nextNode:
           rid: -2
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 686, y: 545}
-    - rid: 3046478908010004713
-      type: {class: AltDialoguePath, ns: , asm: Assembly-CSharp}
-      data:
-        altDialogue: "Wow, you're persistent. \nLet me make myself clear: no, I'm
-          not interested in talking to a spy like you."
-        condition:
-          dialogueText: '...yeah, sure. And I suppose you''re now expecting me to
-            "be cooperative" so that you may "protect me" from a "menace".
-
-            Pro
-            tip, kid: if you''re going to try and spy a major figure, make sure not
-            to use the oldest trick from the book first.
-
-            Do yourself
-            a favour and get out of my sight.'
-          characterEmotion: 0
-          characterReaction: 0
-          doesItProveAnything: 0
-          isKey: 0
-          responses: []
-          isRootNode: 0
-          editorPosition: {x: 5233.0815, y: -167}
-          altDialoguePaths: []
-          guid:
-            Part1: 1483341751
-            Part2: 1304408155
-            Part3: 2813616060
-            Part4: 1763568454
-          tag: 
-        skipTo:
-          dialogueText: Blocked Dialogue
-          characterEmotion: 0
-          characterReaction: 0
-          doesItProveAnything: 0
-          isKey: 0
-          responses:
-          - rid: 3046478705303748725
-          isRootNode: 0
-          editorPosition: {x: 306, y: 565}
-          altDialoguePaths: []
-          guid:
-            Part1: 2162740987
-            Part2: 1244222322
-            Part3: 1214876334
-            Part4: 3039725974
-          tag: 
+        editorPosition: {x: 2997, y: 416}
