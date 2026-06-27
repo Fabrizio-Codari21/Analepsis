@@ -36,31 +36,22 @@ public class AudioManager : Singleton<AudioManager>
         //        await UniTask.NextFrame();
         //    }
         //}
+
         var oldState = _currentMusicState;
         var oldVol = Music[oldState].volume;
         var newVol = Music[state].volume;
         var volMult = oldVol > newVol ? oldVol : newVol;
+
         Tween.StopAll();
         var seq = Sequence.Create();
 
-        // fade out de la musica actual
+        // fade in y out de la musica actual
         _ = seq.Group(Tween.Custom(0, 1, (instant ? 0 : (10 / musicTransitionSpeed) * volMult), (x) =>
         {
             Music[oldState].volume = Mathf.Lerp(oldVol, 0, x);
             Music[state].volume = Mathf.Lerp(newVol, 1, x);
         }, 
         Ease.InOutExpo));
-
-        //// fade in de la musica siguiente
-        //_ = seq.Group(Tween.Custom(
-        //0, 
-        //1,
-        //(instant ? 0 : 10 / musicTransitionSpeed), 
-        //(x) =>
-        //{
-        //    Music[state].volume = x;
-        //},
-        //Ease.InOutExpo));
         
         _currentMusicState = state;
         _currentSeq = seq;

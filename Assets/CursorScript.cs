@@ -7,10 +7,11 @@ public class CursorScript : MonoBehaviour
     public Texture2D cursorArrowUpdate;
     public Vector2 skewedVector = new Vector2(0, 1);
     private Camera _cam;
-    [SerializeField]
-    private AudioClip _clickClip;
-    [SerializeField]
-    private AudioClip _unclickClip;
+    bool _clicked = false;
+    //[SerializeField]
+    //private AudioClip _clickClip;
+    //[SerializeField]
+    //private AudioClip _unclickClip;
     void Start()
     {
         Cursor.SetCursor(cursorArrow, Vector2.zero, CursorMode.ForceSoftware);
@@ -19,15 +20,16 @@ public class CursorScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && Cursor.visible)
         {
-            AudioSource.PlayClipAtPoint(_clickClip, _cam.transform.position);
+            AudioManager.Instance.SelectSfx(SFXType.Player, _clicked ? "PenUnClick" : "PenClick");
+            _clicked = !_clicked;
+           
             Cursor.SetCursor(cursorArrowUpdate, skewedVector, CursorMode.ForceSoftware);
         }
         
-        if (Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            //AudioSource.PlayClipAtPoint(_unclickClip, _cam.transform.position);
+        if (Input.GetKeyUp(KeyCode.Mouse0) && Cursor.visible)
+        {            
             Cursor.SetCursor(cursorArrow, Vector2.zero, CursorMode.ForceSoftware);
         }
             
