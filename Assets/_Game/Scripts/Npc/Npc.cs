@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
+using PrimeTween;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -13,23 +15,20 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
    public Emotion defaultEmotion = Emotion.Idle;
    public Animator animator;
    [SerializeField] private Dialogue m_defaultDialogue;
-    private bool _firstTimeSpeaking = true;
    [SerializeField] private DialoguerEvent m_dialogueEvent;
    
    [SerializeField] private DynamicTextSetting m_nameTextSetting;
    [SerializeField] private Vector3 m_textPositionOffset;
-   //[SerializeField] private Transform m_neckBone;
    [SerializeField] private MultiAimConstraint m_lookAt;
-    private MultiAimConstraint m_player;
 
    [SerializeField] private Tip m_tip; //Por ahora no uso el texto que le asignamos en el inspector
    
    public List<ICondition> Conditions { get; } = new();
    private DynamicText _text;
    private List<Tip> tips = new();
+   [SerializeField] private MultiAimConstraint m_player;
    private void Start()
    {
-       NewDialogue(m_defaultDialogue);
        OnFocus += SpawnName;
        OnUpdateDistance += UpdateOffset;
        OnUnfocus += DespawnName;
@@ -37,17 +36,11 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
        m_tip.tip = $"Should I talk to {m_npcIdentity.npcName}? ";
        AddTip(m_tip);
 
-       SetFace(DefaultEmotion);
-       if(m_lookAt)
-       {
-           m_lookAt.weight = 0f;
-           m_player = m_lookAt.data.sourceObjects[0].transform.GetComponent<MultiAimConstraint>();
-           if(m_player != null)
-           {
-                m_player.weight = 0f;
-                m_player.data.sourceObjects.Clear();
-           }
-       }
+       SetEmotion(DefaultEmotion);
+
+
+       m_lookAt.weight = 0;
+
    }
 
     #region IInteract
@@ -119,24 +112,49 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
     private void Speck()
    {
       m_dialogueEvent.Raise(this);
+      StartDialogue();
     }
-   public string NpcName
+   public string DialoguerName
    {
       get => m_npcIdentity.npcName;
       set => m_npcIdentity.npcName = value;
    }
-   //public Transform NeckBone {  get => m_neckBone; set => m_neckBone = value; } 
-   public MultiAimConstraint LookAt {  get => m_lookAt; set => m_lookAt = value; } 
-   public MultiAimConstraint Player {  get => m_player; set => m_player = value; } 
-   public Dialogue Dialogue { get; private set; }
-   public Dialogue NewDialogue(Dialogue dialogue) => Dialogue = dialogue;
-   public NpcIdentity ID  {
-      get => m_npcIdentity;
-      set => m_npcIdentity = value;
+   public void StartDialogue()
+   {
+       Debug.Log("Npc.StartDialogue");
+       if (m_lookAt != null)
+       {
+           Debug.Log("View To Player");
+           _= ViewToPlayer(m_lookAt,1f,view: true);
+       }
+       else
+       {
+           Debug.LogError("Error");
+       }
    }
+
+   public void EndDialogue()
+   { 
+       if (m_lookAt != null)
+       {
+           ViewToPlayer(m_lookAt,1f,view: false).Forget();
+       }
+       SetEmotion(DefaultEmotion);
+      ResetAnimation();
+      
+       if (FirstTimeSpeaking)
+       {
+           NotebookManager.Instance.AddCharacter(m_npcIdentity);           
+          FirstTimeSpeaking = false;
+       }
+
+   }
+
+
+   public Dialogue Dialogue => m_defaultDialogue;
+
     public Emotion DefaultEmotion { get => defaultEmotion; set => defaultEmotion = value; }
-    public bool FirstTimeSpeaking { get => _firstTimeSpeaking; set => _firstTimeSpeaking = value; }
-    public bool Override { get; set; }
+    public bool FirstTimeSpeaking { get; set; } = true;
 
     public string GetTip()
    {
@@ -182,7 +200,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
       _text =  null;
    }
 
-    public void SetFace(Emotion newEmotion = Emotion.Idle)
+    public void SetEmotion(Emotion newEmotion = Emotion.Idle)
     {
         if(!m_npcIdentity.allFaces.ContainsKey(newEmotion))
         {
@@ -221,6 +239,11 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
         }
     }
 
+    public SerializableGuid Guid()
+    {
+        return m_npcIdentity.npcGuid;
+    }
+
     public void ResetAnimation()
     {
         if (animator)
@@ -239,16 +262,33 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
         switch (parameter.type)
         {
             case AnimatorControllerParameterType.Bool:
-                if(animator.GetBool(parameter.name) != value) 
-                animator.SetBool(parameter.name, value); break;
-            case AnimatorControllerParameterType.Trigger:
-                if (value) animator.SetTrigger(parameter.name); 
+                if(animator.GetBool(parameter.name) != value) animator.SetBool(parameter.name, value); break;
+            case AnimatorControllerParameterType.Trigger: if (value) animator.SetTrigger(parameter.name); 
                 else animator.ResetTrigger(parameter.name); break;
             default: print("Wrong type of Parameter."); break;
         }
         //print("Set anim parameter " + parameter.name + " to " + value);
     }
 
+
+
+    private async UniTask ViewToPlayer(MultiAimConstraint constraint, float duration, float minWeight = 0.3f, float maxWeight = 0.9f, bool view = true)
+    {
+        Debug.Log($"Start Weight = {constraint.weight}");
+
+        float targetWeight = view ? maxWeight : minWeight;
+
+        await Tween.Custom(constraint.weight, targetWeight, duration,
+            x =>
+            {
+                constraint.weight = x;
+                Debug.Log($"Tween: {x}");
+            },
+            Ease.OutCirc);
+        
+        
+        Debug.Log($"End Weight = {constraint.weight}");
+    }
     public void ClearTip()
     {
         tips.Clear();

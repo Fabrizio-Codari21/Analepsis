@@ -59,7 +59,7 @@ public class DialogueView : MonoBehaviour
         Despawn(m_conversationRoot);
     }
    
-    public async UniTask UnfoldDialogue(bool isOpening, bool makesEyeContact = true, MultiAimConstraint npc = null, MultiAimConstraint player = null)
+    public async UniTask UnfoldDialogue(bool isOpening)
     {
         if (m_root == null) return;
         Tween.StopAll(m_root.gameObject.transform);
@@ -70,46 +70,14 @@ public class DialogueView : MonoBehaviour
         {
             m_root.gameObject.transform.localScale = new Vector3(1, 0, 1) * scale;
             _ = seq.Group(Tween.ScaleY(m_root.gameObject.transform, scale, 0.3f, Ease.OutBack));
-            
-            if (npc != null && player != null && makesEyeContact) _ = MakeEyeContact(npc, player, 1, 0.9f); 
         }
         else
         {
             _ = seq.Group(Tween.ScaleY(m_root.gameObject.transform, 0f, 0.2f, Ease.InQuad));
-            if (npc != null && player != null && makesEyeContact) _ = MakeEyeContact(npc, player, 1, 0);
 
         }
         await seq;
 
-    }
-
-    // por ahora el npc gira bien pero el player no, lo voy a seguir revisando.
-    private async UniTask MakeEyeContact(MultiAimConstraint npc, MultiAimConstraint player = default, float time = 1f, float maxWeight = 1f)
-    {
-        WeightedTransform npcPosition = new(npc.transform, 1f);
-        if(maxWeight > 0f)
-        {
-            _ = Tween.Custom(npc.weight, maxWeight, time, (x => npc.weight = x), Ease.OutCirc);
-            if(player != default)
-            {
-                player.data.sourceObjects.Add(npcPosition);
-                //print(player.data.sourceObjects.Count);
-                await Tween.Custom(player.weight, maxWeight, time, (x => player.weight = x), Ease.OutCirc);
-
-            }
-
-            //while (looker.weight < maxWeight) {looker.weight += 0.02f / time; await UniTask.Delay(20);}
-        }
-        else
-        {
-            _ = Tween.Custom(npc.weight, 0, time, (x => npc.weight = x), Ease.OutCirc);
-            if (player != null)
-            {
-                await Tween.Custom(player.weight, 0, time, (x => player.weight = x), Ease.OutCirc);
-                player.data.sourceObjects.Remove(npcPosition);
-            }
-            
-        }
     }
   
     public async UniTask PlayDialogueText(string content, CancellationToken token, Color color = default, bool isResponse = false) // view  

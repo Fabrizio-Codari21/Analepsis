@@ -1,23 +1,23 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
 public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
 {
-    public string npcName;
-    public string NpcName { get => npcName; set => npcName = value; }
+    public string dialogueName;
+    public string DialoguerName { get => dialogueName; set => dialogueName = value; }
 
     public Dialogue localDialogue;
     public Dialogue Dialogue => localDialogue;
     [SerializeField] private DialoguerEvent m_dialogueEvent;
-
+    
     public string interactText;
     public DynamicTextSetting textSetting;
     public Vector3 textOffset;
-    public bool canBeDisabled;
 
+    [SerializeField] private bool m_showNameInGame = true;
     private List<Tip> tips = new();
     private DynamicText _text;
 
@@ -31,22 +31,15 @@ public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
     {
         var i= GetComponent<IInteractable>();
        
-                i.OnFocus += SpawnName;
-                i.OnUnfocus += DespawnName;
-                i.OnUpdateDistance += UpdateOffset;
-                i.OnStart += DespawnName;
-                i.OnStart += StartDialogue;
+        i.OnFocus += SpawnName;
+        i.OnUnfocus += DespawnName;
+        i.OnUpdateDistance += UpdateOffset;
+        i.OnStart += DespawnName;
+        i.OnStart += StartDialogue;
 
-                i.AddTip(new Tip(interactText, TipOrder.InteractionType));
+        i.AddTip(new Tip(interactText, TipOrder.InteractionType));
             
-
-        //OnFocus += SpawnName;
-        //OnUnfocus += DespawnName;
-        //OnUpdateDistance += UpdateOffset;
-        //OnStart += DespawnName;
-        //OnStart += StartDialogue;
-
-        //AddTip(new Tip(interactText, TipOrder.InteractionType));
+        
     }
 
     public void Focus()
@@ -72,8 +65,7 @@ public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
         if (!state.canInteract) return;
         OnStart?.Invoke();
     }
-
-    public Dialogue NewDialogue(Dialogue dialogue) => localDialogue = dialogue;
+    
 
     public string GetTip()
     {
@@ -112,8 +104,9 @@ public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
 
     private void SpawnName()
     {
+        if(!m_showNameInGame) return;
         _text = FlyweightFactory.Instance.Spawn<DynamicText>(textSetting, textOffset + transform.position, Quaternion.identity, transform);
-        _text.SetText(npcName, 2, Color.white);
+        _text.SetText(dialogueName, 2, Color.white);
         _ = _text.PlayTypeWriterEffect();
     }
 
@@ -160,30 +153,43 @@ public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
     }
 
     public void StartDialogue() => m_dialogueEvent.Raise(this);
+    public virtual void EndDialogue()
+    {
+       
+    }
+
+    public void SetEmotion(Emotion style)
+    {
+       
+    }
 
     #region Unused
 
     //no habria motivo para usarlos por ahora
     public bool FirstTimeSpeaking { get => false; set => throw new NotImplementedException(); }
-    public NpcIdentity ID { get => null; set => throw new NotImplementedException(); }
-    public Emotion DefaultEmotion { get => Emotion.None; set => throw new NotImplementedException(); }
-    public MultiAimConstraint LookAt { get => null; set => throw new NotImplementedException(); }
-    public MultiAimConstraint Player { get => null; set => throw new NotImplementedException(); }
 
-    public void ResetAnimation()
-    {
-       
-    }
 
     public void SetAnimation(Reaction newReaction = Reaction.None)
     {
         
-    }
-
-    public void SetFace(Emotion newEmotion = Emotion.Idle)
-    {
         
     }
+
+    [Button("New Guid")]
+    public void NewGuid()
+    {
+        _guid = SerializableGuid.NewGuid();
+    }
+    [SerializeField]
+    [ShowInInspector]
+    [ReadOnly]
+    private SerializableGuid _guid;
+
+    public SerializableGuid Guid()
+    {
+        return _guid;
+    }
+    
 
     public void ClearTip()
     {

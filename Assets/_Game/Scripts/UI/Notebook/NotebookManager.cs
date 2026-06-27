@@ -60,25 +60,29 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     #region Character
 
     [Header("Character Data")]
-    [ShowInInspector,ReadOnly] public HashSet<NpcIdentity> FoundCharacters { get; } = new();  // Save Data
+    [ShowInInspector,ReadOnly] public HashSet<NpcIdentity> FoundCharacters { get; } = new(); // Save Data
+    [ShowInInspector,ReadOnly] public HashSet<SerializableGuid> FoundCharacterGuids { get; } = new();
     [SerializeField] private NpcEvent m_onNpcFound;
     
     public void AddCharacter(NpcIdentity npc)
     {
+        if (npc == null) return;
+
+        if (!FoundCharacterGuids.Add(npc.npcGuid)) return;
         bool isFirstCharacter = FoundCharacters.Count == 0;
-
-        if (!FoundCharacters.Add(npc))
-            return;
-
+        FoundCharacters.Add(npc);
+        
         m_onNpcFound?.Raise(npc);
 
         if (isFirstCharacter)
+        {
             m_onCharacterSelected?.Raise(npc);
+        }
     }
     
-    public List<DialogueNote> GetDialoguesFor(NpcIdentity npcIdentity)  // Save Data
+    public List<DialogueNote> GetDialoguesFor(NpcIdentity npcIdentity)  
     {
-        if (_npcTalkedDialogue != null && _npcTalkedDialogue.TryGetValue(npcIdentity, out var list))
+        if (_npcTalkedDialogue != null && _npcTalkedDialogue.TryGetValue(npcIdentity.npcGuid, out var list))
         {
             return list;
         }
@@ -115,27 +119,27 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     #endregion
     
     private readonly HashSet<SerializableGuid> _allNote = new();
-    private void Record(Note note)
+    private void Record(Note n)
     {
-        if (!_allNote.Add(note.guid))
+        if (!_allNote.Add(n.guid))
         {
-           
+            
         }
-  
     }  
     
-    [ShowInInspector, ReadOnly] private Dictionary<NpcIdentity,List<DialogueNote>> _npcTalkedDialogue = new();
-    public  void RecordDialogueProgress(NpcIdentity npc, Dialogue dialogue, INode currentNode, INode parentNode)
+    
+    [ShowInInspector, ReadOnly] private Dictionary<SerializableGuid,List<DialogueNote>> _npcTalkedDialogue = new();
+    public  void RecordDialogueProgress(SerializableGuid id, Dialogue dialogue, INode currentNode, INode parentNode)
     {
         if (dialogue == null || currentNode == null) return;
         
-        if (!_npcTalkedDialogue.TryGetValue(npc, out var dialogueList))
+        if (!_npcTalkedDialogue.TryGetValue(id, out var dialogueList))
         {
             dialogueList = new List<DialogueNote>();
-            _npcTalkedDialogue[npc] = dialogueList;
+            _npcTalkedDialogue[id] = dialogueList;
         }
         
-        var dialogueNote = dialogueList.Find(x => x.GetFullDialogue() == dialogue); // encuetro si ya existia el node
+        DialogueNote dialogueNote = dialogueList.Find(x => x.GetFullDialogue() == dialogue); // encuetro si ya existia el node
         
         if (dialogueNote == null)
         {

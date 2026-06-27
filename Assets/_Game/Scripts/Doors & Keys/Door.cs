@@ -18,8 +18,6 @@ public class Door : MonoBehaviour
     [SerializeReference] 
     public IClueHolder requiredClue; 
     
-
-    
     private void ClearRequiredClue()
     {
         
@@ -82,8 +80,7 @@ public class Door : MonoBehaviour
     // analizaste el objeto por completo) te deja desbloquear la puerta.
     private void OnTriggerEnter(Collider collider)
     {
-        
-        _ = ToggleDoor(true, CheckKey(requiredClue));
+       TryOpenDoor();
     }
     private void OnTriggerExit(Collider other)
     {
@@ -109,6 +106,7 @@ public class Door : MonoBehaviour
         return true;
     }
 
+    public void TryOpenDoor() => _ = ToggleDoor(true, CheckKey(requiredClue));
     public async UniTask ToggleDoor(bool open = true, bool unlocked = true) 
     {
 
