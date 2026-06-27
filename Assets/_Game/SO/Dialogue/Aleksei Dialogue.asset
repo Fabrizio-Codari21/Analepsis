@@ -249,6 +249,42 @@ MonoBehaviour:
       Part3: 3008323730
       Part4: 425362122
     tag: 
+  - dialogueText: 'I wish that was the case... but where could I possibly go? The
+      sauna won''t open, the kitchen is locked as well, and I''m absolutely NOT going
+      in my bedroom, what with all that <b>chaos</b> going on upstairs.
+
+      All
+      that is left is this table, unless you can think of something better. '
+    characterEmotion: 2
+    characterReaction: 2
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 3046479050573086722
+    isRootNode: 0
+    editorPosition: {x: 2901.85, y: 492.00003}
+    altDialoguePaths: []
+    guid:
+      Part1: 3403335406
+      Part2: 1326432269
+      Part3: 3950741638
+      Part4: 921685745
+    tag: 
+  - dialogueText: 'Well, either there''s a '
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses: []
+    isRootNode: 0
+    editorPosition: {x: 4517.05, y: 492.00006}
+    altDialoguePaths: []
+    guid:
+      Part1: 931422527
+      Part2: 1218130906
+      Part3: 1804454273
+      Part4: 2257800816
+    tag: 
   hiddenProof: 
   references:
     version: 2
@@ -448,6 +484,68 @@ MonoBehaviour:
           Part3: 2519909521
           Part4: 3830444848
         tag: 
+    - rid: 3046479050573086720
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[You could go somewhere more private.] '
+        nextNode:
+          rid: 3046479050573086721
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2509, y: 492.0616}
+    - rid: 3046479050573086721
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'I wish that was the case... but where could I possibly go?
+          The sauna won''t open, the kitchen is locked as well, and I''m absolutely
+          NOT going in my bedroom, what with all that <b>chaos</b> going on upstairs.
+
+          All
+          that is left is this table, unless you can think of something better. '
+        characterEmotion: 2
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 3046479050573086722
+        isRootNode: 0
+        editorPosition: {x: 2901.85, y: 492.00003}
+        altDialoguePaths: []
+        guid:
+          Part1: 3403335406
+          Part2: 1326432269
+          Part3: 3950741638
+          Part4: 921685745
+        tag: 
+    - rid: 3046479050573086722
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[<b>Chaos</b>? What do you mean?]'
+        nextNode:
+          rid: 3046479050573086723
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4142.4824, y: 492.00003}
+    - rid: 3046479050573086723
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Well, either there''s a '
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses: []
+        isRootNode: 0
+        editorPosition: {x: 4517.05, y: 492.00006}
+        altDialoguePaths: []
+        guid:
+          Part1: 931422527
+          Part2: 1218130906
+          Part3: 1804454273
+          Part4: 2257800816
+        tag: 
     - rid: 6774952781063389271
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -584,6 +682,7 @@ MonoBehaviour:
         isKey: 0
         responses:
         - rid: 6774952781063389279
+        - rid: 3046479050573086720
         isRootNode: 0
         editorPosition: {x: 1603.0002, y: 524.1501}
         altDialoguePaths: []
@@ -596,13 +695,13 @@ MonoBehaviour:
     - rid: 6774952781063389279
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[(Don''t bother interrupting him)]'
+        responseText: '[Did you see anyone do that here?]'
         nextNode:
           rid: 6774952781063389280
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 2508.9995, y: 524}
+        editorPosition: {x: 2509, y: 786.9034}
     - rid: 6774952781063389280
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -619,7 +718,7 @@ MonoBehaviour:
         responses:
         - rid: 6774952781063389281
         isRootNode: 0
-        editorPosition: {x: 2836.9993, y: 525}
+        editorPosition: {x: 2837, y: 787.90344}
         altDialoguePaths: []
         guid:
           Part1: 1866444140
@@ -636,7 +735,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3768.9993, y: 525}
+        editorPosition: {x: 3769, y: 787.90344}
     - rid: 6774952781063389282
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
