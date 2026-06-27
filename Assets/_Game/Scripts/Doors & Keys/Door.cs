@@ -76,12 +76,7 @@ public class Door : MonoBehaviour
     }
 
 
-    // Por ahora, si no tiene llave o si llegaste a ver el flashback de la llave (es decir que
-    // analizaste el objeto por completo) te deja desbloquear la puerta.
-    private void OnTriggerEnter(Collider collider)
-    {
-       TryOpenDoor();
-    }
+    
     private void OnTriggerExit(Collider other)
     {
         _ = ToggleDoor(false);
@@ -106,12 +101,14 @@ public class Door : MonoBehaviour
         return true;
     }
 
+
+    public bool CheckKey() => CheckKey(requiredClue);
     public void TryOpenDoor() => _ = ToggleDoor(true, CheckKey(requiredClue));
     public async UniTask ToggleDoor(bool open = true, bool unlocked = true) 
     {
 
         var seq = Sequence.Create();
-
+        
         // Si esta desbloqueada, se abre y cierra rot�ndose y desactiva la colisi�n de la puerta.
         if((unlocked && overrideLock is not LockState.Lock) || overrideLock is LockState.Unlock)
         {

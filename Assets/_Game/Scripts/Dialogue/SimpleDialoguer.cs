@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 
 public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
 {
@@ -152,7 +151,7 @@ public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
         };
     }
 
-    public void StartDialogue() => m_dialogueEvent.Raise(this);
+    public virtual void StartDialogue() => m_dialogueEvent.Raise(this);
     public virtual void EndDialogue()
     {
        
@@ -164,8 +163,7 @@ public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
     }
 
     #region Unused
-
-    //no habria motivo para usarlos por ahora
+    
     public bool FirstTimeSpeaking { get => false; set => throw new NotImplementedException(); }
 
 
