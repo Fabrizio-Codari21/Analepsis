@@ -259,7 +259,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
 
     #region  Item
 
-    public void UnlockPoi(Item item, string poiId)
+    public bool UnlockPoi(Item item, string poiId)
     {
         if (!_unlockedPoisByItem.ContainsKey(item.guid))
         {
@@ -270,15 +270,16 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         var set = _unlockedPoisByItem[item.guid];
         
         bool wasCompleteBefore = HasAllPois(item);
-        if (!set.Add(poiId)) return;
+        if (!set.Add(poiId)) return false;
         
-        var poiData = item.pois.Find(x => x.poiId == poiId);
        
         bool isCompleteNow = HasAllPois(item);
         if (wasCompleteBefore != isCompleteNow)
         {
             m_updatePoi.Raise(isCompleteNow);
         }
+
+        return true;
     }
     
     public List<string> GetUnlockedPoiDescriptions(Item item)

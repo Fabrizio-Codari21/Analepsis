@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using PrimeTween;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CharacterNotebookPage : NotebookPage
@@ -26,9 +27,6 @@ public class CharacterNotebookPage : NotebookPage
     
     private readonly HashSet<NpcIdentity> _instantiatedButtons = new();
     
-    
-    
-    
     [Header("Text")]
     [SerializeField] private DynamicTextSetting m_dynamicTextSetting;
     [SerializeField] private ScrollRect m_scrollRect;
@@ -36,23 +34,28 @@ public class CharacterNotebookPage : NotebookPage
     [SerializeField] private float m_textWidth = 150f;
     [SerializeField] private float m_textSize = 12f;
     
-    
     private CancellationTokenSource _textCancellationTokenSource;
     private DynamicUIText _currentActiveText;
+
     private void Start()
     {
         m_onCharacterSelected.OnEventRaised += SwitchCharacter;
         m_onNpcAdded.OnEventRaised += AddNpc;
         m_receiveNodeInfo.OnEventRaised += ShowInfo;
-      
     }
-
 
     private void OnEnable()
     {
         m_panelUnfoldButton.onClick.AddListener(() =>
         {
-            UnfoldPanel().Forget();
+            if (m_characterSelectionPanel.activeSelf)
+            {
+                FoldPanel().Forget();
+            }
+            else
+            {
+                UnfoldPanel().Forget();
+            }
         });
     }
 
@@ -67,7 +70,37 @@ public class CharacterNotebookPage : NotebookPage
         m_onCharacterSelected.OnEventRaised -= SwitchCharacter;
         m_onNpcAdded.OnEventRaised -= AddNpc;
         m_receiveNodeInfo.OnEventRaised -= ShowInfo;
-        
+    }
+    
+    private void Update()
+    {
+  
+        if (!m_characterSelectionPanel.activeSelf) return;
+
+
+        if (!Input.GetMouseButtonDown(0)) return;
+        GameObject currentSelected = EventSystem.current.currentSelectedGameObject;
+            
+        if (currentSelected == null || !IsPointerOverPanel(currentSelected))
+        {
+            if (currentSelected != m_panelUnfoldButton.gameObject)
+            {
+                FoldPanel().Forget();
+            }
+        }
+    }
+
+    private bool IsPointerOverPanel(GameObject clickedObject)
+    {
+        Transform current = clickedObject.transform;
+        while (current != null)
+        {
+            if (current.gameObject == m_characterSelectionPanel)
+                return true;
+            
+            current = current.parent;
+        }
+        return false;
     }
 
     private void SwitchCharacter(NpcIdentity key)
@@ -78,7 +111,6 @@ public class CharacterNotebookPage : NotebookPage
         m_characterIcon.sprite = key.filePhoto;
         m_text.text = key.characterInfo;
     }
-
 
     public void SyncAllButtons(List<NpcIdentity> currentCharacters)
     {
@@ -109,10 +141,9 @@ public class CharacterNotebookPage : NotebookPage
     {
         CancelAndDisposeToken();
         _textCancellationTokenSource = new CancellationTokenSource();
-        PlayText(info,token: _textCancellationTokenSource.Token, sizeOverride : m_textSize).Forget();
+        PlayText(info, token: _textCancellationTokenSource.Token, sizeOverride: m_textSize).Forget();
     }
 
-  
     private void CreateButtonInstance(NpcIdentity npc)
     {
         var buttonInstance = Instantiate(m_button, m_buttonRoot);
@@ -132,7 +163,6 @@ public class CharacterNotebookPage : NotebookPage
         _textCancellationTokenSource = null;
     }
 
-  
     private async UniTask PlayText(string text, CancellationToken token, Transform parent = null, float sizeOverride = 0) 
     {
         if (token.IsCancellationRequested) return;
@@ -166,28 +196,24 @@ public class CharacterNotebookPage : NotebookPage
     
     private async UniTask UnfoldPanel()
     {
-        
         m_characterSelectionPanel.SetActive(true);
         Tween.StopAll(m_characterSelectionPanel.gameObject.transform);
         var seq = Sequence.Create();
        
         m_characterSelectionPanel.gameObject.transform.localScale = new Vector3(0, 1, 1);
-        await seq.Group(Tween.ScaleX( m_characterSelectionPanel.gameObject.transform, 1f, 0.3f, Ease.OutBack));
+        await seq.Group(Tween.ScaleX(m_characterSelectionPanel.gameObject.transform, 1f, 0.3f, Ease.OutBack));
         await seq;
     }
     
     private async UniTask FoldPanel()
     {
-        if ( m_characterSelectionPanel == null) return;
-        Tween.StopAll( m_characterSelectionPanel.gameObject.transform);
+        if (m_characterSelectionPanel == null) return;
+        Tween.StopAll(m_characterSelectionPanel.gameObject.transform);
 
         var seq = Sequence.Create();
-        await seq.Group(Tween.ScaleX( m_characterSelectionPanel.gameObject.transform, 0f, 0.2f, Ease.InQuad));
-        
+        await seq.Group(Tween.ScaleX(m_characterSelectionPanel.gameObject.transform, 0f, 0.2f, Ease.InQuad));
         await seq;
         
         m_characterSelectionPanel.SetActive(false);
     }
-
-
 }
