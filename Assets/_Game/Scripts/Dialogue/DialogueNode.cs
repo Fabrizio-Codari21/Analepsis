@@ -39,9 +39,12 @@ public class DialogueNode : INode,IClue
 
         var newNode = new DialogueNode();
         newNode.dialogueText = path.altDialogue;
-        newNode.responses = path.skipTo.responses;
-        newNode.characterEmotion = path.skipTo.characterEmotion; 
-        newNode.characterReaction = path.skipTo.characterReaction;
+
+        // Si el dialogo al que salteas tambien tiene un dialogo alternativo valido, saltea a ese directo.
+        var skip = path.skipTo.SelectAltDialogue();
+        newNode.responses = skip.responses;
+        newNode.characterEmotion = skip.characterEmotion; 
+        newNode.characterReaction = skip.characterReaction;
 
         return newNode;
     }
