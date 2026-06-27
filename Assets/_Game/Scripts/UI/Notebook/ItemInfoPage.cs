@@ -37,7 +37,6 @@ public class ItemInfoPage : NotebookPage
         icon.SetImage(item.sprite);
         m_uiElements.Add(icon);
         
-        
         string fullText = item.baseClue;
         var unlockedPois = NotebookManager.Instance.GetUnlockedPoiDescriptions(item);
         

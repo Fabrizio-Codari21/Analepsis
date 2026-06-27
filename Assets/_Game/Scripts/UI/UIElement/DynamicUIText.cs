@@ -73,6 +73,7 @@ public class DynamicUIText : FactoryUIObject
 
         await UniTask.Yield();
         m_text.maxVisibleCharacters = 0;
+        m_text.ForceMeshUpdate();
         _cts = new CancellationTokenSource();
         var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, externalToken);
         var token = linkedCts.Token;

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using PrimeTween;
 using TMPro;
 using UnityEngine;
@@ -19,7 +21,7 @@ public class Inspection : MonoBehaviour, IActivity
     [SerializeField] private BoolEventChannel m_updatePOI;
     [SerializeField] private ItemEventChannel itemEvent;
     [SerializeField] private StringEventChannel poiInfo;
-    [SerializeField] private TMP_Text m_poiText;
+    
     [SerializeField] private GameObject m_controls;
 
     [Header("Zoom")]
@@ -33,6 +35,17 @@ public class Inspection : MonoBehaviour, IActivity
     [Header("Raycast")]
     [SerializeField] private LayerMask m_layerMask;
 
+    [Header("INFO Root")]
+    [SerializeField] private Transform m_infoRoot;
+    [SerializeField] private float m_maxWeight;
+    [SerializeField] private float m_textSize;
+    [SerializeField] private DynamicTextSetting m_infoSetting;
+    [SerializeField] private Color m_textColor;
+    
+    [Header("UI Block")]
+    [SerializeField] private UIHoverDetector m_infoPanelHoverDetector;
+
+    private readonly List<IFlyweight> _flyweightsText = new List<IFlyweight>();
     private float _maxScale;
     private float _minScale;
     private float _currentZoom;
@@ -50,10 +63,7 @@ public class Inspection : MonoBehaviour, IActivity
     private void Start()
     {
         m_onInspect.OnEventRaised += Inspect;
-
-        m_poiText.alpha = 0f;
-
-        m_poiText.transform.position -= new Vector3(0, UIManager.Instance.AspectRatioOffset(), 0);
+        
         m_controls.transform.position += new Vector3(0, UIManager.Instance.AspectRatioOffset(), 0);
         m_flashbackIndication.transform.position += new Vector3(0, UIManager.Instance.AspectRatioOffset(), 0);
 
@@ -79,17 +89,16 @@ public class Inspection : MonoBehaviour, IActivity
     {
         _currentTouch?.Unfocus();
         _currentTouch = null;
+        
+       
 
         foreach (Transform child in m_inspectRoot)
         {
             Destroy(child.gameObject);
         }
-
+   
         _currentItem = inspectable.GetItemReference();
-
         var inspectItem = _currentItem.GetInspectItem();
-        
-        
         Instantiate(inspectItem.gameObject, m_inspectRoot);
 
         _maxScale = inspectItem.renderCameraScaleMax;
@@ -104,6 +113,24 @@ public class Inspection : MonoBehaviour, IActivity
         m_flashbackIndication.SetActive(_hasFlashback);
 
         _lastDirectionFromCenter = Vector2.zero;
+        
+        
+        foreach (var f in _flyweightsText)
+        {
+            FlyweightFactory.Instance.Return(f);
+        }
+        _flyweightsText.Clear();
+        var historyDescriptions = NotebookManager.Instance.GetUnlockedPoiDescriptions(inspectItem);
+        if (historyDescriptions is { Count: > 0 })
+        {
+            foreach (var desc in historyDescriptions)
+            {
+                var text =  FlyweightFactory.Instance.Spawn<DynamicUIText>(m_infoSetting, Vector3.zero,Quaternion.identity,parent:m_infoRoot);
+                text.SetText(desc,m_textSize,m_textColor,maxWidth: m_maxWeight);
+                text.ShowFullText();
+                _flyweightsText.Add(text);
+            }
+        }
 
         itemEvent.Raise(inspectItem);
 
@@ -134,6 +161,8 @@ public class Inspection : MonoBehaviour, IActivity
 
     private void ExecuteTouch()
     {
+        if (m_infoPanelHoverDetector != null && m_infoPanelHoverDetector.IsMouseHovering)
+            return;
         _currentTouch?.Touch();
     }
 
@@ -179,6 +208,9 @@ public class Inspection : MonoBehaviour, IActivity
 
     private void Rotate(Vector2 rotation)
     {
+        
+        if (m_infoPanelHoverDetector != null && m_infoPanelHoverDetector.IsMouseHovering)
+            return;
         m_inspectRoot.Rotate(Vector3.up, -rotation.x, Space.World);
 
         m_inspectRoot.Rotate(Vector3.right, rotation.y, Space.World);
@@ -186,6 +218,8 @@ public class Inspection : MonoBehaviour, IActivity
 
     private void PlaneRotation(Vector2 delta)
     {
+        if (m_infoPanelHoverDetector != null && m_infoPanelHoverDetector.IsMouseHovering)
+            return;
         Vector2 mousePos = Mouse.current.position.ReadValue();
 
         RectTransform rect = m_objectRawImage.rectTransform;
@@ -230,6 +264,8 @@ public class Inspection : MonoBehaviour, IActivity
 
     private void Zoom(Vector2 zoom)
     {
+        if (m_infoPanelHoverDetector != null && m_infoPanelHoverDetector.IsMouseHovering)
+            return;
         float delta =
             zoom.y *
             m_zoomScaleSensitive *
@@ -271,39 +307,18 @@ public class Inspection : MonoBehaviour, IActivity
 
     private void ShowPoi(string info)
     {
-        if (_poiSequence.isAlive)
-        {
-            _poiSequence.Stop();
-        }
+        _ = PlayText(info);
+    }
 
-        if (m_poiText == null)
-            return;
 
-        m_poiText.text = info;
-
-        m_poiText.alpha = 0f;
-
-        _poiSequence = Sequence.Create()
-
-            .Group(
-                Tween.Alpha(
-                    m_poiText,
-                    endValue: 1f,
-                    duration: 0.5f
-                )
-            )
-
-            .ChainDelay(2f)
-
-            .Chain(
-                Tween.Alpha(
-                    m_poiText,
-                    endValue: 0f,
-                    duration: 1f
-                )
-            )
-
-            .OnComplete(() => m_poiText.text = string.Empty);
+    private async UniTask PlayText(string info)
+    {
+        var text =  FlyweightFactory.Instance.Spawn<DynamicUIText>(m_infoSetting, Vector3.zero,Quaternion.identity,parent:m_infoRoot);
+        _flyweightsText.Add(text);
+        text.SetText(info,m_textSize,m_textColor,maxWidth: m_maxWeight);
+        Debug.Log("1");
+        await text.PlayTypeWriterEffect();
+        Debug.Log("2");
     }
 
     #endregion
@@ -329,9 +344,7 @@ public class Inspection : MonoBehaviour, IActivity
         m_inputReader.Scroll += Zoom;
         m_inputReader.Exit += Exit;
         m_inputReader.PlaneRotate += PlaneRotation;
-
         m_updatePOI.OnEventRaised += UpdatePoi;
-
         poiInfo.OnEventRaised += ShowPoi;
 
         gameObject.SetActive(true);
@@ -370,8 +383,12 @@ public class Inspection : MonoBehaviour, IActivity
     public void Stop()
     {
         OnStop?.Invoke();
-
         Pause();
+        foreach (var f in _flyweightsText)
+        {
+            FlyweightFactory.Instance.Return(f);
+        }
+        _flyweightsText.Clear();
     }
 
     public bool CanPopWithKey()
