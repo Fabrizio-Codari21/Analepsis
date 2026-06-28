@@ -29,7 +29,6 @@ public class Menu : MonoBehaviour,IActivity
     { 
         gameObject.SetActive(true); 
         m_button.onClick.AddListener(m_popEvent.Raise);
-        
         m_reloadButton.onClick.AddListener(Reload);
         m_menuButton.onClick.AddListener(GoToMenu);
         m_cursorEnableChannel?.Raise(true);

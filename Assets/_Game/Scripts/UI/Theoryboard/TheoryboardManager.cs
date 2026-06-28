@@ -5,6 +5,7 @@ using System.Net.NetworkInformation;
 using UnityEngine;
 using Unity.Cinemachine;
 using Cysharp.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 public class TheoryboardManager : MonoBehaviour, IActivity
 {
@@ -131,7 +132,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
 
     private void CaseSuccess()
     {
-        m_view.Tip("WIINNNNNNNNN").Forget();
+        SceneManager.LoadScene("WinScene");
     }
 
     private void CaseFail()
@@ -149,7 +150,7 @@ public class TheoryboardManager : MonoBehaviour, IActivity
     
     private void Lose()
     {
-        
+        SceneManager.LoadScene("LoseScene");
     }
     
 }
