@@ -1354,40 +1354,9 @@ MonoBehaviour:
           rid: 767062761356918904
         dialogueTopic: 
         m_conditions:
-        - rid: 767062761356918902
+        - rid: 3046479065253413119
         alreadyDisplayed: 0
-        editorPosition: {x: 3067.5, y: 382.22034}
-    - rid: 767062761356918902
-      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
-      data:
-        conditionName: 
-        unlockIfTrue: 1
-        targetDialogue: {fileID: 11400000, guid: 89cdbcac6674ef748a2334d6de5a8fce, type: 2}
-        isTalkDialogueNode:
-          dialogueText: 'Oh, sorry, my bad: I used to be a <b>food</b> critique,
-            hence the <b>delicious</b> thing... Nevermind, it was bad anyways.
-
-            Luckily
-            for the staff here, I''m not anymore! My fingers would cram if I had
-            to put into words the absolute trainwreck that was today''s lunch.
-
-            That
-            borshch was truly abhorrent... Who hired this Chef?'
-          characterEmotion: 5
-          characterReaction: 2
-          doesItProveAnything: 0
-          isKey: 0
-          responses:
-          - rid: 3046479026605260875
-          isRootNode: 0
-          editorPosition: {x: 4076, y: 664}
-          altDialoguePaths: []
-          guid:
-            Part1: 3941858783
-            Part2: 1303965904
-            Part3: 1164245432
-            Part4: 1086083098
-          tag: 
+        editorPosition: {x: 3049, y: 382}
     - rid: 767062761356918903
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -1897,16 +1866,6 @@ MonoBehaviour:
             Part3: 2166873217
             Part4: 985772993
           tag: 
-    - rid: 3046479026605260875
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: '[(Note to self: be careful with the food.)]'
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 5025.5, y: 735}
     - rid: 3046479065253412943
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -2580,6 +2539,47 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 4452.85, y: -164.00002}
+    - rid: 3046479065253413119
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: 89cdbcac6674ef748a2334d6de5a8fce, type: 2}
+        isTalkDialogueNode:
+          dialogueText: 'Oh, sorry, my bad: I used to be a <b>food</b> critic, hence
+            the <b>delicious</b> thing... Nevermind, it was bad anyways.
+
+            Luckily
+            for the staff here, I''m not anymore! My fingers would cram if I had
+            to put into words the absolute trainwreck that was today''s lunch.
+
+            That
+            borshch was truly abhorrent... Who hired this Chef?'
+          characterEmotion: 5
+          characterReaction: 2
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 3046479065253413136
+          isRootNode: 0
+          editorPosition: {x: 4139.5, y: 735}
+          altDialoguePaths: []
+          guid:
+            Part1: 3941858783
+            Part2: 1303965904
+            Part3: 1164245432
+            Part4: 1086083098
+          tag: 
+    - rid: 3046479065253413136
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Note to self: be careful with the food.)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5025.5, y: 735}
     - rid: 6774952781063389258
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
