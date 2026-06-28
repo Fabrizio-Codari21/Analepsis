@@ -127,7 +127,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         }
     }  
     
-    
+  
     [ShowInInspector, ReadOnly] private Dictionary<SerializableGuid,List<DialogueNote>> _npcTalkedDialogue = new();
     public  void RecordDialogueProgress(SerializableGuid id, Dialogue dialogue, INode currentNode, INode parentNode)
     {
@@ -520,10 +520,14 @@ public class TreeNode
     {
         return IsLeaf ? Thread : Children[^1];
     }
-}public class DialogueNote : Note
+}
+public class DialogueNote : Note
 {
     private readonly Dialogue _dialogueRepresenter;
+    
+    [ShowInInspector, ReadOnly]
     private readonly HashSet<SerializableGuid> _visitedRawNodeGuids = new();
+    
     private readonly Dictionary<SerializableGuid, TreeNode> _rtNodeLookup = new();
     public TreeNode RuntimeTreeRoot { get; private set; }
     
@@ -552,20 +556,29 @@ public class TreeNode
     public void RegisterNodeVisit(INode currentNode, INode parentNode)
     {
         if (currentNode == null) return;
+        
         SerializableGuid currentGuid = GetNodeGuid(currentNode);
-        if (_visitedRawNodeGuids.Contains(currentGuid)) return;
         SerializableGuid parentGuid = parentNode != null ? GetNodeGuid(parentNode) : SerializableGuid.Empty;
-        if (!_rtNodeLookup.TryGetValue(parentGuid, out var rtParent)) { return; }
-        
-        TreeNode rtChild = new TreeNode(currentNode, NodeVisualState.Visited) { Parent = rtParent };
-        
-        rtParent.Children.Add(rtChild);
-        
-        _visitedRawNodeGuids.Add(currentGuid);
-        _rtNodeLookup[currentGuid] = rtChild;
-    }
 
-    public bool IsNodeUnlocked(SerializableGuid nodeGuid) => _visitedRawNodeGuids.Contains(nodeGuid);
+        // 🌟 【终极修正补丁】：数据上报记录独立化！
+        // 不管它能不能在 _rtNodeLookup 里找到前置渲染父级，
+        // 只要玩家听到了这句对话，我们高优先级、无条件地将其 Guid 狠狠踩进通关哈希表里！
+        if (!currentGuid.Equals(SerializableGuid.Empty))
+        {
+            _visitedRawNodeGuids.Add(currentGuid);
+        }
+        
+        // 建立树状拓扑图的运行时缓存逻辑，仅作为排布辅助，不再具备“连累、卡死哈希数据更新”的副作用
+        if (_rtNodeLookup.TryGetValue(parentGuid, out var rtParent))
+        {
+            if (!_rtNodeLookup.ContainsKey(currentGuid))
+            {
+                TreeNode rtChild = new TreeNode(currentNode, NodeVisualState.Visited) { Parent = rtParent };
+                rtParent.Children.Add(rtChild);
+                _rtNodeLookup[currentGuid] = rtChild;
+            }
+        }
+    }public bool IsNodeUnlocked(SerializableGuid nodeGuid) => _visitedRawNodeGuids.Contains(nodeGuid);
     
     private SerializableGuid GetNodeGuid(INode node)
     {
@@ -574,37 +587,41 @@ public class TreeNode
         return SerializableGuid.Empty;
     }
     
-
-    public NodeVisualState GetNodeVisualState(DialogueNode configNode)
+    // 🌟 配合 TreePage 干净隔离层的数据状态探测分流
+    public NodeVisualState GetNodeVisualState(DialogueNode configNode, DialogueResponse runtimePreviousResponse)
     {
         if (configNode == null) return NodeVisualState.ConditionLocked;
         
-    
+        // 1. 运行时明确走过 -> 亮起
         if (_visitedRawNodeGuids.Contains(configNode.guid))
         {
             return NodeVisualState.Visited;
         }
         
+        // 2. 深度后代激活兜底 -> 亮起
         if (IsAnyChildVisited(configNode))
         {
             return NodeVisualState.Visited;
         }
         
-        if (configNode.PreviousResponse != null)
+        // 3. 使用 TreePage 传下来的局域清洁关系进行判定
+        if (runtimePreviousResponse != null)
         {
-            
-            if (!configNode.PreviousResponse.IsAvailable())
+            if (!runtimePreviousResponse.IsAvailable())
             {
                 return NodeVisualState.ConditionLocked;
             }
-            
-           
             return NodeVisualState.Unchosen;
         }
         
         return NodeVisualState.ConditionLocked;
     }
 
+    // 保持对老结构的向下兼容
+    public NodeVisualState GetNodeVisualState(DialogueNode configNode)
+    {
+        return GetNodeVisualState(configNode, configNode.PreviousResponse);
+    }
 
     private bool IsAnyChildVisited(DialogueNode node)
     {
@@ -613,11 +630,7 @@ public class TreeNode
         foreach (var response in node.responses)
         {
             if (response.nextNode == null) continue;
-            
-          
             if (_visitedRawNodeGuids.Contains(response.nextNode.guid)) return true;
-            
-          
             if (IsAnyChildVisited(response.nextNode)) return true;
         }
 
