@@ -355,7 +355,6 @@ public class Inspection : MonoBehaviour, IActivity
     public void Pause()
     {
         OnPause?.Invoke();
-
         m_camera.enabled = false;
 
         m_inputReader.SetEnable(false);
