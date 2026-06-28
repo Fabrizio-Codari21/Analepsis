@@ -584,7 +584,7 @@ MonoBehaviour:
         - rid: 3046478613006778444
         - rid: 3046478613006778462
         isRootNode: 0
-        editorPosition: {x: 2501, y: -133.355}
+        editorPosition: {x: 2306, y: -352}
         altDialoguePaths: []
         guid:
           Part1: 3751126033
@@ -686,7 +686,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 4769, y: -54}
+        editorPosition: {x: 4977.151, y: -70.10009}
     - rid: 3046478613006778460
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -706,7 +706,7 @@ MonoBehaviour:
         responses:
         - rid: 3046478613006778466
         isRootNode: 0
-        editorPosition: {x: 2501, y: 156.50002}
+        editorPosition: {x: 2545.965, y: 28.999985}
         altDialoguePaths: []
         guid:
           Part1: 4061733524
@@ -745,9 +745,9 @@ MonoBehaviour:
           rid: 3046478613006778464
         dialogueTopic: 
         m_conditions:
-        - rid: 3046478613006778465
+        - rid: 8019692228150297553
         alreadyDisplayed: 0
-        editorPosition: {x: 3583.0005, y: -91.999985}
+        editorPosition: {x: 3407, y: -215}
     - rid: 3046478613006778463
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -785,28 +785,6 @@ MonoBehaviour:
           Part3: 3452398228
           Part4: 3866004631
         tag: 
-    - rid: 3046478613006778465
-      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
-      data:
-        conditionName: 
-        unlockIfTrue: 1
-        targetDialogue: {fileID: 11400000, guid: 89cdbcac6674ef748a2334d6de5a8fce, type: 2}
-        isTalkDialogueNode:
-          dialogueText: Hello, I'm british
-          characterEmotion: 0
-          characterReaction: 0
-          doesItProveAnything: 0
-          isKey: 0
-          responses: []
-          isRootNode: 1
-          editorPosition: {x: 300, y: 200}
-          altDialoguePaths: []
-          guid:
-            Part1: 1371785725
-            Part2: 1155082823
-            Part3: 790721166
-            Part4: 1571819100
-          tag: 
     - rid: 3046478613006778466
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -816,7 +794,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3221, y: 157}
+        editorPosition: {x: 3421, y: 88}
     - rid: 3046479065253412997
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -886,3 +864,9 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 2997, y: 416}
+    - rid: 8019692228150297553
+      type: {class: ItemNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        item: {fileID: 11400000, guid: 931417dc5a854d841b97de9fe5f99fb5, type: 2}
