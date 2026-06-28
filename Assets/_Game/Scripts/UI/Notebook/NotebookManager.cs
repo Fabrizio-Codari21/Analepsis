@@ -441,7 +441,12 @@ public class ItemNote : Note
  
     public override string GetInfo() => FullInfo().AsString();
 }
-
+public enum NodeVisualState
+{
+    Visited,       
+    Unchosen,         
+    ConditionLocked  
+}
 
 public class TreeNode
 {
@@ -470,17 +475,17 @@ public class TreeNode
     // Order index among siblings
     public int Number;
 
-    public readonly bool IsLocked;
-  
+    public bool IsLocked => VisualState == NodeVisualState.ConditionLocked;
+    public bool IsUnchosen => VisualState == NodeVisualState.Unchosen;
+    public NodeVisualState VisualState { get; set; } = NodeVisualState.ConditionLocked;
 
     public bool IsLeaf => Children.Count == 0;
     public RectTransform RuntimeRect { get; set; }
 
-    public TreeNode(INode source,  bool isLocked = false)
+    public TreeNode(INode source, NodeVisualState visualState = NodeVisualState.ConditionLocked)
     {
-      
+        VisualState = visualState;
         Source = source;
-        IsLocked = isLocked;
 
         X = 0;
         Y = 0;
@@ -515,8 +520,7 @@ public class TreeNode
     {
         return IsLeaf ? Thread : Children[^1];
     }
-}
-public class DialogueNote : Note
+}public class DialogueNote : Note
 {
     private readonly Dialogue _dialogueRepresenter;
     private readonly HashSet<SerializableGuid> _visitedRawNodeGuids = new();
@@ -540,7 +544,7 @@ public class DialogueNote : Note
     
     private void InitRoot(DialogueNode startingNode)
     {
-        RuntimeTreeRoot = new TreeNode( startingNode);
+        RuntimeTreeRoot = new TreeNode(startingNode, NodeVisualState.Visited);
         _visitedRawNodeGuids.Add(startingNode.guid);
         _rtNodeLookup[startingNode.guid] = RuntimeTreeRoot;
     }
@@ -553,21 +557,70 @@ public class DialogueNote : Note
         SerializableGuid parentGuid = parentNode != null ? GetNodeGuid(parentNode) : SerializableGuid.Empty;
         if (!_rtNodeLookup.TryGetValue(parentGuid, out var rtParent)) { return; }
         
-        bool isNpc = currentNode is DialogueNode;
-        TreeNode rtChild = new TreeNode(currentNode, isNpc) { Parent = rtParent };
+        TreeNode rtChild = new TreeNode(currentNode, NodeVisualState.Visited) { Parent = rtParent };
         
         rtParent.Children.Add(rtChild);
         
         _visitedRawNodeGuids.Add(currentGuid);
         _rtNodeLookup[currentGuid] = rtChild;
     }
+
     public bool IsNodeUnlocked(SerializableGuid nodeGuid) => _visitedRawNodeGuids.Contains(nodeGuid);
+    
     private SerializableGuid GetNodeGuid(INode node)
     {
         if (node is DialogueNode dn) return dn.guid;
-        
         if (node is DialogueResponse dr) return dr.nextNode?.guid ?? SerializableGuid.NewGuid();
-        
         return SerializableGuid.Empty;
+    }
+    
+
+    public NodeVisualState GetNodeVisualState(DialogueNode configNode)
+    {
+        if (configNode == null) return NodeVisualState.ConditionLocked;
+        
+    
+        if (_visitedRawNodeGuids.Contains(configNode.guid))
+        {
+            return NodeVisualState.Visited;
+        }
+        
+        if (IsAnyChildVisited(configNode))
+        {
+            return NodeVisualState.Visited;
+        }
+        
+        if (configNode.PreviousResponse != null)
+        {
+            
+            if (!configNode.PreviousResponse.IsAvailable())
+            {
+                return NodeVisualState.ConditionLocked;
+            }
+            
+           
+            return NodeVisualState.Unchosen;
+        }
+        
+        return NodeVisualState.ConditionLocked;
+    }
+
+
+    private bool IsAnyChildVisited(DialogueNode node)
+    {
+        if (node == null || node.responses == null) return false;
+
+        foreach (var response in node.responses)
+        {
+            if (response.nextNode == null) continue;
+            
+          
+            if (_visitedRawNodeGuids.Contains(response.nextNode.guid)) return true;
+            
+          
+            if (IsAnyChildVisited(response.nextNode)) return true;
+        }
+
+        return false;
     }
 }

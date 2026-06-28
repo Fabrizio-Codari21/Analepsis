@@ -1,0 +1,2295 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
+  m_Name: Level2_Dialogue_Door_Kitchen
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  dialogueColor: {r: 0, g: 0, b: 0, a: 0}
+  startingNode:
+    dialogueText: Staff Only
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 8019692210797150470
+    - rid: 8019692210797150471
+    isRootNode: 1
+    editorPosition: {x: 358, y: 201}
+    altDialoguePaths: []
+    guid:
+      Part1: 3738727317
+      Part2: 1259087376
+      Part3: 1785349549
+      Part4: 3261286729
+    tag: 
+  allNodes:
+  - dialogueText: Staff Only
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 8019692210797150470
+    - rid: 8019692210797150471
+    isRootNode: 1
+    editorPosition: {x: 358, y: 201}
+    altDialoguePaths: []
+    guid:
+      Part1: 3738727317
+      Part2: 1259087376
+      Part3: 1785349549
+      Part4: 3261286729
+    tag: 
+  - dialogueText: Come on in then.
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses: []
+    isRootNode: 0
+    editorPosition: {x: 1566.6001, y: 393.30002}
+    altDialoguePaths: []
+    guid:
+      Part1: 500889477
+      Part2: 1288473454
+      Part3: 229172663
+      Part4: 2597165540
+    tag: 
+  hiddenProof: 
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 8019692210797150470
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: Sorry.
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 669, y: 136}
+    - rid: 8019692210797150471
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: I've received permission.
+        nextNode:
+          rid: 8019692210797150472
+        dialogueTopic: 
+        m_conditions:
+        - rid: 8019692210797150473
+        alreadyDisplayed: 0
+        editorPosition: {x: 633, y: 381}
+    - rid: 8019692210797150472
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Come on in then.
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses: []
+        isRootNode: 0
+        editorPosition: {x: 1566.6001, y: 393.30002}
+        altDialoguePaths: []
+        guid:
+          Part1: 500889477
+          Part2: 1288473454
+          Part3: 229172663
+          Part4: 2597165540
+        tag: 
+    - rid: 8019692210797150473
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: 32c5fe4c6dbd99644bc452c0bbbe24f1, type: 2}
+        isTalkDialogueNode:
+          dialogueText: Greetings! Welcome to our humble hotel, what can I do for
+            you?
+          characterEmotion: 4
+          characterReaction: 2
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 8019692210797150474
+          isRootNode: 1
+          editorPosition: {x: 273, y: 57}
+          altDialoguePaths:
+          - rid: 8019692210797150475
+          guid:
+            Part1: 409640475
+            Part2: 1201622219
+            Part3: 3848133799
+            Part4: 660680751
+          tag: 
+    - rid: 8019692210797150474
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Hi, I''d like a room please.]'
+        nextNode:
+          rid: 8019692210797150476
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 885.85, y: 66.99999}
+    - rid: 8019692210797150475
+      type: {class: AltDialoguePath, ns: , asm: Assembly-CSharp}
+      data:
+        altDialogue: 'Welcome once again, sir; I hope you''re enjoying your stay!
+
+          Is
+          there anything I can do for you?'
+        condition:
+          dialogueText: 'Why, thank you for choosing us, sir! It''s great to see
+            people come in instead of passing by, for once.
+
+            You can
+            find your very own room no. 2 upstairs, quite near our beautiful, temporarily
+            in reparations, sauna!
+
+            Dinner will be served at 7pm, so
+            please make yourself at home.'
+          characterEmotion: 4
+          characterReaction: 2
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 8019692210797150477
+          - rid: 8019692210797150478
+          - rid: 8019692210797150479
+          isRootNode: 0
+          editorPosition: {x: 1199, y: 67}
+          altDialoguePaths: []
+          guid:
+            Part1: 4028658863
+            Part2: 1280522940
+            Part3: 2166873217
+            Part4: 985772993
+          tag: 
+        skipTo:
+          dialogueText: 'Why, thank you for choosing us, sir! It''s great to see
+            people come in instead of passing by, for once.
+
+            You can
+            find your very own room no. 2 upstairs, quite near our beautiful, temporarily
+            in reparations, sauna!
+
+            Dinner will be served at 7pm, so
+            please make yourself at home.'
+          characterEmotion: 4
+          characterReaction: 2
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 8019692210797150477
+          - rid: 8019692210797150478
+          - rid: 8019692210797150479
+          isRootNode: 0
+          editorPosition: {x: 1199, y: 67}
+          altDialoguePaths: []
+          guid:
+            Part1: 4028658863
+            Part2: 1280522940
+            Part3: 2166873217
+            Part4: 985772993
+          tag: 
+    - rid: 8019692210797150476
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Why, thank you for choosing us, sir! It''s great to see people
+          come in instead of passing by, for once.
+
+          You''ll find your very
+          own room <b>no. 2</b> upstairs, quite near our beautiful, temporarily in
+          reparations, sauna!
+
+          Dinner will be served at 7pm, so please
+          make yourself at home.'
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150477
+        - rid: 8019692210797150478
+        - rid: 8019692210797150479
+        isRootNode: 0
+        editorPosition: {x: 1199, y: 67}
+        altDialoguePaths: []
+        guid:
+          Part1: 4028658863
+          Part2: 1280522940
+          Part3: 2166873217
+          Part4: 985772993
+        tag: 
+    - rid: 8019692210797150477
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[What''s on the menu for dinner?]'
+        nextNode:
+          rid: 8019692210797150480
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2023.3007, y: 220.90005}
+    - rid: 8019692210797150478
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[What happened to the Sauna?]'
+        nextNode:
+          rid: 8019692210797150481
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2044.1182, y: 621.03125}
+    - rid: 8019692210797150479
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So, there''s usually not a lot of people?]'
+        nextNode:
+          rid: 8019692210797150482
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1997.9998, y: -162.99997}
+    - rid: 8019692210797150480
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Well, I always prefer to have the chef surprise us with whatever
+          idea he comes up with.
+
+          All that I can say is that it will be
+          delicious; I guarantee it.
+
+          Though, if you have any allergies,
+          it''s probably best if you tell me in advance.'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150483
+        - rid: 8019692210797150484
+        isRootNode: 0
+        editorPosition: {x: 2388.3008, y: 246.90005}
+        altDialoguePaths: []
+        guid:
+          Part1: 1434144360
+          Part2: 1205454529
+          Part3: 961528487
+          Part4: 3504110837
+        tag: 
+    - rid: 8019692210797150481
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "Oh, a few guests went in and decided to have too much fun!
+          Ha-ha! \nDon't worry, they won't be invited again. We'll repair it as soon
+          as we get the chance."
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150485
+        - rid: 8019692210797150486
+        isRootNode: 0
+        editorPosition: {x: 2356, y: 621}
+        altDialoguePaths: []
+        guid:
+          Part1: 1012819177
+          Part2: 1162638506
+          Part3: 3147358645
+          Part4: 705986296
+        tag: 
+    - rid: 8019692210797150482
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Well, yes! But as of late the hotel has been getting more
+          guests than usual!
+
+          And by "as of late" I do mean today...
+
+          And
+          by "usual" I do mean zero...
+
+          But I knew this would all turn
+          around one day! And now we''ve got some real VIP guests blessing us with
+          their presence.'
+        characterEmotion: 1
+        characterReaction: 6
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150487
+        - rid: 8019692210797150488
+        isRootNode: 0
+        editorPosition: {x: 2373.8672, y: -228.50003}
+        altDialoguePaths: []
+        guid:
+          Part1: 1905733868
+          Part2: 1129004607
+          Part3: 2633351612
+          Part4: 1809174617
+        tag: 
+    - rid: 8019692210797150483
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I''m looking forward to trying it out.]'
+        nextNode:
+          rid: 8019692210797150489
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3049, y: 171}
+    - rid: 8019692210797150484
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[People have been saying some... stuff.]'
+        nextNode:
+          rid: 8019692210797150490
+        dialogueTopic: 
+        m_conditions:
+        - rid: 8019692210797150491
+        alreadyDisplayed: 0
+        editorPosition: {x: 3049, y: 382}
+    - rid: 8019692210797150485
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Can I see it anyways?]'
+        nextNode:
+          rid: 8019692210797150492
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3025, y: 621}
+    - rid: 8019692210797150486
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Is it not being repaired already?]'
+        nextNode:
+          rid: 8019692210797150493
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3007, y: 858.1599}
+    - rid: 8019692210797150487
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[VIP guests, you say?]'
+        nextNode:
+          rid: 8019692210797150494
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3202.3, y: -539.7617}
+    - rid: 8019692210797150488
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Is that why my room is already <b>taken</b>?]'
+        nextNode:
+          rid: 8019692210797150495
+        dialogueTopic: 
+        m_conditions:
+        - rid: 8019692210797150496
+        alreadyDisplayed: 0
+        editorPosition: {x: 3180.15, y: -163.54997}
+    - rid: 8019692210797150489
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "Oh I hope you like it, I really do! \nBy the way... You see,
+          our chef, Andrey, hasn't been feeling his best lately. \nThe hotel is never
+          really busy but he seems to be contantly stressed out! Like a poor creature
+          sensing a looming threat..."
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150497
+        isRootNode: 0
+        editorPosition: {x: 3382, y: 171}
+        altDialoguePaths: []
+        guid:
+          Part1: 2712483526
+          Part2: 1300114989
+          Part3: 1256677539
+          Part4: 328751900
+        tag: 
+    - rid: 8019692210797150490
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Really? Truly!? Oh how glad I am! Andrey is going to be so
+          very happy to hear that. '
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150498
+        isRootNode: 0
+        editorPosition: {x: 3421.5, y: 382.22034}
+        altDialoguePaths: []
+        guid:
+          Part1: 2590038319
+          Part2: 1171197008
+          Part3: 3063460023
+          Part4: 3064970286
+        tag: 
+    - rid: 8019692210797150491
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: 89cdbcac6674ef748a2334d6de5a8fce, type: 2}
+        isTalkDialogueNode:
+          dialogueText: 'Oh, sorry, my bad: I used to be a <b>food</b> critic, hence
+            the <b>delicious</b> thing... Nevermind, it was bad anyways.
+
+            Luckily
+            for the staff here, I''m not anymore! My fingers would cram if I had
+            to put into words the absolute trainwreck that was today''s lunch.
+
+            That
+            borshch was truly abhorrent... Who hired this Chef?'
+          characterEmotion: 5
+          characterReaction: 2
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 8019692210797150499
+          isRootNode: 0
+          editorPosition: {x: 4139.5, y: 735}
+          altDialoguePaths: []
+          guid:
+            Part1: 3941858783
+            Part2: 1303965904
+            Part3: 1164245432
+            Part4: 1086083098
+          tag: 
+    - rid: 8019692210797150492
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "Oh, no, I cannot allow that, sir... even if I could get in,
+          \nI wouldn't want to limit your experience here, but you have to understand:
+          right now, it's not safe to go in without the right protection.\nThe temperature
+          could be way off, a pipe could be perforated and leaking who-knows-what...
+          it could be <b>fatal</b> if I let anyone in right now."
+        characterEmotion: 1
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150500
+        isRootNode: 0
+        editorPosition: {x: 3325.0005, y: 621}
+        altDialoguePaths: []
+        guid:
+          Part1: 15488466
+          Part2: 1188598181
+          Part3: 3821237423
+          Part4: 2247722043
+        tag: 
+    - rid: 8019692210797150493
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "We'd love to fix it as soon as possible, but... right now,
+          we can't seem to find the <b>keys</b> to enter. \nI could've sworn i was
+          holding them myself... but, to be honest, this was a very exciting day
+          for me, so I could have dropped them without noticing.\nThere's no need
+          for you to worry about that, sir, but please, let me know if you find them
+          somewhere around here."
+        characterEmotion: 1
+        characterReaction: 6
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150501
+        - rid: 8019692210797150502
+        - rid: 8019692210797150503
+        isRootNode: 0
+        editorPosition: {x: 3339, y: 858}
+        altDialoguePaths: []
+        guid:
+          Part1: 1936212331
+          Part2: 1185461512
+          Part3: 3398240682
+          Part4: 1972347879
+        tag: 
+    - rid: 8019692210797150494
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Oh you haven''t heard? We have some top tier guests this evening!
+
+          Oleg,
+          a politician in the midst of his campaign and Aleksei, a once quite popular
+          artist.'
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150504
+        - rid: 8019692210797150505
+        isRootNode: 0
+        editorPosition: {x: 3493.3, y: -539.7617}
+        altDialoguePaths: []
+        guid:
+          Part1: 4209125068
+          Part2: 1305821517
+          Part3: 2972826264
+          Part4: 2031857102
+        tag: 
+    - rid: 8019692210797150495
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'What? Oh... I-I did say room <b>no. 2</b>, didn''t I?
+
+          Hold
+          on, let me check... (huh... oh... oh, no...) *clears throat* Y-You''ll
+          have to excuse us, sir, I m-may have overbooked our rooms.
+
+          You
+          m-might have to wait until... s-someone leaves... please, don''t leave,
+          though...'
+        characterEmotion: 5
+        characterReaction: 6
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150506
+        isRootNode: 0
+        editorPosition: {x: 3602, y: -164.00005}
+        altDialoguePaths: []
+        guid:
+          Part1: 891290146
+          Part2: 1244896503
+          Part3: 2642069437
+          Part4: 209520398
+        tag: 
+    - rid: 8019692210797150496
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: a218568596dfcf9419f1f4c8eb4ff384, type: 2}
+        isTalkDialogueNode:
+          dialogueText: 'Excuse you, sir: you''re in MY bedroom right now.
+
+            You
+            must have gotten the wrong room number. Please, leave.'
+          characterEmotion: 3
+          characterReaction: 7
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 8019692210797150507
+          - rid: 8019692210797150508
+          isRootNode: 1
+          editorPosition: {x: 54, y: 170}
+          altDialoguePaths: []
+          guid:
+            Part1: 1124931955
+            Part2: 1265043674
+            Part3: 2410892929
+            Part4: 1730471505
+          tag: 
+    - rid: 8019692210797150497
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Oh god...]'
+        nextNode:
+          rid: 8019692210797150509
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4185, y: 142}
+    - rid: 8019692210797150498
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[That''s not what I meant]'
+        nextNode:
+          rid: 8019692210797150510
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3998.5, y: 382.22034}
+    - rid: 8019692210797150499
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Note to self: be careful with the food.)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5025.5, y: 735}
+    - rid: 8019692210797150500
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Makes sense. Thank you for warning me.]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4245, y: 621}
+    - rid: 8019692210797150501
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I will, thanks. (So the sauna is <b>locked</b>)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4294, y: 836.1599}
+    - rid: 8019692210797150502
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So, no one could be... making <b>noise</b> there?]'
+        nextNode:
+          rid: 8019692210797150511
+        dialogueTopic: 
+        m_conditions:
+        - rid: 8019692210797150512
+        alreadyDisplayed: 0
+        editorPosition: {x: 4294, y: 1036.1599}
+    - rid: 8019692210797150503
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[The sign says it''s open, though.]'
+        nextNode:
+          rid: 8019692210797150513
+        dialogueTopic: 
+        m_conditions:
+        - rid: 8019692210797150514
+        alreadyDisplayed: 0
+        editorPosition: {x: 4294, y: 1217.1599}
+    - rid: 8019692210797150504
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So, about Aleksei...]'
+        nextNode:
+          rid: 8019692210797150515
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4166.3, y: -618.7617}
+    - rid: 8019692210797150505
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So, about Oleg...]'
+        nextNode:
+          rid: 8019692210797150516
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4178.3, y: -456.76178}
+    - rid: 8019692210797150506
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(She really didn''t expect this many people, huh?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4452.85, y: -164.00002}
+    - rid: 8019692210797150507
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I was actually looking for you, sir.]'
+        nextNode:
+          rid: 8019692210797150517
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 599.0001, y: 86.99997}
+    - rid: 8019692210797150508
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I was told that my room was <b>no. 2</b>...]'
+        nextNode:
+          rid: 8019692210797150518
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 599.15015, y: 298.00003}
+    - rid: 8019692210797150509
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'So, yeah! If you do hear anything about the food, please let
+          me know.
+
+          And I do mean <b>anything</b>.
+
+          Don''t hold
+          back.'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150519
+        isRootNode: 0
+        editorPosition: {x: 4414, y: 142}
+        altDialoguePaths: []
+        guid:
+          Part1: 1474971684
+          Part2: 1250302327
+          Part3: 2767747491
+          Part4: 2147173776
+        tag: 
+    - rid: 8019692210797150510
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: (Shush) Would you mind telling him? The kitchen is right next
+          to the dining room.
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150520
+        isRootNode: 0
+        editorPosition: {x: 4275.5, y: 382.22034}
+        altDialoguePaths: []
+        guid:
+          Part1: 904673742
+          Part2: 1248306800
+          Part3: 1774973882
+          Part4: 4284853093
+        tag: 
+    - rid: 8019692210797150511
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Why, of course not! No one can enter that place without the
+          key, not even myself.
+
+          And, even if they could, we have some
+          strict policies about making loud noises during the afternoon.
+
+          If
+          someone was making noise in their room upstairs, we''d surely have done
+          something about it.'
+        characterEmotion: 2
+        characterReaction: 6
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150521
+        isRootNode: 0
+        editorPosition: {x: 4758, y: 1036}
+        altDialoguePaths: []
+        guid:
+          Part1: 3951872024
+          Part2: 1272800197
+          Part3: 584633002
+          Part4: 1224581544
+        tag: 
+    - rid: 8019692210797150512
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: 4e81753c414a9a341a506c339bc23f0a, type: 2}
+        isTalkDialogueNode:
+          dialogueText: 'Well, either there''s a '
+          characterEmotion: 0
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses: []
+          isRootNode: 0
+          editorPosition: {x: 4517.05, y: 492.00006}
+          altDialoguePaths: []
+          guid:
+            Part1: 931422527
+            Part2: 1218130906
+            Part3: 1804454273
+            Part4: 2257800816
+          tag: 
+    - rid: 8019692210797150513
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...y-yes, I''ve also... come to realize that from some...
+          "constructive criticism" that I''ve received from some guests.
+
+          Once
+          again, I''m pretty sure I did hang the "closed" sign there... and yet it''s
+          n-nowhere to be seen right now... (Gosh, am I really that distracted?)
+
+          I-I
+          swear this is not normal, sir, I''m usually a much more reliable host...
+          please, don''t leave...'
+        characterEmotion: 5
+        characterReaction: 6
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150522
+        isRootNode: 0
+        editorPosition: {x: 4636.355, y: 1222.0001}
+        altDialoguePaths: []
+        guid:
+          Part1: 1097413671
+          Part2: 1121416226
+          Part3: 2835967898
+          Part4: 25716431
+        tag: 
+    - rid: 8019692210797150514
+      type: {class: ItemNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        item: {fileID: 11400000, guid: f243d9958ead79545b599d03db2e8738, type: 2}
+    - rid: 8019692210797150515
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Right! He''s this pretty famous artist.
+
+          Or at least
+          he was...
+
+          Now that I think of it I haven''t heard of any new
+          paintings of his in a while.
+
+          I''m not one to gossip, but maybe
+          he got demotivated after that one article...'
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150523
+        isRootNode: 0
+        editorPosition: {x: 4477.3, y: -671.7617}
+        altDialoguePaths: []
+        guid:
+          Part1: 1261033585
+          Part2: 1109877559
+          Part3: 523396775
+          Part4: 3925866868
+        tag: 
+    - rid: 8019692210797150516
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'He''s this up and coming politician, quite the contentious
+          person. I''m not one to gossip, but it seems the governent isn''t very
+          fond of him.
+
+          Either way, as far as I''m concerned, I quite like
+          having such a prestigious guest. I wonder what made him choose us...'
+        characterEmotion: 1
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150524
+        isRootNode: 0
+        editorPosition: {x: 4477.3, y: -438.76172}
+        altDialoguePaths: []
+        guid:
+          Part1: 1084635640
+          Part2: 1239400926
+          Part3: 3848048305
+          Part4: 891342165
+        tag: 
+    - rid: 8019692210797150517
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Is that so? Well, I don''t suppose your presence will be causing
+          me any problems... otherwise you probably wouldn''t have been able to get
+          this close to me...
+
+          Tell me then, why were you so interested
+          in finding me?'
+        characterEmotion: 2
+        characterReaction: 6
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150525
+        - rid: 8019692210797150526
+        isRootNode: 0
+        editorPosition: {x: 999, y: 43}
+        altDialoguePaths: []
+        guid:
+          Part1: 3420732108
+          Part2: 1074501888
+          Part3: 1118841494
+          Part4: 3893310346
+        tag: 
+    - rid: 8019692210797150518
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "You were lied to, then. \nIt's already bad enough that I had
+          to lose my suite to some... filthy artist; I'm not going to negotiate with
+          a mere commoner like you.\nYou better find another room... or sleep downstairs,
+          for all I care."
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150527
+        isRootNode: 0
+        editorPosition: {x: 1021.02264, y: 318}
+        altDialoguePaths: []
+        guid:
+          Part1: 2754526002
+          Part2: 1138548354
+          Part3: 498545549
+          Part4: 1940995327
+        tag: 
+    - rid: 8019692210797150519
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Will... do...]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4945, y: 142}
+    - rid: 8019692210797150520
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Uhm, sure...]'
+        nextNode:
+          rid: 8019692210797150528
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4839.5, y: 382.22034}
+    - rid: 8019692210797150521
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Something doesn''t add up...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5434, y: 1031.1599}
+    - rid: 8019692210797150522
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(What''s going on with that sign?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5546, y: 1217.1599}
+    - rid: 8019692210797150523
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Article?]'
+        nextNode:
+          rid: 8019692210797150529
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5049.3, y: -640.7617}
+    - rid: 8019692210797150524
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Guess I''ll have to find out...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5355.3, y: -438.76172}
+    - rid: 8019692210797150525
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I''ve heard you''re famous. Must be hard, huh?]'
+        nextNode:
+          rid: 8019692210797150530
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2062, y: -82.354996}
+    - rid: 8019692210797150526
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Some people here told me about you...]'
+        nextNode:
+          rid: 8019692210797150531
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2094, y: 132.00002}
+    - rid: 8019692210797150527
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So, you should be in another room?] '
+        nextNode:
+          rid: 8019692210797150532
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1869.9999, y: 364.159}
+    - rid: 8019692210797150528
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: There, I've opened up the kitchen for you. Thanks!
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 1
+        responses: []
+        isRootNode: 0
+        editorPosition: {x: 5055.5, y: 382.22034}
+        altDialoguePaths: []
+        guid:
+          Part1: 2914108386
+          Part2: 1110138228
+          Part3: 608908179
+          Part4: 2083506427
+        tag: 
+    - rid: 8019692210797150529
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'You see, some journalist once accused him of being a... deviant,
+          if you get what I''m saying.
+
+          Normally I would deny entry to
+          such queer folk but... you have to admit, the man is talented.
+
+          Oh,
+          how I dream of him making a painting with this hotel for all the world
+          to see...!'
+        characterEmotion: 1
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150533
+        isRootNode: 0
+        editorPosition: {x: 5291.3, y: -663.7617}
+        altDialoguePaths: []
+        guid:
+          Part1: 3281136560
+          Part2: 1341605581
+          Part3: 2692599953
+          Part4: 2335719801
+        tag: 
+    - rid: 8019692210797150530
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "You don't say. As if being \"famous\" was the worst part of
+          it. \nPeople like you wondering about my personal life, with nothing but
+          questions in mind and cameras in hand, are just an unavoidable trait of
+          my job.\nIt's the people who believe to already know enough about me who
+          make things difficult, since they are the ones that always feel the need
+          to... \"do something\" about me."
+        characterEmotion: 0
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150534
+        - rid: 8019692210797150535
+        isRootNode: 0
+        editorPosition: {x: 2501, y: -133.355}
+        altDialoguePaths: []
+        guid:
+          Part1: 3751126033
+          Part2: 1310427781
+          Part3: 14493372
+          Part4: 3819777033
+        tag: 
+    - rid: 8019692210797150531
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Let me guess, was it the man who always seems to look confused?
+          Yeah, that''s... Ilya, I think his name was.
+
+          I had to be driven
+          here by him after his incompetence caused my car to stop working in the
+          middle of the road.
+
+          I would advise not spending much time with
+          him, unless you want him to ruin your stuff out of pure idiocy.'
+        characterEmotion: 2
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150536
+        isRootNode: 0
+        editorPosition: {x: 2501, y: 156.50002}
+        altDialoguePaths: []
+        guid:
+          Part1: 4061733524
+          Part2: 1237221908
+          Part3: 4047279270
+          Part4: 4184659917
+        tag: 
+    - rid: 8019692210797150532
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'It''s what I get for trusting in the integrity of such a miserable
+          establishment.
+
+          You''d think that they would understand the idea
+          of "reservation", regardless of how late one may arrive...
+
+          But
+          I guess that was too much to ask from a host who seemingly doesn''t even
+          know numbers...'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150537
+        isRootNode: 0
+        editorPosition: {x: 2254, y: 395}
+        altDialoguePaths: []
+        guid:
+          Part1: 4043970722
+          Part2: 1242736572
+          Part3: 4036692107
+          Part4: 387059162
+        tag: 
+    - rid: 8019692210797150533
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Do you know who was behind that article?]'
+        nextNode:
+          rid: 8019692210797150538
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5958.3, y: -645.7617}
+    - rid: 8019692210797150534
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Has that already happened to you here?]'
+        nextNode:
+          rid: 8019692210797150539
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3630.0352, y: -336.99988}
+    - rid: 8019692210797150535
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Cameras? Like that journalist downstairs?]'
+        nextNode:
+          rid: 8019692210797150540
+        dialogueTopic: 
+        m_conditions:
+        - rid: 8019692210797150541
+        alreadyDisplayed: 0
+        editorPosition: {x: 3583.0005, y: -91.999985}
+    - rid: 8019692210797150536
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Thanks for the tip. (Ilya broke his car, then...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3221, y: 157}
+    - rid: 8019692210797150537
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(It certainly is strange...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2997, y: 416}
+    - rid: 8019692210797150538
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Not as far as I''ve heard... though you know how much I hate
+          to gossip.
+
+          Why? Do you, perhaps... know who it was?'
+        characterEmotion: 2
+        characterReaction: 6
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150542
+        - rid: 8019692210797150543
+        isRootNode: 0
+        editorPosition: {x: 6374.3, y: -666.7617}
+        altDialoguePaths: []
+        guid:
+          Part1: 171815091
+          Part2: 1122010975
+          Part3: 4256102025
+          Part4: 267813150
+        tag: 
+    - rid: 8019692210797150539
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Why do you think I chose a place in the middle of nowhere
+          such as this?
+
+          Trust me, I know how to deal with these things...
+          some day, someone will get me, but today is not that day, I know it...
+
+          Then
+          again, I''m not entirely sure why someone like you is so interested on
+          my safety... unless...'
+        characterEmotion: 2
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150544
+        - rid: 8019692210797150545
+        isRootNode: 0
+        editorPosition: {x: 4025.8733, y: -382.50006}
+        altDialoguePaths: []
+        guid:
+          Part1: 474974818
+          Part2: 1123759463
+          Part3: 482866062
+          Part4: 531188890
+        tag: 
+    - rid: 8019692210797150540
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Lucky for her, she seems to be a bit vain to care about politics
+          and my role in them.
+
+          Admittedly, that could make her even more
+          suspicious... but her focus seems to be placed on Mr. Artist instead.
+
+          He''s
+          truly useless, but hey, at least his weirdness makes him the perfect distraction...
+          heh...'
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150546
+        isRootNode: 0
+        editorPosition: {x: 4044, y: -53.99995}
+        altDialoguePaths: []
+        guid:
+          Part1: 3749489747
+          Part2: 1155917834
+          Part3: 3452398228
+          Part4: 3866004631
+        tag: 
+    - rid: 8019692210797150541
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: 89cdbcac6674ef748a2334d6de5a8fce, type: 2}
+        isTalkDialogueNode:
+          dialogueText: Hello, I'm british
+          characterEmotion: 0
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses: []
+          isRootNode: 1
+          editorPosition: {x: 300, y: 200}
+          altDialoguePaths: []
+          guid:
+            Part1: 1371785725
+            Part2: 1155082823
+            Part3: 790721166
+            Part4: 1571819100
+          tag: 
+    - rid: 8019692210797150542
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I think it was Oleg himself.]'
+        nextNode:
+          rid: 8019692210797150547
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 6928, y: -251.00005}
+    - rid: 8019692210797150543
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I think it was Alexandra.]'
+        nextNode:
+          rid: 8019692210797150548
+        dialogueTopic: 
+        m_conditions:
+        - rid: 8019692210797150549
+        alreadyDisplayed: 0
+        editorPosition: {x: 6928, y: -464.12524}
+    - rid: 8019692210797150544
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Sorry, I can get too nosy sometimes.]'
+        nextNode:
+          rid: 8019692210797150550
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4832.035, y: -450.99988}
+    - rid: 8019692210797150545
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I''m investigating a possible murder attempt.]'
+        nextNode:
+          rid: 8019692210797150551
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4832.035, y: -263.9999}
+    - rid: 8019692210797150546
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(So she''s interested on an artist...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4769, y: -54}
+    - rid: 8019692210797150547
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Oh, let me guess, you say that because Oleg is jealous that
+          Aleksei is getting the largest room, right?
+
+          I knew it, I knew
+          it, I knew it!
+
+          I knew I had to find a way to make Aleksei take
+          that room: priorities are priorities, you know?
+
+          What will people
+          say about my hotel if I can''t even give the best room to my most <b>distinguished</b>
+          guest!'
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150552
+        isRootNode: 0
+        editorPosition: {x: 7287.587, y: -251}
+        altDialoguePaths: []
+        guid:
+          Part1: 2642126672
+          Part2: 1264286908
+          Part3: 2451570350
+          Part4: 3378827760
+        tag: 
+    - rid: 8019692210797150548
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Her? Right over there? Well, she IS a reporter, and she casually
+          seems to be in a place full of celebrities, so... I guess that is not a
+          bad theory is it?
+
+          Then again, she seems a bit too... serious
+          to be going around besmirching the name of random artists.
+
+          If
+          she''s here for a reason, I bet it must be something far more important
+          than that... and in my hotel... Oh, my, I think I might faint...'
+        characterEmotion: 1
+        characterReaction: 6
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150553
+        isRootNode: 0
+        editorPosition: {x: 7287.999, y: -463.99988}
+        altDialoguePaths: []
+        guid:
+          Part1: 2923304815
+          Part2: 1273307586
+          Part3: 3503069355
+          Part4: 2428477677
+        tag: 
+    - rid: 8019692210797150549
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: 89cdbcac6674ef748a2334d6de5a8fce, type: 2}
+        isTalkDialogueNode:
+          dialogueText: Ok, so what's your deal?
+          characterEmotion: 2
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 8019692210797150554
+          isRootNode: 1
+          editorPosition: {x: 95.31743, y: 145.00003}
+          altDialoguePaths:
+          - rid: 8019692210797150555
+          guid:
+            Part1: 1371785725
+            Part2: 1155082823
+            Part3: 790721166
+            Part4: 1571819100
+          tag: 
+    - rid: 8019692210797150550
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Not a great trait to have, I would say.
+
+          I appreciate
+          the interest, but please understand if I choose to end this conversation
+          right here.'
+        characterEmotion: 2
+        characterReaction: 6
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150556
+        isRootNode: 0
+        editorPosition: {x: 5262.0347, y: -545.9999}
+        altDialoguePaths: []
+        guid:
+          Part1: 1438057026
+          Part2: 1333072439
+          Part3: 3932481693
+          Part4: 3283696436
+        tag: 
+    - rid: 8019692210797150551
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...yeah, sure. And I suppose you''re now expecting me to "be
+          cooperative" so that you may "protect me" from a "menace".
+
+          Pro
+          tip, kid: if you''re going to try and spy a major figure, make sure not
+          to use the oldest trick from the book first.
+
+          Do yourself a favour
+          and get out of my sight.'
+        characterEmotion: 3
+        characterReaction: 7
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150557
+        isRootNode: 0
+        editorPosition: {x: 5240.035, y: -263.9999}
+        altDialoguePaths: []
+        guid:
+          Part1: 1483341751
+          Part2: 1304408155
+          Part3: 2813616060
+          Part4: 1763568454
+        tag: 
+    - rid: 8019692210797150552
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(That''s way too recent... but also interesting.)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 8066.2017, y: -251.00008}
+    - rid: 8019692210797150553
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Something <b>very important</b>, huh?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 8187.999, y: -463.99988}
+    - rid: 8019692210797150554
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(What the...) I''m sorry: My deal?]'
+        nextNode:
+          rid: 8019692210797150558
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 396.7495, y: 145.00002}
+    - rid: 8019692210797150555
+      type: {class: AltDialoguePath, ns: , asm: Assembly-CSharp}
+      data:
+        altDialogue: 'Back again with more questions, huh?
+
+          I love to see
+          your curiosity being sparked.'
+        condition:
+          dialogueText: Yes, yes, your deal, your story, why should I even bother
+            talking to you?
+          characterEmotion: 2
+          characterReaction: 7
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 8019692210797150559
+          - rid: 8019692210797150560
+          isRootNode: 0
+          editorPosition: {x: 716, y: 145.00002}
+          altDialoguePaths: []
+          guid:
+            Part1: 4061710421
+            Part2: 1157530809
+            Part3: 689992359
+            Part4: 2139168062
+          tag: 
+        skipTo:
+          dialogueText: 'I''m a <b>journalist</b>, mind you. I didn''t spend years
+            of my life as the only woman in a prestigious journalism school just
+            to be called a <b>reporter</b>.
+
+            But now that you ARE getting
+            curious, I''ll tell you: yes, I''m here as a journalist, getting into
+            the least expected places to find the most <b>delicious</b> stories.
+
+            No
+            pun intended.'
+          characterEmotion: 1
+          characterReaction: 2
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 8019692210797150561
+          - rid: 8019692210797150562
+          - rid: 8019692210797150563
+          isRootNode: 0
+          editorPosition: {x: 2741.7046, y: 503.00006}
+          altDialoguePaths: []
+          guid:
+            Part1: 4197549194
+            Part2: 1106058806
+            Part3: 3232978570
+            Part4: 3513204700
+          tag: 
+    - rid: 8019692210797150556
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[It''s fine, I get it. (leave)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5998.035, y: -545.9999}
+    - rid: 8019692210797150557
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Oh, no! I''ve screwed it...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 6058.0347, y: -281.99982}
+    - rid: 8019692210797150558
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Yes, yes, your deal, your story, why should I even bother talking
+          to you?
+        characterEmotion: 2
+        characterReaction: 7
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150559
+        - rid: 8019692210797150560
+        isRootNode: 0
+        editorPosition: {x: 716, y: 145.00002}
+        altDialoguePaths: []
+        guid:
+          Part1: 4061710421
+          Part2: 1157530809
+          Part3: 689992359
+          Part4: 2139168062
+        tag: 
+    - rid: 8019692210797150559
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I can leave, if that''s what you want.]'
+        nextNode:
+          rid: 8019692210797150564
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1233.7046, y: 503.00006}
+    - rid: 8019692210797150560
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I''m... here to figure something out]'
+        nextNode:
+          rid: 8019692210797150565
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1257.0001, y: -75.65594}
+    - rid: 8019692210797150561
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I... didn''t get the pun.]'
+        nextNode:
+          rid: 8019692210797150566
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3764, y: 664}
+    - rid: 8019692210797150562
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[And what led you to this place?]'
+        nextNode:
+          rid: 8019692210797150567
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3766, y: 431.99997}
+    - rid: 8019692210797150563
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So that <b>camera</b> there is yours?]'
+        nextNode:
+          rid: 8019692210797150568
+        dialogueTopic: 
+        m_conditions:
+        - rid: 8019692210797150569
+        alreadyDisplayed: 0
+        editorPosition: {x: 3723, y: 864.6461}
+    - rid: 8019692210797150564
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Really? Just like that? You''re going to give up on what might
+          be a great story, just to be nice?
+
+          Well, that''s disappointing.
+          And here I was, thinking I could find a fellow soul as curious as myself...
+
+          Oh,
+          well, I guess it''s for the best, anyway. I wouldn''t want to share such
+          a juicy scoop with anyone else.'
+        characterEmotion: 4
+        characterReaction: 7
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150570
+        isRootNode: 0
+        editorPosition: {x: 1585.7045, y: 503.00006}
+        altDialoguePaths: []
+        guid:
+          Part1: 1835412929
+          Part2: 1133826685
+          Part3: 4086251931
+          Part4: 1568069625
+        tag: 
+    - rid: 8019692210797150565
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "All right, Mr. Mistery... We have some stuff in common, you
+          and I... just try to not get in my way, alright?\nI'm in the midst of getting
+          my biggest scoop yet! \nSomething so outstanding that'll surely make anyone
+          who ever doubted me regret their actions."
+        characterEmotion: 1
+        characterReaction: 7
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150571
+        isRootNode: 0
+        editorPosition: {x: 1604.0001, y: -75.65594}
+        altDialoguePaths: []
+        guid:
+          Part1: 1128017573
+          Part2: 1252307847
+          Part3: 2114866107
+          Part4: 1501563185
+        tag: 
+    - rid: 8019692210797150566
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Oh, sorry, my bad: I used to be a <b>food</b> critique, hence
+          the <b>delicious</b> thing... Nevermind, it was bad anyways.
+
+          Luckily
+          for the staff here, I''m not anymore! My fingers would cram if I had to
+          put into words the absolute trainwreck that was today''s lunch.
+
+          That
+          borshch was truly abhorrent... Who hired this Chef?'
+        characterEmotion: 5
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150572
+        isRootNode: 0
+        editorPosition: {x: 4076, y: 664}
+        altDialoguePaths: []
+        guid:
+          Part1: 3941858783
+          Part2: 1303965904
+          Part3: 1164245432
+          Part4: 1086083098
+        tag: 
+    - rid: 8019692210797150567
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Well, a little, very trustworthy and fact-checked bird told
+          me that they saw an important figure drive all the way this place.
+
+          Which,
+          by itself, should be suspicious, but it gets even MORE interesting when
+          you realize that he was not <b>alone</b> in this car.
+
+          My "bird"
+          did not recognize this second man, but it would seem that this is more
+          than just a simple vacation.'
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150573
+        isRootNode: 0
+        editorPosition: {x: 4104, y: 431.99997}
+        altDialoguePaths: []
+        guid:
+          Part1: 3083354042
+          Part2: 1306995897
+          Part3: 2998380477
+          Part4: 334009166
+        tag: 
+    - rid: 8019692210797150568
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '<b>DON''T LOOK AT IT!</b>
+
+          I mean... yes, you''re
+          right, but that doesn''t give you the right to just <b>take</b> it and
+          examine it without permission.
+
+          Not all the pictures there are
+          for journalistic purposes, anyway...'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150574
+        isRootNode: 0
+        editorPosition: {x: 4135.7593, y: 864.9999}
+        altDialoguePaths: []
+        guid:
+          Part1: 3904504250
+          Part2: 1156721203
+          Part3: 4217359239
+          Part4: 3240803103
+        tag: 
+    - rid: 8019692210797150569
+      type: {class: ItemNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        item: {fileID: 11400000, guid: 931417dc5a854d841b97de9fe5f99fb5, type: 2}
+    - rid: 8019692210797150570
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Scoop? So you''re a reporter or something?]'
+        nextNode:
+          rid: 8019692210797150575
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2308.7046, y: 503.00006}
+    - rid: 8019692210797150571
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Scoop? So you''re a reporter or something?]'
+        nextNode:
+          rid: 8019692210797150576
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2285, y: -80.655975}
+    - rid: 8019692210797150572
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Note to self: be careful with the food.)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4962, y: 664}
+    - rid: 8019692210797150573
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So you''re planning to spy on them?]'
+        nextNode:
+          rid: 8019692210797150577
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4962, y: 431.99997}
+    - rid: 8019692210797150574
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Well, I couldn''t check those pictures anyway.]'
+        nextNode:
+          rid: 8019692210797150578
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4962, y: 864.9999}
+    - rid: 8019692210797150575
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'I''m a <b>journalist</b>, mind you. I didn''t spend years
+          of my life as the only woman in a prestigious journalism school just to
+          be called a <b>reporter</b>.
+
+          But now that you ARE getting curious,
+          I''ll tell you: yes, I''m here as a journalist, getting into the least
+          expected places to find the most <b>delicious</b> stories.
+
+          No
+          pun intended.'
+        characterEmotion: 1
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150561
+        - rid: 8019692210797150562
+        - rid: 8019692210797150563
+        isRootNode: 0
+        editorPosition: {x: 2741.7046, y: 503.00006}
+        altDialoguePaths: []
+        guid:
+          Part1: 4197549194
+          Part2: 1106058806
+          Part3: 3232978570
+          Part4: 3513204700
+        tag: 
+    - rid: 8019692210797150576
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'I''m a <b>journalist</b>, mind you. I didn''t spend years
+          of my life as the only woman in a prestigious journalism school just to
+          be called a <b>reporter</b>.
+
+          But now that you ARE getting curious,
+          I''ll tell you: yes, I''m here as a journalist, getting into the least
+          expected places to find the most <b>delicious</b> stories.
+
+          No
+          pun intended.'
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150579
+        - rid: 8019692210797150580
+        - rid: 8019692210797150581
+        isRootNode: 0
+        editorPosition: {x: 2681, y: -137.65594}
+        altDialoguePaths: []
+        guid:
+          Part1: 2518043290
+          Part2: 1126568364
+          Part3: 3635081140
+          Part4: 170371118
+        tag: 
+    - rid: 8019692210797150577
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "And what better for that than a cozy hotel! \nWe all know
+          that that business always take place in isolated, but seemingly innocuous
+          places.\nTake the <b>sauna</b> upstairs, for instance... if it wasn't for
+          the fact that the door won't budge, that would be perfect for negotiating.\nThey
+          should have hung up the right sign, though.. my nose still hurts from trying
+          to open it..."
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150582
+        isRootNode: 0
+        editorPosition: {x: 5341, y: 431.99997}
+        altDialoguePaths: []
+        guid:
+          Part1: 2103101816
+          Part2: 1171027430
+          Part3: 1203153824
+          Part4: 517255940
+        tag: 
+    - rid: 8019692210797150578
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Oh... Crap, I guess you''re right.
+
+          Ok, you got
+          me: while I DID arrive too late to take pictures of my main target, I,
+          um... decided to take the opportunity to photograph the... next best thing
+          here.'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150583
+        isRootNode: 0
+        editorPosition: {x: 5370.773, y: 864.9999}
+        altDialoguePaths: []
+        guid:
+          Part1: 2658239048
+          Part2: 1075406793
+          Part3: 2025165492
+          Part4: 4256412502
+        tag: 
+    - rid: 8019692210797150579
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[And what led you to this place?]'
+        nextNode:
+          rid: 8019692210797150584
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3687, y: -232.65594}
+    - rid: 8019692210797150580
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I... didn''t get the pun.]'
+        nextNode:
+          rid: 8019692210797150585
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3687, y: -57.655983}
+    - rid: 8019692210797150581
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So that <b>camera</b> there is yours?]'
+        nextNode:
+          rid: 8019692210797150586
+        dialogueTopic: 
+        m_conditions:
+        - rid: 8019692210797150587
+        alreadyDisplayed: 0
+        editorPosition: {x: 3687, y: 166}
+    - rid: 8019692210797150582
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Maybe that "business" is worth investigating...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 6198, y: 431.99997}
+    - rid: 8019692210797150583
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Which would be...?]'
+        nextNode:
+          rid: 8019692210797150588
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 6377, y: 864.9999}
+    - rid: 8019692210797150584
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Well, a little, very trustworthy and fact-checked bird told
+          me that they saw an important figure drive all the way this place.
+
+          Which,
+          by itself, should be suspicious, but it gets even MORE interesting when
+          you realize that he was not <b>alone</b> in this car.
+
+          My "bird"
+          did not recognize this second man, but it would seem that this is more
+          than just a simple vacation.'
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150589
+        isRootNode: 0
+        editorPosition: {x: 4032, y: -241.65596}
+        altDialoguePaths: []
+        guid:
+          Part1: 2741510385
+          Part2: 1272281206
+          Part3: 642955931
+          Part4: 3670528884
+        tag: 
+    - rid: 8019692210797150585
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Oh, sorry, my bad: I used to be a <b>food</b> critique, hence
+          the <b>delicious</b> thing... Nevermind, it was bad anyways.
+
+          Luckily
+          for the staff here, I''m not anymore! My fingers would cram if I had to
+          put into words the absolute trainwreck that was today''s lunch.
+
+          That
+          borshch was truly abhorrent... Who hired this Chef?'
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150590
+        isRootNode: 0
+        editorPosition: {x: 3970, y: -57.655983}
+        altDialoguePaths: []
+        guid:
+          Part1: 43449678
+          Part2: 1305780782
+          Part3: 2148272541
+          Part4: 4168384564
+        tag: 
+    - rid: 8019692210797150586
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '<b>DON''T LOOK AT IT!</b>
+
+          I mean... yes, you''re
+          right, but that doesn''t give you the right to just <b>take</b> it and
+          examine it without permission.
+
+          Not all the pictures there are
+          for journalistic purposes, anyway...'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150591
+        isRootNode: 0
+        editorPosition: {x: 4063, y: 166}
+        altDialoguePaths: []
+        guid:
+          Part1: 1639345962
+          Part2: 1314296448
+          Part3: 2420814523
+          Part4: 2347491567
+        tag: 
+    - rid: 8019692210797150587
+      type: {class: ItemNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        item: {fileID: 11400000, guid: 931417dc5a854d841b97de9fe5f99fb5, type: 2}
+    - rid: 8019692210797150588
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'You''re kidding, right? Didn''t you see him, sitting there?
+          That''s Aleksei... like, <b>THE</b> Aleksei, the one of the sculptures
+          and such?
+
+          I must say, I''d seen pictures of him before... but
+          I guess cameras can''t always do a person justice, the way his sculptures
+          can.
+
+          I''ve heard rumours from my co-workers about him being...
+          a bit deranged, but, wow... I never wanted a source to be so wrong before...'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150592
+        isRootNode: 0
+        editorPosition: {x: 6667.431, y: 864.9999}
+        altDialoguePaths: []
+        guid:
+          Part1: 1303805693
+          Part2: 1269938290
+          Part3: 977965754
+          Part4: 4203366471
+        tag: 
+    - rid: 8019692210797150589
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So you''re planning to spy on them?]'
+        nextNode:
+          rid: 8019692210797150593
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4880, y: -241.65596}
+    - rid: 8019692210797150590
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Note to self: be careful with the food.)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4861, y: -57.655983}
+    - rid: 8019692210797150591
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Well, I couldn''t check those pictures anyway.]'
+        nextNode:
+          rid: 8019692210797150594
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4831, y: 166}
+    - rid: 8019692210797150592
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(I... should probably leave...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 7552.917, y: 859.99976}
+    - rid: 8019692210797150593
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "And what better for that than a cozy hotel! \nWe all know
+          that that business always take place in isolated, but seemingly innocuous
+          places.\nTake the <b>sauna</b> upstairs, for instance... if it wasn't for
+          the fact that the door won't budge, that would be perfect for negotiating.\nThey
+          should have hung up the right sign, though.. my nose still hurts from trying
+          to open it..."
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150595
+        isRootNode: 0
+        editorPosition: {x: 5267, y: -232.65594}
+        altDialoguePaths: []
+        guid:
+          Part1: 2660714080
+          Part2: 1095029720
+          Part3: 793529742
+          Part4: 659547332
+        tag: 
+    - rid: 8019692210797150594
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Oh... Crap, I guess you''re right.
+
+          Ok, you got
+          me: while I DID arrive too late to take pictures of my main target, I,
+          um... decided to take the opportunity to photograph the... next best thing
+          here.'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150596
+        isRootNode: 0
+        editorPosition: {x: 5233.001, y: 166.00002}
+        altDialoguePaths: []
+        guid:
+          Part1: 2826150085
+          Part2: 1167958751
+          Part3: 1427340439
+          Part4: 3598106343
+        tag: 
+    - rid: 8019692210797150595
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(Maybe that "business" is worth investigating...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 6145.7666, y: -232.99982}
+    - rid: 8019692210797150596
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Which would be...?]'
+        nextNode:
+          rid: 8019692210797150597
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 6217.2515, y: 166}
+    - rid: 8019692210797150597
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'You''re kidding, right? Didn''t you see him, sitting there?
+          That''s Aleksei... like, <b>THE</b> Aleksei, the one of the sculptures
+          and such?
+
+          I must say, I''d seen pictures of him before... but
+          I guess cameras can''t always do a person justice, the way his sculptures
+          can.
+
+          I''ve heard rumours from my co-workers about him being...
+          a bit deranged, but, wow... I never wanted a source to be so wrong before...'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692210797150598
+        isRootNode: 0
+        editorPosition: {x: 6482.001, y: 166}
+        altDialoguePaths: []
+        guid:
+          Part1: 1623448803
+          Part2: 1137263040
+          Part3: 2145914507
+          Part4: 4209414012
+        tag: 
+    - rid: 8019692210797150598
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(I... should probably leave...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 7348.9517, y: 166}

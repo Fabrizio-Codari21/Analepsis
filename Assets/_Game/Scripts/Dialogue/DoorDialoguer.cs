@@ -9,4 +9,15 @@ public class DoorDialoguer : SimpleDialoguer
         base.EndDialogue();
         _door.TryOpenDoor();
     }
+
+
+    public override void StartDialogue()
+    {
+        if (_door.CheckKey())
+        {
+            _door.TryOpenDoor();
+            return;
+        }
+        base.StartDialogue();
+    }
 }

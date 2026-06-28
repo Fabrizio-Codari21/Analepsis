@@ -152,7 +152,7 @@ public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
         };
     }
 
-    public void StartDialogue() => m_dialogueEvent.Raise(this);
+    public virtual void StartDialogue() => m_dialogueEvent.Raise(this);
     public virtual void EndDialogue()
     {
        

@@ -9,11 +9,12 @@ public class CharacterSwitchButton : MonoBehaviour
     [SerializeField] private Button m_switchButton;
     [SerializeField] private NpcEvent m_onCharacterSelectedChannel;
     [SerializeField] private Image m_characterImage;
+    [SerializeField] private TMP_Text m_characterName;
     private NpcIdentity _identity;
     public void Init(NpcIdentity identity)
     {
         _identity = identity;
-        // m_characterName.text = identity.npcName;
+        m_characterName.text = identity.npcName;
         m_characterImage.sprite = identity.filePhoto;
         m_switchButton.onClick.RemoveAllListeners();
         m_switchButton.onClick.AddListener(Switch);
