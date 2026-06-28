@@ -38,10 +38,10 @@ MonoBehaviour:
     editorPosition: {x: 74.200005, y: 228.00005}
     altDialoguePaths: []
     guid:
-      Part1: 2607131809
-      Part2: 1179251474
-      Part3: 1016943026
-      Part4: 2803924353
+      Part1: 634950525
+      Part2: 1119739419
+      Part3: 2900384922
+      Part4: 4225388478
     tag: 
   allNodes:
   - dialogueText: 'Dinner will be served at 7.
@@ -59,10 +59,10 @@ MonoBehaviour:
     editorPosition: {x: 74.200005, y: 228.00005}
     altDialoguePaths: []
     guid:
-      Part1: 2607131809
-      Part2: 1179251474
-      Part3: 1016943026
-      Part4: 2803924353
+      Part1: 1441554021
+      Part2: 1249871739
+      Part3: 3869580988
+      Part4: 1304150796
     tag: 
   - dialogueText: Oh, please, not again... *sigh* Come in, I guess.
     characterEmotion: 0
@@ -71,13 +71,48 @@ MonoBehaviour:
     isKey: 0
     responses: []
     isRootNode: 0
-    editorPosition: {x: 956.2502, y: 441.55002}
+    editorPosition: {x: 952, y: 357}
     altDialoguePaths: []
     guid:
-      Part1: 2399214227
-      Part2: 1202658740
-      Part3: 1057377428
-      Part4: 1318948725
+      Part1: 1723864225
+      Part2: 1266840617
+      Part3: 2042971274
+      Part4: 1317829726
+    tag: 
+  - dialogueText: 'Dinner will be served at 7.
+
+      Knocking won''t make me cook
+      faster, so stop that.'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 8019692210797150470
+    - rid: 8019692210797150471
+    isRootNode: 1
+    editorPosition: {x: 74.200005, y: 228.00005}
+    altDialoguePaths: []
+    guid:
+      Part1: 634950525
+      Part2: 1119739419
+      Part3: 2900384922
+      Part4: 4225388478
+    tag: 
+  - dialogueText: Oh, please, not again... *sigh* Come in, I guess.
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses: []
+    isRootNode: 0
+    editorPosition: {x: 952, y: 357}
+    altDialoguePaths: []
+    guid:
+      Part1: 4277873983
+      Part2: 1154032768
+      Part3: 424979072
+      Part4: 2518822852
     tag: 
   hiddenProof: 
   references:
@@ -85,7 +120,7 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 3046479087689793756
+    - rid: 3046479087689793921
       type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
       data:
         conditionName: 
@@ -99,7 +134,7 @@ MonoBehaviour:
           doesItProveAnything: 0
           isKey: 0
           responses:
-          - rid: 3046479087689793891
+          - rid: 3046479087689793946
           isRootNode: 0
           editorPosition: {x: 3461.35, y: 408}
           altDialoguePaths: []
@@ -109,17 +144,17 @@ MonoBehaviour:
             Part3: 678669697
             Part4: 2982089371
           tag: 
-    - rid: 3046479087689793891
+    - rid: 3046479087689793946
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
         responseText: '[That''s not what I meant]'
         nextNode:
-          rid: 3046479087689793892
+          rid: 3046479087689793958
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 4067.4395, y: 382}
-    - rid: 3046479087689793892
+    - rid: 3046479087689793958
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: (Shush) Would you mind telling him? The kitchen is right next
@@ -129,7 +164,7 @@ MonoBehaviour:
         doesItProveAnything: 0
         isKey: 0
         responses:
-        - rid: 3046479087689793893
+        - rid: 3046479087689793968
         isRootNode: 0
         editorPosition: {x: 4344.4395, y: 382}
         altDialoguePaths: []
@@ -139,17 +174,17 @@ MonoBehaviour:
           Part3: 1774973882
           Part4: 4284853093
         tag: 
-    - rid: 3046479087689793893
+    - rid: 3046479087689793968
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
         responseText: '[Uhm, sure...]'
         nextNode:
-          rid: 3046479087689793894
+          rid: 3046479087689793976
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 4938.001, y: 382}
-    - rid: 3046479087689793894
+    - rid: 3046479087689793976
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: There, I've opened up the kitchen for you. Thanks!
@@ -167,6 +202,24 @@ MonoBehaviour:
           Part3: 608908179
           Part4: 2083506427
         tag: 
+    - rid: 3046479087689794047
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Oh, please, not again... *sigh* Come in, I guess.
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses: []
+        isRootNode: 0
+        editorPosition: {x: 952, y: 357}
+        altDialoguePaths: []
+        guid:
+          Part1: 4277873983
+          Part2: 1154032768
+          Part3: 424979072
+          Part4: 2518822852
+        tag: 
     - rid: 8019692210797150470
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -182,27 +235,9 @@ MonoBehaviour:
       data:
         responseText: '[Natalia said I could come in]'
         nextNode:
-          rid: 8019692210797150472
+          rid: 3046479087689794047
         dialogueTopic: 
         m_conditions:
-        - rid: 3046479087689793756
+        - rid: 3046479087689793921
         alreadyDisplayed: 0
         editorPosition: {x: 584.0001, y: 356.6501}
-    - rid: 8019692210797150472
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: Oh, please, not again... *sigh* Come in, I guess.
-        characterEmotion: 0
-        characterReaction: 0
-        doesItProveAnything: 0
-        isKey: 0
-        responses: []
-        isRootNode: 0
-        editorPosition: {x: 1487.44, y: 343}
-        altDialoguePaths: []
-        guid:
-          Part1: 2399214227
-          Part2: 1202658740
-          Part3: 1057377428
-          Part4: 1318948725
-        tag: 

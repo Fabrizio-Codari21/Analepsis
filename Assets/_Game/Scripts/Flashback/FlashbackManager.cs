@@ -52,11 +52,6 @@ public class FlashbackManager : MonoBehaviour
         itemEvent.OnEventRaised -= SetCurrentItem;
     }
 
-    private void OnApplicationQuit()
-    {
-        _ = _stateMachine.TransitionTo(FlashbackState.Inactive);
-    }
-
     private async void OnFlashback(bool enable)
     {
         try
