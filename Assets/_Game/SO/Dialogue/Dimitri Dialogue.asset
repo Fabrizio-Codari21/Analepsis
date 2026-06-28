@@ -510,6 +510,1057 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 789.00006, y: -134.1084}
+    - rid: 767062848034046021
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: 699f9b3a387b8a941af3909649b0f034, type: 2}
+        isTalkDialogueNode:
+          dialogueText: Oh... s-sorry, I didn't see you come here. My name's Ilya,
+            pleased to meet you.
+          characterEmotion: 2
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 767062848034046022
+          isRootNode: 1
+          editorPosition: {x: 87, y: 190}
+          altDialoguePaths:
+          - rid: 767062848034046023
+          - rid: 767062848034046024
+          guid:
+            Part1: 2325925976
+            Part2: 1105301596
+            Part3: 2462407563
+            Part4: 293269157
+          tag: 
+    - rid: 767062848034046022
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[That... was the most normal greeting today.]'
+        nextNode:
+          rid: 767062848034046025
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 680.7674, y: 190.00002}
+    - rid: 767062848034046023
+      type: {class: AltDialoguePath, ns: , asm: Assembly-CSharp}
+      data:
+        altDialogue: Hey, welcome back! Did you find the code yet?
+        condition:
+          dialogueText: '...getting into my room, I''m afraid.
+
+            The thing
+            is this "game" was mostly just a way to punish me for taking so long
+            to arrive.
+
+            He got to set the code of the room before I got
+            here, and now he''s asking me to figure it out for myself.
+
+            Which
+            is why I''m asking for help, if you don''t mind.'
+          characterEmotion: 0
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 767062848034046026
+          - rid: 767062848034046027
+          isRootNode: 0
+          editorPosition: {x: 3212.9006, y: -100.999985}
+          altDialoguePaths: []
+          guid:
+            Part1: 239946146
+            Part2: 1266075066
+            Part3: 581738174
+            Part4: 4257914823
+          tag: 
+        skipTo:
+          dialogueText: '(Damn!) *cough* I mean... that''s me, the most... normal
+            guy you''ll find around! Heh...
+
+            Hey, so... um... unrelated
+            question, could you please help me solve a certain... um... game I''m
+            playing?'
+          characterEmotion: 0
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 767062848034046028
+          - rid: 767062848034046029
+          isRootNode: 0
+          editorPosition: {x: 1086.1274, y: 78.645}
+          altDialoguePaths: []
+          guid:
+            Part1: 493333492
+            Part2: 1167138288
+            Part3: 4201193903
+            Part4: 2187594401
+          tag: 
+    - rid: 767062848034046024
+      type: {class: AltDialoguePath, ns: , asm: Assembly-CSharp}
+      data:
+        altDialogue: Nice to see you again, comrade. Nothing to report so far.
+        condition:
+          dialogueText: D-Dimitri did that? Wait... does that mean that.. you already
+            know...?
+          characterEmotion: 0
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 767062848034046030
+          isRootNode: 0
+          editorPosition: {x: 3084.9995, y: 483.62622}
+          altDialoguePaths: []
+          guid:
+            Part1: 25498427
+            Part2: 1280493627
+            Part3: 3783965373
+            Part4: 250499973
+          tag: 
+        skipTo:
+          dialogueText: 'So he DID get a <b>third</b> member for the team! I knew
+            it!
+
+            See, I told him that a mission like this would require
+            more hands, but he was too proud to admit that I was right.
+
+            I
+            respect him a lot, he was like a... weird, creepy father to me... but,
+            man, a <b>figure that important</b> could not go down without help... '
+          characterEmotion: 0
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 767062848034046031
+          - rid: 767062848034046032
+          isRootNode: 0
+          editorPosition: {x: 3936.9995, y: 483.62622}
+          altDialoguePaths: []
+          guid:
+            Part1: 2952297999
+            Part2: 1079059291
+            Part3: 637297305
+            Part4: 4184934732
+          tag: 
+    - rid: 767062848034046025
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '(Damn!) *cough* I mean... that''s me, the most... normal guy
+          you''ll find around! Heh...
+
+          Hey, so... um... unrelated question,
+          could you please help me solve a certain... um... game I''m playing?'
+        characterEmotion: 5
+        characterReaction: 7
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046028
+        - rid: 767062848034046029
+        isRootNode: 0
+        editorPosition: {x: 1086.1274, y: 78.645}
+        altDialoguePaths: []
+        guid:
+          Part1: 493333492
+          Part2: 1167138288
+          Part3: 4201193903
+          Part4: 2187594401
+        tag: 
+    - rid: 767062848034046026
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Ok, I''ll help.]'
+        nextNode:
+          rid: 767062848034046033
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3970, y: -310}
+    - rid: 767062848034046027
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Can I meet your roommate then?]'
+        nextNode:
+          rid: 767062848034046034
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3970, y: -104}
+    - rid: 767062848034046028
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Um... sure, what''s the game about?]'
+        nextNode:
+          rid: 767062848034046035
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1795, y: -51}
+    - rid: 767062848034046029
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I think I already have the answer. (Say code)]'
+        nextNode:
+          rid: 767062848034046036
+        dialogueTopic: 
+        m_conditions:
+        - rid: 767062848034046037
+        alreadyDisplayed: 0
+        editorPosition: {x: 1779, y: 313.163}
+    - rid: 767062848034046030
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Yep. He told me everything.]'
+        nextNode:
+          rid: 767062848034046038
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3601.9995, y: 483.62622}
+    - rid: 767062848034046031
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So how''s "the plan" going?]'
+        nextNode:
+          rid: 767062848034046039
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4859.24, y: 318}
+    - rid: 767062848034046032
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Do you have "the thing" already?'
+        nextNode:
+          rid: 767062848034046040
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4849.8745, y: 592.5}
+    - rid: 767062848034046033
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Wow, thank you... *phew* just... make sure to not tell anyone
+          else once you figure it out.
+
+          I wouldn''t want people to just...
+          interrupt us once I''m inside.'
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046041
+        isRootNode: 0
+        editorPosition: {x: 4233.1514, y: -368}
+        altDialoguePaths: []
+        guid:
+          Part1: 3944833965
+          Part2: 1299830704
+          Part3: 104953494
+          Part4: 72952190
+        tag: 
+    - rid: 767062848034046034
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '<b>NO!</b> *cough* I mean, I''d love to, but he... um... doesn''t
+          like to receive strangers, so I''d rather not, sorry.
+
+          Please,
+          if you happen to find out what the code might be, I''d be really thankful.
+          And, um, don''t tell it to anyone else, ok?'
+        characterEmotion: 5
+        characterReaction: 7
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046042
+        isRootNode: 0
+        editorPosition: {x: 4330, y: -104}
+        altDialoguePaths: []
+        guid:
+          Part1: 3819829899
+          Part2: 1308653073
+          Part3: 102641286
+          Part4: 3373460120
+        tag: 
+    - rid: 767062848034046035
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Well, you see, it''s... my... roommate challenged me to find
+          a certain "code" that he came up with.
+
+          Let''s just say I need
+          to find it fast if I want to get access to... my reward...'
+        characterEmotion: 1
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046043
+        isRootNode: 0
+        editorPosition: {x: 2202.7424, y: -100.9025}
+        altDialoguePaths: []
+        guid:
+          Part1: 708832069
+          Part2: 1217539938
+          Part3: 2695101621
+          Part4: 2902590646
+        tag: 
+    - rid: 767062848034046036
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Really? Oh, wow, thank you so much! How did you find out about
+          it?
+        characterEmotion: 4
+        characterReaction: 7
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046044
+        - rid: 767062848034046045
+        isRootNode: 0
+        editorPosition: {x: 2251, y: 587.6262}
+        altDialoguePaths: []
+        guid:
+          Part1: 803924283
+          Part2: 1237659444
+          Part3: 1312451215
+          Part4: 2128099798
+        tag: 
+    - rid: 767062848034046037
+      type: {class: ItemNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        item: {fileID: 11400000, guid: 2644e5ade1590fd48a3faefc742741ba, type: 2}
+    - rid: 767062848034046038
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'So he DID get a <b>third</b> member for the team! I knew it!
+
+          See,
+          I told him that a mission like this would require more hands, but he was
+          too proud to admit that I was right.
+
+          I respect him a lot, he
+          was like a... weird, creepy father to me... but, man, a <b>figure that
+          important</b> could not go down without help... '
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046031
+        - rid: 767062848034046032
+        isRootNode: 0
+        editorPosition: {x: 3936.9995, y: 483.62622}
+        altDialoguePaths: []
+        guid:
+          Part1: 2952297999
+          Part2: 1079059291
+          Part3: 637297305
+          Part4: 4184934732
+        tag: 
+    - rid: 767062848034046039
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "So far, so good. The <b>target</b> has already gone upstairs,
+          and the door sign says it's unlocked, so it should be easy to get him to
+          fall for the <b>trap</b>. \nI've been really nice to everyone and no-one
+          seens to suspect a thing.\nIf things keep going as planned, I'll be in
+          there right before dinner, ready to <b>complete the task</b>..."
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046046
+        isRootNode: 0
+        editorPosition: {x: 5161, y: 318}
+        altDialoguePaths: []
+        guid:
+          Part1: 956334448
+          Part2: 1168707074
+          Part3: 985916342
+          Part4: 2167441247
+        tag: 
+    - rid: 767062848034046040
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "\"The thing\"? Sorry, I don't think I know what that's supposed
+          to mean.\nMan... are you guys already coming up with secret words without
+          me? \nDamn it, I thought this would be the one place where I wouldn't feel
+          <b>left out</b>..."
+        characterEmotion: 2
+        characterReaction: 7
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046047
+        isRootNode: 0
+        editorPosition: {x: 5170, y: 593}
+        altDialoguePaths: []
+        guid:
+          Part1: 2954009479
+          Part2: 1319509012
+          Part3: 1419098807
+          Part4: 1616786135
+        tag: 
+    - rid: 767062848034046041
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(I''m afraid to ask what they could "interrupt".)] '
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4972, y: -440.28}
+    - rid: 767062848034046042
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Got it. (What''s wrong with his roommate?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5095, y: -104}
+    - rid: 767062848034046043
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[And that reward would be...?]'
+        nextNode:
+          rid: 767062848034046048
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2881.5, y: -164}
+    - rid: 767062848034046044
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Dimitri told me.]'
+        nextNode:
+          rid: 767062848034046049
+        dialogueTopic: 
+        m_conditions:
+        - rid: 767062848034046050
+        alreadyDisplayed: 0
+        editorPosition: {x: 2800.4175, y: 509.0001}
+    - rid: 767062848034046045
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I found it on Oleg''s pin.]'
+        nextNode:
+          rid: 767062848034046051
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2777.5059, y: 810.482}
+    - rid: 767062848034046046
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Great job. (<b>"Target"</b>? <b>Trap</b>? Hmm...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 6427.8394, y: 159}
+    - rid: 767062848034046047
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(That''s sad... but also very revealing...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5762, y: 593}
+    - rid: 767062848034046048
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...getting into my room, I''m afraid.
+
+          The thing
+          is this "game" was mostly just a way to punish me for taking so long to
+          arrive.
+
+          He got to set the code of the room before I got here,
+          and now he''s asking me to figure it out for myself.
+
+          Which is
+          why I''m asking for help, if you don''t mind.'
+        characterEmotion: 2
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046026
+        - rid: 767062848034046027
+        isRootNode: 0
+        editorPosition: {x: 3209.5, y: -164}
+        altDialoguePaths: []
+        guid:
+          Part1: 239946146
+          Part2: 1266075066
+          Part3: 581738174
+          Part4: 4257914823
+        tag: 
+    - rid: 767062848034046049
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: D-Dimitri did that? Wait... does that mean that.. you already
+          know...?
+        characterEmotion: 5
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046030
+        isRootNode: 0
+        editorPosition: {x: 3084.9995, y: 483.62622}
+        altDialoguePaths: []
+        guid:
+          Part1: 25498427
+          Part2: 1280493627
+          Part3: 3783965373
+          Part4: 250499973
+        tag: 
+    - rid: 767062848034046050
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000}
+        isTalkDialogueNode:
+          dialogueText: 'How the... *sigh* I knew the code was too easy to guess.
+
+            Oh,
+            well, at least it wasn''t <b>him</b> who figured it out.
+
+            So
+            what''s your deal? Are you a reporter? A spy? An officer? What should
+            I do with you?'
+          characterEmotion: 2
+          characterReaction: 0
+          doesItProveAnything: 4
+          isKey: 0
+          responses:
+          - rid: 767062848034046052
+          - rid: 767062848034046053
+          - rid: 767062848034046054
+          isRootNode: 1
+          editorPosition: {x: -67.000015, y: 205.40004}
+          altDialoguePaths:
+          - rid: 767062848034046055
+          - rid: 767062848034046056
+          guid:
+            Part1: 3525925680
+            Part2: 1233886507
+            Part3: 990331288
+            Part4: 3350988576
+          tag: 
+    - rid: 767062848034046051
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'What? That... doesn''t make any sense.
+
+          Unless...
+          oh no, was he scolding me for not doing my research properly?
+
+          I
+          swear i found everything I could about that guy... wait... I mean... science!
+          We''re scientist doing research, that''s what I meant... um... yeah.'
+        characterEmotion: 5
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046057
+        isRootNode: 0
+        editorPosition: {x: 3102.5059, y: 810.482}
+        altDialoguePaths: []
+        guid:
+          Part1: 209685302
+          Part2: 1101052138
+          Part3: 4035769758
+          Part4: 1513944887
+        tag: 
+    - rid: 767062848034046052
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I got the code from Oleg.]'
+        nextNode:
+          rid: 767062848034046058
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 789.00006, y: -134.1084}
+    - rid: 767062848034046053
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Ilya was looking for you.]'
+        nextNode:
+          rid: 767062848034046059
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 793.69995, y: 288.81952}
+    - rid: 767062848034046054
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Why would I be any of those things?]'
+        nextNode:
+          rid: 767062848034046060
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 740.99994, y: 506.39}
+    - rid: 767062848034046055
+      type: {class: AltDialoguePath, ns: , asm: Assembly-CSharp}
+      data:
+        altDialogue: "Didn't I just tell you to leave? \nYou really need to understand:
+          i'm not joking when I say I might have to \"do something\" about you..."
+        condition:
+          dialogueText: 'How the... *sigh* I knew the code was too easy to guess.
+
+            Oh,
+            well, at least it wasn''t <b>him</b> who figured it out.
+
+            So
+            what''s your deal? Are you a reporter? A spy? An officer? What should
+            I do with you?'
+          characterEmotion: 2
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 767062848034046052
+          - rid: 767062848034046053
+          - rid: 767062848034046054
+          isRootNode: 1
+          editorPosition: {x: -44, y: 210.20001}
+          altDialoguePaths:
+          - rid: 767062848034046055
+          guid:
+            Part1: 11571139
+            Part2: 1265013632
+            Part3: 4265678242
+            Part4: 605013965
+          tag: 
+        skipTo:
+          dialogueText: 'How the... *sigh* I knew the code was too easy to guess.
+
+            Oh,
+            well, at least it wasn''t <b>him</b> who figured it out.
+
+            So
+            what''s your deal? Are you a reporter? A spy? An officer? What should
+            I do with you?'
+          characterEmotion: 2
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 767062848034046052
+          - rid: 767062848034046053
+          - rid: 767062848034046054
+          isRootNode: 1
+          editorPosition: {x: -44, y: 210.20001}
+          altDialoguePaths:
+          - rid: 767062848034046055
+          guid:
+            Part1: 11571139
+            Part2: 1265013632
+            Part3: 4265678242
+            Part4: 605013965
+          tag: 
+    - rid: 767062848034046056
+      type: {class: AltDialoguePath, ns: , asm: Assembly-CSharp}
+      data:
+        altDialogue: "Did you forget something? \nCome on, this is no time to be
+          fooling around. If you need something, ask, quickly."
+        condition:
+          dialogueText: 'So he trusts you, then. And yet he felt like he had no reason
+            to tell me about you.
+
+            Seriously, why do i seem to be the
+            only one who knows how to do my job properly?
+
+            Ok, so then
+            you must have come here looking for something. Be quick.'
+          characterEmotion: 1
+          characterReaction: 6
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 767062848034046061
+          - rid: 767062848034046062
+          - rid: 767062848034046063
+          isRootNode: 0
+          editorPosition: {x: 1175, y: -6.11998}
+          altDialoguePaths: []
+          guid:
+            Part1: 887208604
+            Part2: 1132548017
+            Part3: 2098049434
+            Part4: 2317437582
+          tag: 
+        skipTo:
+          dialogueText: 'So he trusts you, then. And yet he felt like he had no reason
+            to tell me about you.
+
+            Seriously, why do i seem to be the
+            only one who knows how to do my job properly?
+
+            Ok, so then
+            you must have come here looking for something. Be quick.'
+          characterEmotion: 1
+          characterReaction: 6
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 767062848034046061
+          - rid: 767062848034046062
+          - rid: 767062848034046063
+          isRootNode: 0
+          editorPosition: {x: 1175, y: -6.11998}
+          altDialoguePaths: []
+          guid:
+            Part1: 887208604
+            Part2: 1132548017
+            Part3: 2098049434
+            Part4: 2317437582
+          tag: 
+    - rid: 767062848034046057
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(I doubt you''ve researched Oleg "for science"...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4146, y: 726.5}
+    - rid: 767062848034046058
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'So he trusts you, then. And yet he felt like he had no reason
+          to tell me about you.
+
+          Seriously, why do i seem to be the only
+          one who knows how to do my job properly?
+
+          Ok, so then you must
+          have come here looking for something. Be quick.'
+        characterEmotion: 1
+        characterReaction: 6
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046061
+        - rid: 767062848034046062
+        - rid: 767062848034046063
+        isRootNode: 0
+        editorPosition: {x: 1168.0001, y: -344.10843}
+        altDialoguePaths: []
+        guid:
+          Part1: 86385421
+          Part2: 1187369203
+          Part3: 2302744214
+          Part4: 3982707328
+        tag: 
+    - rid: 767062848034046059
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'No shit. And he sent you, a complete stranger, all the way
+          here to find the code and tell me that?
+
+          The kid''s ability to
+          either be the biggest idiot or the most accidental genius will never cease
+          to surprise me.
+
+          Listen, I don''t know who you are, and luckily,
+          you seem to be confused, so it''s probably best if you stay out of this.
+
+          And
+          don''t tell him about the code. He... didn''t earn it, let''s say.'
+        characterEmotion: 1
+        characterReaction: 7
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046064
+        isRootNode: 0
+        editorPosition: {x: 1100.7, y: 309.81955}
+        altDialoguePaths: []
+        guid:
+          Part1: 2855662127
+          Part2: 1111791029
+          Part3: 3840308662
+          Part4: 1349355998
+        tag: 
+    - rid: 767062848034046060
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'What else, then? The world''s best guesser? A time traveler?
+          A detective with a magical notebook?
+
+          I have no time for jokes,
+          much less for you. I''ll pretend you didn''t just intrude, for you own
+          safety, so <b>leave</b>.'
+        characterEmotion: 3
+        characterReaction: 7
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046065
+        isRootNode: 0
+        editorPosition: {x: 1116, y: 584}
+        altDialoguePaths: []
+        guid:
+          Part1: 2251030260
+          Part2: 1165430868
+          Part3: 4089636743
+          Part4: 2614750270
+        tag: 
+    - rid: 767062848034046061
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[How''s... um... "the plan" going?]'
+        nextNode:
+          rid: 767062848034046066
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1887, y: -535.1084}
+    - rid: 767062848034046062
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[He asked me to get... um... "the thing".]'
+        nextNode:
+          rid: 767062848034046067
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1871, y: -284.10843}
+    - rid: 767062848034046063
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Can I be of any help?]'
+        nextNode:
+          rid: 767062848034046068
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1879, y: -13.108383}
+    - rid: 767062848034046064
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[You don''t seem to like him that much.]'
+        nextNode:
+          rid: 767062848034046069
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1889.7, y: 406.8196}
+    - rid: 767062848034046065
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Alright, sorry. (Wow... that was weirdly accurate.)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1880, y: 620}
+    - rid: 767062848034046066
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Well, you''re the first and only person to come into this
+          room, and the door to "the place" is still closed, so nothing''s gone wrong
+          so far.
+
+          Though, of course, I didn''t account on you being a
+          part of this so, please don''t get in the way.
+
+          This is a very
+          serious business for me, alright?'
+        characterEmotion: 1
+        characterReaction: 6
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046070
+        isRootNode: 0
+        editorPosition: {x: 2239, y: -573.1084}
+        altDialoguePaths: []
+        guid:
+          Part1: 2757100495
+          Part2: 1337091679
+          Part3: 2331423645
+          Part4: 1363973298
+        tag: 
+    - rid: 767062848034046067
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Then do me a favour and remind him that I said MANY TIMES
+          that I would be the one taking care of that.
+
+          And make sure that
+          he keeps in mind that he''s in debt with me, and that he''s still <b>alive</b>
+          for a reason.'
+        characterEmotion: 3
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046071
+        isRootNode: 0
+        editorPosition: {x: 2239, y: -284.10843}
+        altDialoguePaths: []
+        guid:
+          Part1: 3989213569
+          Part2: 1292918822
+          Part3: 1822912920
+          Part4: 1958942294
+        tag: 
+    - rid: 767062848034046068
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...Please tell me you''re joking. There must have been a good
+          reason for Oleg to let you in, and clearly your intelligence is not it.
+
+          Look,
+          just... stay out of this, alright? Clearly you''re not very well prepared,
+          and you could easily get caught in the crossfire, so it''s better if you
+          don''t get involved.'
+        characterEmotion: 2
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046072
+        isRootNode: 0
+        editorPosition: {x: 2213, y: -13.108383}
+        altDialoguePaths: []
+        guid:
+          Part1: 194430029
+          Part2: 1159268048
+          Part3: 39248061
+          Part4: 1598397460
+        tag: 
+    - rid: 767062848034046069
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...heh... yeah, you could say that. You see, we''ve done a
+          lot of... "work" together and, while he was never too bright, I managed
+          to... train him well.
+
+          Thing is, I have... fallen out of love
+          with the work I do, and with our... "boss"... but, see, that''s not something
+          I can tell him without... hurting him.
+
+          Luckily, if things go
+          right, this should be the last time we work together. I''m looking forward
+          to... "retirement".'
+        characterEmotion: 4
+        characterReaction: 6
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046073
+        isRootNode: 0
+        editorPosition: {x: 2279.7, y: 422.81958}
+        altDialoguePaths: []
+        guid:
+          Part1: 1391464013
+          Part2: 1202271727
+          Part3: 3218864290
+          Part4: 1059067647
+        tag: 
+    - rid: 767062848034046070
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Good to know. (What are you plotting?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3130, y: -573.1084}
+    - rid: 767062848034046071
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Roger that. (Wait... still alive?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3000, y: -288.1084}
+    - rid: 767062848034046072
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Sorry. (What could be so dangerous?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3269, y: -13.108383}
+    - rid: 767062848034046073
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '["This"? So you''re working right now?]'
+        nextNode:
+          rid: 767062848034046074
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3335.9, y: 518.95}
+    - rid: 767062848034046074
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...in a way, yes. Which is why you should probably not get
+          too involved in this.
+
+          I''m here to complete a task, my last
+          task... and I''m no longer going to doubt if I have to... change my "objectives".'
+        characterEmotion: 1
+        characterReaction: 6
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 767062848034046075
+        isRootNode: 0
+        editorPosition: {x: 3749, y: 577.5}
+        altDialoguePaths: []
+        guid:
+          Part1: 2824955012
+          Part2: 1279284701
+          Part3: 1091494021
+          Part4: 164643856
+        tag: 
+    - rid: 767062848034046075
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(What''s going on here...?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4539, y: 578}
     - rid: 3046478613006778468
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -517,7 +1568,8 @@ MonoBehaviour:
         nextNode:
           rid: 3046478613006778469
         dialogueTopic: 
-        m_conditions: []
+        m_conditions:
+        - rid: 767062848034046021
         alreadyDisplayed: 0
         editorPosition: {x: 793.69995, y: 288.81952}
     - rid: 3046478613006778469
@@ -542,7 +1594,7 @@ MonoBehaviour:
         responses:
         - rid: 3046478613006778470
         isRootNode: 0
-        editorPosition: {x: 1100.7, y: 309.81955}
+        editorPosition: {x: 1084, y: 289}
         altDialoguePaths: []
         guid:
           Part1: 2855662127
