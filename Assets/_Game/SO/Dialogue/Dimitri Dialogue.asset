@@ -259,7 +259,31 @@ MonoBehaviour:
       Part3: 4089636743
       Part4: 2614750270
     tag: 
-  hiddenProof: 
+  - dialogueText: 'Which is why you should stay away. We can''t afford to have people
+      going around asking questions like that.
+
+      Need I remind you that the
+      whole reason why this works is the fact the <b>he</b> doesn''t know?
+
+      I''m
+      not going to risk it... I don''t want to keep working for them. This is my
+      way out, so please, step aside.'
+    characterEmotion: 1
+    characterReaction: 2
+    doesItProveAnything: 4
+    isKey: 0
+    responses:
+    - rid: 3046479065253413174
+    isRootNode: 0
+    editorPosition: {x: 3684.2007, y: 29.00001}
+    altDialoguePaths: []
+    guid:
+      Part1: 1053840211
+      Part2: 1083319245
+      Part3: 2245772943
+      Part4: 1085929645
+    tag: 
+  hiddenProof: 04000000
   references:
     version: 2
     RefIds:
@@ -335,7 +359,7 @@ MonoBehaviour:
           one who knows how to do my job properly?
 
           Ok, so then you must
-          have come here looking for something. Be quick.'
+          have come here looking for something <b>plan</b>-related. Be quick.'
         characterEmotion: 1
         characterReaction: 6
         doesItProveAnything: 0
@@ -345,7 +369,7 @@ MonoBehaviour:
         - rid: 3046478613006778474
         - rid: 3046478613006778475
         isRootNode: 0
-        editorPosition: {x: 1168.0001, y: -344.10843}
+        editorPosition: {x: 1111, y: -340}
         altDialoguePaths: []
         guid:
           Part1: 86385421
@@ -356,23 +380,23 @@ MonoBehaviour:
     - rid: 3046478613006778473
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[How''s... um... "the plan" going?]'
+        responseText: '[So... how''s... um... "the plan" going?]'
         nextNode:
           rid: 3046478613006778476
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 1887, y: -535.1084}
+        editorPosition: {x: 1822, y: -555.19995}
     - rid: 3046478613006778474
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[He asked me to get... um... "the thing".]'
+        responseText: '[Yes.. he asked me to get... um... "the thing".]'
         nextNode:
           rid: 3046478613006778480
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 1871, y: -284.10843}
+        editorPosition: {x: 1831, y: -284}
     - rid: 3046478613006778475
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -387,17 +411,17 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: 'Well, you''re the first and only person to come into this
-          room, and the door to "the place" is still closed, so nothing''s gone wrong
-          so far.
+          room, and the door to "the place" is still locked (despite people''s multiple
+          attempts to get in), so nothing''s gone wrong so far.
 
-          Though, of course, I didn''t account on you being a
-          part of this so, please don''t get in the way.
+          Though,
+          of course, I didn''t account on you being a part of this so, please don''t
+          get in the way.
 
-          This is a very
-          serious business for me, alright?'
+          This is a very serious business for me, alright?'
         characterEmotion: 1
         characterReaction: 6
-        doesItProveAnything: 0
+        doesItProveAnything: 8
         isKey: 0
         responses:
         - rid: 3046478613006778477
@@ -419,17 +443,17 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3130, y: -573.1084}
+        editorPosition: {x: 3346, y: -573}
     - rid: 3046478613006778478
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[Sorry. (What could be so dangerous?)]'
+        responseText: '[Sorry, I just... might have... missed some details.]'
         nextNode:
-          rid: -2
+          rid: 3046479065253413173
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3267.6782, y: 29.320002}
+        editorPosition: {x: 3234.0005, y: 28.999996}
     - rid: 3046478613006778479
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -439,19 +463,20 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3000, y: -288.1084}
+        editorPosition: {x: 3436, y: -284}
     - rid: 3046478613006778480
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: 'Then do me a favour and remind him that I said MANY TIMES
-          that I would be the one taking care of that.
+          that I would be the one taking care of that: I''m not going to let anyone
+          open that <b>door</b> before the moment comes, not even him.
 
-          And make sure that
-          he keeps in mind that he''s in debt with me, and that he''s still <b>alive</b>
-          for a reason.'
+          And
+          make sure that he keeps in mind that he''s in debt with me, and that he''s
+          still <b>alive</b> for a reason.'
         characterEmotion: 3
         characterReaction: 2
-        doesItProveAnything: 0
+        doesItProveAnything: 8
         isKey: 0
         responses:
         - rid: 3046478613006778479
@@ -468,7 +493,7 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: '...Please tell me you''re joking. There must have been a good
-          reason for Oleg to let you in, and clearly your intelligence is not it.
+          reason for Oleg to let you in, and evidently your intelligence is not it.
 
           Look,
           just... stay out of this, alright? Clearly you''re not very well prepared,
@@ -839,3 +864,40 @@ MonoBehaviour:
             Part3: 2302744214
             Part4: 3982707328
           tag: 
+    - rid: 3046479065253413173
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Which is why you should stay away. We can''t afford to have
+          people going around asking questions like that.
+
+          Need I remind
+          you that the whole reason why this works is the fact that <b>he</b> doesn''t
+          know?
+
+          I''m not going to risk it... I don''t want to keep working
+          for them. This is my way out, so please, step aside.'
+        characterEmotion: 1
+        characterReaction: 2
+        doesItProveAnything: 4
+        isKey: 0
+        responses:
+        - rid: 3046479065253413174
+        isRootNode: 0
+        editorPosition: {x: 3684.2007, y: 29.00001}
+        altDialoguePaths: []
+        guid:
+          Part1: 1053840211
+          Part2: 1083319245
+          Part3: 2245772943
+          Part4: 1085929645
+        tag: 
+    - rid: 3046479065253413174
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[If you say so. (What''s he up to...?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4458.7773, y: 29.000002}
