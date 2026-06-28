@@ -113,7 +113,7 @@ public class FlashbackManager : MonoBehaviour
             item.SetActive(false);
         }
 
-        if (!_currentItem.flashbackInfo.characterPrefab) return;
+        if (!_currentItem?.flashbackInfo!?.characterPrefab) return;
 
          Destroy(_flashbackObject?.gameObject);
         _flashbackObject = null;

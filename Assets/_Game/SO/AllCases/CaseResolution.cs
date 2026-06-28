@@ -13,7 +13,6 @@ public class CaseResolution : ScriptableObject  // Recipe
 {
     
     
-    
     public List<CaseSlotIdentity> allSlots = new();
     
     public List<CaseAnswer> validAnswers = new();
@@ -85,12 +84,14 @@ public class CaseAnswer
     
     [ShowInInspector, DictionaryDrawerSettings(KeyLabel = "Role", ValueLabel = "Clues"), PropertySpace(10,15)] 
     public SerializedDictionary<Whodunnit, SerializedList<IClue>> Answer;
+    [TextArea(5, 10)]
+    [Header("Victory Conclusion Text")]
+    public string ConclusionText;
     
     [ShowInInspector]
     [DictionaryDrawerSettings(KeyLabel = "ID (Asset)", ValueLabel = "Case Slot", IsReadOnly = true)]
     [PropertySpace(10, 15)]
     public SerializedDictionary<CaseSlotIdentity, CaseSlot> AnswerRequirements = new();
-    
     
     
 }

@@ -486,6 +486,28 @@ MonoBehaviour:
       Part3: 4036692107
       Part4: 387059162
     tag: 
+  - dialogueText: '...Do you think that narrows it down at all? I haven''t left my
+      room ever since I arrived, so I don''t know where people are. much less <b>who</b>
+      they are.
+
+      It seems very risky of you to just knock on random doors not
+      knowing who lies beyond them, though. I''d advise you stop doing that... if
+      you know what''s good for you...'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 3046479087689794322
+    isRootNode: 0
+    editorPosition: {x: 3738.551, y: 237.00005}
+    altDialoguePaths: []
+    guid:
+      Part1: 3534139460
+      Part2: 1306155382
+      Part3: 3363211425
+      Part4: 1335082549
+    tag: 
   hiddenProof: 
   references:
     version: 2
@@ -525,13 +547,13 @@ MonoBehaviour:
     - rid: 3046478613006778443
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[Some people here told me about you...]'
+        responseText: '[Some people here seem to know you...]'
         nextNode:
           rid: 3046478613006778460
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 2094, y: 132.00002}
+        editorPosition: {x: 2105, y: 108}
     - rid: 3046478613006778444
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -584,7 +606,7 @@ MonoBehaviour:
         - rid: 3046478613006778444
         - rid: 3046478613006778462
         isRootNode: 0
-        editorPosition: {x: 2306, y: -352}
+        editorPosition: {x: 2359.2307, y: -329.61264}
         altDialoguePaths: []
         guid:
           Part1: 3751126033
@@ -705,8 +727,9 @@ MonoBehaviour:
         isKey: 0
         responses:
         - rid: 3046478613006778466
+        - rid: 3046479087689794296
         isRootNode: 0
-        editorPosition: {x: 2545.965, y: 28.999985}
+        editorPosition: {x: 2539.2903, y: 113.000015}
         altDialoguePaths: []
         guid:
           Part1: 4061733524
@@ -794,7 +817,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 3421, y: 88}
+        editorPosition: {x: 3332.5503, y: -4.9500294}
     - rid: 3046479065253412997
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -864,6 +887,86 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 2997, y: 416}
+    - rid: 3046479087689794296
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[I meant the person behind that door...]'
+        nextNode:
+          rid: 3046479087689794297
+        dialogueTopic: 
+        m_conditions:
+        - rid: 3046479087689794298
+        alreadyDisplayed: 0
+        editorPosition: {x: 3313.45, y: 205.75}
+    - rid: 3046479087689794297
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...Do you think that narrows it down at all? I haven''t left
+          my room ever since I arrived, so I don''t know where people are. much less
+          <b>who</b> they are.
+
+          It seems very risky of you to just knock
+          on random doors not knowing who lies beyond them, though. I''d advise you
+          stop doing that... <b>if you know what''s good for you</b>...'
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 3046479087689794322
+        isRootNode: 0
+        editorPosition: {x: 3738.551, y: 237.00005}
+        altDialoguePaths: []
+        guid:
+          Part1: 3534139460
+          Part2: 1306155382
+          Part3: 3363211425
+          Part4: 1335082549
+        tag: 
+    - rid: 3046479087689794298
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: 0d07ea88ab31fd842b6b518027a0ab1f, type: 2}
+        isTalkDialogueNode:
+          dialogueText: ...Then, you <b>know</b> what you have to say. Read it again,
+            if you forgot how it goes.
+          characterEmotion: 0
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 3046479087689794316
+          isRootNode: 0
+          editorPosition: {x: 1821, y: 381}
+          altDialoguePaths: []
+          guid:
+            Part1: 3763426124
+            Part2: 1328708435
+            Part3: 2315018905
+            Part4: 3399587406
+          tag: 
+    - rid: 3046479087689794316
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Right, of course! (What should I <b>read</b>...?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2466, y: 381}
+    - rid: 3046479087689794322
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(He <b>did</b> know about you, though...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4829.96, y: 237}
     - rid: 8019692228150297553
       type: {class: ItemNodeCondition, ns: , asm: Assembly-CSharp}
       data:

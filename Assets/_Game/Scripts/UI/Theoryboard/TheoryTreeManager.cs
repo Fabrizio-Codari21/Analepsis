@@ -133,7 +133,7 @@ public class TheoryTreeManager : MonoBehaviour, IActivity
             : $"Solved with alternative answer: {answerName}");
 
         await this.AsyncLoader("WinScene");
-        WinManager.Instance.SetConclusion(answerID);
+        // WinManager.Instance.SetConclusion(answerID);
     }
     public async UniTask FailCase()
     {
