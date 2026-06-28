@@ -72,21 +72,8 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     {
         m_evidenceEvent.OnEventRaised += MarkOrRemove;
         m_checkEvidence.OnRequest += Check;
-        m_confirmButton.onClick.AddListener(() =>
-        {
-            if (_currentEvidenceOnEdit != null)
-            {
-                string defaultName = !string.IsNullOrEmpty(_cachedRandomTip) ? _cachedRandomTip : _currentEvidenceOnEdit.displayName;
-                string newName = string.IsNullOrWhiteSpace(m_inputField.text) ? defaultName : m_inputField.text;
-                RenameEvidence(_currentEvidenceOnEdit.guid, newName);
-            }
-            FoldPanel().Forget();
-        });
-        m_cancelButton.onClick.AddListener(() =>
-        {
-            FoldPanel().Forget();
-            _currentEvidenceOnEdit = null;
-        });
+        m_confirmButton.onClick.AddListener(Confirm);
+        m_cancelButton.onClick.AddListener(Cancel);
         
         m_background.SetActive(false);
     }
@@ -98,6 +85,23 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
         
         m_confirmButton.onClick.RemoveAllListeners();
         m_cancelButton.onClick.RemoveAllListeners();
+    }
+
+    private void Confirm()
+    {
+        if (_currentEvidenceOnEdit != null)
+        {
+            string defaultName = !string.IsNullOrEmpty(_cachedRandomTip) ? _cachedRandomTip : _currentEvidenceOnEdit.displayName;
+            string newName = string.IsNullOrWhiteSpace(m_inputField.text) ? defaultName : m_inputField.text;
+            RenameEvidence(_currentEvidenceOnEdit.guid, newName);
+        }
+        FoldPanel().Forget();
+    }
+
+    private void Cancel()
+    {
+        FoldPanel().Forget();
+        _currentEvidenceOnEdit = null;
     }
 
     private bool Check(SerializableGuid guid) => _possibleEvidenceMarked.Contains(guid);
@@ -199,10 +203,20 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     public void Resume()
     {
         enableCursor.Raise(true);
+        m_inputReader.SetEnable(true);
+        m_inputReader.Confirm += Confirm;
+        m_inputReader.Cancel += Cancel;
     }
-    public void Pause() {  enableCursor.Raise(false);}
-    public void Stop() { }
 
+    public void Pause()
+    {
+        enableCursor.Raise(false);
+        m_inputReader.SetEnable(false);
+        m_inputReader.Confirm -= Confirm;
+        m_inputReader.Cancel -= Cancel;
+    }
+    public void Stop() { }
+    
     public bool CanPopWithKey()
     {
         return false;

@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class GlobalInputReader : InputReader, InputActions.IGlobalActions
 {
     public event Action EscapePressed = delegate { };
+    
     protected override void RemoveCallback(InputActions inputAction)
     {
         inputAction?.Global.RemoveCallbacks(this);
@@ -21,7 +22,12 @@ public class GlobalInputReader : InputReader, InputActions.IGlobalActions
         Debug.Log("Escape pressed");
         EscapePressed?.Invoke();
     }
-    
+
+    public void OnCancel(InputAction.CallbackContext context)
+    {
+      
+    }
+
     protected override void SetCallback(InputActions inputAction)
     {
         inputAction?.Global.SetCallbacks(this);

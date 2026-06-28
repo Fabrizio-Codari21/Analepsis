@@ -7,6 +7,7 @@ public class MarkingInputReader : InputReader ,InputActions.IMarkPanelActions
 {
     
     public event Action Confirm = delegate { };
+    public event Action Cancel = delegate { };
     protected override void RemoveCallback(InputActions inputAction)
     {
         inputAction?.MarkPanel.SetCallbacks(this);
@@ -26,5 +27,10 @@ public class MarkingInputReader : InputReader ,InputActions.IMarkPanelActions
     public void OnConfirm(InputAction.CallbackContext context)
     {
         if(context.started) Confirm?.Invoke();
+    }
+
+    public void OnCancel(InputAction.CallbackContext context)
+    {
+        if(context.started) Cancel?.Invoke();
     }
 }
