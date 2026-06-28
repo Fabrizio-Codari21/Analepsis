@@ -11,6 +11,7 @@ public class CursorManager : Singleton<CursorManager>
     [SerializeField] private CursorTexture m_cursorTextureDefault;
     [SerializeField] private EventChannel m_resetCursorChannel;
 
+    [SerializeField] private bool m_visibleOnStart = true;
     private CursorTexture _currentCursorTexture;
     private Sequence _sequence = default;
     
@@ -21,7 +22,7 @@ public class CursorManager : Singleton<CursorManager>
     {
         m_cursorEnableChannel.OnEventRaised += CursorEnable;
         ChangeCursorAsset(m_cursorTextureDefault);
-        CursorEnable(false);
+        CursorEnable(m_visibleOnStart);
         m_cursorEventChannel.OnEventRaised += ChangeCursorAsset;
         m_resetCursorChannel.OnEventRaised += ResetCursor;
     }

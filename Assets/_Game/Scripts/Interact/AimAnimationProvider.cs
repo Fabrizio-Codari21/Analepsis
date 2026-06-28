@@ -11,7 +11,7 @@ public class AimAnimationProvider : MonoBehaviour
 
     private void Start()
     {
-        _focus = GetComponent<IFocus>();
+        _focus = GetComponentInParent<IFocus>();
         _focus.OnFocus += Focus;
         _focus.OnUnfocus += ResetAim;
     }

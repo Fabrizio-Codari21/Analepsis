@@ -74,6 +74,7 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
         newButton.transform.SetParent(m_receiveTransform,false);
         _buttonMap.Add(data.guid, newButton);
 
+        
         return true;
     }
 
