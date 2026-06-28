@@ -546,6 +546,25 @@ MonoBehaviour:
       Part3: 1804454273
       Part4: 2257800816
     tag: 
+  - dialogueText: 'That, and I heard a camera shutter go off nearby not too long
+      ago.
+
+      But my "artistic sense" saw that coming from a mile away, of course.'
+    characterEmotion: 1
+    characterReaction: 7
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 3046479087689794324
+    isRootNode: 0
+    editorPosition: {x: 6819.9985, y: 5.0000534}
+    altDialoguePaths: []
+    guid:
+      Part1: 3870396283
+      Part2: 1083093114
+      Part3: 1876129982
+      Part4: 2572962023
+    tag: 
   hiddenProof: 
   references:
     version: 2
@@ -613,13 +632,11 @@ MonoBehaviour:
     - rid: 767062219271962628
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
-        dialogueText: 'Well now that you mention it...
+        dialogueText: 'Well, now that you mention it... I can''t put my finger on
+          anything, really, buuuut... I do have the feeling that someone is following
+          me!
 
-          I haven''t noticed
-          anything!
-
-          But I do have the feeling that someone is following
-          me, probably one of my crazy fans.'
+          Probably one of my crazy fans, if I had to guess.'
         characterEmotion: 1
         characterReaction: 2
         doesItProveAnything: 0
@@ -644,7 +661,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 4929.624, y: 14.446425}
+        editorPosition: {x: 5166.1025, y: 13.999999}
     - rid: 3046478928603512907
       type: {class: AltDialoguePath, ns: , asm: Assembly-CSharp}
       data:
@@ -711,13 +728,13 @@ MonoBehaviour:
     - rid: 3046478928603512908
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[(In other words... you don''t know. Great.)]'
+        responseText: '[Uh-huh... so...?]'
         nextNode:
-          rid: -2
+          rid: 3046479087689794323
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 6354.6245, y: 14.446425}
+        editorPosition: {x: 6531.9985, y: 5.0000534}
     - rid: 3046478928603512909
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -737,7 +754,7 @@ MonoBehaviour:
         responses:
         - rid: 3046478928603512908
         isRootNode: 0
-        editorPosition: {x: 5214.624, y: 14.446425}
+        editorPosition: {x: 5445.1025, y: 13.999999}
         altDialoguePaths: []
         guid:
           Part1: 4270014954
@@ -826,6 +843,39 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 5057, y: 487}
+    - rid: 3046479087689794323
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'That, and I heard a camera shutter go off nearby not too long
+          ago.
+
+          But my "artistic sense" saw that coming from a mile away,
+          of course.'
+        characterEmotion: 1
+        characterReaction: 7
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 3046479087689794324
+        isRootNode: 0
+        editorPosition: {x: 6819.9985, y: 5.0000534}
+        altDialoguePaths: []
+        guid:
+          Part1: 3870396283
+          Part2: 1083093114
+          Part3: 1876129982
+          Part4: 2572962023
+        tag: 
+    - rid: 3046479087689794324
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Of course. (You should have started there...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 7375.9985, y: 14.000029}
     - rid: 6774952781063389271
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
