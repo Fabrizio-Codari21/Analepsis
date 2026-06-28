@@ -91,7 +91,7 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     {
         if (_currentEvidenceOnEdit != null)
         {
-            string defaultName = !string.IsNullOrEmpty(_cachedRandomTip) ? _cachedRandomTip : _currentEvidenceOnEdit.displayName;
+            string defaultName = _currentEvidenceOnEdit.displayName;
             string newName = string.IsNullOrWhiteSpace(m_inputField.text) ? defaultName : m_inputField.text;
             RenameEvidence(_currentEvidenceOnEdit.guid, newName);
         }
