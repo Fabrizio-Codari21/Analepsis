@@ -37,8 +37,8 @@ public class TreePage : NotebookPage
 
     [Header("Lock Image")]
     [SerializeField] private Color m_lockColor = new (0.4f, 0, 0.1f, 0.1f);
-    [SerializeField] private Image m_lockImage;      // 圆角长方形 (Lock)
-    [SerializeField] private Image m_unknowImage;    // 三角形 (Unknown)
+    [SerializeField] private Image m_lockImage;      
+    [SerializeField] private Image m_unknowImage; 
 
     [Header("Visual State Configs (Unchosen/Gray)")]
     [SerializeField, Tooltip("Alpha transparency for unchosen paths")] 
@@ -55,6 +55,7 @@ public class TreePage : NotebookPage
     [Header("Hover Component")]
     [SerializeField] private UIHoverDetector m_hoverDetector;
 
+    [SerializeField] private ScrollRect m_scrollRect;
     [SerializeField] private Vector3 centerPosition;
     [SerializeField] private float centerScale = 1.0f;
 
@@ -67,7 +68,6 @@ public class TreePage : NotebookPage
     private float _currentScale = 1f;
     private float _targetScale = 1f;
 
-    // 🌟 核心扩展：辅助追踪哪些节点紧跟在 Unchosen 下面，应该渲染为三角形问号
     private readonly HashSet<TreeNode> _unknownTriangleNodes = new();
 
     private void Awake()
@@ -81,8 +81,13 @@ public class TreePage : NotebookPage
     {
         if (m_hoverDetector == null || !m_hoverDetector.IsMouseHovering) return;
 
+        
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            ResetScrollAndScale();
+            return;
+        }
         HandleZoomToMouse();
-        Focus();
     }
     
     private void HandleZoomToMouse()
@@ -121,8 +126,10 @@ public class TreePage : NotebookPage
     private void ResetScrollAndScale()
     {
         if (m_treeRoot == null) return;
+        
+        m_scrollRect.StopMovement();
+        m_scrollRect.velocity = Vector3.zero;
         m_treeRoot.localPosition = new Vector3(centerPosition.x, centerPosition.y, 0f);
-
         _targetScale = centerScale;
         _currentScale = centerScale;
         m_treeRoot.localScale = new Vector3(centerScale, centerScale, 1f);
