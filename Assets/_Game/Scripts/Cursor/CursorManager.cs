@@ -14,6 +14,7 @@ public class CursorManager : Singleton<CursorManager>
     [SerializeField] private bool m_visibleOnStart = true;
     private CustomCursor _currentCustomCursor;
     private Sequence _sequence = default;
+    bool _clicked = false;
     
     private enum CursorState { Up, TransitionToDown, Down, TransitionToUp }
     private CursorState _currentState = CursorState.Up;
@@ -46,12 +47,13 @@ public class CursorManager : Singleton<CursorManager>
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             PlayTransitionState(toRelease: false);
-            AudioManager.Instance.SelectSfx(SFXType.Player, _currentCustomCursor.clickSound);
+            AudioManager.Instance.SelectSfx(SFXType.Player, _clicked ? _currentCustomCursor.clickSound : _currentCustomCursor.upSound);
+            _clicked = !_clicked;
         }
         else if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             PlayTransitionState(toRelease: true);
-            AudioManager.Instance.SelectSfx(SFXType.Player, _currentCustomCursor.upSound);
+            //AudioManager.Instance.SelectSfx(SFXType.Player, _currentCustomCursor.upSound);
         }
     }
 
