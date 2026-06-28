@@ -1,8 +1,6 @@
 using Cysharp.Threading.Tasks;
-using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,63 +12,132 @@ public class ActionTimerView : MonoBehaviour
     [SerializeField] private Image mainUI;
     [SerializeField] private Image shadeUI;
     [SerializeField] private float timeToFadeUI, timeToShowUI;
-    
+    [SerializeField] private BoolEventChannel m_showTimer; 
     private ActionTimer _actionTimer;
+    private CancellationTokenSource _fadeCts;
+    private bool _isForceShowing = false; 
 
     private void Awake()
     {
         _actionTimer = GetComponentInParent<ActionTimer>();
-        shadeUI.color -= new Color(0, 0, 0, shadeUI.color.a);
-        mainUI.color -= new Color(0, 0, 0, mainUI.color.a);
-        m_text.color -= new Color(0, 0, 0, m_text.color.a);
+        
+        
+        SetAlpha(0f);
         UIParent.position -= new Vector3(0, UIManager.Instance.AspectRatioOffset(), 0);
 
         ShowCostLeft(_actionTimer.m_maxActionsLevel);
     }
 
-    private void Start()
-    {
-        
-    }
-
     private void OnEnable()
     {
         _actionTimer.OnActionChanged += ShowCostLeft;
+        
+        if (m_showTimer != null)
+        {
+            m_showTimer.OnEventRaised += OnForceShowChanged;
+        }
     }
 
     private void OnDisable()
     {
         _actionTimer.OnActionChanged -= ShowCostLeft;
+        
+        if (m_showTimer != null)
+        {
+            m_showTimer.OnEventRaised -= OnForceShowChanged;
+        }
+        CancelActiveFade();
     }
-
 
     private void ShowCostLeft(int left)
     {
+        
         m_text.text = left.ToString();
-        UIElement.CalculateWidthAndHeight(m_text,m_text.rectTransform);
-        _ = DisplayUI();
+        UIElement.CalculateWidthAndHeight(m_text, m_text.rectTransform);
+
+
+        if (_isForceShowing) return;
+        CancelActiveFade();
+        _fadeCts = new CancellationTokenSource();
+        _ = DisplayUI(_fadeCts.Token);
     }
 
-    public async UniTask DisplayUI()
+    private void OnForceShowChanged(bool show)
     {
+        _isForceShowing = show;
+        CancelActiveFade();
+        _fadeCts = new CancellationTokenSource();
 
-        while(mainUI.color.a < 1)
+        _ = show ? FadeIn(_fadeCts.Token) : FadeOut(_fadeCts.Token); 
+    }
+
+
+    public async UniTask FadeIn(CancellationToken token)
+    {
+        while (mainUI.color.a < 1f)
         {
-            mainUI.color += new Color(0, 0, 0, 0.04f * timeToFadeUI/5);
-            m_text.color += new Color(0, 0, 0, 0.04f * timeToFadeUI/5);
-            shadeUI.color += new Color(0, 0, 0, 0.02f * timeToFadeUI/5);
-            await UniTask.Delay(20);
+            if (token.IsCancellationRequested) return;
+
+            float step = 0.04f * (timeToFadeUI > 0 ? timeToFadeUI : 1f) / 5f;
+            SetAlpha(Mathf.Min(1f, mainUI.color.a + step));
+            
+            await UniTask.Delay(20, cancellationToken: token).SuppressCancellationThrow();
+        }
+    }
+    
+    private async UniTask FadeOut(CancellationToken token)
+    {
+        while (mainUI.color.a > 0f)
+        {
+            if (token.IsCancellationRequested) return;
+
+            float step = 0.03f * (timeToFadeUI > 0 ? timeToFadeUI : 1f) / 5f;
+            SetAlpha(Mathf.Max(0f, mainUI.color.a - step));
+
+            await UniTask.Delay(20, cancellationToken: token).SuppressCancellationThrow();
+        }
+    }
+
+   
+    private async UniTask DisplayUI(CancellationToken token)
+    {
+        // 淡入
+        while (mainUI.color.a < 1f)
+        {
+            if (token.IsCancellationRequested) return;
+            float step = 0.04f * timeToFadeUI / 5f;
+            SetAlpha(Mathf.Min(1f, mainUI.color.a + step));
+            await UniTask.Delay(20, cancellationToken: token).SuppressCancellationThrow();
         }
 
-        await UniTask.Delay((int)(1000*timeToShowUI));
+        // 停留
+        bool canceled = await UniTask.Delay((int)(1000 * timeToShowUI), cancellationToken: token).SuppressCancellationThrow();
+        if (canceled || token.IsCancellationRequested) return;
 
-        while (mainUI.color.a > 0)
+        // 淡出
+        while (mainUI.color.a > 0f)
         {
-            mainUI.color -= new Color(0, 0, 0, 0.03f * timeToFadeUI / 5);
-            m_text.color -= new Color(0, 0, 0, 0.03f * timeToFadeUI / 5);
-            shadeUI.color -= new Color(0, 0, 0, 0.015f * timeToFadeUI / 5);
-            await UniTask.Delay(20);
+            if (token.IsCancellationRequested) return;
+            float step = 0.03f * timeToFadeUI / 5f;
+            SetAlpha(Mathf.Max(0f, mainUI.color.a - step));
+            await UniTask.Delay(20, cancellationToken: token).SuppressCancellationThrow();
         }
+    }
+    
+    private void SetAlpha(float alpha)
+    {
+        mainUI.color = new Color(mainUI.color.r, mainUI.color.g, mainUI.color.b, alpha);
+        m_text.color = new Color(m_text.color.r, m_text.color.g, m_text.color.b, alpha);
+        shadeUI.color = new Color(shadeUI.color.r, shadeUI.color.g, shadeUI.color.b, alpha * 0.5f); // 保持阴影是主UI一半的比例
+    }
 
+    private void CancelActiveFade()
+    {
+        if (_fadeCts != null)
+        {
+            _fadeCts.Cancel();
+            _fadeCts.Dispose();
+            _fadeCts = null;
+        }
     }
 }

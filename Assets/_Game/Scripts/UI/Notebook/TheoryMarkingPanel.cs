@@ -127,16 +127,17 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     private async UniTask UnfoldPanel()
     {
         if (m_panel == null) return;
-        
+    
         m_pushEvent.Raise(this);
-        
+    
         SetRandomTipForCurrentEvidence();
         m_background.SetActive(true);
         Tween.StopAll(m_panel.gameObject.transform);
-        var seq = Sequence.Create();
        
         m_panel.gameObject.transform.localScale = new Vector3(0, 1, 1);
-        await seq.Group(Tween.ScaleX(m_panel.gameObject.transform, 1f, 0.3f, Ease.OutBack));
+        
+        var seq = Sequence.Create().Group(Tween.ScaleX(m_panel.gameObject.transform, 1f, 0.3f, Ease.OutBack));
+        
         await seq;
     }
 
@@ -171,13 +172,13 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     {
         if (m_panel == null) return;
         m_popEvent.Raise();
+        
         Tween.StopAll(m_panel.gameObject.transform);
-
-        var seq = Sequence.Create();
-        await seq.Group(Tween.ScaleX(m_panel.gameObject.transform, 0f, 0.2f, Ease.InQuad));
         
-        await seq;
+        var seq = Sequence.Create().Group(Tween.ScaleX(m_panel.gameObject.transform, 0f, 0.2f, Ease.InQuad));
         
+        await seq; 
+    
         m_inputField.text = string.Empty;
         _cachedRandomTip = string.Empty;
         m_background.SetActive(false);
@@ -215,7 +216,11 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
         m_inputReader.Confirm -= Confirm;
         m_inputReader.Cancel -= Cancel;
     }
-    public void Stop() { }
+
+    public void Stop()
+    {
+        Pause();
+    }
     
     public bool CanPopWithKey()
     {
