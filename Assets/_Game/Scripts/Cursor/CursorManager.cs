@@ -8,11 +8,11 @@ public class CursorManager : Singleton<CursorManager>
     [Header("Event")]
     [InfoBox("Change Cursor")]
     [SerializeField] private CursorEvent m_cursorEventChannel; 
-    [SerializeField] private CursorTexture m_cursorTextureDefault;
+    [SerializeField] private CustomCursor customCursorDefault;
     [SerializeField] private EventChannel m_resetCursorChannel;
 
     [SerializeField] private bool m_visibleOnStart = true;
-    private CursorTexture _currentCursorTexture;
+    private CustomCursor _currentCustomCursor;
     private Sequence _sequence = default;
     
     private enum CursorState { Up, TransitionToDown, Down, TransitionToUp }
@@ -21,14 +21,14 @@ public class CursorManager : Singleton<CursorManager>
     private void Start()
     {
         m_cursorEnableChannel.OnEventRaised += CursorEnable;
-        ChangeCursorAsset(m_cursorTextureDefault);
+        ChangeCursorAsset(customCursorDefault);
         CursorEnable(m_visibleOnStart);
         m_cursorEventChannel.OnEventRaised += ChangeCursorAsset;
         m_resetCursorChannel.OnEventRaised += ResetCursor;
     }
 
     
-    private void ResetCursor() => ChangeCursorAsset(m_cursorTextureDefault);
+    private void ResetCursor() => ChangeCursorAsset(customCursorDefault);
    
 
     private void OnDestroy()
@@ -46,11 +46,12 @@ public class CursorManager : Singleton<CursorManager>
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             PlayTransitionState(toRelease: false);
+            AudioManager.Instance.SelectSfx(SFXType.Player, _currentCustomCursor.clickSound);
         }
-     
         else if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             PlayTransitionState(toRelease: true);
+            AudioManager.Instance.SelectSfx(SFXType.Player, _currentCustomCursor.upSound);
         }
     }
 
@@ -62,20 +63,20 @@ public class CursorManager : Singleton<CursorManager>
         Cursor.visible = enable;
     }
     
-    private void ChangeCursorAsset(CursorTexture newAsset)
+    private void ChangeCursorAsset(CustomCursor newAsset)
     {
         if (newAsset == null) return;
-        _currentCursorTexture = newAsset;
+        _currentCustomCursor = newAsset;
         PlayLoopState(CursorState.Up, forceReplay: true);
     }
 
  
     private void PlayTransitionState(bool toRelease)
     {
-        if (_currentCursorTexture == null) return;
+        if (_currentCustomCursor == null) return;
         if (_sequence.isAlive) _sequence.Stop();
         
-        Texture2D[] transitionSheets = toRelease ? _currentCursorTexture.transitionToUp : _currentCursorTexture.transitionToDown;
+        Texture2D[] transitionSheets = toRelease ? _currentCustomCursor.transitionToUp : _currentCustomCursor.transitionToDown;
         
         if (transitionSheets == null || transitionSheets.Length == 0)
         {
@@ -86,12 +87,12 @@ public class CursorManager : Singleton<CursorManager>
         _currentState = toRelease ? CursorState.TransitionToUp : CursorState.TransitionToDown;
         
         _sequence = Sequence.Create(cycles: 1);
-        float frameTime = 1f / _currentCursorTexture.frameRate;
+        float frameTime = 1f / _currentCustomCursor.frameRate;
 
         foreach (var tex in transitionSheets)
         {
             var currentTex = tex; 
-            var hotSpot = _currentCursorTexture.m_skewedVector;
+            var hotSpot = _currentCustomCursor.m_skewedVector;
 
             _sequence.ChainCallback(() => { Cursor.SetCursor(currentTex, hotSpot, CursorMode.ForceSoftware); });
             _sequence.ChainDelay(frameTime);
@@ -111,27 +112,27 @@ public class CursorManager : Singleton<CursorManager>
         _currentState = state;
 
         if (_sequence.isAlive) _sequence.Stop();
-        if (_currentCursorTexture == null) return;
-        Texture2D[] targetSheets = (state == CursorState.Up) ? _currentCursorTexture.animationSheetsUp : _currentCursorTexture.animationSheetsDown;
+        if (_currentCustomCursor == null) return;
+        Texture2D[] targetSheets = (state == CursorState.Up) ? _currentCustomCursor.animationSheetsUp : _currentCustomCursor.animationSheetsDown;
         
       
-        if (targetSheets == null || targetSheets.Length == 0) targetSheets = _currentCursorTexture.animationSheetsUp;
+        if (targetSheets == null || targetSheets.Length == 0) targetSheets = _currentCustomCursor.animationSheetsUp;
         if (targetSheets == null || targetSheets.Length == 0) return;
 
    
         if (targetSheets.Length == 1)
         {
-            Cursor.SetCursor(targetSheets[0], _currentCursorTexture.m_skewedVector, CursorMode.ForceSoftware);
+            Cursor.SetCursor(targetSheets[0], _currentCustomCursor.m_skewedVector, CursorMode.ForceSoftware);
             return;
         }
         
         _sequence = Sequence.Create(cycles: -1);
-        float frameTime = 1f / _currentCursorTexture.frameRate;
+        float frameTime = 1f / _currentCustomCursor.frameRate;
 
         foreach (var tex in targetSheets)
         {
             var currentTex = tex; 
-            var hotSpot = _currentCursorTexture.m_skewedVector;
+            var hotSpot = _currentCustomCursor.m_skewedVector;
 
             _sequence.ChainCallback(() => { Cursor.SetCursor(currentTex, hotSpot, CursorMode.ForceSoftware); });
             _sequence.ChainDelay(frameTime);

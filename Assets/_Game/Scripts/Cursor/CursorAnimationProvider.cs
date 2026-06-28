@@ -6,7 +6,7 @@ public class CursorAnimationProvider : MonoBehaviour
 
     [SerializeField] private EventChannel m_resetCursor;
     [SerializeField] private CursorEvent m_animationEvent;
-    [SerializeField] private CursorTexture m_animation2D;
+    [SerializeField] private CustomCursor m_animation2D;
     private void Awake()
     {
         _activity = GetComponentInParent<IActivity>();
