@@ -25,6 +25,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private NoteEvent note; // record 
     [SerializeField] private BoolEventChannel m_updatePoi;
     [SerializeField] private EventChannel m_refreshTree;
+    [SerializeField] private BoolEventChannel m_showAction;
     #endregion
     
     #region General
@@ -157,6 +158,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         pushEvent.Raise(this);
         AudioManager.Instance.SelectSfx(SFXType.Player, "Open");
         takeOutNotebookChannel.Raise(representer);
+        m_showAction?.Raise(true);
         ShowLayout(0);
         
     }
@@ -164,7 +166,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private void Close()
     {
         popEvent.Raise();
-
+        m_showAction?.Raise(false);
         AudioManager.Instance.SelectSfx(SFXType.Player, "Close");
         putInNotebookChannel.Raise(representer);
  

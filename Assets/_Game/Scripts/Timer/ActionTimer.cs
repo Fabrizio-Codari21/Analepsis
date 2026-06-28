@@ -8,11 +8,11 @@ public class ActionTimer : MonoBehaviour
     [ShowInInspector,ReadOnly] public int actionsLeft;
     public int m_maxActionsLevel;
     [SerializeField] private CheckIntAmount m_consumeAction;
-    
     [SerializeField] private CheckIntAmount m_checkActionAmount;
     [SerializeField] public ActionTimerView m_view;
     public event Action OnActionFinish;
     public event Action<int> OnActionChanged;
+    
 
     private void Awake()
     {
