@@ -52,6 +52,11 @@ public class FlashbackManager : MonoBehaviour
         itemEvent.OnEventRaised -= SetCurrentItem;
     }
 
+    private void OnDestroy()
+    {
+        ForceResetFlashbackState();
+    }
+
     private async void OnFlashback(bool enable)
     {
         try
@@ -110,7 +115,7 @@ public class FlashbackManager : MonoBehaviour
 
         if (!_currentItem.flashbackInfo.characterPrefab) return;
 
-        Destroy(_flashbackObject.gameObject);
+         Destroy(_flashbackObject?.gameObject);
         _flashbackObject = null;
         _currentItem = null;
     }
@@ -127,6 +132,23 @@ public class FlashbackManager : MonoBehaviour
             .State(FlashbackState.Inactive, inactive)
             .State(FlashbackState.Active, active)
             .Build(FlashbackState.Inactive);
+    }
+    
+    private void ForceResetFlashbackState()
+    {
+       
+        if (m_ctx != null && m_ctx.flashbackMaterial != null)
+        {
+            m_ctx.flashbackMaterial.SetFloat("_Control", 0f);
+        }
+
+        
+        if (m_ctx != null && m_ctx.flashbackInputReader != null)
+        {
+            m_ctx.flashbackInputReader.SetEnable(false);
+        }
+
+        Despawn();
     }
  
 }
