@@ -173,6 +173,7 @@ MonoBehaviour:
     targetValue: 0.879
     lerpDuration: 0.2
     enableFlashback: {fileID: 11400000, guid: e865ba2e8caa6484ca4ebd26200eb8f2, type: 2}
+    flashbackState: 0
   enableFlashback: {fileID: 11400000, guid: e865ba2e8caa6484ca4ebd26200eb8f2, type: 2}
   m_GoInFlashback:
   - {fileID: 870658330}
@@ -180,6 +181,7 @@ MonoBehaviour:
   displaySetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
   itemEvent: {fileID: 11400000, guid: 07624e21598f3584c8e21fc9ae8ce6e2, type: 2}
   note: {fileID: 11400000, guid: 1b1d8c85c67ad1044a318c65776e259a, type: 2}
+  m_flashBackState: {fileID: 0}
 --- !u!1001 &20743631
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20232,9 +20234,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.3
   far clip plane: 5000
-  field of view: 60.000004
+  field of view: 60
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -20260,8 +20262,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1295341735}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.00058469904, w: 0.9999998}
-  m_LocalPosition: {x: -1, y: 3.4, z: 1}
+  m_LocalRotation: {x: 0, y: 0.5776561, z: 0, w: 0.81628025}
+  m_LocalPosition: {x: -8.98, y: 2, z: 3.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

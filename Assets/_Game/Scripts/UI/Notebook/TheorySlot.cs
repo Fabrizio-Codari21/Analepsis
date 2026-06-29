@@ -22,11 +22,29 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
     
     public bool Check(CaseSlot slotRule) // Solution Check
     {
-        if (slotRule == null) return false;
-        if (_currentEvidenceHolder == null) return false;
-        if (!_currentEvidenceHolder.whodunnits.HasFlag(m_identity.ProofTypeNeed)) { return false; }
+        if (slotRule == null)
+        {
+            Debug.Log(slotRule.Identity.Description);
+            return false;
+        }
+
+        if (_currentEvidenceHolder == null)
+        {
+            Debug.Log("2");
+            Debug.Log(slotRule.Identity.Description);
+            return false;
+        }
+        if (!_currentEvidenceHolder.whodunnits.HasFlag(m_identity.ProofTypeNeed)) {
+        {
+            Debug.Log("3");
+            Debug.Log(slotRule.Identity.Description);
+            return false;
+        } }
     
         IClue playerPlacedClue = _currentEvidenceHolder.representerClue;
+        
+        Debug.Log("4");
+        Debug.Log(slotRule.Identity.Description);
         return slotRule.Validate(slotRule.Identity.ProofTypeNeed, playerPlacedClue);
     }
     

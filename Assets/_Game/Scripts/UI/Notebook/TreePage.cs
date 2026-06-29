@@ -70,7 +70,7 @@ public class TreePage : NotebookPage
 
     private readonly HashSet<TreeNode> _unknownTriangleNodes = new();
 
-    // 🌟 新增：纯运行时的前置关系独立字典。它只活在内存里，用来彻底代替对 SO 的直接改写
+  
     private readonly Dictionary<DialogueNode, DialogueResponse> _runtimePreviousResponses = new Dictionary<DialogueNode, DialogueResponse>();
 
     private void Awake()

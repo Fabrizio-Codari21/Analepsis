@@ -12,9 +12,7 @@ using UnityEngine.Serialization;
 public class CaseResolution : ScriptableObject  // Recipe
 {
     
-    
     public List<CaseSlotIdentity> allSlots = new();
-    
     public List<CaseAnswer> validAnswers = new();
     
     private void OnValidate()
@@ -49,9 +47,7 @@ public class CaseResolution : ScriptableObject  // Recipe
 
     public CaseAnswer ValidateCase(List<TheorySlot> allRuntimeSlots)
     {
-        
         if (allRuntimeSlots == null || validAnswers == null || validAnswers.Count == 0) return null;
-
         return validAnswers.Where(possibleAnswer => possibleAnswer != null).FirstOrDefault(possibleAnswer => IsAnswerMatched(possibleAnswer, allRuntimeSlots));
     }
     
@@ -78,15 +74,6 @@ public class CaseResolution : ScriptableObject  // Recipe
 [Serializable]
 public class CaseAnswer
 {
-    [Title("--- CREATE AN ANSWER ---", TitleAlignment = TitleAlignments.Centered)]
-    public string Name;
-    [TextArea(0,30)] public string Description;
-    
-    [ShowInInspector, DictionaryDrawerSettings(KeyLabel = "Role", ValueLabel = "Clues"), PropertySpace(10,15)] 
-    public SerializedDictionary<Whodunnit, SerializedList<IClue>> Answer;
-    [TextArea(5, 10)]
-    [Header("Victory Conclusion Text")]
-    public string ConclusionText;
     
     [ShowInInspector]
     [DictionaryDrawerSettings(KeyLabel = "ID (Asset)", ValueLabel = "Case Slot", IsReadOnly = true)]
