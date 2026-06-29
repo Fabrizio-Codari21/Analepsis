@@ -13,59 +13,137 @@ MonoBehaviour:
   m_Name: Level_2
   m_EditorClassIdentifier: 
   allSlots:
-  - {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
-  - {fileID: 11400000, guid: ce4921e936d6bd649b74ec3d68b55a36, type: 2}
   - {fileID: 11400000, guid: 0e8b5074229d22f4e8bbe37d60127085, type: 2}
+  - {fileID: 11400000, guid: ce4921e936d6bd649b74ec3d68b55a36, type: 2}
+  - {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
   - {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
   validAnswers:
-  - Name: 
-    Description: 
-    Answer:
-      m_Keys: 
-      m_Values: []
-    ConclusionText: 
-    AnswerRequirements:
+  - AnswerRequirements:
       m_Keys:
       - {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
-      - {fileID: 11400000, guid: 0e8b5074229d22f4e8bbe37d60127085, type: 2}
-      - {fileID: 11400000, guid: ce4921e936d6bd649b74ec3d68b55a36, type: 2}
       - {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+      - {fileID: 11400000, guid: ce4921e936d6bd649b74ec3d68b55a36, type: 2}
+      - {fileID: 11400000, guid: 0e8b5074229d22f4e8bbe37d60127085, type: 2}
       m_Values:
       - Identity: {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
         requieredClue:
-        - rid: 8019692236963578214
-      - Identity: {fileID: 11400000, guid: 0e8b5074229d22f4e8bbe37d60127085, type: 2}
-        requieredClue:
-        - rid: 8019692236963578216
-      - Identity: {fileID: 11400000, guid: ce4921e936d6bd649b74ec3d68b55a36, type: 2}
-        requieredClue:
-        - rid: 8019692236963578215
+        - rid: 8019692236963578268
       - Identity: {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
         requieredClue:
-        - rid: 8019692236963578213
+        - rid: 8019692236963578266
+        - rid: 8019692236963578280
+      - Identity: {fileID: 11400000, guid: ce4921e936d6bd649b74ec3d68b55a36, type: 2}
+        requieredClue:
+        - rid: 8019692236963578284
+        - rid: 8019692236963578285
+        - rid: 8019692236963578288
+        - rid: 8019692236963578293
+        - rid: 8019692236963578295
+        - rid: 8019692236963578298
+      - Identity: {fileID: 11400000, guid: 0e8b5074229d22f4e8bbe37d60127085, type: 2}
+        requieredClue:
+        - rid: 8019692236963578269
+        - rid: 8019692236963578272
+        - rid: 8019692236963578277
+        - rid: 8019692236963578281
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8019692236963578213
+    - rid: 8019692236963578266
       type: {class: 'ClueHolder`1[[NpcIdentity, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
         m_clueTarget: {fileID: 11400000, guid: 3d1ed14cbae37a747a7aae1676868042, type: 2}
-    - rid: 8019692236963578214
+    - rid: 8019692236963578268
       type: {class: 'ClueHolder`1[[NpcIdentity, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
         m_clueTarget: {fileID: 11400000, guid: ac34b3368edefcf43a55ef3aa2c9d431, type: 2}
-    - rid: 8019692236963578215
-      type: {class: 'ClueHolder`1[[Item, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
-      data:
-        m_clueTarget: {fileID: 11400000, guid: f243d9958ead79545b599d03db2e8738, type: 2}
-    - rid: 8019692236963578216
+    - rid: 8019692236963578269
       type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
         m_clueTarget:
-          rid: 8019692236963578217
-    - rid: 8019692236963578217
+          rid: 8019692236963578270
+    - rid: 8019692236963578270
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Then do me a favour and remind him that I said MANY TIMES
+          that I would be the one taking care of that: I''m not going to let anyone
+          open that <b>door</b> before the moment comes, not even him.
+
+          And
+          make sure that he keeps in mind that he''s in debt with me, and that he''s
+          still <b>alive</b> for a reason.'
+        characterEmotion: 3
+        characterReaction: 2
+        doesItProveAnything: 8
+        isKey: 0
+        responses:
+        - rid: 8019692236963578271
+        isRootNode: 0
+        editorPosition: {x: 2239, y: -284.10843}
+        altDialoguePaths: []
+        guid:
+          Part1: 3989213569
+          Part2: 1292918822
+          Part3: 1822912920
+          Part4: 1958942294
+        tag: 
+    - rid: 8019692236963578271
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Roger that. (Wait... still alive?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3436, y: -284}
+    - rid: 8019692236963578272
+      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget:
+          rid: 8019692236963578273
+    - rid: 8019692236963578273
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...heh... yeah, you could say that. You see, we''ve done a
+          lot of... "work" together and, while he was never too bright, I managed
+          to... train him well.
+
+          Thing is, I have... fallen out of love
+          with the work I do, and with our... "boss"... but, see, that''s not something
+          I can tell him without... hurting him.
+
+          Luckily, if things go
+          right, this should be the last time we work together. I''m looking forward
+          to... "retirement".'
+        characterEmotion: 4
+        characterReaction: 6
+        doesItProveAnything: 4
+        isKey: 0
+        responses:
+        - rid: 8019692236963578274
+        isRootNode: 0
+        editorPosition: {x: 2280, y: 429}
+        altDialoguePaths: []
+        guid:
+          Part1: 1391464013
+          Part2: 1202271727
+          Part3: 3218864290
+          Part4: 1059067647
+        tag: 
+    - rid: 8019692236963578274
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '["This"? So you''re working right now?]'
+        nextNode:
+          rid: 8019692236963578275
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3335.9, y: 518.95}
+    - rid: 8019692236963578275
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: '...in a way, yes. Which is why you should probably not get
@@ -78,17 +156,17 @@ MonoBehaviour:
         doesItProveAnything: 4
         isKey: 0
         responses:
-        - rid: 8019692236963578218
+        - rid: 8019692236963578276
         isRootNode: 0
         editorPosition: {x: 3749, y: 577.5}
         altDialoguePaths: []
         guid:
-          Part1: 1619960445
-          Part2: 1120043846
-          Part3: 3301554071
-          Part4: 3045703875
+          Part1: 2824955012
+          Part2: 1279284701
+          Part3: 1091494021
+          Part4: 164643856
         tag: 
-    - rid: 8019692236963578218
+    - rid: 8019692236963578276
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
         responseText: '[(What''s going on here...?)]'
@@ -98,3 +176,307 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 4539, y: 578}
+    - rid: 8019692236963578277
+      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget:
+          rid: 8019692236963578278
+    - rid: 8019692236963578278
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...in a way, yes. Which is why you should probably not get
+          too involved in this.
+
+          I''m here to complete a task, my last
+          task... and I''m no longer going to doubt if I have to... change my "objectives".'
+        characterEmotion: 1
+        characterReaction: 6
+        doesItProveAnything: 4
+        isKey: 0
+        responses:
+        - rid: 8019692236963578276
+        isRootNode: 0
+        editorPosition: {x: 3749, y: 577.5}
+        altDialoguePaths: []
+        guid:
+          Part1: 2824955012
+          Part2: 1279284701
+          Part3: 1091494021
+          Part4: 164643856
+        tag: 
+    - rid: 8019692236963578280
+      type: {class: 'ClueHolder`1[[NpcIdentity, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget: {fileID: 11400000, guid: a92984fab3971114f8ff115e44df5760, type: 2}
+    - rid: 8019692236963578281
+      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget:
+          rid: 8019692236963578282
+    - rid: 8019692236963578282
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'What? That... doesn''t make any sense.
+
+          Unless...
+          oh no, was he scolding me for not doing my research properly?
+
+          I
+          swear i found everything I could about that guy... wait... I mean... science!
+          We''re scientist doing research, that''s what I meant... um... yeah.'
+        characterEmotion: 5
+        characterReaction: 0
+        doesItProveAnything: 4
+        isKey: 0
+        responses:
+        - rid: 8019692236963578283
+        isRootNode: 0
+        editorPosition: {x: 3102.5059, y: 810.482}
+        altDialoguePaths: []
+        guid:
+          Part1: 209685302
+          Part2: 1101052138
+          Part3: 4035769758
+          Part4: 1513944887
+        tag: 
+    - rid: 8019692236963578283
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(I doubt you''ve researched Oleg "for science"...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4146, y: 726.5}
+    - rid: 8019692236963578284
+      type: {class: 'ClueHolder`1[[Item, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget: {fileID: 11400000, guid: f243d9958ead79545b599d03db2e8738, type: 2}
+    - rid: 8019692236963578285
+      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget:
+          rid: 8019692236963578286
+    - rid: 8019692236963578286
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "Oh, no, I cannot allow that, sir... even if I could get in,
+          \nI wouldn't want to limit your experience here, but you have to understand:
+          right now, it's not safe to go in without the right protection.\nThe temperature
+          could be way off, a pipe could be perforated and leaking who-knows-what...
+          it could be <b>fatal</b> if I let anyone in right now."
+        characterEmotion: 1
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692236963578287
+        isRootNode: 0
+        editorPosition: {x: 3325.0005, y: 621}
+        altDialoguePaths: []
+        guid:
+          Part1: 801171743
+          Part2: 1177470563
+          Part3: 1156241831
+          Part4: 1806386512
+        tag: 
+    - rid: 8019692236963578287
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Makes sense. Thank you for warning me.]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4391, y: 565.7092}
+    - rid: 8019692236963578288
+      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget:
+          rid: 8019692236963578289
+    - rid: 8019692236963578289
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "I wish that was the case... but where could I possibly go?
+          The sauna won't open, the kitchen is locked as well. \nAnd I'm absolutely
+          NOT going back in my bedroom, after all that <b>chaos</b> going on upstairs
+          that I had to put up with for HOURS.\nAll that is left is this table, unless
+          you can think of something better. "
+        characterEmotion: 5
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692236963578290
+        isRootNode: 0
+        editorPosition: {x: 2901.85, y: 492.00003}
+        altDialoguePaths: []
+        guid:
+          Part1: 3403335406
+          Part2: 1326432269
+          Part3: 3950741638
+          Part4: 921685745
+        tag: 
+    - rid: 8019692236963578290
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[<b>Chaos</b>? What do you mean?]'
+        nextNode:
+          rid: 8019692236963578291
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3767.0007, y: 455.3501}
+    - rid: 8019692236963578291
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Hah! Well, either there''s an invisible construction site
+          next to this hotel, or someone near the suite <b>no. 1</b> has a really
+          LOUD hobby.
+
+          When I came to a place as desolated as this one,
+          it''s because I was expecting to be away from the sounds of the city.
+
+          But
+          no: hammer strikes, drill roars, any industrial sound imaginable seems
+          to follow me... and to think the host told me this was "her best room"...'
+        characterEmotion: 1
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692236963578292
+        isRootNode: 0
+        editorPosition: {x: 4142, y: 487}
+        altDialoguePaths: []
+        guid:
+          Part1: 931422527
+          Part2: 1218130906
+          Part3: 1804454273
+          Part4: 2257800816
+        tag: 
+    - rid: 8019692236963578292
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(What could those sounds be?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 5057, y: 487}
+    - rid: 8019692236963578293
+      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget:
+          rid: 8019692236963578294
+    - rid: 8019692236963578294
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Hah! Well, either there''s an invisible construction site
+          next to this hotel, or someone near the suite <b>no. 1</b> has a really
+          LOUD hobby.
+
+          When I came to a place as desolated as this one,
+          it''s because I was expecting to be away from the sounds of the city.
+
+          But
+          no: hammer strikes, drill roars, any industrial sound imaginable seems
+          to follow me... and to think the host told me this was "her best room"...'
+        characterEmotion: 1
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 8019692236963578292
+        isRootNode: 0
+        editorPosition: {x: 4142, y: 487}
+        altDialoguePaths: []
+        guid:
+          Part1: 931422527
+          Part2: 1218130906
+          Part3: 1804454273
+          Part4: 2257800816
+        tag: 
+    - rid: 8019692236963578295
+      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget:
+          rid: 8019692236963578296
+    - rid: 8019692236963578296
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Well, you''re the first and only person to come into this
+          room, and the door to "the place" is still locked (despite people''s multiple
+          attempts to get in), so nothing''s gone wrong so far.
+
+          Though,
+          of course, I didn''t account on you being a part of this so, please don''t
+          get in the way.
+
+          This is a very serious business for me, alright?'
+        characterEmotion: 1
+        characterReaction: 6
+        doesItProveAnything: 8
+        isKey: 0
+        responses:
+        - rid: 8019692236963578297
+        isRootNode: 0
+        editorPosition: {x: 2239, y: -573.1084}
+        altDialoguePaths: []
+        guid:
+          Part1: 2757100495
+          Part2: 1337091679
+          Part3: 2331423645
+          Part4: 1363973298
+        tag: 
+    - rid: 8019692236963578297
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Good to know. (What are you plotting?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3574.5005, y: -678.06415}
+    - rid: 8019692236963578298
+      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget:
+          rid: 8019692236963578299
+    - rid: 8019692236963578299
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "So far, so good. The <b>target</b> has already gone upstairs,
+          and the door to \"the place\" seems to be unlocked, so it should be easy
+          to get him to fall for the <b>trap</b>. \nI've been really nice to everyone
+          and no-one seems to suspect a thing.\nIf things keep going as planned,
+          I'll be in there right before dinner, ready to <b>complete the task</b>..."
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 4
+        isKey: 0
+        responses:
+        - rid: 8019692236963578300
+        isRootNode: 0
+        editorPosition: {x: 5204, y: 318}
+        altDialoguePaths: []
+        guid:
+          Part1: 956334448
+          Part2: 1168707074
+          Part3: 985916342
+          Part4: 2167441247
+        tag: 
+    - rid: 8019692236963578300
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Great job. (<b>"Target"</b>? <b>Trap</b>? Hmm...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 6427.8394, y: 159}

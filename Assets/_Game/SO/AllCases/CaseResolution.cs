@@ -57,11 +57,19 @@ public class CaseResolution : ScriptableObject  // Recipe
         
         foreach (var runtimeSlot in allRuntimeSlots)
         {
-            if (runtimeSlot == null) return false;
+            if (runtimeSlot == null)
+            {
+                Debug.Log("1");
+                return false;
+            }
             
             CaseSlot matchedRule = (from kvp in answer.AnswerRequirements where runtimeSlot.IsIdentity(kvp.Key) select kvp.Value).FirstOrDefault();
 
-            if (!runtimeSlot.Check(matchedRule)) return false; 
+            if (!runtimeSlot.Check(matchedRule))
+            {
+                Debug.Log("2");
+                return false;
+            } 
             
         }
 

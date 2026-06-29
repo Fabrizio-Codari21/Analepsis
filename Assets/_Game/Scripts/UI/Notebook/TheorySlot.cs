@@ -21,7 +21,7 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
     #region Case
     
     public bool Check(CaseSlot slotRule) // Solution Check
-    {
+    {  
         if (slotRule == null)
         {
             Debug.Log(slotRule.Identity.Description);

@@ -232,14 +232,14 @@ public class TreePage : NotebookPage
             node.RuntimeRect = unknownImg.rectTransform;
             _images.Add(unknownImg);
         }
-        else if (node.Source is DialogueNode npcNode)
+        else if (node.Source is DialogueNode dialogueNode)
         {
-            _runtimePreviousResponses.TryGetValue(npcNode, out DialogueResponse runtimeResp);
+            _runtimePreviousResponses.TryGetValue(dialogueNode, out DialogueResponse runtimeResp);
             string defaultName = runtimeResp != null ? runtimeResp.responseText : "Beginning";
 
             var fragmentEvidenceToMark = EvidenceDataBase.Instance.GetOrCreate(
-                npcNode.guid, 
-                () => new DialogueFragmentNote(defaultName, npcNode.guid, npcNode.doesItProveAnything, npcNode)
+                dialogueNode.guid, 
+                () => new DialogueFragmentNote(defaultName, dialogueNode.guid, dialogueNode.doesItProveAnything, dialogueNode)
             );
 
             ButtonWithSubButton button = FlyweightFactory.Instance.Spawn<ButtonWithSubButton>(m_nodeButton, Vector3.zero, Quaternion.identity, m_treeRoot);
@@ -290,7 +290,7 @@ public class TreePage : NotebookPage
             }
             button.AddListener(() =>
             {
-                OnNodeButtonClicked(npcNode.dialogueText);
+                OnNodeButtonClicked(dialogueNode.dialogueText);
             });
 
             _spawnedFlyweights.Add(button);
