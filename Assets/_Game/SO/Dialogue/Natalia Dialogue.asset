@@ -1359,7 +1359,7 @@ MonoBehaviour:
           rid: 767062761356918904
         dialogueTopic: 
         m_conditions:
-        - rid: 3046479065253413119
+        - rid: 3046479097160532025
         alreadyDisplayed: 0
         editorPosition: {x: 3049, y: 382}
     - rid: 767062761356918903
@@ -1552,17 +1552,18 @@ MonoBehaviour:
     - rid: 3046478936985567313
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[I think it was Oleg himself.]'
+        responseText: '[Oleg, maybe? He seems to dislike Aleksei.]'
         nextNode:
           rid: 3046478936985567322
         dialogueTopic: 
-        m_conditions: []
+        m_conditions:
+        - rid: 3046479087689794460
         alreadyDisplayed: 0
-        editorPosition: {x: 6928, y: -251.00005}
+        editorPosition: {x: 6876, y: -274}
     - rid: 3046478936985567314
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[I think it was Alexandra.]'
+        responseText: '[Could it be Alexandra, perhaps?]'
         nextNode:
           rid: 3046478936985567323
         dialogueTopic: 
@@ -1589,7 +1590,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 8187.999, y: -463.99988}
+        editorPosition: {x: 8242.051, y: -473.2001}
     - rid: 3046478936985567317
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
@@ -1707,6 +1708,7 @@ MonoBehaviour:
         responses:
         - rid: 3046478936985567313
         - rid: 3046478936985567314
+        - rid: 3046479087689794490
         isRootNode: 0
         editorPosition: {x: 6374.3, y: -666.7617}
         altDialoguePaths: []
@@ -1766,7 +1768,7 @@ MonoBehaviour:
         responses:
         - rid: 3046478936985567316
         isRootNode: 0
-        editorPosition: {x: 7287.999, y: -463.99988}
+        editorPosition: {x: 7288.001, y: -468.00003}
         altDialoguePaths: []
         guid:
           Part1: 344543163
@@ -1907,7 +1909,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 4599.43, y: 494.04}
+        editorPosition: {x: 4391, y: 565.7092}
     - rid: 3046479065253412945
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -1953,7 +1955,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 4464.6025, y: 691}
+        editorPosition: {x: 4319, y: 808.46326}
     - rid: 3046479065253412948
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
@@ -2050,7 +2052,7 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 5653, y: 838.4}
+        editorPosition: {x: 5473.14, y: 976.8625}
     - rid: 3046479065253412954
       type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
       data:
@@ -2548,7 +2550,90 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 4452.85, y: -164.00002}
-    - rid: 3046479065253413119
+    - rid: 3046479087689794460
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: a218568596dfcf9419f1f4c8eb4ff384, type: 2}
+        isTalkDialogueNode:
+          dialogueText: "You were lied to, then. \nIt's already bad enough that I
+            had to lose my suite to some... filthy artist; I'm not going to negotiate
+            with a mere commoner like you.\nYou better find another room... or sleep
+            downstairs, for all I care."
+          characterEmotion: 3
+          characterReaction: 7
+          doesItProveAnything: 0
+          isKey: 0
+          responses:
+          - rid: 3046479087689794467
+          isRootNode: 0
+          editorPosition: {x: 1021.02264, y: 318}
+          altDialoguePaths: []
+          guid:
+            Part1: 2754526002
+            Part2: 1138548354
+            Part3: 498545549
+            Part4: 1940995327
+          tag: 
+    - rid: 3046479087689794467
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[So, you should be in another room?] '
+        nextNode:
+          rid: 3046479087689794470
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1869.9999, y: 364.159}
+    - rid: 3046479087689794470
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'It''s what I get for trusting in the integrity of such a miserable
+          establishment.
+
+          You''d think that they would understand the idea
+          of "reservation", regardless of how late one may arrive...
+
+          But
+          I guess that was too much to ask from a host who seemingly doesn''t even
+          know numbers...'
+        characterEmotion: 1
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 3046479087689794475
+        isRootNode: 0
+        editorPosition: {x: 2254, y: 395}
+        altDialoguePaths: []
+        guid:
+          Part1: 4043970722
+          Part2: 1242736572
+          Part3: 4036692107
+          Part4: 387059162
+        tag: 
+    - rid: 3046479087689794475
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(It certainly is strange...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 2997, y: 416}
+    - rid: 3046479087689794490
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Not really, no...]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 6961.4453, y: -685}
+    - rid: 3046479097160532025
       type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
       data:
         conditionName: 
@@ -2569,9 +2654,9 @@ MonoBehaviour:
           doesItProveAnything: 0
           isKey: 0
           responses:
-          - rid: 3046479065253413136
+          - rid: 3046479097160532039
           isRootNode: 0
-          editorPosition: {x: 4139.5, y: 735}
+          editorPosition: {x: 4144, y: 377}
           altDialoguePaths: []
           guid:
             Part1: 3941858783
@@ -2579,7 +2664,7 @@ MonoBehaviour:
             Part3: 1164245432
             Part4: 1086083098
           tag: 
-    - rid: 3046479065253413136
+    - rid: 3046479097160532039
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
         responseText: '[(Note to self: be careful with the food.)]'
@@ -2588,11 +2673,11 @@ MonoBehaviour:
         dialogueTopic: 
         m_conditions: []
         alreadyDisplayed: 0
-        editorPosition: {x: 5025.5, y: 735}
+        editorPosition: {x: 5030, y: 377}
     - rid: 6774952781063389258
       type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
       data:
-        responseText: '[Hi, I''d like a room please.]'
+        responseText: '[Hi. I''d like a room, please.]'
         nextNode:
           rid: 6774952781063389259
         dialogueTopic: 
@@ -2603,11 +2688,11 @@ MonoBehaviour:
       type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
       data:
         dialogueText: 'Why, thank you for choosing us, sir! It''s great to see people
-          come in instead of passing by, for once.
+          coming in instead of passing by, for once.
 
-          You''ll find your very
-          own room <b>no. 2</b> upstairs, quite near our beautiful, temporarily in
-          reparations, sauna!
+          You''ll find your
+          very own room <b>no. 2</b> upstairs, quite near our beautiful, temporarily
+          in reparations, sauna!
 
           Dinner will be served at 7pm, so please
           make yourself at home.'

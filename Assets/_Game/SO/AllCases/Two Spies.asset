@@ -23,6 +23,7 @@ MonoBehaviour:
     Answer:
       m_Keys: 
       m_Values: []
+    ConclusionText: 
     AnswerRequirements:
       m_Keys:
       - {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
@@ -48,16 +49,17 @@ MonoBehaviour:
         requieredClue:
         - rid: 3046479087689794092
         - rid: 3046479087689794093
-        - rid: 3046479087689794096
         - rid: 3046479087689794099
         - rid: 3046479087689794102
-        - rid: 3046479087689794105
+        - rid: 3046479097160532013
+        - rid: 3046479097160532016
   - Name: Fake Answer
     Description: '[Ilya/Dimitri] kills [Oleg] to [Accomplish his mission] using the
       [Sauna]'
     Answer:
       m_Keys: 
       m_Values: []
+    ConclusionText: 
     AnswerRequirements:
       m_Keys:
       - {fileID: 11400000, guid: ce4921e936d6bd649b74ec3d68b55a36, type: 2}
@@ -321,48 +323,6 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 4245, y: 621}
-    - rid: 3046479087689794096
-      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
-      data:
-        m_clueTarget:
-          rid: 3046479087689794097
-    - rid: 3046479087689794097
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: 'So far, so good. The <b>target</b> has already gone upstairs,
-          and the door sign says it''s unlocked.
-
-          I''ve been really nice
-          to everyone and no-one seens to suspect a thing.
-
-          If things keep
-          going as planned, I''ll be in there right before dinner, ready to <b>complete
-          the task</b>...'
-        characterEmotion: 4
-        characterReaction: 2
-        doesItProveAnything: 0
-        isKey: 0
-        responses:
-        - rid: 3046479087689794098
-        isRootNode: 0
-        editorPosition: {x: 5152, y: 318}
-        altDialoguePaths: []
-        guid:
-          Part1: 820799096
-          Part2: 1325560061
-          Part3: 1622822846
-          Part4: 128923648
-        tag: 
-    - rid: 3046479087689794098
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: '[Great job. (<b>"Target"</b>? <b>Trap</b>? Hmm...)]'
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 6148, y: 318}
     - rid: 3046479087689794099
       type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
@@ -448,45 +408,6 @@ MonoBehaviour:
         m_conditions: []
         alreadyDisplayed: 0
         editorPosition: {x: 3346, y: -573}
-    - rid: 3046479087689794105
-      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
-      data:
-        m_clueTarget:
-          rid: 3046479087689794106
-    - rid: 3046479087689794106
-      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
-      data:
-        dialogueText: 'Then do me a favour and remind him that I said MANY TIMES
-          that I would be the one taking care of that.
-
-          And make sure that
-          he keeps in mind that he''s in debt with me, and that he''s still <b>alive</b>
-          for a reason.'
-        characterEmotion: 3
-        characterReaction: 2
-        doesItProveAnything: 0
-        isKey: 0
-        responses:
-        - rid: 3046479087689794107
-        isRootNode: 0
-        editorPosition: {x: 2239, y: -284.10843}
-        altDialoguePaths: []
-        guid:
-          Part1: 1683037540
-          Part2: 1260846199
-          Part3: 2890197385
-          Part4: 3089921095
-        tag: 
-    - rid: 3046479087689794107
-      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
-      data:
-        responseText: '[Roger that. (Wait... still alive?)]'
-        nextNode:
-          rid: -2
-        dialogueTopic: 
-        m_conditions: []
-        alreadyDisplayed: 0
-        editorPosition: {x: 3436, y: -284}
     - rid: 3046479087689794114
       type: {class: 'ClueHolder`1[[NpcIdentity, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
@@ -866,6 +787,83 @@ MonoBehaviour:
       type: {class: 'ClueHolder`1[[NpcIdentity, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
         m_clueTarget: {fileID: 11400000, guid: a92984fab3971114f8ff115e44df5760, type: 2}
+    - rid: 3046479097160532013
+      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget:
+          rid: 3046479097160532014
+    - rid: 3046479097160532014
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: "So far, so good. The <b>target</b> has already gone upstairs,
+          and the door to \"the place\" seems to be unlocked, so it should be easy
+          to get him to fall for the <b>trap</b>. \nI've been really nice to everyone
+          and no-one seems to suspect a thing.\nIf things keep going as planned,
+          I'll be in there right before dinner, ready to <b>complete the task</b>..."
+        characterEmotion: 4
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 3046479097160532015
+        isRootNode: 0
+        editorPosition: {x: 5204, y: 318}
+        altDialoguePaths: []
+        guid:
+          Part1: 956334448
+          Part2: 1168707074
+          Part3: 985916342
+          Part4: 2167441247
+        tag: 
+    - rid: 3046479097160532015
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Great job. (<b>"Target"</b>? <b>Trap</b>? Hmm...)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 6427.8394, y: 159}
+    - rid: 3046479097160532016
+      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget:
+          rid: 3046479097160532017
+    - rid: 3046479097160532017
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: 'Then do me a favour and remind him that I said MANY TIMES
+          that I would be the one taking care of that.
+
+          And make sure that
+          he keeps in mind that he''s in debt with me, and that he''s still <b>alive</b>
+          for a reason.'
+        characterEmotion: 3
+        characterReaction: 2
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 3046479097160532018
+        isRootNode: 0
+        editorPosition: {x: 2239, y: -284.10843}
+        altDialoguePaths: []
+        guid:
+          Part1: 1683037540
+          Part2: 1260846199
+          Part3: 2890197385
+          Part4: 3089921095
+        tag: 
+    - rid: 3046479097160532018
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Roger that. (Wait... still alive?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 3436, y: -284}
     - rid: 8019692079992537276
       type: {class: 'ClueHolder`1[[NpcIdentity, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
