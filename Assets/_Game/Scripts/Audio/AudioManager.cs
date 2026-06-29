@@ -18,11 +18,16 @@ public class AudioManager : Singleton<AudioManager>
         _ = ChangeMusicState(MusicState.Default, true);
     }
 
-    public void SelectSfx(SFXType type, string id = "") 
-        => SFX[type]?.PlaySelectedSource(id);
-    public void RandomSfx(SFXType type, bool continuously = false, Func<bool> cancelIf = default)
-        => SFX[type]?.PlayRandomSource(continuously, cancelIf);
+    public void SelectSfx(SFXType type, string id = "")
+    {
+        if(SFX.ContainsKey(type)) SFX[type]?.PlaySelectedSource(id);
+    }
 
+    public void RandomSfx(SFXType type, bool continuously = false, Func<bool> cancelIf = default)
+    {
+        if(SFX.ContainsKey(type)) SFX[type]?.PlayRandomSource(continuously, cancelIf);
+    }
+    
 
     MusicState _currentMusicState = default;
     Sequence _currentSeq = new();

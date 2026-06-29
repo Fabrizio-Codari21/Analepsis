@@ -155,6 +155,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     #region Open & Close
     private void Open()
     {
+        if(FlashbackManager.Instance.InFlashbackState()) return;
         pushEvent.Raise(this);
         AudioManager.Instance.SelectSfx(SFXType.Player, "Open");
         takeOutNotebookChannel.Raise(representer);
@@ -432,7 +433,7 @@ public class ItemNote : Note
 
         foreach (var desc in unlockedDescriptions)
         {
-            fullContent.Add($"{unlockedDescriptions.IndexOf(desc) + 1})  {desc}");
+            fullContent.Add($"{unlockedDescriptions.IndexOf(desc) + 1})  {desc}\n");
         }
 
         var unlockedFlash = NotebookManager.Instance.GetItemFlashbackInfo(_item);
