@@ -5,3 +5,4 @@ public class CheckIntAmount : AbstractFuncChannel<int, bool>
 {
     
 }
+

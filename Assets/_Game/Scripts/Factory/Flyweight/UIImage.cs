@@ -4,19 +4,15 @@ public class UIImage : FactoryUIObject
 {
     
     [SerializeField] private Image m_image;
-    
-    [SerializeField] private float Factor = 1;
-    
-    
-    
-    public void SetImage(Sprite sprite)
-    {
 
-        if (Factor == 0) Factor = 1;
+    
+    
+    public void SetImage(Sprite sprite ,float factor = 1)
+    {
+        if (factor == 0) factor = 1;
         m_image.sprite = sprite;
         m_image.SetNativeSize();
-        
         Vector2 nativeSize = m_image.rectTransform.sizeDelta;
-        m_image.rectTransform.sizeDelta = nativeSize / Factor;
+        m_image.rectTransform.sizeDelta = nativeSize / factor;
     }
 }

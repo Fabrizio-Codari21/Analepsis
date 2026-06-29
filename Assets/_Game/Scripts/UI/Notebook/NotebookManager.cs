@@ -155,6 +155,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     #region Open & Close
     private void Open()
     {
+        if(FlashbackManager.Instance.InFlashbackState()) return;
         pushEvent.Raise(this);
         AudioManager.Instance.SelectSfx(SFXType.Player, "Open");
         takeOutNotebookChannel.Raise(representer);
