@@ -110,6 +110,8 @@ public class CharacterNotebookPage : NotebookPage
         m_text.gameObject.SetActive(true);
         m_characterIcon.sprite = key.filePhoto;
         m_text.text = key.characterInfo;
+    
+        
     }
 
     public void SyncAllButtons(List<NpcIdentity> currentCharacters)
@@ -141,7 +143,9 @@ public class CharacterNotebookPage : NotebookPage
     {
         CancelAndDisposeToken();
         _textCancellationTokenSource = new CancellationTokenSource();
+
         PlayText(info, token: _textCancellationTokenSource.Token, sizeOverride: m_textSize).Forget();
+        
     }
 
     private void CreateButtonInstance(NpcIdentity npc)

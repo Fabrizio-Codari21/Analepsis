@@ -37,9 +37,14 @@ public class TreePage : NotebookPage
 
     [Header("Lock Image")]
     [SerializeField] private Color m_lockColor = new (0.4f, 0, 0.1f, 0.1f);
-    [SerializeField] private Image m_lockImage;
-    
-  
+    [SerializeField] private Image m_lockImage;      
+    [SerializeField] private Image m_unknowImage; 
+
+    [Header("Visual State Configs (Unchosen/Gray)")]
+    [SerializeField, Tooltip("Alpha transparency for unchosen paths")] 
+    private float m_unchosenAlpha = 0.4f;
+    [SerializeField, Tooltip("Color tint for unchosen arrow lines")]
+    private Color m_unchosenArrowColor = new(0.5f, 0.5f, 0.5f, 0.4f);
     
     [Header("Event")] 
     [SerializeField] private NpcEvent m_onNpcSelected;
@@ -50,7 +55,7 @@ public class TreePage : NotebookPage
     [Header("Hover Component")]
     [SerializeField] private UIHoverDetector m_hoverDetector;
 
-
+    [SerializeField] private ScrollRect m_scrollRect;
     [SerializeField] private Vector3 centerPosition;
     [SerializeField] private float centerScale = 1.0f;
 
@@ -63,20 +68,28 @@ public class TreePage : NotebookPage
     private float _currentScale = 1f;
     private float _targetScale = 1f;
 
+    private readonly HashSet<TreeNode> _unknownTriangleNodes = new();
+
+  
+    private readonly Dictionary<DialogueNode, DialogueResponse> _runtimePreviousResponses = new Dictionary<DialogueNode, DialogueResponse>();
+
     private void Awake()
     {
         Debug.Log("TreePage Awake");
-       m_onNpcSelected.OnEventRaised += ShowTreeFor;
-       m_refreshTree.OnEventRaised += RefreshTree;
-       
+        m_onNpcSelected.OnEventRaised += ShowTreeFor;
+        m_refreshTree.OnEventRaised += RefreshTree;
     }
 
     private void Update()
     {
         if (m_hoverDetector == null || !m_hoverDetector.IsMouseHovering) return;
 
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            ResetScrollAndScale();
+            return;
+        }
         HandleZoomToMouse();
-        Focus();
     }
     
     private void HandleZoomToMouse()
@@ -104,27 +117,16 @@ public class TreePage : NotebookPage
         m_treeRoot.localPosition += localOffset;
     }
 
-    private void Focus()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            ResetScrollAndScale();
-        }
-    }
-
-
     private void ResetScrollAndScale()
     {
         if (m_treeRoot == null) return;
         
-      
+        m_scrollRect.StopMovement();
+        m_scrollRect.velocity = Vector3.zero;
         m_treeRoot.localPosition = new Vector3(centerPosition.x, centerPosition.y, 0f);
-
-    
         _targetScale = centerScale;
         _currentScale = centerScale;
         m_treeRoot.localScale = new Vector3(centerScale, centerScale, 1f);
-
     }
 
     private Vector3 GetMouseWorldPosOnCanvas()
@@ -146,17 +148,16 @@ public class TreePage : NotebookPage
     private void ShowTreeFor(NpcIdentity npcIdentity)
     {
         DespawnUI();
-
         var npcTrees = NotebookManager.Instance.GetDialoguesFor(npcIdentity);
 
         if (npcTrees is { Count: > 0 })
         {
             _activeNote = npcTrees[0];
-
             BuildTree(_activeNote).Forget();
         }
     }
-    private async UniTask BuildTree(DialogueNote dialogueNote,bool resetView = true) 
+
+    private async UniTask BuildTree(DialogueNote dialogueNote, bool resetView = true) 
     {
         Debug.Log($"BuildTree Start: {dialogueNote}");
         if (dialogueNote == null || !dialogueNote.GetFullDialogue()) return;
@@ -165,11 +166,16 @@ public class TreePage : NotebookPage
         Dialogue dialogueAsset = dialogueNote.GetFullDialogue();
         if (dialogueAsset.startingNode == null) return;
         
+        _unknownTriangleNodes.Clear(); 
+        _runtimePreviousResponses.Clear(); // 🌟 每次重新生成整棵树前，彻底清空字典缓存
+
         TreeNode runtimeRoot = BuildRuntimeTreeRecursively(dialogueAsset.startingNode, null);
         if (runtimeRoot == null) return;
         
+        // 强行重置 Reingold-Tilford 排布所需的脏坐标数据，阻断几何计算缓存
+        ResetLayoutGeometryRecursively(runtimeRoot);
+
         ReingoldTilfordLayout.CalculatePositions(runtimeRoot);
-        
         
         SpawnNodesRecursively(runtimeRoot, 0);
 
@@ -180,13 +186,32 @@ public class TreePage : NotebookPage
         if(resetView) ResetScrollAndScale();
     }
 
+    private void ResetLayoutGeometryRecursively(TreeNode node)
+    {
+        if (node == null) return;
+        node.X = 0f; node.Y = 0f; node.Mod = 0f;
+        node.Shift = 0f; node.Change = 0f;
+        node.Thread = null; node.Ancestor = node;
+        if (node.Children != null)
+        {
+            for (int i = 0; i < node.Children.Count; i++)
+            {
+                if (node.Children[i] != null)
+                {
+                    node.Children[i].Number = i;
+                    ResetLayoutGeometryRecursively(node.Children[i]);
+                }
+            }
+        }
+    }
+
     private void SpawnNodesRecursively(TreeNode node, int level)
     {
         if (node == null) return;
 
         Vector2 localUiPos = new Vector2(node.X * baseHorizontalSpacing, -level * levelVerticalDistance);
       
-        if (node.IsLocked)
+        if (node.VisualState == NodeVisualState.ConditionLocked)
         {
             Image lockedImg = Instantiate(m_lockImage, m_treeRoot);
             lockedImg.transform.localScale = Vector3.one;
@@ -197,59 +222,78 @@ public class TreePage : NotebookPage
             node.RuntimeRect = lockedImg.rectTransform;
             _images.Add(lockedImg);
         }
-        else
+        else if (_unknownTriangleNodes.Contains(node))
         {
-            if (node.Source is DialogueNode npcNode)
+            Image unknownImg = Instantiate(m_unknowImage, m_treeRoot);
+            unknownImg.transform.localScale = Vector3.one;
+            unknownImg.transform.localPosition = localUiPos;
+            unknownImg.gameObject.name = $"Unknown_Lvl{level}";
+            
+            node.RuntimeRect = unknownImg.rectTransform;
+            _images.Add(unknownImg);
+        }
+        else if (node.Source is DialogueNode npcNode)
+        {
+            _runtimePreviousResponses.TryGetValue(npcNode, out DialogueResponse runtimeResp);
+            string defaultName = runtimeResp != null ? runtimeResp.responseText : "Beginning";
+
+            var fragmentEvidenceToMark = EvidenceDataBase.Instance.GetOrCreate(
+                npcNode.guid, 
+                () => new DialogueFragmentNote(defaultName, npcNode.guid, npcNode.doesItProveAnything, npcNode)
+            );
+
+            ButtonWithSubButton button = FlyweightFactory.Instance.Spawn<ButtonWithSubButton>(m_nodeButton, Vector3.zero, Quaternion.identity, m_treeRoot);
+            button.RemoveAllListeners(); 
+            button.SetText(defaultName); 
+            
+            node.RuntimeRect = button.transform as RectTransform;
+            button.transform.localPosition = localUiPos;
+            button.gameObject.name = $"Lvl{level}_{fragmentEvidenceToMark.displayName}";
+
+            if (button.TryGetComponent<CanvasGroup>(out var cg)) cg.alpha = 1f;
+
+            switch (node.VisualState)
             {
-                string defaultName = npcNode.PreviousResponse != null 
-                    ? npcNode.PreviousResponse.responseText 
-                    : "Beginning";
-
-                var fragmentEvidenceToMark = EvidenceDataBase.Instance.GetOrCreate(
-                    npcNode.guid, 
-                    () => new DialogueFragmentNote(defaultName, npcNode.guid, npcNode.doesItProveAnything, npcNode)
-                );
-
-                ButtonWithSubButton button = FlyweightFactory.Instance.Spawn<ButtonWithSubButton>(m_nodeButton, Vector3.zero, Quaternion.identity, m_treeRoot);
-                button.RemoveAllListeners(); 
-                button.SetText(defaultName); // nombre de boton
-                
-                node.RuntimeRect = button.transform as RectTransform;
-                
-                var subButton = button.AddSubButton();
-                subButton.RemoveAllListeners(); 
-                
-                bool isAlreadyMarked = m_checkIfMarked.Request(fragmentEvidenceToMark.guid);
-                subButton.PlayAnimation(isAlreadyMarked);
-                
-                subButton.AddListener(() =>
+                case NodeVisualState.Visited:
                 {
-                    bool currentMarkedState = m_checkIfMarked.Request(fragmentEvidenceToMark.guid);
-                    if (currentMarkedState)
+                    button.SetInteractable(true);
+                    var subButton = button.AddSubButton();
+                    if (subButton != null)
                     {
-                        m_sentNoteToTheoryBoardEvent?.Raise(fragmentEvidenceToMark);
-                        subButton.PlayAnimation(false); 
+                        subButton.gameObject.SetActive(true);
+                        subButton.RemoveAllListeners(); 
+                        bool isAlreadyMarked = m_checkIfMarked.Request(fragmentEvidenceToMark.guid);
+                        subButton.PlayAnimation(isAlreadyMarked);
+                    
+                        subButton.AddListener(() =>
+                        {
+                            bool currentMarkedState = m_checkIfMarked.Request(fragmentEvidenceToMark.guid);
+                            if (currentMarkedState)
+                            {
+                                m_sentNoteToTheoryBoardEvent?.Raise(fragmentEvidenceToMark);
+                                subButton.PlayAnimation(false); 
+                            }
+                            else
+                            {
+                                m_sentNoteToTheoryBoardEvent?.Raise(fragmentEvidenceToMark);
+                            }
+                        });
                     }
-                    else
-                    {
-                        m_sentNoteToTheoryBoardEvent?.Raise(fragmentEvidenceToMark);
-                    }
-                });
-                
-                button.transform.localPosition = localUiPos;
-
-                int instanceId = button.gameObject.GetHashCode();
-                Debug.Log($"[TreePage Debug] Lvl:{level} | Data Name:{fragmentEvidenceToMark.displayName} | IsMarked Data:{isAlreadyMarked} | UI Object Hash:{instanceId}");
-
-                button.gameObject.name = $"Lvl{level}_{fragmentEvidenceToMark.displayName}";
-                
-                button.AddListener(() =>
+                    break;
+                }
+              
+                case NodeVisualState.Unchosen:
                 {
-                    OnNodeButtonClicked(npcNode.dialogueText);
-                });
-                
-                _spawnedFlyweights.Add(button);
+                    button.SetInteractable(false);
+                    break;
+                }
             }
+            button.AddListener(() =>
+            {
+                OnNodeButtonClicked(npcNode.dialogueText);
+            });
+
+            _spawnedFlyweights.Add(button);
         }
         
         foreach (var child in node.Children) 
@@ -261,7 +305,7 @@ public class TreePage : NotebookPage
     private void SpawnConnectionsRecursively(TreeNode node)
     {
         if (node == null) return;
-        if (node.IsLocked) return;
+        if (node.VisualState == NodeVisualState.ConditionLocked || _unknownTriangleNodes.Contains(node)) return; 
    
         Vector2 parentCenter = new Vector2(node.X * baseHorizontalSpacing, -GetNodeLevel(node) * levelVerticalDistance);
    
@@ -314,13 +358,13 @@ public class TreePage : NotebookPage
                 childHalfHeight
             );
        
-            SpawnArrow(arrowStartPos, arrowEndPos, child, t);
+            SpawnArrow(arrowStartPos, arrowEndPos, child, child.VisualState);
        
             SpawnConnectionsRecursively(child);
         }
     }
 
-    private void SpawnArrow(Vector2 parentPos, Vector2 childPos, TreeNode childNode, float tX)
+    private void SpawnArrow(Vector2 parentPos, Vector2 childPos, TreeNode childNode, NodeVisualState childState)
     {
         Vector2 direction = childPos - parentPos;
         float distance = direction.magnitude; 
@@ -335,7 +379,7 @@ public class TreePage : NotebookPage
         if (walkableDistance <= 0)
         {
             Vector2 centerPos = Vector2.Lerp(parentPos, childPos, 0.5f);
-            CreateSingleArrow(centerPos, arrowRotation);
+            CreateSingleArrow(centerPos, arrowRotation, childState);
             return;
         }
 
@@ -348,11 +392,11 @@ public class TreePage : NotebookPage
             float actualT = Mathf.Lerp(arrowPadding / distance, 1f - (arrowPadding / distance), t);
             Vector2 arrowLocalPos = Vector2.Lerp(parentPos, childPos, actualT);
 
-            CreateSingleArrow(arrowLocalPos, arrowRotation);
+            CreateSingleArrow(arrowLocalPos, arrowRotation, childState);
         }
     }
 
-    private void CreateSingleArrow(Vector2 localPos, Quaternion rotation)
+    private void CreateSingleArrow(Vector2 localPos, Quaternion rotation, NodeVisualState childState)
     {
         ImageSelector arrow = Instantiate(arrowImage, m_treeRoot);
         
@@ -363,8 +407,15 @@ public class TreePage : NotebookPage
         
         if (arrow.transform is RectTransform rectTrans)
         {
-            var img = arrow.GetComponent<UnityEngine.UI.Image>();
-            if (img != null) img.type = UnityEngine.UI.Image.Type.Simple;
+            var img = arrow.GetComponent<UnityEngine.UI.Image>(); 
+            if (img != null)
+            {
+                img.type = UnityEngine.UI.Image.Type.Simple;
+                if (childState == NodeVisualState.Unchosen)
+                {
+                    img.color = m_unchosenArrowColor;
+                }
+            }
         }
 
         _arrow.Add(arrow);
@@ -384,9 +435,8 @@ public class TreePage : NotebookPage
 
     private void RefreshTree()
     {
-        
         DespawnUI();
-        BuildTree(_activeNote,false).Forget();
+        BuildTree(_activeNote, false).Forget();
     }
 
     private void DespawnUI()
@@ -412,34 +462,72 @@ public class TreePage : NotebookPage
     
     private void OnNodeButtonClicked(string contentText)
     {
-       
         m_raiseTreeInfo.Raise(contentText);
     }
-
-
     
-
- 
     private TreeNode BuildRuntimeTreeRecursively(DialogueNode configNode, TreeNode parentRtNode)
     {
         if (configNode == null) return null;
 
-        bool isUnlocked = _activeNote.IsNodeUnlocked(configNode.guid);
-        TreeNode rtNode = new TreeNode(configNode, isLocked: !isUnlocked)
+        // 🌟 核心修正：在下发状态前，直接从我们纯清洁的局域运行字典里拉出对应的 Response 指针
+        // 并通过参数直接下发给数据判定层，彻底消灭直接赋值对 SO 资产的破坏！
+        _runtimePreviousResponses.TryGetValue(configNode, out var currentValidResponse);
+        NodeVisualState state = _activeNote.GetNodeVisualState(configNode, currentValidResponse);
+
+        TreeNode rtNode = new TreeNode(configNode, state)
         {
             Parent = parentRtNode
         };
+    
+        if (state == NodeVisualState.ConditionLocked) return rtNode;
 
-        if (!isUnlocked || configNode.responses == null) return rtNode;
-
-        foreach (var response in configNode.responses.Where(response => response.nextNode != null))
+        if (configNode.responses != null)
         {
-            response.nextNode.PreviousResponse = response;
-            TreeNode child = BuildRuntimeTreeRecursively(response.nextNode, rtNode);
-            if (child == null) continue;
+            foreach (var response in configNode.responses.Where(response => response.nextNode != null))
+            {
+                // 🌟 【运行期纯安全沙盒阻断】：我们绝对不碰 SO。
+                // 只有当前后代未被解锁，或者字典里还没登记这个前置连线时，才把它塞入临时 Dict 里。
+                bool isChildVisited = _activeNote.IsNodeUnlocked(response.nextNode.guid);
+                if (!isChildVisited || !_runtimePreviousResponses.ContainsKey(response.nextNode))
+                {
+                    _runtimePreviousResponses[response.nextNode] = response;
+                }
+                
+                // 3. 三角形坍缩检查（穿透未选分支去探测深层解锁）
+                if (state == NodeVisualState.Unchosen)
+                {
+                    bool hasDeepVisitedNode = _activeNote.IsNodeUnlocked(response.nextNode.guid) || 
+                                              _activeNote.GetNodeVisualState(response.nextNode, response) == NodeVisualState.Visited;
 
-            child.Number = rtNode.Children.Count;
-            rtNode.Children.Add(child);
+                    if (!hasDeepVisitedNode)
+                    {
+                        if (rtNode.Children.Count > 0) break;
+
+                        TreeNode triangleNode = new TreeNode(response.nextNode, NodeVisualState.Visited) { Parent = rtNode };
+                        _unknownTriangleNodes.Add(triangleNode);
+                        rtNode.Children.Add(triangleNode);
+                        continue; 
+                    }
+                }
+
+                TreeNode child = BuildRuntimeTreeRecursively(response.nextNode, rtNode);
+                if (child == null) continue;
+
+                child.Number = rtNode.Children.Count;
+                rtNode.Children.Add(child);
+            }
+        }
+
+        // 最后一届空圈兜底：追加三角形问号
+        if (state == NodeVisualState.Unchosen && rtNode.Children.Count == 0)
+        {
+            TreeNode virtualTriangle = new TreeNode(configNode, NodeVisualState.Visited)
+            {
+                Parent = rtNode,
+                Number = 0
+            };
+            _unknownTriangleNodes.Add(virtualTriangle);
+            rtNode.Children.Add(virtualTriangle);
         }
 
         return rtNode;

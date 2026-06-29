@@ -1,0 +1,148 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
+  m_Name: Level2_Dialogue_Door_Kitchen
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  dialogueColor: {r: 0, g: 0, b: 0, a: 0}
+  startingNode:
+    dialogueText: 'Dinner will be served at 7.
+
+      Knocking won''t make me cook
+      faster, so stop that.'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 8019692210797150470
+    - rid: 8019692210797150471
+    isRootNode: 1
+    editorPosition: {x: 74.200005, y: 228.00005}
+    altDialoguePaths: []
+    guid:
+      Part1: 861040567
+      Part2: 1159426051
+      Part3: 1972891063
+      Part4: 3290084930
+    tag: 
+  allNodes:
+  - dialogueText: 'Dinner will be served at 7.
+
+      Knocking won''t make me cook
+      faster, so stop that.'
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 8019692210797150470
+    - rid: 8019692210797150471
+    isRootNode: 1
+    editorPosition: {x: 74.200005, y: 228.00005}
+    altDialoguePaths: []
+    guid:
+      Part1: 861040567
+      Part2: 1159426051
+      Part3: 1972891063
+      Part4: 3290084930
+    tag: 
+  - dialogueText: Oh, please, not again... *sigh* Come in, I guess.
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses: []
+    isRootNode: 0
+    editorPosition: {x: 1524.0504, y: 357}
+    altDialoguePaths: []
+    guid:
+      Part1: 4277873983
+      Part2: 1154032768
+      Part3: 424979072
+      Part4: 2518822852
+    tag: 
+  hiddenProof: 
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3046479087689794047
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: Oh, please, not again... *sigh* Come in, I guess.
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses: []
+        isRootNode: 0
+        editorPosition: {x: 1524.0504, y: 357}
+        altDialoguePaths: []
+        guid:
+          Part1: 4277873983
+          Part2: 1154032768
+          Part3: 424979072
+          Part4: 2518822852
+        tag: 
+    - rid: 8019692210797150470
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Sorry. (So that''s the <b>kitchen</b>, I assume?]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 584, y: 129.13}
+    - rid: 8019692210797150471
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[Natalia said I could come in]'
+        nextNode:
+          rid: 3046479087689794047
+        dialogueTopic: 
+        m_conditions:
+        - rid: 8019692228150297417
+        alreadyDisplayed: 0
+        editorPosition: {x: 584.0001, y: 356.6501}
+    - rid: 8019692228150297417
+      type: {class: DialogueNodeCondition, ns: , asm: Assembly-CSharp}
+      data:
+        conditionName: 
+        unlockIfTrue: 1
+        targetDialogue: {fileID: 11400000, guid: 32c5fe4c6dbd99644bc452c0bbbe24f1, type: 2}
+        isTalkDialogueNode:
+          dialogueText: There, I've opened up the kitchen for you. Thanks!
+          characterEmotion: 0
+          characterReaction: 0
+          doesItProveAnything: 0
+          isKey: 1
+          responses: []
+          isRootNode: 0
+          editorPosition: {x: 5204.6777, y: 393.7075}
+          altDialoguePaths: []
+          guid:
+            Part1: 3771243244
+            Part2: 1149226899
+            Part3: 2132946600
+            Part4: 1157986018
+          tag: 

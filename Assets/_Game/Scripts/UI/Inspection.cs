@@ -39,6 +39,7 @@ public class Inspection : MonoBehaviour, IActivity
     [SerializeField] private Transform m_infoRoot;
     [SerializeField] private float m_maxWeight;
     [SerializeField] private float m_textSize;
+    [SerializeField] private float m_textSpeed;
     [SerializeField] private DynamicTextSetting m_infoSetting;
     [SerializeField] private Color m_textColor;
     
@@ -126,7 +127,7 @@ public class Inspection : MonoBehaviour, IActivity
             foreach (var desc in historyDescriptions)
             {
                 var text =  FlyweightFactory.Instance.Spawn<DynamicUIText>(m_infoSetting, Vector3.zero,Quaternion.identity,parent:m_infoRoot);
-                text.SetText(desc,m_textSize,m_textColor,maxWidth: m_maxWeight);
+                text.SetText((historyDescriptions.IndexOf(desc) + 1) + ") " + desc,m_textSize,m_textColor,maxWidth: m_maxWeight);
                 text.ShowFullText();
                 _flyweightsText.Add(text);
             }
@@ -315,9 +316,9 @@ public class Inspection : MonoBehaviour, IActivity
     {
         var text =  FlyweightFactory.Instance.Spawn<DynamicUIText>(m_infoSetting, Vector3.zero,Quaternion.identity,parent:m_infoRoot);
         _flyweightsText.Add(text);
-        text.SetText(info,m_textSize,m_textColor,maxWidth: m_maxWeight);
+        text.SetText((_flyweightsText.IndexOf(text) + 1) + ") " + info,m_textSize,m_textColor,maxWidth: m_maxWeight);
         Debug.Log("1");
-        await text.PlayTypeWriterEffect();
+        await text.PlayTypeWriterEffect(typingSpeed: m_textSpeed);
         Debug.Log("2");
     }
 
@@ -355,7 +356,6 @@ public class Inspection : MonoBehaviour, IActivity
     public void Pause()
     {
         OnPause?.Invoke();
-
         m_camera.enabled = false;
 
         m_inputReader.SetEnable(false);

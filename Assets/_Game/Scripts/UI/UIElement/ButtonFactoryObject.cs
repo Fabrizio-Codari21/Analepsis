@@ -8,6 +8,7 @@ public class ButtonFactoryObject : FactoryUIObject
 {
     [SerializeField]  protected Button m_button;
     [SerializeField]  protected TMP_Text m_text;
+    [SerializeField]  protected Image m_image;
     private ButtonAnimation _animation;
     
     private void Start()
@@ -19,7 +20,14 @@ public class ButtonFactoryObject : FactoryUIObject
        base.Despawn();
        m_button.onClick.RemoveAllListeners();
     }
+
+
+    public void SetSprite(Sprite sprite)
+    {
+        if(m_image)m_image.sprite = sprite;
+    }
     
+    public void SetLocalScale(float scale) => m_button.transform.localScale = new Vector3(scale, scale, scale);
     public void SetText(string text) =>   m_text.text = text;
     
 

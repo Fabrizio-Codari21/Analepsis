@@ -16,6 +16,7 @@ public class ItemInfoPage : NotebookPage
     [SerializeField] private float size;
     [SerializeField] private Color color;
     [SerializeField] private float speed;
+    [SerializeField] private float itemIconFactor = 3f;
     
     [SerializeField]
     private float maxWidth = 120f;
@@ -34,7 +35,7 @@ public class ItemInfoPage : NotebookPage
 
        
         var icon = FlyweightFactory.Instance.Spawn<UIImage>(m_imageSetting, Vector3.zero, Quaternion.identity, root);
-        icon.SetImage(item.sprite);
+        icon.SetImage(item.sprite,itemIconFactor);
         m_uiElements.Add(icon);
         
         string fullText = item.baseClue;
@@ -42,17 +43,17 @@ public class ItemInfoPage : NotebookPage
         
         if (unlockedPois is { Count: > 0 })
         {
-            fullText += "\n\nClue Founded : "; 
+            fullText += "\n\n<b>Clue Info</b> : \n"; 
             for (int i = 0; i < unlockedPois.Count; i++)
             {
-                fullText += $"\n{i + 1}) {unlockedPois[i]}";
+                fullText += $"\n{i + 1}) {unlockedPois[i]}\n";
             }
         }
         
         string flashback = NotebookManager.Instance.GetItemFlashbackInfo(item);
         if (!string.IsNullOrEmpty(flashback))
         {
-            fullText += $"\n\nFlashback: {flashback}";
+            fullText += $"\n<b>Flashback</b>: \n\n{flashback}";
         }
         
         OnItemInfoTriggered(fullText).Forget();

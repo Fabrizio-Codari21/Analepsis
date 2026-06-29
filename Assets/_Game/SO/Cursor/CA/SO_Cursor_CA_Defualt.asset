@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 318b181d08464e68a5e3538bd7dcafac, type: 3}
+  m_Name: SO_Cursor_CA_Defualt
+  m_EditorClassIdentifier: 
+  m_skewedVector: {x: 5, y: 5}
+  animationSheetsUp:
+  - {fileID: 2800000, guid: 487d99064d9853142bb6376f7e562c03, type: 3}
+  animationSheetsDown:
+  - {fileID: 2800000, guid: 9507fda0aca49014da14b79235713fc4, type: 3}
+  transitionToDown: []
+  transitionToUp: []
+  frameRate: 8
+  clickSound: PenClick
+  upSound: PenUnClick
+  hoverSound: 

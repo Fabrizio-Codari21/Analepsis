@@ -1309,6 +1309,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""9697b8ea-7e05-412c-8e59-c62aa4559d73"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1320,6 +1329,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Confirm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d60da6af-0fe8-45b5-92fe-fc049e0e9472"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1441,6 +1461,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         // MarkPanel
         m_MarkPanel = asset.FindActionMap("MarkPanel", throwIfNotFound: true);
         m_MarkPanel_Confirm = m_MarkPanel.FindAction("Confirm", throwIfNotFound: true);
+        m_MarkPanel_Cancel = m_MarkPanel.FindAction("Cancel", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -2637,6 +2658,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_MarkPanel;
     private List<IMarkPanelActions> m_MarkPanelActionsCallbackInterfaces = new List<IMarkPanelActions>();
     private readonly InputAction m_MarkPanel_Confirm;
+    private readonly InputAction m_MarkPanel_Cancel;
     /// <summary>
     /// Provides access to input actions defined in input action map "MarkPanel".
     /// </summary>
@@ -2652,6 +2674,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "MarkPanel/Confirm".
         /// </summary>
         public InputAction @Confirm => m_Wrapper.m_MarkPanel_Confirm;
+        /// <summary>
+        /// Provides access to the underlying input action "MarkPanel/Cancel".
+        /// </summary>
+        public InputAction @Cancel => m_Wrapper.m_MarkPanel_Cancel;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2681,6 +2707,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Confirm.started += instance.OnConfirm;
             @Confirm.performed += instance.OnConfirm;
             @Confirm.canceled += instance.OnConfirm;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
         }
 
         /// <summary>
@@ -2695,6 +2724,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Confirm.started -= instance.OnConfirm;
             @Confirm.performed -= instance.OnConfirm;
             @Confirm.canceled -= instance.OnConfirm;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
         }
 
         /// <summary>
@@ -3096,5 +3128,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnConfirm(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCancel(InputAction.CallbackContext context);
     }
 }

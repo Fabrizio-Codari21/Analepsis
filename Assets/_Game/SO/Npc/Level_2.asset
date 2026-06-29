@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2479a5e0d70a6ce4f8eec2c9c7e59a78, type: 3}
+  m_Name: Level_2
+  m_EditorClassIdentifier: 
+  allSlots:
+  - {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+  - {fileID: 11400000, guid: ce4921e936d6bd649b74ec3d68b55a36, type: 2}
+  - {fileID: 11400000, guid: 0e8b5074229d22f4e8bbe37d60127085, type: 2}
+  - {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
+  validAnswers:
+  - Name: 
+    Description: 
+    Answer:
+      m_Keys: 
+      m_Values: []
+    ConclusionText: 
+    AnswerRequirements:
+      m_Keys:
+      - {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
+      - {fileID: 11400000, guid: 0e8b5074229d22f4e8bbe37d60127085, type: 2}
+      - {fileID: 11400000, guid: ce4921e936d6bd649b74ec3d68b55a36, type: 2}
+      - {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+      m_Values:
+      - Identity: {fileID: 11400000, guid: 0ebcec717bfa5e14fb963990be27d411, type: 2}
+        requieredClue:
+        - rid: 8019692236963578214
+      - Identity: {fileID: 11400000, guid: 0e8b5074229d22f4e8bbe37d60127085, type: 2}
+        requieredClue:
+        - rid: 8019692236963578216
+      - Identity: {fileID: 11400000, guid: ce4921e936d6bd649b74ec3d68b55a36, type: 2}
+        requieredClue:
+        - rid: 8019692236963578215
+      - Identity: {fileID: 11400000, guid: fce413ff3fb4b9b42b9cb8821a3c0ff5, type: 2}
+        requieredClue:
+        - rid: 8019692236963578213
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 8019692236963578213
+      type: {class: 'ClueHolder`1[[NpcIdentity, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget: {fileID: 11400000, guid: 3d1ed14cbae37a747a7aae1676868042, type: 2}
+    - rid: 8019692236963578214
+      type: {class: 'ClueHolder`1[[NpcIdentity, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget: {fileID: 11400000, guid: ac34b3368edefcf43a55ef3aa2c9d431, type: 2}
+    - rid: 8019692236963578215
+      type: {class: 'ClueHolder`1[[Item, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget: {fileID: 11400000, guid: f243d9958ead79545b599d03db2e8738, type: 2}
+    - rid: 8019692236963578216
+      type: {class: 'ClueHolder`1[[DialogueNode, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        m_clueTarget:
+          rid: 8019692236963578217
+    - rid: 8019692236963578217
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: '...in a way, yes. Which is why you should probably not get
+          too involved in this.
+
+          I''m here to complete a task, my last
+          task... and I''m no longer going to doubt if I have to... change my "objectives".'
+        characterEmotion: 1
+        characterReaction: 6
+        doesItProveAnything: 4
+        isKey: 0
+        responses:
+        - rid: 8019692236963578218
+        isRootNode: 0
+        editorPosition: {x: 3749, y: 577.5}
+        altDialoguePaths: []
+        guid:
+          Part1: 1619960445
+          Part2: 1120043846
+          Part3: 3301554071
+          Part4: 3045703875
+        tag: 
+    - rid: 8019692236963578218
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: '[(What''s going on here...?)]'
+        nextNode:
+          rid: -2
+        dialogueTopic: 
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 4539, y: 578}

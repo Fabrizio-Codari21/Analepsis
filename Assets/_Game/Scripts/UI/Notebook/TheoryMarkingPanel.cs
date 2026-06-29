@@ -72,21 +72,8 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     {
         m_evidenceEvent.OnEventRaised += MarkOrRemove;
         m_checkEvidence.OnRequest += Check;
-        m_confirmButton.onClick.AddListener(() =>
-        {
-            if (_currentEvidenceOnEdit != null)
-            {
-                string defaultName = !string.IsNullOrEmpty(_cachedRandomTip) ? _cachedRandomTip : _currentEvidenceOnEdit.displayName;
-                string newName = string.IsNullOrWhiteSpace(m_inputField.text) ? defaultName : m_inputField.text;
-                RenameEvidence(_currentEvidenceOnEdit.guid, newName);
-            }
-            FoldPanel().Forget();
-        });
-        m_cancelButton.onClick.AddListener(() =>
-        {
-            FoldPanel().Forget();
-            _currentEvidenceOnEdit = null;
-        });
+        m_confirmButton.onClick.AddListener(Confirm);
+        m_cancelButton.onClick.AddListener(Cancel);
         
         m_background.SetActive(false);
     }
@@ -98,6 +85,23 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
         
         m_confirmButton.onClick.RemoveAllListeners();
         m_cancelButton.onClick.RemoveAllListeners();
+    }
+
+    private void Confirm()
+    {
+        if (_currentEvidenceOnEdit != null)
+        {
+            string defaultName = _currentEvidenceOnEdit.displayName;
+            string newName = string.IsNullOrWhiteSpace(m_inputField.text) ? defaultName : m_inputField.text;
+            RenameEvidence(_currentEvidenceOnEdit.guid, newName);
+        }
+        FoldPanel().Forget();
+    }
+
+    private void Cancel()
+    {
+        FoldPanel().Forget();
+        _currentEvidenceOnEdit = null;
     }
 
     private bool Check(SerializableGuid guid) => _possibleEvidenceMarked.Contains(guid);
@@ -123,16 +127,17 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     private async UniTask UnfoldPanel()
     {
         if (m_panel == null) return;
-        
+    
         m_pushEvent.Raise(this);
-        
+    
         SetRandomTipForCurrentEvidence();
         m_background.SetActive(true);
         Tween.StopAll(m_panel.gameObject.transform);
-        var seq = Sequence.Create();
        
         m_panel.gameObject.transform.localScale = new Vector3(0, 1, 1);
-        await seq.Group(Tween.ScaleX(m_panel.gameObject.transform, 1f, 0.3f, Ease.OutBack));
+        
+        var seq = Sequence.Create().Group(Tween.ScaleX(m_panel.gameObject.transform, 1f, 0.3f, Ease.OutBack));
+        
         await seq;
     }
 
@@ -167,13 +172,13 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     {
         if (m_panel == null) return;
         m_popEvent.Raise();
+        
         Tween.StopAll(m_panel.gameObject.transform);
-
-        var seq = Sequence.Create();
-        await seq.Group(Tween.ScaleX(m_panel.gameObject.transform, 0f, 0.2f, Ease.InQuad));
         
-        await seq;
+        var seq = Sequence.Create().Group(Tween.ScaleX(m_panel.gameObject.transform, 0f, 0.2f, Ease.InQuad));
         
+        await seq; 
+    
         m_inputField.text = string.Empty;
         _cachedRandomTip = string.Empty;
         m_background.SetActive(false);
@@ -199,10 +204,24 @@ public class TheoryMarkingPanel : Singleton<TheoryMarkingPanel>, IActivity
     public void Resume()
     {
         enableCursor.Raise(true);
+        m_inputReader.SetEnable(true);
+        m_inputReader.Confirm += Confirm;
+        m_inputReader.Cancel += Cancel;
     }
-    public void Pause() {  enableCursor.Raise(false);}
-    public void Stop() { }
 
+    public void Pause()
+    {
+        enableCursor.Raise(false);
+        m_inputReader.SetEnable(false);
+        m_inputReader.Confirm -= Confirm;
+        m_inputReader.Cancel -= Cancel;
+    }
+
+    public void Stop()
+    {
+        Pause();
+    }
+    
     public bool CanPopWithKey()
     {
         return false;

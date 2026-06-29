@@ -51,11 +51,7 @@ public class CaseSlot
     {
         string slotName = string.IsNullOrEmpty(SlotTitle) ? "Unknown Slot" : SlotTitle;
 
-        if (Identity.ProofTypeNeed != w)
-        {
-            return false;
-        }
-    
+     
         if (requieredClue == null || requieredClue.Count == 0) 
         {
             return true;

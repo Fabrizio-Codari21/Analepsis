@@ -24,7 +24,6 @@ public class CursorScript : MonoBehaviour
         {
             AudioManager.Instance.SelectSfx(SFXType.Player, _clicked ? "PenUnClick" : "PenClick");
             _clicked = !_clicked;
-           
             Cursor.SetCursor(cursorArrowUpdate, skewedVector, CursorMode.ForceSoftware);
         }
         

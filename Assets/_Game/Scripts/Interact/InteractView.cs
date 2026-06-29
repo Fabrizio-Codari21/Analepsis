@@ -8,12 +8,9 @@ public class InteractView : MonoBehaviour
 {
     [SerializeField] private InteractableFocusEventChannel m_focusEvent;
     [SerializeField] private InteractableFocusEventChannel m_unfocusEvent;
-    
     [SerializeField] private DynamicTextSetting m_dynamicTextSetting;
     [SerializeField] private Transform m_textCanvaRoot;
     [SerializeField] public Transform m_textRoot;
-
-    
     private CancellationTokenSource _cts;
     private void OnEnable()
     {

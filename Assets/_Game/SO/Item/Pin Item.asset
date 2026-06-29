@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf765b1b1104798829942b575348486, type: 3}
   m_Name: Pin Item
   m_EditorClassIdentifier: 
-  renderCameraScaleMax: 1
-  renderCameraScaleMin: 0.5
+  renderCameraScaleMax: 0.7
+  renderCameraScaleMin: 1
   gameObject: {fileID: 4812978782986017369, guid: cbc346709752d6545815b2614103c328, type: 3}
   guid:
     Part1: 1632069149
@@ -21,22 +21,20 @@ MonoBehaviour:
     Part3: 2161618590
     Part4: 1320022743
   Name: Pin
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: 2711c9aec9a370e4ead270f92e4f1b7c, type: 3}
   baseClue: A pin with some political iconography on it.
   pois:
   - poiId: Front
-    description: 'The front shows a political slogan: "[INSERT SLOGAN]".
+    description: 'You can read a slogan: "To produce more, we must know more...".
 
-      It
-      honestly doesn''t seem very familiar...'
+      Is
+      it political, perhaps? It honestly doesn''t seem very familiar...'
   - poiId: Back
     description: The pin is very sharp; it wouldn't be shocking if someone was hurt
       because of it...
   flashbackInfo:
-    info: 'Someone is reading the text on this pin to a person behind a door.
-
-      Could
-      this pin have... a code of some kind?'
+    info: "Someone is reading the text on this pin \nto a person behind a door.\nCould
+      this pin have... a code of some kind?"
     characterPrefab: {fileID: -3991744081947586821, guid: 3a69710c7ad8750499048d714dec1016, type: 3}
     key: {fileID: 11400000, guid: b7cce693bc1e56a4abcf95cb5f453b3b, type: 2}
     offset: {x: 0, y: 0, z: 0}

@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 
 
-public class FlashbackManager : MonoBehaviour
+public class FlashbackManager : Singleton<FlashbackManager>
 {
  
     [SerializeField] private Material highlightShader;
@@ -16,19 +16,22 @@ public class FlashbackManager : MonoBehaviour
     public BoolEventChannel enableFlashback;
     [SerializeField] private GameObject[] m_GoInFlashback;
     [SerializeField] private GameObject m_leaveFlashback;
-    
     [SerializeField] private DynamicTextSetting displaySetting;
     [SerializeField] private ItemEventChannel itemEvent;
     [SerializeField] private NoteEvent note;
     private Interactable _flashbackObject;
     private Item _currentItem;
     DynamicText flashbackClueDisplay;
-     
+
+
+
+    [SerializeField] private Check m_flashBackState;
     private AsyncFiniteStateMachine<FlashbackState> _stateMachine;
 
-    private void Awake()
+    protected override void Awake()
     {
         FsmSetup();
+        base.Awake();
     }
 
     private void Start()
@@ -50,6 +53,16 @@ public class FlashbackManager : MonoBehaviour
     {
         enableFlashback.OnEventRaised -= OnFlashback;
         itemEvent.OnEventRaised -= SetCurrentItem;
+    }
+
+    private void OnDestroy()
+    {
+        ForceResetFlashbackState();
+    }
+    
+    public bool InFlashbackState()
+    {
+        return m_ctx.flashbackState;
     }
 
     private async void OnFlashback(bool enable)
@@ -108,9 +121,9 @@ public class FlashbackManager : MonoBehaviour
             item.SetActive(false);
         }
 
-        if (!_currentItem.flashbackInfo.characterPrefab) return;
+        if (!_currentItem?.flashbackInfo!?.characterPrefab) return;
 
-        Destroy(_flashbackObject.gameObject);
+         Destroy(_flashbackObject?.gameObject);
         _flashbackObject = null;
         _currentItem = null;
     }
@@ -128,6 +141,23 @@ public class FlashbackManager : MonoBehaviour
             .State(FlashbackState.Active, active)
             .Build(FlashbackState.Inactive);
     }
+    
+    private void ForceResetFlashbackState()
+    {
+       
+        if (m_ctx != null && m_ctx.flashbackMaterial != null)
+        {
+            m_ctx.flashbackMaterial.SetFloat("_Control", 0f);
+        }
+
+        
+        if (m_ctx != null && m_ctx.flashbackInputReader != null)
+        {
+            m_ctx.flashbackInputReader.SetEnable(false);
+        }
+
+        Despawn();
+    }
  
 }
 [Serializable]
@@ -143,7 +173,8 @@ public class FlashbackContext
     public float lerpDuration;
     
     public BoolEventChannel enableFlashback;
- 
+
+    public bool flashbackState;
 
 }
 
@@ -178,7 +209,7 @@ public class FlashbackActiveState : IAsyncState  // Enter flashback
         );
         await UniTask.WhenAll(fadeTask, matTask);
         _spawn?.Invoke();
-
+        _context.flashbackState = true;
         _context.flashbackInputReader.SetEnable();
         _context.flashbackInputReader.ExitFlashback += Exit;
         await _context.transitionEffect.FadeOut();
@@ -187,7 +218,6 @@ public class FlashbackActiveState : IAsyncState  // Enter flashback
 
     private void Exit()
     {
-        
         _context.enableFlashback.Raise(false);
     }
 
@@ -200,23 +230,33 @@ public class FlashbackActiveState : IAsyncState  // Enter flashback
     {
        
         await _context.transitionEffect.FadeIn();
-        
        
         _context.flashbackInputReader.ExitFlashback -= Exit;
         _context.flashbackInputReader.SetEnable(false);
-  
-        _despawn?.Invoke();
     
         var fadeTask = _context.transitionEffect.FadeOut();
         var matTask =LerpMaterialFloat(
             _context.flashbackMaterial,
             "_Control",
             _context.targetValue,
-            0f,
+            _context.targetValue / 2,
             _context.lerpDuration
         );
         
         await UniTask.WhenAll(matTask,fadeTask);
+        _despawn?.Invoke();
+        var fade2Task = _context.transitionEffect.FadeOut();
+        var mat2Task =LerpMaterialFloat(
+            _context.flashbackMaterial,
+            "_Control",
+            _context.targetValue / 2,0
+            
+            ,
+            _context.lerpDuration
+        );
+        
+        await UniTask.WhenAll(fade2Task,mat2Task);
+        
      
     }
     
@@ -255,6 +295,7 @@ public class FlashbackInactiveState : IAsyncState // Back
     }
     public Task OnEnter()
     {
+        _context.flashbackState = false;
         return Task.CompletedTask;
     }
     

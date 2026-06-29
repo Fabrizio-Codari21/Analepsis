@@ -25,6 +25,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     [SerializeField] private NoteEvent note; // record 
     [SerializeField] private BoolEventChannel m_updatePoi;
     [SerializeField] private EventChannel m_refreshTree;
+    [SerializeField] private BoolEventChannel m_showAction;
     #endregion
     
     #region General
@@ -127,7 +128,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
         }
     }  
     
-    
+  
     [ShowInInspector, ReadOnly] private Dictionary<SerializableGuid,List<DialogueNote>> _npcTalkedDialogue = new();
     public  void RecordDialogueProgress(SerializableGuid id, Dialogue dialogue, INode currentNode, INode parentNode)
     {
@@ -154,9 +155,11 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     #region Open & Close
     private void Open()
     {
+        if(FlashbackManager.Instance.InFlashbackState()) return;
         pushEvent.Raise(this);
         AudioManager.Instance.SelectSfx(SFXType.Player, "Open");
         takeOutNotebookChannel.Raise(representer);
+        m_showAction?.Raise(true);
         ShowLayout(0);
         
     }
@@ -164,7 +167,7 @@ public class NotebookManager : Singleton<NotebookManager>, IActivity
     private void Close()
     {
         popEvent.Raise();
-
+        m_showAction?.Raise(false);
         AudioManager.Instance.SelectSfx(SFXType.Player, "Close");
         putInNotebookChannel.Raise(representer);
  
@@ -430,7 +433,7 @@ public class ItemNote : Note
 
         foreach (var desc in unlockedDescriptions)
         {
-            fullContent.Add($"{unlockedDescriptions.IndexOf(desc) + 1})  {desc}");
+            fullContent.Add($"{unlockedDescriptions.IndexOf(desc) + 1})  {desc}\n");
         }
 
         var unlockedFlash = NotebookManager.Instance.GetItemFlashbackInfo(_item);
@@ -441,7 +444,12 @@ public class ItemNote : Note
  
     public override string GetInfo() => FullInfo().AsString();
 }
-
+public enum NodeVisualState
+{
+    Visited,       
+    Unchosen,         
+    ConditionLocked  
+}
 
 public class TreeNode
 {
@@ -470,17 +478,17 @@ public class TreeNode
     // Order index among siblings
     public int Number;
 
-    public readonly bool IsLocked;
-  
+    public bool IsLocked => VisualState == NodeVisualState.ConditionLocked;
+    public bool IsUnchosen => VisualState == NodeVisualState.Unchosen;
+    public NodeVisualState VisualState { get; set; } = NodeVisualState.ConditionLocked;
 
     public bool IsLeaf => Children.Count == 0;
     public RectTransform RuntimeRect { get; set; }
 
-    public TreeNode(INode source,  bool isLocked = false)
+    public TreeNode(INode source, NodeVisualState visualState = NodeVisualState.ConditionLocked)
     {
-      
+        VisualState = visualState;
         Source = source;
-        IsLocked = isLocked;
 
         X = 0;
         Y = 0;
@@ -519,7 +527,10 @@ public class TreeNode
 public class DialogueNote : Note
 {
     private readonly Dialogue _dialogueRepresenter;
+    
+    [ShowInInspector, ReadOnly]
     private readonly HashSet<SerializableGuid> _visitedRawNodeGuids = new();
+    
     private readonly Dictionary<SerializableGuid, TreeNode> _rtNodeLookup = new();
     public TreeNode RuntimeTreeRoot { get; private set; }
     
@@ -540,7 +551,7 @@ public class DialogueNote : Note
     
     private void InitRoot(DialogueNode startingNode)
     {
-        RuntimeTreeRoot = new TreeNode( startingNode);
+        RuntimeTreeRoot = new TreeNode(startingNode, NodeVisualState.Visited);
         _visitedRawNodeGuids.Add(startingNode.guid);
         _rtNodeLookup[startingNode.guid] = RuntimeTreeRoot;
     }
@@ -548,26 +559,84 @@ public class DialogueNote : Note
     public void RegisterNodeVisit(INode currentNode, INode parentNode)
     {
         if (currentNode == null) return;
+        
         SerializableGuid currentGuid = GetNodeGuid(currentNode);
-        if (_visitedRawNodeGuids.Contains(currentGuid)) return;
         SerializableGuid parentGuid = parentNode != null ? GetNodeGuid(parentNode) : SerializableGuid.Empty;
-        if (!_rtNodeLookup.TryGetValue(parentGuid, out var rtParent)) { return; }
+
+        // 🌟 【终极修正补丁】：数据上报记录独立化！
+        // 不管它能不能在 _rtNodeLookup 里找到前置渲染父级，
+        // 只要玩家听到了这句对话，我们高优先级、无条件地将其 Guid 狠狠踩进通关哈希表里！
+        if (!currentGuid.Equals(SerializableGuid.Empty))
+        {
+            _visitedRawNodeGuids.Add(currentGuid);
+        }
         
-        bool isNpc = currentNode is DialogueNode;
-        TreeNode rtChild = new TreeNode(currentNode, isNpc) { Parent = rtParent };
-        
-        rtParent.Children.Add(rtChild);
-        
-        _visitedRawNodeGuids.Add(currentGuid);
-        _rtNodeLookup[currentGuid] = rtChild;
-    }
-    public bool IsNodeUnlocked(SerializableGuid nodeGuid) => _visitedRawNodeGuids.Contains(nodeGuid);
+        // 建立树状拓扑图的运行时缓存逻辑，仅作为排布辅助，不再具备“连累、卡死哈希数据更新”的副作用
+        if (_rtNodeLookup.TryGetValue(parentGuid, out var rtParent))
+        {
+            if (!_rtNodeLookup.ContainsKey(currentGuid))
+            {
+                TreeNode rtChild = new TreeNode(currentNode, NodeVisualState.Visited) { Parent = rtParent };
+                rtParent.Children.Add(rtChild);
+                _rtNodeLookup[currentGuid] = rtChild;
+            }
+        }
+    }public bool IsNodeUnlocked(SerializableGuid nodeGuid) => _visitedRawNodeGuids.Contains(nodeGuid);
+    
     private SerializableGuid GetNodeGuid(INode node)
     {
         if (node is DialogueNode dn) return dn.guid;
-        
         if (node is DialogueResponse dr) return dr.nextNode?.guid ?? SerializableGuid.NewGuid();
-        
         return SerializableGuid.Empty;
+    }
+    
+    // 🌟 配合 TreePage 干净隔离层的数据状态探测分流
+    public NodeVisualState GetNodeVisualState(DialogueNode configNode, DialogueResponse runtimePreviousResponse)
+    {
+        if (configNode == null) return NodeVisualState.ConditionLocked;
+        
+        // 1. 运行时明确走过 -> 亮起
+        if (_visitedRawNodeGuids.Contains(configNode.guid))
+        {
+            return NodeVisualState.Visited;
+        }
+        
+        // 2. 深度后代激活兜底 -> 亮起
+        if (IsAnyChildVisited(configNode))
+        {
+            return NodeVisualState.Visited;
+        }
+        
+        // 3. 使用 TreePage 传下来的局域清洁关系进行判定
+        if (runtimePreviousResponse != null)
+        {
+            if (!runtimePreviousResponse.IsAvailable())
+            {
+                return NodeVisualState.ConditionLocked;
+            }
+            return NodeVisualState.Unchosen;
+        }
+        
+        return NodeVisualState.ConditionLocked;
+    }
+
+    // 保持对老结构的向下兼容
+    public NodeVisualState GetNodeVisualState(DialogueNode configNode)
+    {
+        return GetNodeVisualState(configNode, configNode.PreviousResponse);
+    }
+
+    private bool IsAnyChildVisited(DialogueNode node)
+    {
+        if (node == null || node.responses == null) return false;
+
+        foreach (var response in node.responses)
+        {
+            if (response.nextNode == null) continue;
+            if (_visitedRawNodeGuids.Contains(response.nextNode.guid)) return true;
+            if (IsAnyChildVisited(response.nextNode)) return true;
+        }
+
+        return false;
     }
 }

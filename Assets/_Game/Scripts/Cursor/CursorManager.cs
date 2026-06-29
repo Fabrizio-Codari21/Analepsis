@@ -1,23 +1,67 @@
-
+using System;
 using UnityEngine;
 using PrimeTween;
+using Sirenix.OdinInspector;
 
 public class CursorManager : Singleton<CursorManager>
 {
     [SerializeField] private BoolEventChannel m_cursorEnableChannel;
-    [SerializeField] private CursorAnimationEvent m_cursorAnimationChannel;
-    [SerializeField] private CursorAnimation m_defaultCursorAnimation;
-    
-    private bool _cursorEnabled;
-    
+    [Header("Event")]
+    [InfoBox("Change Cursor")]
+    [SerializeField] private CursorEvent m_cursorEventChannel; 
+    [SerializeField] private CustomCursor customCursorDefault;
+    [SerializeField] private EventChannel m_resetCursorChannel;
+
+    [SerializeField] private bool m_visibleOnStart = true;
+    private CustomCursor _currentCustomCursor;
     private Sequence _sequence = default;
+    bool _clicked = false;
+    
+    private enum CursorState { Up, TransitionToDown, Down, TransitionToUp }
+    private CursorState _currentState = CursorState.Up;
+
     private void Start()
     {
         m_cursorEnableChannel.OnEventRaised += CursorEnable;
-        m_cursorAnimationChannel.OnEventRaised += PlayCursor;
-
-        CursorEnable(false);
+        ChangeCursorAsset(customCursorDefault);
+        CursorEnable(m_visibleOnStart);
+        m_cursorEventChannel.OnEventRaised += ChangeCursorAsset;
+        m_resetCursorChannel.OnEventRaised += ResetCursor;
     }
+
+    
+    private void ResetCursor() => ChangeCursorAsset(customCursorDefault);
+   
+
+    private void OnDestroy()
+    {
+        m_resetCursorChannel.OnEventRaised -= ResetCursor;
+        if (m_cursorEventChannel != null) m_cursorEventChannel.OnEventRaised -= ChangeCursorAsset;
+        if (m_cursorEnableChannel != null) m_cursorEnableChannel.OnEventRaised -= CursorEnable;
+        if (_sequence.isAlive) _sequence.Stop();
+    }
+
+    private void Update()
+    {
+        if (!Cursor.visible || Cursor.lockState == CursorLockMode.Locked) return;
+        
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            PlayTransitionState(toRelease: false);
+
+            if (_currentCustomCursor.clickSound != string.Empty)
+            {
+                AudioManager.Instance?.SelectSfx(SFXType.Player, _clicked ? _currentCustomCursor.clickSound : _currentCustomCursor.upSound);
+            }
+            _clicked = !_clicked;
+        }
+        else if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            PlayTransitionState(toRelease: true);
+            //AudioManager.Instance.SelectSfx(SFXType.Player, _currentCustomCursor.upSound);
+        }
+    }
+
     private void CursorEnable(bool enable)
     {
         CursorLockMode targetMode = enable ? CursorLockMode.None : CursorLockMode.Locked;
@@ -25,30 +69,80 @@ public class CursorManager : Singleton<CursorManager>
         Cursor.lockState = targetMode;
         Cursor.visible = enable;
     }
-    private void PlayCursor(CursorAnimation ca )
+    
+    private void ChangeCursorAsset(CustomCursor newAsset)
     {
-        if(_sequence.isAlive) _sequence.Stop();
+        if (newAsset == null) return;
+        _currentCustomCursor = newAsset;
+        PlayLoopState(CursorState.Up, forceReplay: true);
+    }
+
+ 
+    private void PlayTransitionState(bool toRelease)
+    {
+        if (_currentCustomCursor == null) return;
+        if (_sequence.isAlive) _sequence.Stop();
         
-        if(ca.animationSheets.Length <= 0) return;
-        if (ca.animationSheets.Length == 1)
+        Texture2D[] transitionSheets = toRelease ? _currentCustomCursor.transitionToUp : _currentCustomCursor.transitionToDown;
+        
+        if (transitionSheets == null || transitionSheets.Length == 0)
         {
-            Cursor.SetCursor(ca.animationSheets[0], Vector2.zero, CursorMode.Auto);
+            PlayLoopState(toRelease ? CursorState.Up : CursorState.Down, forceReplay: true);
             return;
         }
-        _sequence = Sequence.Create(cycles: -1);
-        float frameTime = 1f / ca.frameRate;
-        foreach (var t in ca.animationSheets)
+
+        _currentState = toRelease ? CursorState.TransitionToUp : CursorState.TransitionToDown;
+        
+        _sequence = Sequence.Create(cycles: 1);
+        float frameTime = 1f / _currentCustomCursor.frameRate;
+
+        foreach (var tex in transitionSheets)
         {
-            var frame = t;
-            _sequence.ChainCallback(() => { Cursor.SetCursor(frame, Vector2.zero, CursorMode.Auto); });
+            var currentTex = tex; 
+            var hotSpot = _currentCustomCursor.m_skewedVector;
+
+            _sequence.ChainCallback(() => { Cursor.SetCursor(currentTex, hotSpot, CursorMode.ForceSoftware); });
+            _sequence.ChainDelay(frameTime);
+        }
+
+    
+        _sequence.ChainCallback(() =>
+        {
+            PlayLoopState(toRelease ? CursorState.Up : CursorState.Down, forceReplay: true);
+        });
+    }
+    
+
+    private void PlayLoopState(CursorState state, bool forceReplay = false)
+    {
+        if (_currentState == state && !forceReplay) return;
+        _currentState = state;
+
+        if (_sequence.isAlive) _sequence.Stop();
+        if (_currentCustomCursor == null) return;
+        Texture2D[] targetSheets = (state == CursorState.Up) ? _currentCustomCursor.animationSheetsUp : _currentCustomCursor.animationSheetsDown;
+        
+      
+        if (targetSheets == null || targetSheets.Length == 0) targetSheets = _currentCustomCursor.animationSheetsUp;
+        if (targetSheets == null || targetSheets.Length == 0) return;
+
+   
+        if (targetSheets.Length == 1)
+        {
+            Cursor.SetCursor(targetSheets[0], _currentCustomCursor.m_skewedVector, CursorMode.ForceSoftware);
+            return;
+        }
+        
+        _sequence = Sequence.Create(cycles: -1);
+        float frameTime = 1f / _currentCustomCursor.frameRate;
+
+        foreach (var tex in targetSheets)
+        {
+            var currentTex = tex; 
+            var hotSpot = _currentCustomCursor.m_skewedVector;
+
+            _sequence.ChainCallback(() => { Cursor.SetCursor(currentTex, hotSpot, CursorMode.ForceSoftware); });
             _sequence.ChainDelay(frameTime);
         }
     }
-
-    private void OnDestroy()
-    {
-        m_cursorEnableChannel.OnEventRaised -= CursorEnable;
-        m_cursorAnimationChannel.OnEventRaised -= PlayCursor;
-    }
-    
 }
