@@ -16,6 +16,7 @@ public class ItemInfoPage : NotebookPage
     [SerializeField] private float size;
     [SerializeField] private Color color;
     [SerializeField] private float speed;
+    [SerializeField] private float itemIconFactor = 3f;
     
     [SerializeField]
     private float maxWidth = 120f;
@@ -34,7 +35,7 @@ public class ItemInfoPage : NotebookPage
 
        
         var icon = FlyweightFactory.Instance.Spawn<UIImage>(m_imageSetting, Vector3.zero, Quaternion.identity, root);
-        icon.SetImage(item.sprite);
+        icon.SetImage(item.sprite,itemIconFactor);
         m_uiElements.Add(icon);
         
         string fullText = item.baseClue;

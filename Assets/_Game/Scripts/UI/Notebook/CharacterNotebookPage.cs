@@ -110,6 +110,12 @@ public class CharacterNotebookPage : NotebookPage
         m_text.gameObject.SetActive(true);
         m_characterIcon.sprite = key.filePhoto;
         m_text.text = key.characterInfo;
+        if(_currentActiveText != null)
+        {
+            FlyweightFactory.Instance.Return(_currentActiveText);
+        }
+
+        
     }
 
     public void SyncAllButtons(List<NpcIdentity> currentCharacters)
@@ -141,7 +147,13 @@ public class CharacterNotebookPage : NotebookPage
     {
         CancelAndDisposeToken();
         _textCancellationTokenSource = new CancellationTokenSource();
+        if(_currentActiveText != null)
+        {
+            FlyweightFactory.Instance.Return(_currentActiveText);
+        }
+
         PlayText(info, token: _textCancellationTokenSource.Token, sizeOverride: m_textSize).Forget();
+        
     }
 
     private void CreateButtonInstance(NpcIdentity npc)

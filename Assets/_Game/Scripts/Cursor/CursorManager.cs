@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using PrimeTween;
 using Sirenix.OdinInspector;
@@ -47,7 +48,11 @@ public class CursorManager : Singleton<CursorManager>
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             PlayTransitionState(toRelease: false);
-            AudioManager.Instance.SelectSfx(SFXType.Player, _clicked ? _currentCustomCursor.clickSound : _currentCustomCursor.upSound);
+
+            if (_currentCustomCursor.clickSound != string.Empty)
+            {
+                AudioManager.Instance?.SelectSfx(SFXType.Player, _clicked ? _currentCustomCursor.clickSound : _currentCustomCursor.upSound);
+            }
             _clicked = !_clicked;
         }
         else if (Input.GetKeyUp(KeyCode.Mouse0))
