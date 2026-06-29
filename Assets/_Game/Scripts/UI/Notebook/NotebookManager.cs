@@ -432,7 +432,7 @@ public class ItemNote : Note
 
         foreach (var desc in unlockedDescriptions)
         {
-            fullContent.Add($"{unlockedDescriptions.IndexOf(desc) + 1})  {desc}");
+            fullContent.Add($"{unlockedDescriptions.IndexOf(desc) + 1})  {desc}\n");
         }
 
         var unlockedFlash = NotebookManager.Instance.GetItemFlashbackInfo(_item);

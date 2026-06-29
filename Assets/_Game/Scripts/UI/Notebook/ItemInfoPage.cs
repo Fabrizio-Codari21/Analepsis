@@ -42,17 +42,17 @@ public class ItemInfoPage : NotebookPage
         
         if (unlockedPois is { Count: > 0 })
         {
-            fullText += "\n\nClue Founded : "; 
+            fullText += "\n\n<b>Clue Info</b> : \n"; 
             for (int i = 0; i < unlockedPois.Count; i++)
             {
-                fullText += $"\n{i + 1}) {unlockedPois[i]}";
+                fullText += $"\n{i + 1}) {unlockedPois[i]}\n";
             }
         }
         
         string flashback = NotebookManager.Instance.GetItemFlashbackInfo(item);
         if (!string.IsNullOrEmpty(flashback))
         {
-            fullText += $"\n\nFlashback: {flashback}";
+            fullText += $"\n<b>Flashback</b>: \n\n{flashback}";
         }
         
         OnItemInfoTriggered(fullText).Forget();
