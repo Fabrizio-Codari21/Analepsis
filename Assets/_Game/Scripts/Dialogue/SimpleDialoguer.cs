@@ -42,8 +42,9 @@ public class SimpleDialoguer : MonoBehaviour, IDialogable, IConditionCheck
         
     }
 
-    public void Focus()
+    public virtual void Focus()
     {
+        if (FlashbackManager.Instance.InFlashbackState()) return;
         OnFocus?.Invoke();
     }
 

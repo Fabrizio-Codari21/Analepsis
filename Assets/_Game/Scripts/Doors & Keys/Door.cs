@@ -106,7 +106,7 @@ public class Door : MonoBehaviour
     public void TryOpenDoor() => _ = ToggleDoor(true, CheckKey(requiredClue));
     public async UniTask ToggleDoor(bool open = true, bool unlocked = true) 
     {
-
+        
         var seq = Sequence.Create();
 
         // Si esta desbloqueada, se abre y cierra rot�ndose y desactiva la colisi�n de la puerta.

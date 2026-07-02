@@ -13,11 +13,18 @@ public class DoorDialoguer : SimpleDialoguer
 
     public override void StartDialogue()
     {
+        if (FlashbackManager.Instance.InFlashbackState()) return;
         if (_door.CheckKey())
         {
             _door.TryOpenDoor();
             return;
         }
         base.StartDialogue();
+    }
+
+    public override void Focus()
+    {
+        if (FlashbackManager.Instance.InFlashbackState()) return;
+        base.Focus();
     }
 }
