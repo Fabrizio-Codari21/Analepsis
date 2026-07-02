@@ -19,7 +19,7 @@ public class EvidenceDataSlots : MonoBehaviour, ISlotData<Evidence>
         return true;
     }
 
-    public bool ReplaceData(Evidence data)
+    public bool ReplaceData(Evidence data, float scaleMultiplier = 1f)
     {
         if (!CheckSlotAdapt(data)) return false;
 
@@ -32,6 +32,7 @@ public class EvidenceDataSlots : MonoBehaviour, ISlotData<Evidence>
        
         newButton.SetText(data.displayName);
         newButton.InitData(data, this); 
+        newButton.transform.localScale *= scaleMultiplier;
         newButton.MoveToLast();
 
         m_buttonMap.Add(data.guid, newButton);

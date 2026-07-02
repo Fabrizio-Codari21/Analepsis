@@ -73,7 +73,7 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
         return !_buttonMap.ContainsKey(data.guid);
     }
 
-    public bool ReplaceData(Evidence data)
+    public bool ReplaceData(Evidence data, float scaleMultiplier = 1f)
     {
         if (!CheckSlotAdapt(data)) return false;
 
@@ -88,6 +88,7 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
         EvidenceRepresentButton newButton = FlyweightFactory.Instance.Spawn<EvidenceRepresentButton>(m_draggableButton, Vector3.zero, Quaternion.identity, m_receiveTransform);
         newButton.SetText(data.displayName);
         newButton.InitData(data, this); 
+        newButton.transform.localScale *= scaleMultiplier;
         newButton.MoveToLast();
         newButton.Center();
         newButton.transform.SetParent(m_receiveTransform,false);

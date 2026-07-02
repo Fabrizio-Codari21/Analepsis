@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandler, IDragHandler, IEndDragHandler
 { 
     private Transform _originalTransform;
+    private Vector3 _originalScaleMultiplier;
     private int _originalHierarchyPosition;
     private Canvas _canvas;
     private T _data;
@@ -24,10 +25,12 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
         if (transform.parent != null)
         {
             _originalTransform = transform.parent;
+            _originalScaleMultiplier = transform.localScale;
             _originalHierarchyPosition = transform.GetSiblingIndex();
         }
 
         transform.SetParent(_canvas.transform, false);
+        transform.localScale = Vector3.one;
         MoveToLast();
         SetDraggedPosition(eventData);
     }
@@ -71,6 +74,7 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
         if (_originalTransform == null) return;
         transform.position = _originalTransform.position;
         transform.rotation = _originalTransform.rotation;
+        transform.localScale = _originalScaleMultiplier;
         transform.SetParent(_originalTransform, true);
         transform.SetSiblingIndex(_originalHierarchyPosition);
     }
@@ -106,7 +110,7 @@ public interface ISlotData<T>
 {
     bool CheckSlotAdapt(T data);
     
-    bool ReplaceData(T data);
+    bool ReplaceData(T data, float scaleMultiplier = 1);
     void ClearSlot();
     
     bool ClearOnRemove { get; }

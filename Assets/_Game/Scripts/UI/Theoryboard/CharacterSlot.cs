@@ -13,7 +13,7 @@ public class CharacterSlot : MonoBehaviour, ISlotData<Evidence>
         return false;
     }
     
-    public void DisplayCharacter(Evidence npcEvidence)
+    public void DisplayCharacter(Evidence npcEvidence, float scaleMultiplier = 1)
     {
         ClearSlot();
         if (npcEvidence == null)
@@ -33,6 +33,7 @@ public class CharacterSlot : MonoBehaviour, ISlotData<Evidence>
 
         newButton.SetText(npcEvidence.displayName);
         newButton.InitData(npcEvidence, this); 
+        newButton.transform.localScale *= scaleMultiplier;
         newButton.MoveToLast();
         newButton.transform.localPosition = Vector3.zero;
         m_buttonMap.Add(npcEvidence.guid, newButton);
@@ -54,7 +55,7 @@ public class CharacterSlot : MonoBehaviour, ISlotData<Evidence>
        
     }
 
-    public bool ReplaceData(Evidence data)
+    public bool ReplaceData(Evidence data, float scaleMultiplier = 1)
     {
         return false; 
     }

@@ -15,6 +15,7 @@ public class TheoryboardView : MonoBehaviour
     [SerializeField] private Button m_solveButton;
     [SerializeField] private TMP_Text m_solveText;
     [SerializeField] private Button m_previousCharacterButton, m_nextCharacterButton;
+    [SerializeField] private float m_clueScaleMultiplier = 1;
     
     [Header("Dynamic Slots Config")]
     [SerializeField] private TheorySlot m_slotPrefab;
@@ -128,16 +129,14 @@ public class TheoryboardView : MonoBehaviour
         if (markedLogs.Count > 0)
         {
             
-            foreach (var log in markedLogs) m_logBackpackSlot.ReplaceData(log);
+            foreach (var log in markedLogs) m_logBackpackSlot.ReplaceData(log, m_clueScaleMultiplier);
         }
 
         if (markedItem.Count > 0)
         {
-            foreach (var item in markedItem) m_itemSlots.ReplaceData(item);
+            foreach (var item in markedItem) m_itemSlots.ReplaceData(item, m_clueScaleMultiplier);
         }
-      
-        
-        
+
     }
     
     public async UniTask Tip(string solveTxt)
@@ -188,6 +187,6 @@ public class TheoryboardView : MonoBehaviour
         
         Evidence npcEvidence = EvidenceDataBase.Instance.GetOrCreate(currentNpc.npcGuid, () => new NpcEvidence(currentNpc.npcName, currentNpc.npcGuid, currentNpc.possibleRoles, currentNpc));
         
-        m_characterSlot.DisplayCharacter(npcEvidence);
+        m_characterSlot.DisplayCharacter(npcEvidence, m_clueScaleMultiplier);
     }
 }
