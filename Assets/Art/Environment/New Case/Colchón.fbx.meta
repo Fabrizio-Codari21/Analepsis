@@ -3,7 +3,12 @@ guid: 5998319b2b67f46418193646df01a9e3
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Bed
+    second: {fileID: 2100000, guid: 80c18cfb9e037e74e973b8e5f5d02c1b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -74,7 +79,7 @@ ModelImporter:
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 3
   referencedClips: []
   importAnimation: 1
   humanDescription:
