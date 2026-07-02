@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 public class UIImage : FactoryUIObject
@@ -11,8 +12,13 @@ public class UIImage : FactoryUIObject
     {
         if (factor == 0) factor = 1;
         m_image.sprite = sprite;
-        m_image.SetNativeSize();
-        Vector2 nativeSize = m_image.rectTransform.sizeDelta;
-        m_image.rectTransform.sizeDelta = nativeSize / factor;
+        
+        var images = GetComponentsInChildren<Image>();
+        foreach (var image in images)
+        {
+            //image.SetNativeSize();
+            Vector2 nativeSize = image.rectTransform.sizeDelta;
+            image.rectTransform.sizeDelta = nativeSize * factor;
+        }
     }
 }
