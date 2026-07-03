@@ -32,8 +32,9 @@ public class CharacterSlot : MonoBehaviour, ISlotData<Evidence>
         );
 
         newButton.SetText(npcEvidence.displayName);
-        newButton.InitData(npcEvidence, this); 
-        newButton.transform.localScale *= scaleMultiplier;
+        newButton.InitData(npcEvidence, this);
+        //newButton.SetTextSize(false, scaleMultiplier != 0 ? (1 / scaleMultiplier) : 1);
+        //newButton.transform.localScale *= scaleMultiplier;
         newButton.MoveToLast();
         newButton.transform.localPosition = Vector3.zero;
         m_buttonMap.Add(npcEvidence.guid, newButton);

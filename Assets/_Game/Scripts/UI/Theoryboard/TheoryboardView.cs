@@ -155,7 +155,7 @@ public class TheoryboardView : MonoBehaviour
         _cachedFoundCharacters.AddRange(NotebookManager.Instance.FoundCharacters.Where(c => c != null));
 
         _currentCharacterIndex = 0;
-        UpdateCharacterSlotDisplay();
+        UpdateCharacterSlotDisplay(m_clueScaleMultiplier);
     }
     
     private void SwitchCharacter(int direction)
@@ -171,7 +171,7 @@ public class TheoryboardView : MonoBehaviour
     }
     
     
-    private void UpdateCharacterSlotDisplay()
+    private void UpdateCharacterSlotDisplay(float scaleMultiplier = 1)
     {
         if (m_characterSlot == null) return;
 
@@ -187,6 +187,6 @@ public class TheoryboardView : MonoBehaviour
         
         Evidence npcEvidence = EvidenceDataBase.Instance.GetOrCreate(currentNpc.npcGuid, () => new NpcEvidence(currentNpc.npcName, currentNpc.npcGuid, currentNpc.possibleRoles, currentNpc));
         
-        m_characterSlot.DisplayCharacter(npcEvidence, m_clueScaleMultiplier);
+        m_characterSlot.DisplayCharacter(npcEvidence, scaleMultiplier);
     }
 }

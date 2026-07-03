@@ -31,7 +31,8 @@ public class EvidenceDataSlots : MonoBehaviour, ISlotData<Evidence>
         );
        
         newButton.SetText(data.displayName);
-        newButton.InitData(data, this); 
+        newButton.InitData(data, this);
+        newButton.SetTextSize(false, 1/(scaleMultiplier));
         newButton.transform.localScale *= scaleMultiplier;
         newButton.MoveToLast();
 

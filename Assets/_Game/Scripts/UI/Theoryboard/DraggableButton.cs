@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,14 +8,31 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
 { 
     private Transform _originalTransform;
     private Vector3 _originalScaleMultiplier;
+    private (float x, float y) _originalTextSize;
     private int _originalHierarchyPosition;
     private Canvas _canvas;
     private T _data;
     private ISlotData<T> _myCurrentDataBase;
+    private TextMeshProUGUI _text;
     public void InitData(T data, ISlotData<T> myCurrentBase)
     {
         _data = data;
         _myCurrentDataBase = myCurrentBase;
+        _text = GetComponentInChildren<TextMeshProUGUI>();
+        _originalTextSize = new(_text.fontSizeMax, _text.fontSizeMin);
+    }
+    public void SetTextSize(bool backToOriginal = false, float scaleMultiplier = 1)
+    {
+        //// para que hiciera el texto mas grande cuando el boton es mas chico; no logre que funcionara
+        //if (!backToOriginal)
+        //{
+        //    var mult = scaleMultiplier != 1 ? scaleMultiplier : (1/_originalScaleMultiplier.x);
+        //    _text.fontSizeMax *= mult; _text.fontSizeMin *= mult;
+        //}
+        //else
+        //{
+        //    _text.fontSizeMax = _originalTextSize.x; _text.fontSizeMin = _originalTextSize.y;
+        //}
     }
     public T GetData() => _data;
     public void OnBeginDrag(PointerEventData eventData)
@@ -31,6 +49,7 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
 
         transform.SetParent(_canvas.transform, false);
         transform.localScale = Vector3.one;
+        SetTextSize(true);
         MoveToLast();
         SetDraggedPosition(eventData);
     }
@@ -75,6 +94,7 @@ public abstract class DraggableButton<T> : ButtonFactoryObject, IBeginDragHandle
         transform.position = _originalTransform.position;
         transform.rotation = _originalTransform.rotation;
         transform.localScale = _originalScaleMultiplier;
+        SetTextSize(false);
         transform.SetParent(_originalTransform, true);
         transform.SetSiblingIndex(_originalHierarchyPosition);
     }
