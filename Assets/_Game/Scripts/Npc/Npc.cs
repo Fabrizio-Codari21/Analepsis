@@ -27,6 +27,8 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
    private DynamicText _text;
    private List<Tip> tips = new();
    [SerializeField] private MultiAimConstraint m_player;
+   private WeightedTransform m_playerLook;
+   private Vector3 m_playerLookPosition;
    private void Start()
    {
        OnFocus += SpawnName;
@@ -40,6 +42,16 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
 
 
        m_lookAt.weight = 0;
+       
+       if(m_player != null)
+       {
+            m_player.weight = 0;
+            m_playerLook = m_player.data.sourceObjects.FirstOrDefault();
+            if(!m_playerLook.Equals(default))
+                m_playerLookPosition = m_playerLook.transform.localPosition;
+
+            print("Player assigned");
+       }
 
    }
 
@@ -109,23 +121,29 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
     
     #endregion
 
-    private void Speck()
+   private void Speck()
    {
       m_dialogueEvent.Raise(this);
       StartDialogue();
-    }
+   }
    public string DialoguerName
    {
       get => m_npcIdentity.npcName;
       set => m_npcIdentity.npcName = value;
    }
+   
    public void StartDialogue()
    {
        Debug.Log("Npc.StartDialogue");
        if (m_lookAt != null)
        {
            Debug.Log("View To Player");
-           _= ViewToPlayer(m_lookAt,1f,view: true);
+           _ = ViewToPlayer(m_lookAt, 1f, view: true);
+            if(!m_playerLook.Equals(default))
+            {
+                m_playerLook.transform.position = m_lookAt.transform.position;
+                _ = ViewToPlayer(m_player, 1f, view: true);
+            }
        }
        else
        {
@@ -138,6 +156,13 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
        if (m_lookAt != null)
        {
            ViewToPlayer(m_lookAt,1f,view: false).Forget();
+
+            if (!m_playerLook.Equals(default))
+            {
+                ViewToPlayer(m_player, 1f, view: false).Forget();
+                m_playerLook.transform.localPosition = m_playerLookPosition;
+            }
+
        }
        SetEmotion(DefaultEmotion);
       ResetAnimation();
@@ -272,7 +297,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
 
 
 
-    private async UniTask ViewToPlayer(MultiAimConstraint constraint, float duration, float minWeight = 0.3f, float maxWeight = 0.9f, bool view = true)
+    private async UniTask ViewToPlayer(MultiAimConstraint constraint, float duration, float minWeight = 0f, float maxWeight = 0.9f, bool view = true)
     {
         Debug.Log($"Start Weight = {constraint.weight}");
 
@@ -282,7 +307,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
             x =>
             {
                 constraint.weight = x;
-                Debug.Log($"Tween: {x}");
+                //Debug.Log($"Tween: {x}");
             },
             Ease.OutCirc);
         

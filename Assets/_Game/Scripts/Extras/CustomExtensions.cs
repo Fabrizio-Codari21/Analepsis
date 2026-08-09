@@ -328,6 +328,10 @@ public static class CustomExtensions
     // Convierte Z a Y para cuando una cosa tiene los ejes cruzados.
     public static Vector3 ZToY(this Vector3 a) => new Vector3(a.x, a.z, a.y);
 
+    // Convierte el vector de floats a un vector de ints.
+    public static Vector3Int RoundToInt(this Vector3 a) 
+        => new Vector3Int(Mathf.RoundToInt(a.x), Mathf.RoundToInt(a.y), Mathf.RoundToInt(a.z));
+
     #endregion
 
     #region UI UTILITIES
