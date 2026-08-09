@@ -142,6 +142,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
             if(!m_playerLook.Equals(default))
             {
                 m_playerLook.transform.position = m_lookAt.transform.position;
+                //m_player.GetComponentInParent<CcInputHandler>()?.ReplaceCamera(m_playerLook.transform);
                 _ = ViewToPlayer(m_player, 1f, view: true);
             }
        }
@@ -159,6 +160,7 @@ public class Npc : MonoBehaviour,INpc, IConditionCheck
 
             if (!m_playerLook.Equals(default))
             {
+                //m_player.GetComponentInParent<CcInputHandler>()?.ReplaceCamera(null);
                 ViewToPlayer(m_player, 1f, view: false).Forget();
                 m_playerLook.transform.localPosition = m_playerLookPosition;
             }

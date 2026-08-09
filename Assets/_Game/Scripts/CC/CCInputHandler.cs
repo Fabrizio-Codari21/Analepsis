@@ -103,13 +103,21 @@ public class CcInputHandler : MonoBehaviour
       Pause();
    }
 
-    // Creo que esto es lo que habria que dejar de llamar para que se pueda controlar manualmente la camara.
-   private void SetCamera(Transform target)
-   {
-      m_camera.ForceCameraPosition(target.position, target.rotation);
+    Transform _mainCamera = null;
+    public void ReplaceCamera(Transform newCam = null)
+    {
+        SetCamera(newCam);
+    }
 
-      m_camera.Follow = target;     
-   }
+    // Creo que esto es lo que habria que dejar de llamar para que se pueda controlar manualmente la camara.
+    private void SetCamera(Transform target)
+    {
+        if(_mainCamera == null) _mainCamera = target;
+        var t = target != null ? target : _mainCamera;
+
+        m_camera.ForceCameraPosition(_mainCamera.position, _mainCamera.rotation);
+        m_camera.Follow = t;  
+    }
 
    private void OnDestroy()
    {
