@@ -17,13 +17,9 @@ public class LocalizationAddKeyWindow : EditorWindow
     
     private LocalizedComponents _target;
 
-    public static void Open(
-        CSVKey csvKey,
-        string id,
-        LocalizedComponents target)
+    public static void Open(CSVKey csvKey, string id, LocalizedComponents target)
     {
-        var window =
-            CreateInstance<LocalizationAddKeyWindow>();
+        var window = CreateInstance<LocalizationAddKeyWindow>();
 
         window._csvKey = csvKey;
         window._id = id;
@@ -31,52 +27,38 @@ public class LocalizationAddKeyWindow : EditorWindow
 
         window.LoadHeaders();
 
-        window.titleContent =
-            new GUIContent("Add Localization Key");
+        window.titleContent = new GUIContent("Add Localization Key");
 
-        window.minSize =
-            new Vector2(480f, 420f);
+        window.minSize = new Vector2(480f, 420f);
 
         window.ShowUtility();
     }
 
     private void LoadHeaders()
     {
-        if (_csvKey == null ||
-            _csvKey.table == null)
+        if (_csvKey == null || _csvKey.table == null)
         {
             return;
         }
 
-        var rows =
-            CSVUtility.ReadCSV(
-                _csvKey.table.text);
+        var rows = CSVUtility.ReadCSV(_csvKey.table.text);
 
-        if (rows.Count == 0)
-            return;
+        if (rows.Count == 0) return;
 
-        var columnCount =
-            CSVUtility.GetEffectiveColumnCount(
-                rows[0]);
+        var columnCount = CSVUtility.GetEffectiveColumnCount(rows[0]);
 
-        _headers =
-            new string[columnCount];
+        _headers = new string[columnCount];
 
         for (var i = 0; i < columnCount; i++)
         {
-            _headers[i] =
-                rows[0][i].Trim();
+            _headers[i] = rows[0][i].Trim();
         }
     }
     
     
-    public static void OpenEdit(
-        CSVKey csvKey,
-        string id,
-        LocalizedComponents target)
+    public static void OpenEdit(CSVKey csvKey, string id, LocalizedComponents target)
     {
-        var window =
-            CreateInstance<LocalizationAddKeyWindow>();
+        var window = CreateInstance<LocalizationAddKeyWindow>();
 
         window._csvKey = csvKey;
         window._id = id;
@@ -86,74 +68,49 @@ public class LocalizationAddKeyWindow : EditorWindow
         window.LoadHeaders();
         window.LoadValues();
 
-        window.titleContent =
-            new GUIContent("Edit Localization Key");
+        window.titleContent = new GUIContent("Edit Localization Key");
 
-        window.minSize =
-            new Vector2(480f, 420f);
+        window.minSize = new Vector2(480f, 420f);
 
         window.ShowUtility();
     }
     private void LoadValues()
     {
-        if (_csvKey == null ||
-            _csvKey.table == null)
+        if (_csvKey == null || _csvKey.table == null)
         {
             return;
         }
 
-        var rows =
-            CSVUtility.ReadCSV(
-                _csvKey.table.text);
+        var rows = CSVUtility.ReadCSV(_csvKey.table.text);
 
-        if (rows.Count == 0)
-            return;
+        if (rows.Count == 0) return;
 
-        var header =
-            rows[0];
+        var header = rows[0];
 
-        var keyColumn =
-            CSVHeaderParser.FindKeyColumn(header);
+        var keyColumn = CSVHeaderParser.FindKeyColumn(header);
 
-        if (keyColumn < 0)
-            return;
+        if (keyColumn < 0) return;
 
-        var row =
-            FindRow(
-                rows,
-                keyColumn,
-                _id);
+        var row = FindRow(rows, keyColumn, _id);
 
-        if (row == null)
-            return;
+        if (row == null) return;
 
-        var columnCount =
-            CSVUtility.GetEffectiveColumnCount(header);
+        var columnCount = CSVUtility.GetEffectiveColumnCount(header);
 
-        for (var column = 0;
-             column < columnCount;
-             column++)
+        for (var column = 0; column < columnCount; column++)
         {
-            if (column == keyColumn)
-                continue;
+            if (column == keyColumn) continue;
 
-            var headerName =
-                header[column].Trim();
+            var headerName = header[column].Trim();
 
-            if (string.IsNullOrWhiteSpace(headerName))
-                continue;
+            if (string.IsNullOrWhiteSpace(headerName)) continue;
 
-            _values[headerName] =
-                column < row.Length
-                    ? row[column]
-                    : string.Empty;
+            _values[headerName] = column < row.Length ? row[column]
+                : string.Empty;
         }
     }
 
-    private static string[] FindRow(
-        List<string[]> rows,
-        int keyColumn,
-        string id)
+    private static string[] FindRow(List<string[]> rows, int keyColumn, string id)
     {
         for (var i = 1; i < rows.Count; i++)
         {
@@ -172,31 +129,22 @@ public class LocalizationAddKeyWindow : EditorWindow
     {
         if (_csvKey == null || _headers == null)
         {
-            EditorGUILayout.HelpBox(
-                "Invalid CSV.",
-                MessageType.Error);
+            EditorGUILayout.HelpBox("Invalid CSV.", MessageType.Error);
 
             return;
         }
 
-        EditorGUILayout.LabelField(
-            "Create Localization Key",
-            EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Create Localization Key", EditorStyles.boldLabel);
 
         EditorGUILayout.Space();
 
-        EditorGUILayout.LabelField(
-            "CSV",
-            _csvKey.name);
+        EditorGUILayout.LabelField("CSV", _csvKey.name);
 
-        EditorGUILayout.LabelField(
-            "Key",
-            _id);
+        EditorGUILayout.LabelField("Key", _id);
 
         EditorGUILayout.Space();
 
-        _scrollPosition =
-            EditorGUILayout.BeginScrollView(_scrollPosition);
+        _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
 
         DrawValues();
 
@@ -210,24 +158,16 @@ public class LocalizationAddKeyWindow : EditorWindow
     {
         foreach (var header in _headers)
         {
-            if (string.IsNullOrWhiteSpace(header))
-                continue;
+            if (string.IsNullOrWhiteSpace(header)) continue;
 
-            if (header.Equals(
-                    "Key",
-                    System.StringComparison.OrdinalIgnoreCase))
+            if (header.Equals("Key", System.StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }
 
-            _values.TryGetValue(
-                header,
-                out var value);
+            _values.TryGetValue(header, out var value);
 
-            value =
-                EditorGUILayout.TextField(
-                    header,
-                    value);
+            value = EditorGUILayout.TextField(header, value);
 
             _values[header] = value;
         }
@@ -242,8 +182,7 @@ public class LocalizationAddKeyWindow : EditorWindow
             Close();
         }
 
-        if (GUILayout.Button(
-                _isEditMode ? "Save" : "Add"))
+        if (GUILayout.Button(_isEditMode ? "Save" : "Add"))
         {
             Save();
         }
@@ -253,19 +192,11 @@ public class LocalizationAddKeyWindow : EditorWindow
 
     private void Save()
     {
-        var success =
-            _isEditMode
-                ? LocalizationCSVEditor.UpdateKey(
-                    _csvKey,
-                    _id,
-                    _values)
-                : LocalizationCSVEditor.AddKey(
-                    _csvKey,
-                    _id,
-                    _values);
+        var success = _isEditMode
+                ? LocalizationCSVEditor.UpdateKey(_csvKey, _id, _values)
+                : LocalizationCSVEditor.AddKey(_csvKey, _id, _values);
 
-        if (!success)
-            return;
+        if (!success) return;
 
         ApplyIdToTarget();
 
@@ -275,19 +206,15 @@ public class LocalizationAddKeyWindow : EditorWindow
     }
     private void ApplyIdToTarget()
     {
-        if (_target == null)
-            return;
+        if (_target == null) return;
 
-        var serializedTarget =
-            new SerializedObject(_target);
+        var serializedTarget = new SerializedObject(_target);
 
         serializedTarget.Update();
 
-        var idProperty =
-            serializedTarget.FindProperty("m_id");
+        var idProperty = serializedTarget.FindProperty("m_id");
 
-        if (idProperty == null)
-            return;
+        if (idProperty == null) return;
 
         idProperty.stringValue = _id;
 
