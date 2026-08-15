@@ -145,6 +145,22 @@ public static class LcaValidator
     return valid;
 }
     
+    public static bool ValidateTranslation(string text,
+        string key,
+        string languageCode,
+        string sourceName,
+        int rowNumber)
+    {
+        if (!string.IsNullOrWhiteSpace(text))
+            return true;
+
+        Debug.LogWarning(
+            $"[Localization] Empty translation for Key '{key}' " +
+            $"Language '{languageCode}' in '{sourceName}' " +
+            $"at row {rowNumber}.");
+
+        return false;
+    }
     
     public static bool ValidateFallbackLanguage(Dictionary<Language, int> languageColumns, Language fallbackLanguage, string sourceName)
     {

@@ -177,4 +177,92 @@ public static class CSVUtility
     {
         return row.TrueForAll(string.IsNullOrWhiteSpace);
     }
+    
+    
+    public static string WriteCSV(
+        IEnumerable<string[]> rows,
+        char separator = ';')
+    {
+        var csv = new StringBuilder();
+
+        foreach (var row in rows)
+        {
+            for (var i = 0; i < row.Length; i++)
+            {
+                if (i > 0)
+                    csv.Append(separator);
+
+                csv.Append(EscapeCell(
+                    row[i],
+                    separator));
+            }
+
+            csv.AppendLine();
+        }
+
+        return csv.ToString();
+    }
+    
+    
+    private static string EscapeCell(string value, char separator)
+    {
+        value ??= string.Empty;
+
+        var needsQuotes =
+            value.Contains(separator) ||
+            value.Contains('"') ||
+            value.Contains('\n') ||
+            value.Contains('\r');
+
+        if (!needsQuotes)
+            return value;
+
+        var escaped = value.Replace(
+            "\"",
+            "\"\"");
+
+        return $"\"{escaped}\"";
+    }
+    
+    
+    public static List<string[]> TrimColumns(
+        IEnumerable<string[]> rows,
+        int columnCount)
+    {
+        var result = new List<string[]>();
+
+        if (rows == null || columnCount <= 0)
+            return result;
+
+        foreach (var row in rows)
+        {
+            var cleanRow = new string[columnCount];
+
+            for (var i = 0; i < columnCount; i++)
+            {
+                cleanRow[i] =
+                    row != null && i < row.Length
+                        ? row[i]
+                        : string.Empty;
+            }
+
+            result.Add(cleanRow);
+        }
+
+        return result;
+    }
+    
+    public static int GetEffectiveColumnCount(string[] header)
+    {
+        if (header == null || header.Length == 0)
+            return 0;
+
+        for (var i = header.Length - 1; i >= 0; i--)
+        {
+            if (!string.IsNullOrWhiteSpace(header[i]))
+                return i + 1;
+        }
+
+        return 0;
+    }
 }
