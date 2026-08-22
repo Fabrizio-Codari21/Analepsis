@@ -84,6 +84,17 @@
       "source": "builtin",
       "dependencies": {}
     },
+    "com.unity.film-internal-utilities": {
+      "version": "0.20.0-preview",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.timeline": "1.2.18",
+        "com.unity.modules.uielements": "1.0.0",
+        "com.unity.modules.imageconversion": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.formats.fbx": {
       "version": "5.1.5",
       "depth": 0,
@@ -263,6 +274,15 @@
         "com.unity.modules.particlesystem": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.unity.toonshader": {
+      "version": "file:C:/Users/Pc/Downloads/com.unity.toonshader-0.15.0-preview/package",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.unity.film-internal-utilities": "0.20.0-preview",
+        "com.unity.render-pipelines.core": "17.0.3"
+      }
     },
     "com.unity.ugui": {
       "version": "2.0.0",
