@@ -228,11 +228,7 @@ public class LcaManager : PersistentSingleton<LcaManager>
             return GetFallbackTranslation(key, id, tableName);
         }
 
-        if (TryGetValidTranslation(
-                key,
-                currentLanguage,
-                id,
-                out var result))
+        if (TryGetValidTranslation(key, currentLanguage, id, out var result))
         {
             return result;
         }
