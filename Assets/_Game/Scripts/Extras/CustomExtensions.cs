@@ -202,6 +202,12 @@ public static class CustomExtensions
 
     public static async UniTask<Func<bool>> AsyncLoader(this MonoBehaviour x, string sceneName)
     {
+        //if(SceneManager.GetSceneByName(sceneName) == default)
+        //{
+        //    Debug.LogWarning($"There is no scene with the name '{sceneName}'; aborting load.");
+        //    return () => false;
+        //}
+
         UnityEngine.AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
 
         IEnumerator load = x.ExecuteUntilTrue(() => op.isDone, () =>
@@ -331,6 +337,21 @@ public static class CustomExtensions
     // Convierte el vector de floats a un vector de ints.
     public static Vector3Int RoundToInt(this Vector3 a) 
         => new Vector3Int(Mathf.RoundToInt(a.x), Mathf.RoundToInt(a.y), Mathf.RoundToInt(a.z));
+
+    #endregion
+
+    #region TRANSFORM UTILITIES
+
+    // Devuelve una coleccion con todos los hijos de un transform
+    public static List<Transform> GetChildren(this Transform t)
+    {
+        List<Transform> children = new();
+        for (var i = 0; i < t.childCount; i++)
+        {
+            children.Add(t.GetChild(i));
+        }
+        return children;
+    }
 
     #endregion
 

@@ -1,0 +1,163 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1042278189542138568
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6514653128227273634}
+  - component: {fileID: 4558658798964569220}
+  - component: {fileID: 4836506666606725210}
+  - component: {fileID: 2010576772936834752}
+  - component: {fileID: 2192397427200854935}
+  - component: {fileID: 4434366416672619181}
+  m_Layer: 0
+  m_Name: Case Selector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6514653128227273634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042278189542138568}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7, y: 2, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &4558658798964569220
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042278189542138568}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &4836506666606725210
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042278189542138568}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2010576772936834752
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042278189542138568}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2192397427200854935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042278189542138568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae01f2d72cf640b3a6534ceda082d55e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportIfOverlapping: {fileID: 0}
+--- !u!114 &4434366416672619181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042278189542138568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 849a05b35d0bbc049968438a9784d8cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allCasesAvailable:
+  - icon: {fileID: 21300000, guid: 643dda420defc704899cf9e89d38f500, type: 3}
+    caseName: The Bar
+    year: 1983
+    levelToLoad: Scene_Hotel_Lobby
+    isUnlocked: 1
+  - icon: {fileID: 21300000, guid: f3a3c516b6ceea84d8845d8cba0c7bb9, type: 3}
+    caseName: The Hotel
+    year: 1948
+    levelToLoad: FabroTest
+    isUnlocked: 1
+  - icon: {fileID: 21300000, guid: cd6457665355be84eb3a80a437f245eb, type: 3}
+    caseName: Third case
+    year: -363
+    levelToLoad: 
+    isUnlocked: 1
+  casePrefab: {fileID: 4506419895775361347, guid: 28ce4cf72cd4e754f861fad8947381b6, type: 3}
+  selectorMenu: {fileID: 0}
+  caseLayout: {fileID: 0}
+  backButton: {fileID: 0}
+  orderByTimeButton: {fileID: 0}
+  m_pushActivity: {fileID: 11400000, guid: 3027f54723217b445909fe93945c6bd2, type: 2}
+  m_popActivity: {fileID: 11400000, guid: 76cb339f73e2d5646ac0696838117b5e, type: 2}
+  m_cursorEnable: {fileID: 11400000, guid: e691ca0bdc44b8f4cbd61759a64638cf, type: 2}
+  m_nameTextSetting: {fileID: 11400000, guid: 59771497fe5f61140bcf0d27627b429a, type: 2}
+  m_textPositionOffset: {x: 0, y: 1, z: 0}
