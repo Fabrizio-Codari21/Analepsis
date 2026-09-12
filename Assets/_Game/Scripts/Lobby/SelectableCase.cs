@@ -12,6 +12,7 @@ public class SelectableCase : MonoBehaviour
     public Image caseIcon;
     public TextMeshProUGUI textName;
     public Button playButton;
+    public GameObject lockPanel;
 
     public void Assign(SelectableCaseInfo info, int order = -1)
     {
@@ -23,8 +24,22 @@ public class SelectableCase : MonoBehaviour
 
         caseIcon.sprite = caseInfo.icon;
         //textName.text = $"Case {(order != -1 ? order.ToString() : "")} - '{caseInfo.caseName}'";
-        textName.text = $"{(caseInfo.year >= 0 ? $"{caseInfo.year} A.C." : $"{-caseInfo.year} B.C.")} - '{caseInfo.caseName}'";
-        playButton.onClick.AddListener(() => _ = this.AsyncLoader(caseInfo.levelToLoad));
+        textName.text = $"{caseInfo.year.AsAYear()} - '{caseInfo.caseName}'";
+        if (caseInfo.isUnlocked)
+        {
+            playButton.onClick.AddListener(() =>
+            {
+                if (caseInfo.levelToLoad != "") _ = this.AsyncLoader(caseInfo.levelToLoad);
+            });
+            lockPanel.SetActive(false);
+        }
+        else
+        {
+            playButton.GetComponentInChildren<TextMeshProUGUI>().text = "LOCKED";
+            playButton.enabled = false;
+            lockPanel.SetActive(true);
+        }
+
     }
 }
 

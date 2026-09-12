@@ -302,6 +302,12 @@ public static class CustomExtensions
         else return pluralize() ? irregularPlural : s;
     }
 
+    // Convierte un int en un texto que representa un año, ya sea BC o AC (en ingles).
+    public static string AsAYear(this int year)
+    {
+        return $"{(year >= 0 ? $"{year} A.C." : $"{-year} B.C.")}";
+    }
+
     #endregion
 
     #region VECTOR UTILITIES

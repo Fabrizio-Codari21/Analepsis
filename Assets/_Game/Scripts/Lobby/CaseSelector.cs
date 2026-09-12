@@ -64,11 +64,8 @@ public class CaseSelector : MonoBehaviour, IActivity
         var cases = _orderByTime ? allCasesAvailable.OrderBy(x => x.year).ToList() : allCasesAvailable;
         foreach (var c in cases)
         {
-            if (c.isUnlocked)
-            {
-                GameObject newCase = Instantiate(casePrefab.gameObject, caseLayout.transform);
-                newCase.GetComponent<SelectableCase>().Assign(c, allCasesAvailable.IndexOf(c));
-            }
+            GameObject newCase = Instantiate(casePrefab.gameObject, caseLayout.transform);
+            newCase.GetComponent<SelectableCase>().Assign(c, allCasesAvailable.IndexOf(c));
         }
     }
     

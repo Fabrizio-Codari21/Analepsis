@@ -2825,17 +2825,52 @@ MonoBehaviour:
     - {fileID: 1041072212}
     - {fileID: 1041072211}
   musicTransitionSpeed: 3
+--- !u!1 &2001593537 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7060964710540782056, guid: e37d085dab90bff44b0413dd15ad6002, type: 3}
+  m_PrefabInstance: {fileID: 5914629103897057785}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2001593541 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4631068238642391183, guid: e37d085dab90bff44b0413dd15ad6002, type: 3}
   m_PrefabInstance: {fileID: 5914629103897057785}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2001593537}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2001593542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2001593537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Content: {fileID: 0}
+  m_Horizontal: 1
+  m_Vertical: 0
+  m_MovementType: 1
+  m_Elasticity: 0.1
+  m_Inertia: 1
+  m_DecelerationRate: 0.135
+  m_ScrollSensitivity: 1
+  m_Viewport: {fileID: 0}
+  m_HorizontalScrollbar: {fileID: 0}
+  m_VerticalScrollbar: {fileID: 0}
+  m_HorizontalScrollbarVisibility: 0
+  m_VerticalScrollbarVisibility: 0
+  m_HorizontalScrollbarSpacing: 0
+  m_VerticalScrollbarSpacing: 0
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2020870920
 GameObject:
   m_ObjectHideFlags: 0
@@ -3324,7 +3359,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7060964710540782056, guid: e37d085dab90bff44b0413dd15ad6002, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2001593542}
   m_SourcePrefab: {fileID: 100100000, guid: e37d085dab90bff44b0413dd15ad6002, type: 3}
 --- !u!1001 &6079235534475439860
 PrefabInstance:
@@ -3486,6 +3524,10 @@ PrefabInstance:
       propertyPath: orderByTimeButton
       value: 
       objectReference: {fileID: 1649440416}
+    - target: {fileID: 4434366416672619181, guid: 0aab530d5d801a24f8551dcc51b538b6, type: 3}
+      propertyPath: allCasesAvailable.Array.data[2].isUnlocked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6514653128227273634, guid: 0aab530d5d801a24f8551dcc51b538b6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7
