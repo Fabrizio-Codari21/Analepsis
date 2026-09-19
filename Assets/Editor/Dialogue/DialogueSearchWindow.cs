@@ -33,7 +33,7 @@ public class DialogueSearchWindow : ScriptableObject, ISearchWindowProvider
 
         if (draggedPort.direction == Direction.Output)
         {
-            if (draggedPort.node is DialogueGraphNode)
+            if (draggedPort.node is NpcResponse)
             {
                 tree.Add(new SearchTreeEntry(new GUIContent("Response Node"))
                 {
@@ -41,7 +41,7 @@ public class DialogueSearchWindow : ScriptableObject, ISearchWindowProvider
                     userData = "ResponseNode"
                 });
             }
-            else if (draggedPort.node is DialogueResponseGraphNode)
+            else if (draggedPort.node is PlayerResponse)
             {
                 tree.Add(new SearchTreeEntry(new GUIContent("Dialogue Node"))
                 {
@@ -56,10 +56,7 @@ public class DialogueSearchWindow : ScriptableObject, ISearchWindowProvider
 
     public bool OnSelectEntry(SearchTreeEntry entry, SearchWindowContext context)
     {
-        Vector2 worldPosition = window.rootVisualElement.ChangeCoordinatesTo(
-            window.rootVisualElement.parent,
-            mousePosition - window.position.position
-        );
+        Vector2 worldPosition = window.rootVisualElement.ChangeCoordinatesTo(window.rootVisualElement.parent, mousePosition - window.position.position);
 
         Vector2 localPosition = graphView.contentViewContainer.WorldToLocal(worldPosition);
 
@@ -72,9 +69,9 @@ public class DialogueSearchWindow : ScriptableObject, ISearchWindowProvider
                     dialogueText = "New Dialogue"
                 };
 
-                DialogueGraphNode dialogueNode = graphView.CreateNode(localPosition,nodeData: dialogueData);
+                NpcResponse dialogueNode = graphView.CreateNpcResponseNode(localPosition,nodeData: dialogueData);
 
-                if (draggedPort.node is DialogueResponseGraphNode responseNode)
+                if (draggedPort.node is PlayerResponse responseNode)
                 {
                     Edge edge = responseNode.OutputPort.ConnectTo(dialogueNode.InputPort);
                     graphView.AddElement(edge);
@@ -92,10 +89,10 @@ public class DialogueSearchWindow : ScriptableObject, ISearchWindowProvider
                     responseText = "New Response"
                 };
 
-                DialogueResponseGraphNode responseNode =
-                    graphView.CreateResponseNode(responseData, localPosition);
+                PlayerResponse responseNode =
+                    graphView.CreatePlayerResponseNode(responseData, localPosition);
 
-                if (draggedPort.node is DialogueGraphNode dialogueNode)
+                if (draggedPort.node is NpcResponse dialogueNode)
                 {
                     dialogueNode.NodeData.responses.Add(responseData);
 
@@ -113,9 +110,9 @@ public class DialogueSearchWindow : ScriptableObject, ISearchWindowProvider
 
 public class ConditionSearchWindow : ScriptableObject, ISearchWindowProvider
 {
-    private DialogueResponseGraphNode _node;
+    private PlayerResponse _node;
 
-    public void Init(DialogueResponseGraphNode node)
+    public void Init(PlayerResponse node)
     {
         _node = node;
     }
@@ -150,9 +147,9 @@ public class ConditionSearchWindow : ScriptableObject, ISearchWindowProvider
 
 public class AltDialogueSearchWindow : ScriptableObject, ISearchWindowProvider
 {
-    private DialogueGraphNode _node;
+    private NpcResponse _node;
 
-    public void Init(DialogueGraphNode node)
+    public void Init(NpcResponse node)
     {
         _node = node;
     }

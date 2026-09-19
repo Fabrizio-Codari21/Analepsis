@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
-public sealed class DialogueGraphNode : Node
+public sealed class NpcResponse : Node
 {
     public DialogueNode NodeData;
     public Port InputPort;
@@ -18,46 +18,66 @@ public sealed class DialogueGraphNode : Node
     private VisualElement altDialogueContainer;
     public Foldout nodeFoldOut;
     public Foldout altDialogueFoldOut;
-    public DialogueGraphNode(DialogueNode nodeData, DialogueGraphView graphView)
+
+
+    private VisualElement topContainer;
+    private VisualElement bottomContainer;
+    public NpcResponse(DialogueNode nodeData, DialogueGraphView graphView)
     {
+
+        #region  Capablities
+
+        // capabilities |= Capabilities.Copiable;
+        // capabilities |= Capabilities.Groupable;
+        // capabilities |= Capabilities.Renamable;
+
+       
         if (!nodeData.isRootNode)
         {
             capabilities |= Capabilities.Deletable;
         }
         capabilities |= Capabilities.Selectable;
         capabilities |= Capabilities.Movable;
+        #endregion
+        
+        
         NodeData = nodeData;
         _graphView = graphView;
-        title = nodeData.isRootNode ? "Start Node" : "Dialogue Node";
-        TextField textField = new TextField("Dialogue")
+        title = nodeData.isRootNode ? "Npc start speaking" : "Npc Response";
+        titleContainer.style.backgroundColor = Color.black;
+        
+        topContainer = new VisualElement
+        {
+            name = "Top Container",
+            style =
+            {
+                flexDirection = FlexDirection.Column,
+                backgroundColor = new Color(0.5f, 0.5f, 0.5f, 0.5f),
+                paddingLeft = 20,
+                paddingTop = 20,
+                paddingRight = 20,
+                paddingBottom = 20,
+                justifyContent = Justify.SpaceBetween,
+                alignItems = Align.Center
+            }
+        };
+        
+       
+        TextField textField = new TextField("Npc Talking")
         {
             multiline = true,
-            value = nodeData.dialogueText
+            value = nodeData.dialogueText,
+            
         };
-
         textField.RegisterValueChangedCallback(evt =>
         {
             NodeData.dialogueText = evt.newValue;
             
         });
-
         extensionContainer.Add(textField);
-
         
+        #region Custom Detail
         
-        TextField tagField = new TextField("Tag")
-        {
-            multiline = true,
-            value = nodeData.tag
-        };
-
-        tagField.RegisterValueChangedCallback(evt =>
-        {
-            NodeData.tag = evt.newValue;
-        });
-
-        extensionContainer.Add(tagField);
-
         nodeFoldOut = new Foldout()
         {
             text = "Custom Details",
@@ -125,6 +145,8 @@ public sealed class DialogueGraphNode : Node
         reactionFoldOut.Add(reactionField);
         nodeFoldOut.Add(reactionFoldOut);
         
+        
+        
         Foldout proofFoldOut = new Foldout()
         {
             text = "What can it prove?",
@@ -132,7 +154,7 @@ public sealed class DialogueGraphNode : Node
         };
         
         EnumFlagsField proofField = new EnumFlagsField("What can it prove?", nodeData.doesItProveAnything);
-        
+       
       
 
         proofField.RegisterValueChangedCallback(evt =>
@@ -143,47 +165,25 @@ public sealed class DialogueGraphNode : Node
         proofFoldOut.Add(proofField);
         nodeFoldOut.Add(proofFoldOut);
 
-        Foldout isKeyFoldOut = new Foldout()
-        {
-            text = "Is this a Key?",
-            value = false,
-        };
-
-        Toggle isKeyField = new Toggle("Is Key")
-        {
-            value = false,
-        };
-        isKeyField.RegisterValueChangedCallback(evt =>
-        {
-            NodeData.isKey = evt.newValue;
-        });
-
-        isKeyFoldOut.Add(isKeyField);
-        nodeFoldOut.Add(isKeyFoldOut);
+        #endregion
 
         if (!nodeData.isRootNode)
         {
-            InputPort = InstantiatePort(
-                Orientation.Horizontal,
-                Direction.Input,
-                Port.Capacity.Multi,
-                typeof(bool)
-            );
-            InputPort.portName = "Input";
+            InputPort = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Multi, typeof(bool));
             InputPort.portColor = Color.cyan;
+            InputPort.portName = "";
+            Label inputPortLabel = new Label
+            {
+                text = "Player Response",
+                name = "InputPortLabel",
+                style =
+                {
+                    unityFontStyleAndWeight = FontStyle.Bold,
+                    color = Color.black,
+                }
+            };
             inputContainer.Add(InputPort);
-        }
-        else
-        {
-            // Para evitar complicaciones, podemos hacer que los dialogos alternativos solo se puedan
-            // asignar al nodo inicial.
-            //altDialogueFoldOut = new Foldout()
-            //{
-            //    text = "Could this dialogue change?",
-            //    value = false,
-            //};
-            //GenerateAltDialogueUI();
-
+            topContainer.Add(inputPortLabel);
         }
 
         altDialogueFoldOut = new Foldout()
@@ -195,17 +195,19 @@ public sealed class DialogueGraphNode : Node
 
         extensionContainer.Add(nodeFoldOut);
 
-        OutputPort = InstantiatePort(
-            Orientation.Horizontal,
+        
+        var listener = new DialogueEdgeConnectorListener(_graphView);
+        OutputPort = Port.Create<Edge>(
+            Orientation.Vertical,
             Direction.Output,
             Port.Capacity.Multi,
             typeof(bool)
         );
-        OutputPort.portName = "Responses";
+        OutputPort.AddManipulator(new EdgeConnector<Edge>(listener));
+        OutputPort.portName = "";
         OutputPort.portColor = Color.yellow;
         outputContainer.Add(OutputPort);
-        EdgeConnector<Edge> edgeConnector = new EdgeConnector<Edge>(new DialogueEdgeConnectorListener(_graphView));
-        OutputPort.AddManipulator(edgeConnector);
+        
         NodeData.responses ??= new List<DialogueResponse>();
 
         Button addResponseButton = new Button(() =>
@@ -215,7 +217,7 @@ public sealed class DialogueGraphNode : Node
                 responseText = "New Response"
             };
             NodeData.responses.Add(response);
-            DialogueResponseGraphNode responseNode = _graphView.CreateResponseNode(response, GetPosition().position + new Vector2(300, 0));
+            PlayerResponse responseNode = _graphView.CreatePlayerResponseNode(response, GetPosition().position + new Vector2(300, 0));
             Edge edge = OutputPort.ConnectTo(responseNode.InputPort);
             _graphView.AddElement(edge);
         })
@@ -227,7 +229,50 @@ public sealed class DialogueGraphNode : Node
 
         RefreshExpandedState();
         RefreshPorts();
+        
+        VisualElement border = Children().First();
+        if (!nodeData.isRootNode)
+        {
+            inputContainer.RemoveFromHierarchy();
+            topContainer.Insert(0,inputContainer);
+
+            inputContainer.style.flexGrow = 1;
+            border.Insert(0, topContainer);
+        }
+        
+     
+        outputContainer.RemoveFromHierarchy();
+        bottomContainer= new VisualElement{
+            style =
+            {
+                flexDirection = FlexDirection.Column,
+                backgroundColor = new Color(0.8f, 0.8f, 0.5f,0.5f),
+                paddingLeft = 10,
+                paddingTop = 10,
+                paddingRight = 10,
+                paddingBottom = 10,
+                justifyContent = Justify.SpaceBetween,
+                alignItems = Align.Center
+            }
+        };
+        
+        Label outputLabel = new Label
+        {
+            text = "Player Response/Npc OutPut",
+            name = "OutPortLabel",
+            style =
+            {
+                
+                unityFontStyleAndWeight = FontStyle.Bold,
+                color = Color.black,
+            }
+        };
+        bottomContainer.Add(outputLabel);
+        bottomContainer.Add(outputContainer);
+        border.Add(bottomContainer);
     }
+
+    
 
     public void GenerateAltDialogueUI()
     {

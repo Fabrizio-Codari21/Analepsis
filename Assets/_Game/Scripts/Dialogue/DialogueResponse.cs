@@ -7,7 +7,6 @@ public class DialogueResponse : INode
 {
     [TextArea] public string responseText;
     [SerializeReference] public DialogueNode nextNode;
-    [SerializeReference] public string dialogueTopic;
     [SerializeReference] public List<DialogueCondition> m_conditions= new List<DialogueCondition>();
     [HideInInspector] public bool alreadyDisplayed = false;
     
@@ -25,18 +24,6 @@ public class DialogueResponse : INode
         }
         return true;
     }
-    public bool HasTopic(out string topic) 
-    {
-        if (nextNode == null && dialogueTopic != "")
-        {
-            topic = dialogueTopic; return true;
-        }
-        else
-        {
-            topic = default; return false;
-        }
-    }
-    
     public bool HasConditions() => m_conditions is { Count: > 0 };
     public bool IsNewResponse()
     {

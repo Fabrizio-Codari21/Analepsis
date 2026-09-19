@@ -13,10 +13,12 @@ public class DialogueEdgeConnectorListener : IEdgeConnectorListener
     public void OnDropOutsidePort(Edge edge, Vector2 position)
     {
         graphView.OpenSearchWindow(edge.output, position);
+        Debug.Log("Drop Outside Port");
     }
 
     public void OnDrop(GraphView graphView, Edge edge)
     {
         graphView.AddElement(edge);
+        Debug.Log("Add");
     }
 }

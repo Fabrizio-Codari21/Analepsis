@@ -1,21 +1,27 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public sealed class DialogueResponseGraphNode : Node
+public sealed class PlayerResponse : Node
 {
     public DialogueResponse ResponseData;
     private DialogueGraphView _graphView;
     public Port InputPort;
     public Port OutputPort;
 
+
+    private VisualElement conditionRoot;
     private VisualElement conditionContainer;
     private ConditionSearchWindow _searchWindowProvider;
-    public DialogueResponseGraphNode(DialogueResponse responseData, DialogueGraphView graphView)
+
+    private VisualElement topContainer;
+    private VisualElement bottomContainer;
+   public PlayerResponse(DialogueResponse responseData, DialogueGraphView graphView)
     {
         _graphView = graphView;
         ResponseData = responseData;
@@ -23,30 +29,129 @@ public sealed class DialogueResponseGraphNode : Node
         capabilities |= Capabilities.Deletable;
         capabilities |= Capabilities.Selectable;
         capabilities |= Capabilities.Movable;
-        title = "Response";
-        titleContainer.style.backgroundColor = new Color(0.12f, 0.45f, 0.25f, 0.8f);
+        capabilities |= Capabilities.Resizable;
+
+        title = "Player Response";
+        
+
+        #region Port Setup
+        
+        topContainer = new VisualElement{
+            style =
+            {
+                flexDirection = FlexDirection.Row,
+                backgroundColor = Color.gray,
+                paddingLeft = 10,
+                paddingTop = 10,
+                paddingRight = 10,
+                paddingBottom = 10,
+            }
+        };
+        
+        var listener = new DialogueEdgeConnectorListener(_graphView);
+        InputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Input, Port.Capacity.Multi, typeof(bool));
+        InputPort.portName = "";
+        InputPort.portColor = Color.cyan;
+        
+        InputPort.AddManipulator(new EdgeConnector<Edge>(listener));
+        Label inputPortLabel = new Label
+        {
+            text = "Response Npc",
+            style =
+            {
+                color = Color.black,
+                unityFontStyleAndWeight = FontStyle.Bold
+            }
+        };
+        inputContainer.Add(InputPort);
+        inputContainer.Add(inputPortLabel);
+        
+        
+  
+        OutputPort = Port.Create<Edge>(
+            Orientation.Vertical,
+            Direction.Output,
+            Port.Capacity.Multi,
+            typeof(NpcResponse)
+        );
+        OutputPort.portName = "";
+        OutputPort.portColor = Color.cyan;
+        OutputPort.AddManipulator(new EdgeConnector<Edge>(listener));
+        Label outPortLabel = new Label
+        {
+            text = "Npc Response After This",
+            style =
+            {
+                color = Color.black,
+                unityFontStyleAndWeight = FontStyle.Bold
+            }
+        };
+        
+        outputContainer.Add(outPortLabel);
+        outputContainer.Add(OutputPort);
+      
+        outputContainer.style.flexDirection = FlexDirection.Column;
+        
+      
+        
+        #endregion
+
         #region ResponseText
         TextField responseField = new TextField("Response")
         {
             multiline = true,
-            value = responseData.responseText
+            value = responseData.responseText,
+            style =
+            {
+                flexDirection = FlexDirection.Column,
+                width = Length.Percent(100),
+                height = 200,
+                whiteSpace = WhiteSpace.Normal,
+                marginBottom = 20,
+                marginLeft = 20,
+                marginRight = 20,
+            }
         };
 
-        responseField.RegisterValueChangedCallback(evt =>
-        {
-            ResponseData.responseText = evt.newValue;
-        });
+        responseField.labelElement.style.unityFontStyleAndWeight = FontStyle.Bold;
+        responseField.labelElement.style.height = 20;
+        responseField.labelElement.style.marginBottom = 5;
+        responseField.labelElement.style.unityTextAlign = TextAnchor.MiddleCenter;
+   
+        
 
         extensionContainer.Add(responseField);
-        
         #endregion
-        
+
         #region Condition Area
         Foldout conditionFoldout = new Foldout()
         {
             text = $"Conditions ({responseData.m_conditions.Count})",
-            value = false ,            
+            value = false,
+            
         };
+        
+        var foldoutToggle = conditionFoldout.Q<Toggle>();
+        var foldoutLabel = conditionFoldout.Q<Label>();
+        
+        foldoutToggle.style.minHeight = 36; 
+        foldoutToggle.style.paddingTop = 6;
+        foldoutToggle.style.paddingBottom = 6;
+        foldoutToggle.style.paddingLeft = 6;
+        foldoutToggle.style.justifyContent = Justify.Center;
+
+        if (foldoutLabel != null)
+        {
+            foldoutLabel.style.fontSize = 14; 
+            foldoutLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+        }
+
+        var checkmark = conditionFoldout.Q(className: "unity-foldout__toggle").Q(className: "unity-toggle__checkmark");
+        if (checkmark != null)
+        {
+            checkmark.style.scale = new Scale(new Vector3(1.3f, 1.3f, 1f));
+        }
+
         conditionContainer = new VisualElement
         {
             style =
@@ -60,72 +165,78 @@ public sealed class DialogueResponseGraphNode : Node
             }
         };
         conditionFoldout.Add(conditionContainer);
-        Button addConditionButton = new Button (AddCondition) 
-            { text = "+ Add Condition" };
+        Button addConditionButton = new Button(AddCondition) { text = "+ Add Condition" };
         conditionFoldout.Add(addConditionButton);
-        extensionContainer.Add(conditionFoldout);
+
+        conditionRoot = new VisualElement()
+        {
+            style =
+            {
+                backgroundColor = new Color(245f, 245f, 220f, 0.3f),
+            }
+        };
+        
+        conditionRoot.Add(conditionFoldout);
+        extensionContainer.Add(conditionRoot);
         #endregion
 
-        TextField topicField = new TextField("What was the <b>Topic</b> of\n this line of dialogue?")
-        {
-            multiline = false,
-            maxLength = 20,
-            value = responseData.dialogueTopic,
-        };
-        Foldout topicFoldout = new Foldout()
-        {
-            text = $"If this is the Last Node...",
-            visible = responseData.nextNode == null,
-            value = true,
-        };
-        _graphView.OnAddingNextNode += () =>
-        {
-            UpdateTopic(); return ResponseData.nextNode != null;
-        };
-        topicField.RegisterValueChangedCallback(evt =>
-        {
-            ResponseData.dialogueTopic = evt.newValue;
-            UpdateTopic();
-        });
-        topicFoldout.Add(topicField);
-        extensionContainer.Add(topicFoldout);
-
-        void UpdateTopic()
-        {
-            topicFoldout.visible = ResponseData.nextNode == null;
-            topicField.value = topicFoldout.visible ? topicField.value : "";
-            conditionFoldout.text = $"Conditions ({responseData.m_conditions.Count})";
-            RefreshExpandedState(); RefreshPorts();
-        }
-
-
-        InputPort = InstantiatePort(
-            Orientation.Horizontal,
-            Direction.Input,
-            Port.Capacity.Single,
-            typeof(bool)
-        );
-
-        InputPort.portName = "From Dialogue";
-        inputContainer.Add(InputPort);
-        InputPort.portColor = Color.cyan;
-        OutputPort = InstantiatePort(
-            Orientation.Horizontal,
-            Direction.Output,
-            Port.Capacity.Single,
-            typeof(bool)
-        );
-
-        OutputPort.portName = "To Dialogue";
-        OutputPort.portColor = Color.cyan;
-        outputContainer.Add(OutputPort);
-        EdgeConnector<Edge> edgeConnector = new EdgeConnector<Edge>(new DialogueEdgeConnectorListener(_graphView));
-        OutputPort.AddManipulator(edgeConnector);
         GenerateConditionUI();
         RefreshExpandedState();
         RefreshPorts();
-    }
 
+        
+        #region Reorder to #node-border (Input -> Title -> Extension -> Output)
+
+        VisualElement border = Children().First();
+       
+        inputContainer.RemoveFromHierarchy();
+        outputContainer.RemoveFromHierarchy();
+        
+      
+       
+        border.Insert(0, topContainer);
+
+        Button deleteButon = new Button(()=>graphView.DeleteElements(new List<GraphElement> { this }))
+        {
+            text = "X",
+            style =
+            {
+                backgroundColor = Color.red,
+                color = Color.white
+            }
+        };
+        
+        topContainer.style.justifyContent = Justify.SpaceBetween;
+        topContainer.style.alignItems = Align.Center;
+
+        
+        topContainer.Add(inputContainer);
+        topContainer.Add(deleteButon);
+
+
+        inputContainer.style.flexGrow = 1;
+
+        deleteButon.style.alignSelf = Align.Center;
+        deleteButon.style.flexShrink = 0;
+        
+        
+        bottomContainer= new VisualElement{
+            style =
+            {
+                backgroundColor = Color.gray,
+                paddingLeft = 10,
+                paddingTop = 10,
+                paddingRight = 10,
+                paddingBottom = 10,
+            }
+        };
+        
+        bottomContainer.Add(outputContainer);
+        border.Add(bottomContainer);
+
+           
+        #endregion
+    }
 
     public void GenerateConditionUI()
     {
@@ -141,7 +252,6 @@ public sealed class DialogueResponseGraphNode : Node
                 style =
                 {
                     flexDirection = FlexDirection.Row,
-                    
                 }
                 
             };
@@ -276,4 +386,6 @@ public sealed class DialogueResponseGraphNode : Node
             UnityEditor.EditorUtility.SetDirty(UnityEditor.Selection.activeObject);
         }
     }
+    
+    
 }

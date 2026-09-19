@@ -6,39 +6,19 @@ using UnityEngine.UIElements;
 
 public class DialogueGraphWindow : EditorWindow
 {
+    
+    
     private string defaultSavePath = "Assets/Dialogues";
     private Label savePathLabel;
-    
     private const string DefaultSavePathKey = "DialogueGraph_DefaultSavePath";
-    private List<Dialogue> openedDialogues = new();
+    
+    private List<Dialogue> openedDialogues = new();  // 开启过的 dialogue
     private Toolbar toolbar;
-    private VisualElement dialogueTabsContainer;
     private VisualElement savePathContainer;
     private Dialogue currentDialogue;
     private DialogueGraphView graphView;
-    [MenuItem("Tools/Dialogue Graph")]
-    public static void Open()
-    {
-        DialogueGraphWindow window = GetWindow<DialogueGraphWindow>();
-        window.titleContent = new GUIContent("Dialogue Graph");
-        
-        
-    }
-    
-    public static void OpenWithDialogue(Dialogue dialogue)
-    {
-        DialogueGraphWindow window = GetWindow<DialogueGraphWindow>();
-        window.titleContent = new GUIContent("Dialogue Graph");
-
-        if (!window.openedDialogues.Contains(dialogue))
-        {
-            window.openedDialogues.Add(dialogue);
-            window.RefreshTabs();
-        }
-
-        window.OpenDialogue(dialogue);
-    }
-
+    private ScrollView dialogueTabsContainer;  // 所有已经开启的 dialogue tab
+    #region Enable Disable
     private void OnEnable()
     {
         defaultSavePath = EditorPrefs.GetString(DefaultSavePathKey, "Assets/Dialogues");
@@ -47,9 +27,8 @@ public class DialogueGraphWindow : EditorWindow
         {
             defaultSavePath = "Assets/Dialogues";
         }
-
-        CreateGraphView();
         CreateToolBar();
+        CreateGraphView();
         RegisterDragAndDrop();
     }
 
@@ -57,7 +36,83 @@ public class DialogueGraphWindow : EditorWindow
     {
         rootVisualElement.Remove(graphView);
     }
+    #endregion
+
     
+    [MenuItem("Tools/Dialogue Graph")]
+    public static void Open()
+    {
+        DialogueGraphWindow window = GetWindow<DialogueGraphWindow>();
+        window.titleContent = new GUIContent("Dialogue Graph");
+    }
+    
+    public static void OpenWithDialogue(Dialogue dialogue)  // 根据dialogue 打开 dialogue window
+    {
+        DialogueGraphWindow window = GetWindow<DialogueGraphWindow>();  // unity editor 用来获取 或创建 自定义的 编辑器实例， 如果有 就返回该窗口的 实例，如果没有就创建新的
+        window.titleContent = new GUIContent("Dialogue Graph");
+
+        if (!window.openedDialogues.Contains(dialogue))  // 如果没有这个dialogue
+        {
+            window.openedDialogues.Add(dialogue);  // 加入这个dialogue
+        }
+
+        window.OpenDialogue(dialogue);
+    }
+    
+    
+    public void RefreshTabs()  // 刷新 tab
+    {
+        dialogueTabsContainer.Clear();  // 用 visualElement 的 clear 把 子元素全部 移除
+
+        foreach (var dialogue in openedDialogues)
+        {
+            Dialogue localDialogue = dialogue;
+
+            Button tabButton = new Button(() => OpenDialogue(localDialogue)) // 给 button 加入 点击后的 evt
+            {
+                text = localDialogue.name // 这个 tab 的名字
+            };
+
+            if (currentDialogue == localDialogue) // 如果当前的 dialogue 和 现在的 dialogue 是相同的话
+            {
+                tabButton.style.backgroundColor = Color.green;  // 他的 按钮背景变 成这个 颜色
+                tabButton.style.color = Color.black;
+            }
+
+            dialogueTabsContainer.Add(tabButton);  // 把这个 tab 加入到 这个 visual  eleemnt 中
+        }
+    }
+    
+    private void OpenDialogue(Dialogue dialogue)  // 打开dialogue
+    {
+
+        if (dialogue != null && currentDialogue != dialogue) // 如果dialogue 不为空 同时当前的 dialogue 和 要开的 dialogue 不同的话，就要 refresh tab，要提前把
+        {                                                      // current dialogue  设为 dialogue 正常referesh
+            currentDialogue = dialogue;          
+            RefreshTabs();
+        }
+        else
+        {
+            currentDialogue = dialogue; 
+        }
+        
+        if (currentDialogue.startingNode == null) // 如果 当前的 dialogue 完全没有 dialogue
+        {
+            currentDialogue.startingNode = new DialogueNode
+            {
+                dialogueText = "Start Dialogue"
+            };
+
+            EditorUtility.SetDirty(currentDialogue);
+            AssetDatabase.SaveAssets();
+        }
+        graphView.LoadDialogue(currentDialogue);
+       
+    }
+
+
+    
+   
     private void RegisterDragAndDrop()
     {
         rootVisualElement.RegisterCallback<DragUpdatedEvent>(evt =>
@@ -134,10 +189,7 @@ public class DialogueGraphWindow : EditorWindow
         savePathLabel = new Label($"Save Path: {defaultSavePath}");
         savePathLabel.style.flexGrow = 1;
 
-        Button changePathButton = new Button(() =>
-        {
-            ChangeDefaultPath();
-        })
+        Button changePathButton = new Button(ChangeDefaultPath)
         {
             text = "Change Path"
         };
@@ -150,40 +202,23 @@ public class DialogueGraphWindow : EditorWindow
     
     private void CreateDialogueTabsBar()
     {
-        dialogueTabsContainer = new VisualElement();
-        dialogueTabsContainer.style.flexDirection = FlexDirection.Row;
-        dialogueTabsContainer.style.height = 28;
-        dialogueTabsContainer.style.marginTop = 4;
-        dialogueTabsContainer.style.marginBottom = 4;
-        dialogueTabsContainer.style.marginLeft = 4;
-        dialogueTabsContainer.style.marginRight = 4;
+        dialogueTabsContainer = new ScrollView(ScrollViewMode.Horizontal)
+        {
+            style =
+            {
+                height = 48,
+                marginTop = 4,
+                marginBottom = 4,
+                marginLeft = 4,
+                marginRight = 4
+            }
+        };
+
+        dialogueTabsContainer.contentContainer.style.flexDirection = FlexDirection.Row;
 
         rootVisualElement.Add(dialogueTabsContainer);
     }
-    public void RefreshTabs()
-    {
-        dialogueTabsContainer.Clear();
-
-        foreach (var dialogue in openedDialogues)
-        {
-            Dialogue localDialogue = dialogue;
-
-            Button tabButton = new Button(() =>
-            {
-                OpenDialogue(localDialogue);
-            })
-            {
-                text = localDialogue.name
-            };
-
-            if (currentDialogue == localDialogue)
-            {
-                tabButton.style.backgroundColor = new Color(0.25f, 0.25f, 0.25f);
-            }
-
-            dialogueTabsContainer.Add(tabButton);
-        }
-    }
+  
     
     private void ChangeDefaultPath()
     {
@@ -229,24 +264,7 @@ public class DialogueGraphWindow : EditorWindow
         }
     }
     
-    private void OpenDialogue(Dialogue dialogue)
-    {
-        currentDialogue = dialogue;
-
-        if (currentDialogue.startingNode == null)
-        {
-            currentDialogue.startingNode = new DialogueNode
-            {
-                dialogueText = "Start Dialogue"
-            };
-
-            EditorUtility.SetDirty(currentDialogue);
-            AssetDatabase.SaveAssets();
-        }
-
-        graphView.LoadDialogue(currentDialogue);
-
-    }
+ 
     private void CreateNewDialogue(bool useDefaultPathDirectly)
     {
         string savePath = defaultSavePath;
@@ -340,4 +358,5 @@ public class DialogueGraphWindow : EditorWindow
         graphView = new DialogueGraphView(this);
         rootVisualElement.Add(graphView);
     }
+  
 }
