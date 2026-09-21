@@ -88,11 +88,22 @@ public class Dialogue :SerializedScriptableObject
         UnityEditor.EditorUtility.SetDirty(this);
         UnityEditor.AssetDatabase.SaveAssets();
 #endif
-     
     }
     
     
+    public List<StickyNoteData> StickyNotes = new List<StickyNoteData>(); 
     
+    
+}
+
+
+
+[Serializable]
+public class StickyNoteData
+{
+    public Vector2 Position;
+    public string Title;
+    public string Content;
 }
 
 

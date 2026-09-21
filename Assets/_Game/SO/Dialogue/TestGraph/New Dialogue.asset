@@ -1,0 +1,203 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86211e2fd74fb484598c1176279aee61, type: 3}
+  m_Name: New Dialogue
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  dialogueColor: {r: 0, g: 0, b: 0, a: 0}
+  startingNode:
+    dialogueText: hola
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 2095003309555056742
+    isRootNode: 1
+    editorPosition: {x: 300, y: 200}
+    altDialoguePaths: []
+    guid:
+      Part1: 3006610499
+      Part2: 1115330753
+      Part3: 2902197674
+      Part4: 3397857142
+    tag: 
+  allNodes:
+  - dialogueText: hola
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 2095003309555056742
+    isRootNode: 1
+    editorPosition: {x: 300, y: 200}
+    altDialoguePaths: []
+    guid:
+      Part1: 3006610499
+      Part2: 1115330753
+      Part3: 2902197674
+      Part4: 3397857142
+    tag: 
+  - dialogueText: New Dialogue
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 2095003333362450433
+    - rid: 2095003333362450434
+    isRootNode: 0
+    editorPosition: {x: 475.36682, y: 920.741}
+    altDialoguePaths: []
+    guid:
+      Part1: 840409640
+      Part2: 1292848061
+      Part3: 1454605735
+      Part4: 1444593686
+    tag: 
+  - dialogueText: New Dialogue
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses: []
+    isRootNode: 0
+    editorPosition: {x: 978.99994, y: 2430.0967}
+    altDialoguePaths: []
+    guid:
+      Part1: 437866167
+      Part2: 1260029273
+      Part3: 1870019494
+      Part4: 2644854023
+    tag: 
+  - dialogueText: New Dialogue
+    characterEmotion: 0
+    characterReaction: 0
+    doesItProveAnything: 0
+    isKey: 0
+    responses:
+    - rid: 2095003333362450437
+    isRootNode: 0
+    editorPosition: {x: 191, y: 1708.5386}
+    altDialoguePaths: []
+    guid:
+      Part1: 1495758905
+      Part2: 1335361797
+      Part3: 4119207340
+      Part4: 2043221291
+    tag: 
+  hiddenProof: 
+  references:
+    version: 2
+    RefIds:
+    - rid: 2095003309555056742
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: New Response
+        nextNode:
+          rid: 2095003333362450432
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 335.345, y: 432.2576}
+    - rid: 2095003333362450432
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: New Dialogue
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 2095003333362450433
+        - rid: 2095003333362450434
+        isRootNode: 0
+        editorPosition: {x: 475.36682, y: 920.741}
+        altDialoguePaths: []
+        guid:
+          Part1: 840409640
+          Part2: 1292848061
+          Part3: 1454605735
+          Part4: 1444593686
+        tag: 
+    - rid: 2095003333362450433
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: New Response
+        nextNode:
+          rid: 2095003333362450436
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: -52.463654, y: 1248}
+    - rid: 2095003333362450434
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: New Response
+        nextNode:
+          rid: 2095003333362450435
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 1040.5154, y: 1141.0001}
+    - rid: 2095003333362450435
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: New Dialogue
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses: []
+        isRootNode: 0
+        editorPosition: {x: 978.99994, y: 2430.0967}
+        altDialoguePaths: []
+        guid:
+          Part1: 437866167
+          Part2: 1260029273
+          Part3: 1870019494
+          Part4: 2644854023
+        tag: 
+    - rid: 2095003333362450436
+      type: {class: DialogueNode, ns: , asm: Assembly-CSharp}
+      data:
+        dialogueText: New Dialogue
+        characterEmotion: 0
+        characterReaction: 0
+        doesItProveAnything: 0
+        isKey: 0
+        responses:
+        - rid: 2095003333362450437
+        isRootNode: 0
+        editorPosition: {x: 191, y: 1708.5386}
+        altDialoguePaths: []
+        guid:
+          Part1: 1495758905
+          Part2: 1335361797
+          Part3: 4119207340
+          Part4: 2043221291
+        tag: 
+    - rid: 2095003333362450437
+      type: {class: DialogueResponse, ns: , asm: Assembly-CSharp}
+      data:
+        responseText: New Response
+        nextNode:
+          rid: 2095003333362450435
+        m_conditions: []
+        alreadyDisplayed: 0
+        editorPosition: {x: 434.99997, y: 1929}

@@ -12,12 +12,13 @@ public sealed class DialogueGraphView : GraphView
     
     private Dictionary<DialogueNode, NpcResponse> dialogueNodeMap = new();
     private Dictionary<DialogueResponse, PlayerResponse> responseNodeMap = new();
+    private Dictionary<StickyNoteData, StickyNote>  stickyNoteDataMap = new();
+    
     private DialogueSearchWindow searchWindow;
     private ConditionSearchWindow _sharedConditionSearchWindow;
     private AltDialogueSearchWindow _sharedDialogueSearchWindow;
     private bool isLoadingGraph;
     
-
     private Dialogue currentDialogue;
     public Dialogue CurrentDialogue => currentDialogue;
     public DialogueGraphView(EditorWindow window)
@@ -33,6 +34,8 @@ public sealed class DialogueGraphView : GraphView
         
         SetupZoom(ContentZoomer.DefaultMinScale, 3.0f); //（ min 0.05 -> 2.0） 加入 zoom
         
+        
+        
         GridBackground grid = new GridBackground(); // 网格背景
         Insert(0, grid); // 到最底下 重点是insert 到第一个 物品
         grid.StretchToParentSize(); // 拉伸
@@ -42,13 +45,14 @@ public sealed class DialogueGraphView : GraphView
         focusable = true;
         
         
-        RegisterCallback<KeyDownEvent>(evt =>   // 删除
+        RegisterCallback<KeyDownEvent>(evt =>  
         {
             if (evt.keyCode != KeyCode.Delete && evt.keyCode != KeyCode.Backspace) return;
             DeleteSelectionCallback("Delete", AskUser.DontAskUser);
             evt.StopPropagation();
         });
         
+       
         
     }
 
@@ -90,9 +94,14 @@ public sealed class DialogueGraphView : GraphView
                     case NpcResponse dialogueGraphNode:
                         RemoveDialogueNodeData(dialogueGraphNode);
                         break;
+                    case DialogueStickyNote note:
+                        RemoveStickyNoteData(note);
+                        break;
+                       
                 }
             }
            
+            
         
 
         return change;
@@ -103,13 +112,13 @@ public sealed class DialogueGraphView : GraphView
     {
         
         currentDialogue = dialogue;   
-        
         // 开始加载
         isLoadingGraph = true;
         // 清除
         DeleteElements(graphElements.ToList());
         dialogueNodeMap.Clear();
         responseNodeMap.Clear();
+        stickyNoteDataMap.Clear();
 
         if (dialogue.startingNode == null) // 如果没有任何一个起始点，代表没有任何一个，停止加载
         {
@@ -119,7 +128,11 @@ public sealed class DialogueGraphView : GraphView
 
         HashSet<DialogueNode> visited = new(); // 创建一个 hash set ，储存已经 遍历过的 node，这里的node 将会是 游戏中的 data 了
         CreateDialogueTree(dialogue.startingNode, new Vector2(300, 200), visited); // 从开始的 node，在 x 300 y200 的位置
-
+        
+        foreach (var noteData in currentDialogue.StickyNotes)
+        {
+            LoadStickyNote(noteData);
+        }
         isLoadingGraph = false;
     }
     
@@ -149,7 +162,7 @@ public sealed class DialogueGraphView : GraphView
 
                 NpcResponse nextDialogueNode = GetDialogueGraphNode(response.nextNode);
 
-                if (nextDialogueNode != null && nextDialogueNode.InputPort != null)
+                if (nextDialogueNode is { InputPort: not null })
                 {
                     Edge responseToDialogue = playerResponseNode.OutputPort.ConnectTo(nextDialogueNode.InputPort);
                     AddElement(responseToDialogue);
@@ -229,6 +242,46 @@ public sealed class DialogueGraphView : GraphView
         _sharedDialogueSearchWindow.Init(node);
         SearchWindow.Open(new SearchWindowContext(mousePos), _sharedDialogueSearchWindow);
     }
+
+    private void CreateStickyNote(Vector2 position)
+    {
+        if (currentDialogue == null) return;
+
+       
+        StickyNoteData noteData = new StickyNoteData
+        {
+            Title = "Title",
+            Content = "Contents",
+            Position = position
+        };
+
+        currentDialogue.StickyNotes.Add(noteData);
+        EditorUtility.SetDirty(currentDialogue);
+        
+        DialogueStickyNote note = new DialogueStickyNote(noteData, this);
+        AddElement(note);
+        stickyNoteDataMap[noteData] = note;
+    }
+
+    private void LoadStickyNote(StickyNoteData noteData)
+    {
+        DialogueStickyNote note = new DialogueStickyNote(noteData, this);
+        AddElement(note);
+        stickyNoteDataMap[noteData] = note;
+    }
+    
+    private void RemoveStickyNoteData(DialogueStickyNote note)
+    {
+        if (note.TargetData == null) return;
+
+        if (currentDialogue != null && currentDialogue.StickyNotes.Contains(note.TargetData))
+        {
+            currentDialogue.StickyNotes.Remove(note.TargetData);
+            EditorUtility.SetDirty(currentDialogue);
+        }
+
+        stickyNoteDataMap.Remove(note.TargetData);
+    }
     private void DeleteSelectionCallback(string operationName, AskUser askUser)
     {
         List<GraphElement> elementsToDelete = new();
@@ -251,22 +304,20 @@ public sealed class DialogueGraphView : GraphView
                 foreach (Edge edge in port.connections)
                 {
                     if (!elementsToDelete.Contains(edge)) elementsToDelete.Add(edge);
-                    
                 }
             }
-
             foreach (Port port in node.outputContainer.Children().OfType<Port>())
             {
                 foreach (Edge edge in port.connections)
                 {
                     if (!elementsToDelete.Contains(edge)) elementsToDelete.Add(edge);
-                    
                 }
             }
         }
         DeleteElements(elementsToDelete);
-       
     }
+
+   
 
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
@@ -275,6 +326,12 @@ public sealed class DialogueGraphView : GraphView
         evt.menu.AppendAction("Create Dialogue Node", action =>
         {
             CreateNpcResponseNode(mousePosition);
+        });
+        
+        evt.menu.AppendSeparator();
+        evt.menu.AppendAction("Sticky note", action =>
+        {
+            CreateStickyNote(mousePosition);
         });
     }
     
@@ -365,4 +422,54 @@ public sealed class DialogueGraphView : GraphView
     }
     
   
+}
+
+public class DialogueStickyNote : StickyNote
+{
+    public StickyNoteData TargetData { get; private set; }
+    private readonly DialogueGraphView graphView;
+    public DialogueStickyNote(StickyNoteData data, DialogueGraphView graphView)
+    {
+        this.TargetData = data;
+        this.graphView = graphView;
+
+        title = data.Title;
+        contents = data.Content;
+        SetPosition(new Rect(data.Position, new Vector2(250, 150)));
+        capabilities |= Capabilities.Droppable | Capabilities.Movable | Capabilities.Deletable;
+
+        // 监听标题和正文文本框的修改事件
+        var titleLabel = this.Q<TextField>("title-field");
+        titleLabel?.RegisterValueChangedCallback(evt =>
+        {
+            TargetData.Title = evt.newValue;
+            MarkDirty();
+        });
+
+        var contentLabel = this.Q<TextField>("contents-field");
+        contentLabel?.RegisterValueChangedCallback(evt =>
+        {
+            TargetData.Content = evt.newValue;
+            MarkDirty();
+        });
+    }
+
+    
+    public sealed override void SetPosition(Rect newPos)
+    {
+        base.SetPosition(newPos);
+        if (TargetData != null)
+        {
+            TargetData.Position = newPos.position;
+            MarkDirty();
+        }
+    }
+
+    private void MarkDirty()
+    {
+        if (graphView.CurrentDialogue != null)
+        {
+            EditorUtility.SetDirty(graphView.CurrentDialogue);
+        }
+    }
 }

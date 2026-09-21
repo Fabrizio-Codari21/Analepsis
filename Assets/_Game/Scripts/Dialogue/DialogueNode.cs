@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 // Lo que pueden decir los NPC y como podemos responder a eso.
-[System.Serializable]
+[System.Serializable] // Npc talk Node
 public class DialogueNode : INode,IClue
 {
     [TextArea(0,20)] public string dialogueText;
@@ -23,7 +23,7 @@ public class DialogueNode : INode,IClue
     [Header("ID")]
     public SerializableGuid guid = SerializableGuid.NewGuid();
     public string tag = "";
-    DialogueResponse _previousResponse = default; 
+    DialogueResponse _previousResponse = null; 
     public DialogueResponse PreviousResponse { get => _previousResponse; set => _previousResponse = value; }
 
     public DialogueNode SelectAltDialogue()

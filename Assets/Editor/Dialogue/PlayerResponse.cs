@@ -18,8 +18,7 @@ public sealed class PlayerResponse : Node
     private VisualElement conditionRoot;
     private VisualElement conditionContainer;
     private ConditionSearchWindow _searchWindowProvider;
-
-    private VisualElement topContainer;
+    private VisualElement superiorContainer;
     private VisualElement bottomContainer;
    public PlayerResponse(DialogueResponse responseData, DialogueGraphView graphView)
     {
@@ -36,7 +35,7 @@ public sealed class PlayerResponse : Node
 
         #region Port Setup
         
-        topContainer = new VisualElement{
+        superiorContainer = new VisualElement{
             style =
             {
                 flexDirection = FlexDirection.Row,
@@ -49,7 +48,7 @@ public sealed class PlayerResponse : Node
         };
         
         var listener = new DialogueEdgeConnectorListener(_graphView);
-        InputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Input, Port.Capacity.Multi, typeof(bool));
+        InputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Input, Port.Capacity.Single,typeof(NpcResponse));
         InputPort.portName = "";
         InputPort.portColor = Color.cyan;
         
@@ -194,7 +193,7 @@ public sealed class PlayerResponse : Node
         
       
        
-        border.Insert(0, topContainer);
+        border.Insert(0, superiorContainer);
 
         Button deleteButon = new Button(()=>graphView.DeleteElements(new List<GraphElement> { this }))
         {
@@ -206,12 +205,12 @@ public sealed class PlayerResponse : Node
             }
         };
         
-        topContainer.style.justifyContent = Justify.SpaceBetween;
-        topContainer.style.alignItems = Align.Center;
+        superiorContainer.style.justifyContent = Justify.SpaceBetween;
+        superiorContainer.style.alignItems = Align.Center;
 
         
-        topContainer.Add(inputContainer);
-        topContainer.Add(deleteButon);
+        superiorContainer.Add(inputContainer);
+        superiorContainer.Add(deleteButon);
 
 
         inputContainer.style.flexGrow = 1;
@@ -237,6 +236,8 @@ public sealed class PlayerResponse : Node
            
         #endregion
     }
+
+   
 
     public void GenerateConditionUI()
     {

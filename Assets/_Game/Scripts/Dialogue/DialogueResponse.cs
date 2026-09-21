@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 // Lo que decimos en respuesta a un NPC y que dialogo le sigue a esa respuesta.
+
+// Data
 [Serializable]
 public class DialogueResponse : INode
 {

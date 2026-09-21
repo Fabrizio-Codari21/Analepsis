@@ -10,21 +10,35 @@ using UnityEngine.UIElements;
 
 public sealed class NpcResponse : Node
 {
-    public DialogueNode NodeData;
-    public Port InputPort;
-    public Port OutputPort;
     private DialogueGraphView _graphView;
-    private AltDialogueSearchWindow _searchWindowProvider;
-    private VisualElement altDialogueContainer;
+    
+    #region Top
+    private VisualElement topContainer;
+    public Port InputPort;
+    
+    #endregion
+    
+    #region Middle Extension 
     public Foldout nodeFoldOut;
     public Foldout altDialogueFoldOut;
-
-
-    private VisualElement topContainer;
+    private VisualElement altDialogueContainer;
+    #endregion    
+    #region Bottom
     private VisualElement bottomContainer;
+    public Port OutputPort;
+    #endregion
+
+    #region  Data
+    public DialogueNode NodeData;
+    
+    #endregion
+
+    private AltDialogueSearchWindow _searchWindowProvider;
     public NpcResponse(DialogueNode nodeData, DialogueGraphView graphView)
     {
-
+        NodeData = nodeData;
+        _graphView = graphView;
+        
         #region  Capablities
 
         // capabilities |= Capabilities.Copiable;
@@ -41,11 +55,13 @@ public sealed class NpcResponse : Node
         #endregion
         
         
-        NodeData = nodeData;
-        _graphView = graphView;
+        
+        #region Visual
+        
+        #region Tiltle
         title = nodeData.isRootNode ? "Npc start speaking" : "Npc Response";
         titleContainer.style.backgroundColor = Color.black;
-        
+        #endregion
         topContainer = new VisualElement
         {
             name = "Top Container",
@@ -62,19 +78,47 @@ public sealed class NpcResponse : Node
             }
         };
         
+        #endregion
+        
+        
+        
+        #region Data Value
        
         TextField textField = new TextField("Npc Talking")
         {
             multiline = true,
             value = nodeData.dialogueText,
-            
         };
         textField.RegisterValueChangedCallback(evt =>
         {
             NodeData.dialogueText = evt.newValue;
-            
         });
         extensionContainer.Add(textField);
+        #endregion
+        
+        
+        #region Input Port
+        if (!nodeData.isRootNode)
+        {
+            InputPort = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Multi, typeof(bool));
+            InputPort.portColor = Color.cyan;
+            InputPort.portName = "";
+            Label inputPortLabel = new Label
+            {
+                text = "Player Response",
+                name = "InputPortLabel",
+                style =
+                {
+                    unityFontStyleAndWeight = FontStyle.Bold,
+                    color = Color.black,
+                }
+            };
+            inputContainer.Add(InputPort);
+            topContainer.Add(inputPortLabel);
+        }
+        
+        #endregion
+        
         
         #region Custom Detail
         
@@ -167,24 +211,8 @@ public sealed class NpcResponse : Node
 
         #endregion
 
-        if (!nodeData.isRootNode)
-        {
-            InputPort = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Multi, typeof(bool));
-            InputPort.portColor = Color.cyan;
-            InputPort.portName = "";
-            Label inputPortLabel = new Label
-            {
-                text = "Player Response",
-                name = "InputPortLabel",
-                style =
-                {
-                    unityFontStyleAndWeight = FontStyle.Bold,
-                    color = Color.black,
-                }
-            };
-            inputContainer.Add(InputPort);
-            topContainer.Add(inputPortLabel);
-        }
+        
+      
 
         altDialogueFoldOut = new Foldout()
         {
@@ -195,7 +223,9 @@ public sealed class NpcResponse : Node
 
         extensionContainer.Add(nodeFoldOut);
 
-        
+
+        #region  OutPutPort
+
         var listener = new DialogueEdgeConnectorListener(_graphView);
         OutputPort = Port.Create<Edge>(
             Orientation.Vertical,
@@ -207,9 +237,12 @@ public sealed class NpcResponse : Node
         OutputPort.portName = "";
         OutputPort.portColor = Color.yellow;
         outputContainer.Add(OutputPort);
-        
-        NodeData.responses ??= new List<DialogueResponse>();
 
+        #endregion
+       
+        
+        #region Data
+        NodeData.responses ??= new List<DialogueResponse>();
         Button addResponseButton = new Button(() =>
         {
             DialogueResponse response = new DialogueResponse
@@ -227,8 +260,11 @@ public sealed class NpcResponse : Node
 
         titleButtonContainer.Add(addResponseButton);
 
+        #endregion
         RefreshExpandedState();
         RefreshPorts();
+        
+        
         
         VisualElement border = Children().First();
         if (!nodeData.isRootNode)
@@ -239,6 +275,9 @@ public sealed class NpcResponse : Node
             inputContainer.style.flexGrow = 1;
             border.Insert(0, topContainer);
         }
+        
+        
+        #region Order
         
      
         outputContainer.RemoveFromHierarchy();
@@ -270,6 +309,8 @@ public sealed class NpcResponse : Node
         bottomContainer.Add(outputLabel);
         bottomContainer.Add(outputContainer);
         border.Add(bottomContainer);
+        
+        #endregion
     }
 
     
