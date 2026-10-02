@@ -4,7 +4,6 @@ using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
-using System;
 
 public sealed class DialogueGraphView : GraphView
 {
@@ -33,7 +32,8 @@ public sealed class DialogueGraphView : GraphView
         this.AddManipulator(new RectangleSelector()); // 绘制 框选 框
         
         SetupZoom(ContentZoomer.DefaultMinScale, 3.0f); //（ min 0.05 -> 2.0） 加入 zoom
-        
+
+        this.AddManipulator(CreateGroupManipulator());
         
         
         GridBackground grid = new GridBackground(); // 网格背景
@@ -97,19 +97,24 @@ public sealed class DialogueGraphView : GraphView
                     case DialogueStickyNote note:
                         RemoveStickyNoteData(note);
                         break;
+                    case IRemovable removable:
+                        removable.Remove();
+                        break;
                        
                 }
             }
            
-            
-        
-
         return change;
     }
     
     // 加载 dialogue， 先清除所有的，然后在重新加载
     public void LoadDialogue(Dialogue dialogue)
     {
+        if (currentDialogue != null)
+        {
+            HashSet<DialogueNode> tempNodes = new HashSet<DialogueNode>();
+            RefreshDialogueSavedNotes(currentDialogue.startingNode,tempNodes);
+        }
         
         currentDialogue = dialogue;   
         // 开始加载
@@ -127,6 +132,7 @@ public sealed class DialogueGraphView : GraphView
         }
 
         HashSet<DialogueNode> visited = new(); // 创建一个 hash set ，储存已经 遍历过的 node，这里的node 将会是 游戏中的 data 了
+        currentDialogue.allNodes.Clear();
         CreateDialogueTree(dialogue.startingNode, new Vector2(300, 200), visited); // 从开始的 node，在 x 300 y200 的位置
         
         foreach (var noteData in currentDialogue.StickyNotes)
@@ -135,11 +141,28 @@ public sealed class DialogueGraphView : GraphView
         }
         isLoadingGraph = false;
     }
+
+    private void RefreshDialogueSavedNotes(DialogueNode nodeData, HashSet<DialogueNode> visited)
+    {
+        if (nodeData == null || !visited.Add(nodeData)) return;
+        bool isRoot = visited.Count == 1;
+        if (isRoot) currentDialogue.allNodes.Clear();
+        
+        if(!currentDialogue.allNodes.Contains(nodeData)) currentDialogue.allNodes.Add(nodeData);
+
+        if (nodeData.responses == null) return;
+        foreach (var response in nodeData.responses)
+        {
+            if (response is { nextNode: not null }) RefreshDialogueSavedNotes(response.nextNode, visited);
+                
+        }
+
+    }
     
     private void CreateDialogueTree(DialogueNode nodeData, Vector2 position, HashSet<DialogueNode> visited)
     {
         if (nodeData == null || !visited.Add(nodeData)) return; // 如果已经重复了的话，就不要添加，也不用继续了
-
+        if(!currentDialogue.allNodes.Contains(nodeData)) currentDialogue.allNodes.Add(nodeData);
         bool isRoot = visited.Count == 1; // 如果只有一个 代表是 第一个 node ，也就是 root
         NpcResponse npcResponseNode = CreateNpcResponseNode(position, isRoot ,nodeData); // 创建 npc 的对话
 
@@ -171,6 +194,47 @@ public sealed class DialogueGraphView : GraphView
             yOffset += 250f;
         }
     }
+
+
+    public IManipulator CreateGroupManipulator()
+    {
+        ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(menuEvent => menuEvent.menu.AppendAction("Add Group", actionEvent => CreateGroup("Group", actionEvent.eventInfo.localMousePosition,Vector2.one)));
+
+        return contextualMenuManipulator;
+    }
+
+    
+    private Group CreateGroup(string title,Vector2 position,Vector2 size)
+    {
+        Group group = new Group
+        {
+            title = title,
+        };
+
+        var pos = new Rect(position, size);
+        group.SetPosition(pos);
+        AddElement(group);
+        
+        GraphViewGroupData groupData = new GraphViewGroupData
+        {
+            Title =  title,
+            Position =  pos
+        };
+        
+        currentDialogue.groups.Add(groupData);
+        return group;
+    }
+
+    private Group CreateGroup(GraphViewGroupData groupData)
+    { 
+        Group group = new Group()
+        {
+            title = groupData.Title,
+        };
+        group.SetPosition(groupData.Position);
+        AddElement(group);
+        return group;
+    }   
     public NpcResponse CreateNpcResponseNode(Vector2 position, bool isRoot = false, DialogueNode nodeData = null)
     {
         
@@ -288,6 +352,12 @@ public sealed class DialogueGraphView : GraphView
 
         foreach (ISelectable selectable in selection)
         {
+            if (selectable is IRemovable removable)
+            {
+                removable.Remove();
+                continue;
+            }
+            
             if (selectable is NpcResponse dialogueNode)
             {
                 if (dialogueNode.NodeData.isRootNode) continue;
@@ -424,6 +494,8 @@ public sealed class DialogueGraphView : GraphView
   
 }
 
+
+
 public class DialogueStickyNote : StickyNote
 {
     public StickyNoteData TargetData { get; private set; }
@@ -471,5 +543,43 @@ public class DialogueStickyNote : StickyNote
         {
             EditorUtility.SetDirty(graphView.CurrentDialogue);
         }
+    }
+}
+
+public interface IRemovable
+{
+    void Remove();
+}
+
+public abstract class GraphViewGroup : Group, IRemovable
+{
+
+    protected GraphViewGroupData _data;
+
+    protected GraphViewGroup(GraphViewGroupData data)
+    {
+        _data = data;
+    }
+    public abstract void Remove();
+}
+
+public class DialogueGroup : GraphViewGroup
+{
+    private readonly DialogueGraphView _graphView;
+
+    public DialogueGroup(GraphViewGroupData data, DialogueGraphView graphView) : base(data)
+    {
+        _graphView = graphView;
+    }
+    public override void Remove()
+    {
+        var dialogue = _graphView.CurrentDialogue;
+        if (dialogue != null && dialogue.groups.Contains(_data))
+        {
+            dialogue.groups.Remove(_data);
+            EditorUtility.SetDirty(dialogue);
+        }
+        _graphView.RemoveElement(this);
+        
     }
 }

@@ -14,7 +14,6 @@ public sealed class PlayerResponse : Node
     public Port InputPort;
     public Port OutputPort;
 
-
     private VisualElement conditionRoot;
     private VisualElement conditionContainer;
     private ConditionSearchWindow _searchWindowProvider;
@@ -48,7 +47,7 @@ public sealed class PlayerResponse : Node
         };
         
         var listener = new DialogueEdgeConnectorListener(_graphView);
-        InputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Input, Port.Capacity.Single,typeof(NpcResponse));
+        InputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Input, Port.Capacity.Multi,typeof(NpcResponse));
         InputPort.portName = "";
         InputPort.portColor = Color.cyan;
         
@@ -116,8 +115,8 @@ public sealed class PlayerResponse : Node
         responseField.labelElement.style.height = 20;
         responseField.labelElement.style.marginBottom = 5;
         responseField.labelElement.style.unityTextAlign = TextAnchor.MiddleCenter;
-   
-        
+
+        responseField.RegisterValueChangedCallback(evt => { responseData.responseText = evt.newValue; });
 
         extensionContainer.Add(responseField);
         #endregion
