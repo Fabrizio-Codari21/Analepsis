@@ -25,8 +25,12 @@ public class NpcIdentity : ScriptableObject,IClue
 
     [Space(20)]
     public bool makesEyeContact = true;
-    
-    
+
+    [Space(20), Header("Pick sprites to use in cutscenes.")]
+    [InfoBox("Only fill this dictionary if this NPC will appear in a cutscene.")]
+    public SerializedDictionary<Emotion, Sprite> cutsceneSprites = new();
+
+
     [Button("🔄 Actualizar Todos los GUIDs (Resolver Conflicto)", ButtonSizes.Large)]
     [InfoBox("Si has copiado este NPC mediante Ctrl+C / Ctrl+V, usa este botón para generar nuevos identificadores únicos para todos sus nodos y evitar problemas en el cuaderno.", InfoMessageType.Info)]
     public void RegenerateAllGuids()
