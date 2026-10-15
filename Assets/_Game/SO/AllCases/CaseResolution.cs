@@ -24,7 +24,8 @@ public class CaseResolution : ScriptableObject  // Recipe
             if (allSlots[i] != null && uniqueSlots.Add(allSlots[i])) continue;
             allSlots.RemoveAt(i); 
         }
-        // en toodas las respuesta tiene que tener misma cantidad de slot osea quien mato a quient, con que etc, y cada uno de eso se manajar por un key por SO , y dentro de ese SO esta para escribir para que sirve el slot que tiene
+        // en toodas las respuesta tiene que tener misma cantidad de slot osea quien mato a quient,
+        // con que etc, y cada uno de eso se manajar por un key por SO , y dentro de ese SO esta para escribir para que sirve el slot que tiene
         // que poner ... 
         foreach (var answer in validAnswers)
         {
@@ -82,7 +83,6 @@ public class CaseResolution : ScriptableObject  // Recipe
 [Serializable]
 public class CaseAnswer
 {
-    
     [ShowInInspector]
     [DictionaryDrawerSettings(KeyLabel = "ID (Asset)", ValueLabel = "Case Slot", IsReadOnly = true)]
     [PropertySpace(10, 15)]

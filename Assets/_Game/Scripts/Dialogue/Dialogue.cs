@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
-
 using UnityEngine;
 
 // Objeto base que contiene toda la logica de un dialogo.
@@ -22,78 +21,90 @@ public class Dialogue :SerializedScriptableObject
         if (hiddenProof.Contains(proof)) return;
         hiddenProof.Add(proof);
     }
+
+    #region Buttones comentado para que no lo use cuando quieran/ estos botones se utilizar con muchos cuidado
+
     
     
-    [Button("🔄 Actualizar Todos los GUIDs (Resolver Conflicto)", ButtonSizes.Large)]
-    [InfoBox("Si has copiado este diálogo mediante Ctrl+C / Ctrl+V, usa este botón para generar nuevos identificadores únicos para todos sus nodos y evitar problemas en el cuaderno.", InfoMessageType.Info)]
-    public void RegenerateAllGuids()
-    {
-        int updatedCount = 0;
-
-       
-        if (startingNode != null)
-        {
-            startingNode.guid = SerializableGuid.NewGuid();
-            updatedCount++;
-            
-        }
-
-   
-        foreach (var node in allNodes)
-        {
-            if (node != null)
-            {
-                node.guid = SerializableGuid.NewGuid();
-                updatedCount++;
-                
-            }
-        }
-
-#if UNITY_EDITOR
-        UnityEditor.EditorUtility.SetDirty(this);
-        UnityEditor.AssetDatabase.SaveAssets();
-#endif
-
-        Debug.Log($"<color=green>【GUID Actualizado Exitosamente】</color> Se han regenerado {updatedCount} GUIDs para el diálogo: <b>{name}</b>.");
-    }
+//     
+//     
+//     [Button("🔄 Actualizar Todos los GUIDs (Resolver Conflicto)", ButtonSizes.Large)]
+//     [InfoBox("Si has copiado este diálogo mediante Ctrl+C / Ctrl+V, usa este botón para generar nuevos identificadores únicos para todos sus nodos y evitar problemas en el cuaderno.", InfoMessageType.Info)]
+//     public void RegenerateAllGuids()
+//     {
+//         int updatedCount = 0;
+//
+//        
+//         if (startingNode != null)
+//         {
+//             startingNode.guid = SerializableGuid.NewGuid();
+//             updatedCount++;
+//             
+//         }
+//
+//    
+//         foreach (var node in allNodes)
+//         {
+//             if (node != null)
+//             {
+//                 node.guid = SerializableGuid.NewGuid();
+//                 updatedCount++;
+//                 
+//             }
+//         }
+//
+// #if UNITY_EDITOR
+//         UnityEditor.EditorUtility.SetDirty(this);
+//         UnityEditor.AssetDatabase.SaveAssets();
+// #endif
+//
+//         Debug.Log($"<color=green>【GUID Actualizado Exitosamente】</color> Se han regenerado {updatedCount} GUIDs para el diálogo: <b>{name}</b>.");
+//     }
+//     
     
-    
-       
-    [Button("Reset Proof)", ButtonSizes.Large)]
-    [InfoBox("Reset Proof To Motive", InfoMessageType.Info)]
-    public void  NodeProofReset()
-    {
-      
-
-       
-        if (startingNode != null)
-        {
-            startingNode.doesItProveAnything = Whodunnit.Motive;
-         
-            
-        }
-
-   
-        foreach (var node in allNodes)
-        {
-            if (node != null)
-            {
-               node.doesItProveAnything = Whodunnit.Motive;
-           
-                
-            }
-        }
-
-#if UNITY_EDITOR
-        UnityEditor.EditorUtility.SetDirty(this);
-        UnityEditor.AssetDatabase.SaveAssets();
-#endif
-    }
-    
+//        
+//     [Button("Reset Proof)", ButtonSizes.Large)]
+//     [InfoBox("Reset Proof To Motive", InfoMessageType.Info)]
+//     public void  NodeProofReset()
+//     {
+//       
+//         if (startingNode != null)
+//         {
+//             startingNode.doesItProveAnything = Whodunnit.Motive;
+//          
+//             
+//         }
+//
+//    
+//         foreach (var node in allNodes)
+//         {
+//             if (node != null)
+//             {
+//                node.doesItProveAnything = Whodunnit.Motive;
+//            
+//                 
+//             }
+//         }
+//
+// #if UNITY_EDITOR
+//         UnityEditor.EditorUtility.SetDirty(this);
+//         UnityEditor.AssetDatabase.SaveAssets();
+// #endif
+//     }
+//     
+    #endregion
     
     public List<StickyNoteData> StickyNotes = new List<StickyNoteData>(); 
+    public List<GraphViewGroupData> groups = new List<GraphViewGroupData>();
     
+}
+
+public class GraphViewGroupData
+{
     
+    public string Title = "New Group";
+    public Rect Position = new Rect(Vector2.zero, Vector2.one * 300);
+    public List<SerializableGuid> Elements = new List<SerializableGuid>();
 }
 
 

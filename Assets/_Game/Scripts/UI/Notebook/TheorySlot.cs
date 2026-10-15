@@ -45,7 +45,7 @@ public class TheorySlot : MonoBehaviour, ISlotData<Evidence>
         
         Debug.Log("4");
         Debug.Log(slotRule.Identity.Description);
-        return slotRule.Validate(slotRule.Identity.ProofTypeNeed, playerPlacedClue);
+        return slotRule.Validate( playerPlacedClue);
     }
     
     public bool IsIdentity(CaseSlotIdentity identityToCompare)

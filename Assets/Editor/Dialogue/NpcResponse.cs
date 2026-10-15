@@ -41,7 +41,7 @@ public sealed class NpcResponse : Node
         
         #region  Capablities
 
-        // capabilities |= Capabilities.Copiable;
+        capabilities |= Capabilities.Copiable;
         // capabilities |= Capabilities.Groupable;
         // capabilities |= Capabilities.Renamable;
 
@@ -97,12 +97,14 @@ public sealed class NpcResponse : Node
         #endregion
         
         
+        var listener = new DialogueEdgeConnectorListener(_graphView);
         #region Input Port
         if (!nodeData.isRootNode)
         {
             InputPort = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Multi, typeof(bool));
             InputPort.portColor = Color.cyan;
             InputPort.portName = "";
+            InputPort.AddManipulator(new EdgeConnector<Edge>(listener));
             Label inputPortLabel = new Label
             {
                 text = "Player Response",
@@ -115,6 +117,7 @@ public sealed class NpcResponse : Node
             };
             inputContainer.Add(InputPort);
             topContainer.Add(inputPortLabel);
+            
         }
         
         #endregion
@@ -226,7 +229,7 @@ public sealed class NpcResponse : Node
 
         #region  OutPutPort
 
-        var listener = new DialogueEdgeConnectorListener(_graphView);
+       
         OutputPort = Port.Create<Edge>(
             Orientation.Vertical,
             Direction.Output,
