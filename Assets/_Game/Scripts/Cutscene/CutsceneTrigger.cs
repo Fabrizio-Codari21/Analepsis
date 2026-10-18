@@ -43,6 +43,13 @@ public class CutsceneTrigger : MonoBehaviour, IActivity
 
         _tipProvider = GetComponent<ITipProvider>();
         _tipProvider.AddTip(new Tip($"Interact?", TipOrder.InteractionType));
+
+        if (cutsceneInfo.dialogueID == string.Empty)
+            cutsceneInfo.dialogueID = cutsceneInfo.startWithTheRightCharacter
+                ? $"{cutsceneInfo.rightCharacter.npcName} talks to {cutsceneInfo.leftCharacter.npcName}"
+                : $"{cutsceneInfo.leftCharacter.npcName} talks to {cutsceneInfo.rightCharacter.npcName}";
+
+        Debug.Log(cutsceneInfo.dialogueID);
     }
 
     private void SpawnName()

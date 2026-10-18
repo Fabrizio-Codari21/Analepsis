@@ -244,12 +244,22 @@ MonoBehaviour:
     leftCharacter: {fileID: 11400000, guid: d8fb7da84b74d234c8fe9a1d59baa950, type: 2}
     rightCharacter: {fileID: 11400000, guid: ce3accbbccd08a144afced4196228296, type: 2}
     startWithTheRightCharacter: 0
+    dialogueID: 
     dialogue:
-    - dialogue: First Speaker
+    - dialogue: Hi! I'm the "First Speaker"!
       emotion: 3
       switchCharacter: 1
-    - dialogue: Second Speaker
+    - dialogue: And I'm the "Second Speaker".
       emotion: 4
+      switchCharacter: 1
+    - dialogue: Dialogue 3
+      emotion: 4
+      switchCharacter: 0
+    - dialogue: Dialogue 4 (same person)
+      emotion: 1
+      switchCharacter: 1
+    - dialogue: Dialogue 5 is way longer than the rest. aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.
+      emotion: 3
       switchCharacter: 1
   manager: {fileID: 128930084}
   m_pushActivity: {fileID: 11400000, guid: 3027f54723217b445909fe93945c6bd2, type: 2}
@@ -4389,7 +4399,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2081250542
 MonoBehaviour:
   m_ObjectHideFlags: 0

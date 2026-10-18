@@ -7,25 +7,15 @@ using UnityEngine.Rendering;
 public class CutsceneInfo
 {
     [Header("CHARACTER INFO")]
-    public NpcIdentity leftCharacter, rightCharacter;
+    public NpcIdentity leftCharacter;
+    public NpcIdentity rightCharacter;
     //public SerializedDictionary<Emotion, Sprite> leftCharacter;
     //public SerializedDictionary<Emotion, Sprite> rightCharacter;
     [Space(10)] public bool startWithTheRightCharacter = false;
 
     [Space(20), Header("DIALOGUE INFO")]
+    public string dialogueID;
     public List<SimpleDialogueNode> dialogue;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
 }
 

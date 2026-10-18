@@ -30,7 +30,7 @@ public class CutsceneManager : MonoBehaviour
         cutsceneUI.SetActive(false);
     }
 
-    public async UniTask PlayDialogue(CutsceneInfo cutscene, bool character = true, int currentNode = 0)
+    public async UniTask PlayDialogue(CutsceneInfo cutscene, bool isLeftCharacter = true, int currentNode = 0)
     {
         var node = cutscene.dialogue[currentNode];
 
@@ -40,29 +40,36 @@ public class CutsceneManager : MonoBehaviour
         leftCharacter.sprite = cutscene.leftCharacter.cutsceneSprites[Emotion.Idle];
         rightCharacter.sprite = cutscene.rightCharacter.cutsceneSprites[Emotion.Idle];
 
-        characterName.text = character ? cutscene.leftCharacter.npcName : cutscene.rightCharacter.npcName;
-        if (character)
+        characterName.text = isLeftCharacter ? cutscene.leftCharacter.npcName : cutscene.rightCharacter.npcName;
+        if (isLeftCharacter)
         {
-            leftCharacter.sprite = cutscene.leftCharacter.cutsceneSprites[node.emotion];
+            leftCharacter.sprite = SetEmotion(cutscene.leftCharacter, node.emotion) ?? leftCharacter.sprite;
             leftCharacter.color += new Color(0,0,0,1);
             rightCharacter.color = new Color(rightCharacter.color.r, rightCharacter.color.g, rightCharacter.color.b, 0.4f);
         }
         else 
         {
-            rightCharacter.sprite = cutscene.rightCharacter.cutsceneSprites[node.emotion];
+            rightCharacter.sprite = SetEmotion(cutscene.rightCharacter, node.emotion) ?? rightCharacter.sprite;
             rightCharacter.color += new Color(0, 0, 0, 1);
-            leftCharacter.color = new Color(rightCharacter.color.r, rightCharacter.color.g, rightCharacter.color.b, 0.4f);
+            leftCharacter.color = new Color(leftCharacter.color.r, leftCharacter.color.g, leftCharacter.color.b, 0.4f);
         }
 
         dialogueText.SetText(node.dialogue, 1, Color.black);
-        //print($"{(character ? "Left Character" : "Right Character")}");
+        //print($"{(isLeftCharacter ? "Left Character" : "Right Character")}");
         await dialogueText.PlayTypeWriterEffect();
         //character = !character;
 
         if(cutscene.dialogue.Count > currentNode + 1)
-        nextButton.onClick.AddListener(() => _ = PlayDialogue(cutscene, node.switchCharacter ? !character : character, currentNode + 1));
+        nextButton.onClick.AddListener(() => _ = PlayDialogue(cutscene, node.switchCharacter ? !isLeftCharacter : isLeftCharacter, currentNode + 1));
         else nextButton.onClick.AddListener(() => DisableCutscene());
 
+    }
+
+    public Sprite SetEmotion(NpcIdentity character, Emotion id)
+    {
+        if (character.cutsceneSprites.ContainsKey(id)) return character.cutsceneSprites[id];
+        else if (character.cutsceneSprites.ContainsKey(Emotion.Idle)) return character.cutsceneSprites[Emotion.Idle];
+        else return null;
     }
 
     //public UniTask PlayDialogue(CutsceneInfo cutscene)
