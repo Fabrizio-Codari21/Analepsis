@@ -41,15 +41,15 @@ public class DynamicUIText : FactoryUIObject
        base.OnSpawn();
        Cancel();
     }
-    public void SetText(string text,float size, Color color,float maxWidth = 500f, bool setToMaxWidth = false, int compensateLines = 0)
+    public void SetText(string text,float size, Color color,float maxWidth = 500f, bool setToMaxWidth = false, int compensateLines = 0, bool recalculate = true)
     {
         m_text.text = text;
         m_text.color = color;
-        m_text.fontSize = size;
+        m_text.fontSize = size > 0 ? size : m_text.fontSize;
         m_text.maxVisibleCharacters = 0; 
         m_maxWidth =  maxWidth;
         _setToMaxWidth = setToMaxWidth;
-        CalculateWidthAndHeight(out _currentSize, compensateLines);
+        if(recalculate) CalculateWidthAndHeight(out _currentSize, compensateLines);
     }
     
     

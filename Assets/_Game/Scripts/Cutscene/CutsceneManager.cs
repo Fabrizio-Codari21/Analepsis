@@ -54,7 +54,7 @@ public class CutsceneManager : MonoBehaviour
             leftCharacter.color = new Color(leftCharacter.color.r, leftCharacter.color.g, leftCharacter.color.b, 0.4f);
         }
 
-        dialogueText.SetText(node.dialogue, 1, Color.black);
+        dialogueText.SetText(node.dialogue, dialogueText.GetText().fontSize, Color.black, recalculate: false);
         //print($"{(isLeftCharacter ? "Left Character" : "Right Character")}");
         await dialogueText.PlayTypeWriterEffect();
         //character = !character;
